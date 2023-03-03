@@ -1,11 +1,21 @@
+using CED.Application;
+using CED.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
+{
+    // Add services to the container.
+    builder.Services
+        .AddApplication()
+        .AddInfrastructure();
+    builder.Services
+        .AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services
+        .AddEndpointsApiExplorer();
+    builder.Services
+        .AddSwaggerGen();
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+}
 
 var app = builder.Build();
 
