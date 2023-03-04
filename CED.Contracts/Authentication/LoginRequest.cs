@@ -1,4 +1,4 @@
-namespace CED.Contracts.Authorization;
+namespace CED.Contracts.Authentication;
 
 public record LoginRequest(
     string Email,

@@ -1,4 +1,4 @@
-using CED.Contracts.Authorization;
+using CED.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using CED.Application.Interfaces;
 
