@@ -20,6 +20,7 @@ namespace CED.Infrastructure
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+            // Dependency Injection for repository
             services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
