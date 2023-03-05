@@ -1,6 +1,9 @@
 using CED.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using CED.Application.Interfaces;
+using MediatR;
+using CED.Application.Services.Authentication.Commands.Register;
+using CED.Application.Services.Authentication.Queries.Login;
+using MapsterMapper;
 
 namespace CED.WebAPI.Controllers;
 
@@ -8,49 +11,34 @@ namespace CED.WebAPI.Controllers;
 [Route("Auth")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService;
+    private readonly ISender _mediator;
+    private readonly IMapper _mapper;
 
-    public AuthenticationController(IAuthenticationService authenticationService)
+     public AuthenticationController(IMediator mediator, IMapper mapper)
     {
-        _authenticationService = authenticationService;
+        _mediator= mediator;
+        _mapper= mapper;
     }
 
     [HttpPost("Register")]
-    public IActionResult Register(RegisterRequest request)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var registerResult = _authenticationService.Regiser(
-            request.FirstName,
-            request.LastName,
-            request.Email,
-            request.Password
-            );
-
-        var respone = new AuthenticationResponse(
-            registerResult.Id,
-            registerResult.FirstName,
-            registerResult.LastName,
-            registerResult.Email,
-            registerResult.Token
-            );
-        return Ok(respone);
+        var command = _mapper.Map<RegisterCommand>(request);
+       
+        var registerResult = await _mediator.Send(command);
+      
+        return Ok(_mapper.Map<AuthenticationResponse>(registerResult));
     }
 
     [HttpPost("Login")]
-    public IActionResult Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var loginResult = _authenticationService.Login(
-            request.Email,
-            request.Password
-            );
+        var query = _mapper.Map<LoginQuery>(request);
 
-        var respone = new AuthenticationResponse(
-            loginResult.Id,
-            loginResult.FirstName,
-            loginResult.LastName,
-            loginResult.Email,
-            loginResult.Token
-            );
-        return Ok(respone);
+        var loginResult = await _mediator.Send(query);
+
+        return Ok(_mapper.Map<AuthenticationResponse>(loginResult));
+
     }
 
 }

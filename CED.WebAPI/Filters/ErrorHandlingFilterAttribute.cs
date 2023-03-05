@@ -14,7 +14,9 @@ namespace CED.WebAPI.Filters
             var problemDetail = new ProblemDetails
             {
                 Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.1",
-                Title = "An error occurred while processing your request.",
+                //Title = "An error occurred while processing your request.",
+                Title = exception.Message,
+                //Status = (int)HttpStatusCode.InternalServerError
                 Status = (int)HttpStatusCode.InternalServerError
             };
 

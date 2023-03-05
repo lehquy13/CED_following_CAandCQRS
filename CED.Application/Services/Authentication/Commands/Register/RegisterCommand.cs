@@ -1,0 +1,15 @@
+﻿
+
+using CED.Application.Services.Authentication.Common;
+using MediatR;
+
+namespace CED.Application.Services.Authentication.Commands.Register;
+
+public record RegisterCommand
+(
+    string FirstName,
+    string LastName,
+    string Email,
+    string Password
+    ) : IRequest<AuthenticationResult>;
+

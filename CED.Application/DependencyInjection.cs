@@ -1,6 +1,6 @@
-﻿using CED.Application.Interfaces;
-using CED.Application.Services;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace CED.Application
 {
@@ -8,7 +8,8 @@ namespace CED.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
             return services;
         }
     }
