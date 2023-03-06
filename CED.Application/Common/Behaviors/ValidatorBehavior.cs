@@ -5,22 +5,26 @@ using MediatR;
 
 namespace CED.Application.Common.Behaviors;
 
-public class ValidatorRegisterCommandBehavior :
-    IPipelineBehavior<RegisterCommand, AuthenticationResult>
+public class ValidationBehavior<TRequest, TResponse> :
+    IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
+   
 {
-    private readonly IValidator<RegisterCommand> _validator;
-    public ValidatorRegisterCommandBehavior(IValidator<RegisterCommand> validator)
+    private readonly IValidator<TRequest>? _validator;
+    public ValidationBehavior(IValidator<TRequest>? validator = null)
     {
-        _validator= validator;
+        _validator = validator;
     }
 
-    public async Task<AuthenticationResult> Handle(
-        RegisterCommand request,
-        RequestHandlerDelegate<AuthenticationResult> next,
-        CancellationToken cancellationToken)
-    {
-        // before the handler
 
+
+    public async Task<TResponse> Handle(TRequest request,
+                                        RequestHandlerDelegate<TResponse> next,
+                                        CancellationToken cancellationToken)
+    {
+
+        if (_validator == null) { return await next(); }
+        // before the handler
         var validationResult = await _validator.ValidateAsync(request);
 
         // after the handler
