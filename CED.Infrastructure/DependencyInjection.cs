@@ -2,8 +2,11 @@
 using CED.Application.Common.Persistence;
 using CED.Application.Common.Services;
 using CED.Infrastructure.Authentication;
+using CED.Infrastructure.Persistence;
+using CED.Infrastructure.Persistence.Repository;
 using CED.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -20,10 +23,18 @@ namespace CED.Infrastructure
             )
         {
             services.AddAuth(configuration);
+            services.AddDbContext<CEDDBContext>(options =>
+                options.UseSqlServer(
+                        configuration.GetConnectionString("DefaultConnection")
+                    )
 
+            ) ;
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
             // Dependency Injection for repository
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
             return services;
         }
 

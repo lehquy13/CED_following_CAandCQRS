@@ -13,6 +13,12 @@ public class CEDDBContext : DbContext
     {
 
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Subject>().ToTable("Subject");
+        modelBuilder.Entity<User>().ToTable("User");
+    }
 }
 
 //using to support addmigration
