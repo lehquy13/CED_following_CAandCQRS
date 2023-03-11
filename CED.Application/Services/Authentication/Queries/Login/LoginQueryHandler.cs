@@ -1,7 +1,6 @@
 ﻿using CED.Application.Common.Authentication;
 using CED.Application.Common.Persistence;
-using CED.Application.Services.Authentication.Common;
-using CED.Domain.Entities;
+using CED.Domain.Entities.User;
 using MediatR;
 
 namespace CED.Application.Services.Authentication.Queries.Login;
@@ -20,7 +19,7 @@ public class LoginQueryHandler
     {
         await Task.CompletedTask;
         //1. Check if user exist
-        if (_userRepository.GetUserByEmail(query.Email) is not User user)
+        if (await _userRepository.GetUserByEmail(query.Email) is not User user)
         {
             //return new AuthenticationResult(false, "User has already existed");
             throw new Exception("User with an email doesn't exist");

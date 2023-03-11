@@ -1,5 +1,5 @@
-﻿using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Common;
+﻿using CED.Application.Services.Authentication;
+using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.Queries.Login;
 using CED.Contracts.Authentication;
 using Mapster;

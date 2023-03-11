@@ -1,7 +1,6 @@
 ﻿using CED.Application.Common.Authentication;
 using CED.Application.Common.Persistence;
-using CED.Application.Services.Authentication.Common;
-using CED.Domain.Entities;
+using CED.Domain.Entities.User;
 using MediatR;
 
 namespace CED.Application.Services.Authentication.Commands.Register;
@@ -19,10 +18,10 @@ public class RegisterCommandHandler
     }
     public async Task<AuthenticationResult> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        await Task.CompletedTask;
 
         //Check if the user existed
-        if (_userRepository.GetUserByEmail(command.Email) is not null)
+
+        if (await _userRepository.GetUserByEmail(command.Email) is not null)
         {
             //  return new AuthenticationResult(false, "User has already existed");
             throw new Exception("User with an email has already existed");
@@ -35,7 +34,7 @@ public class RegisterCommandHandler
             Password = command.Password
         };
 
-        _userRepository.Add(user);
+        await _userRepository.Insert(user);
 
         //Create jwt token
         var token = _jwtTokenGenerator.GenerateToken(

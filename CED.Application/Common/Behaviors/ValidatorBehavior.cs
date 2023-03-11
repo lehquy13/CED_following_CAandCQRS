@@ -1,5 +1,4 @@
 ﻿using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Common;
 using FluentValidation;
 using MediatR;
 
@@ -15,8 +14,6 @@ public class ValidationBehavior<TRequest, TResponse> :
     {
         _validator = validator;
     }
-
-
 
     public async Task<TResponse> Handle(TRequest request,
                                         RequestHandlerDelegate<TResponse> next,
@@ -35,9 +32,6 @@ public class ValidationBehavior<TRequest, TResponse> :
             var errors = validationResult.Errors.ToList();
             throw new Exception(errors.FirstOrDefault()?.ErrorMessage);
         }
-
-
-
 
         return await next();
     }

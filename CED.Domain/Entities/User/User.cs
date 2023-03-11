@@ -1,4 +1,4 @@
-﻿namespace CED.Domain.Entities;
+﻿namespace CED.Domain.Entities.User;
 public class User
 {
     public Guid Id { get; set; } = Guid.NewGuid();

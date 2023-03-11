@@ -1,11 +1,8 @@
-﻿using CED.Domain.Entities;
-
+﻿using CED.Domain.Entities.User;
 namespace CED.Application.Common.Persistence;
 
-public interface IUserRepository
+public interface IUserRepository : IRepository<User>
 {
-    void Add(User user);
-    User? GetUserByEmail(string email);
-
+    Task<User?> GetUserByEmail(string email);
 }
 

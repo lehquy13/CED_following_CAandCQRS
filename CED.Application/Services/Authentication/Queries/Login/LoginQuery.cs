@@ -1,5 +1,4 @@
-﻿using CED.Application.Services.Authentication.Common;
-using MediatR;
+﻿using MediatR;
 namespace CED.Application.Services.Authentication.Queries.Login;
 
 public record LoginQuery
