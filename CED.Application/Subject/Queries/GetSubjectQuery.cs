@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CED.Application.Services.Authentication.Queries.Login;
 
-public class GetSubjectsQuery : IRequest<List<SubjectDto>>
+public class GetSubjectQuery : IRequest<SubjectDto>
 {
-   
+   public Guid id { get; set; }
 }

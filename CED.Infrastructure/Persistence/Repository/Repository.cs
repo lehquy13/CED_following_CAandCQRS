@@ -17,6 +17,8 @@ namespace CED.Infrastructure.Persistence.Repository
             try
             {
                 _context.Set<TEntity>().Remove(entity);
+                _context.SaveChanges();
+
             }
             catch (Exception ex)
             {
@@ -98,6 +100,7 @@ namespace CED.Infrastructure.Persistence.Repository
             try
             {
                 var updateEntity =  _context.Set<TEntity>().Update(entity);
+                _context.SaveChanges();
                 return entity;
             }
             catch (Exception ex)

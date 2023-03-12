@@ -1,5 +1,10 @@
 @host = http://localhost:5223
 
-Get {{host}}/Subject/GetAllSubjects
+Post {{host}}/Subject/CreateSubject
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZTZjMGMwOC1lOTE1LTRkNzctOWI0MC1lOWM2NmQzZTQwNzciLCJnaXZlbl9uYW1lIjoiTGUiLCJmYW1pbHlfbmFtZSI6IkxlIiwianRpIjoiODY1NjNkODgtYjY1My00NWY3LWFiZjEtODAzNzI4YzM4ZGEwIiwiZXhwIjoxNjc4NTU5MDc0LCJpc3MiOiJDRUQtRGV2ZWxvcGVyIiwiYXVkIjoiQ0VELURldmVsb3BlciJ9._9XgagJxbULJDGBLJfWsXThLCgLjmK3lVxiTAwBC2g8
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOGZhZjA5YS0zNTM5LTQ1N2MtYjU1Mi1hOTY1OWJhZWNjMTIiLCJnaXZlbl9uYW1lIjoiTGUiLCJmYW1pbHlfbmFtZSI6IkxlIiwianRpIjoiMjdiODhlYjItZjQ5Ni00OTUwLTgwOGItZDk5MzJjZDAxYTkxIiwiZXhwIjoxNjc4NTkyMzIyLCJpc3MiOiJDRUQtRGV2ZWxvcGVyIiwiYXVkIjoiQ0VELURldmVsb3BlciJ9.tDIbDwjWDk0Cg8YvBSyswQS90xYkby9LMEoZ64WYf0Y
+
+{
+    "name": "Math",
+    "description": "science"
+}

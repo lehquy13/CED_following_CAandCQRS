@@ -5,17 +5,17 @@ using MediatR;
 
 namespace CED.Application.Services.Authentication.Queries.Login;
 
-public class GetSubjectsQueryHandler
-    : IRequestHandler<GetSubjectsQuery, List<SubjectDto>>
+public class GetAllSubjectsQueryHandler
+    : IRequestHandler<GetAllSubjectsQuery, List<SubjectDto>>
 {
     private readonly ISubjectRepository _subjectRepository;
     private readonly IMapper _mapper;
-    public GetSubjectsQueryHandler(ISubjectRepository subjectRepository, IMapper mapper)
+    public GetAllSubjectsQueryHandler(ISubjectRepository subjectRepository, IMapper mapper)
     {
         _subjectRepository = subjectRepository;
         _mapper= mapper;
     }
-    public async Task<List<SubjectDto>> Handle(GetSubjectsQuery query, CancellationToken cancellationToken)
+    public async Task<List<SubjectDto>> Handle(GetAllSubjectsQuery query, CancellationToken cancellationToken)
     {
         try
         {

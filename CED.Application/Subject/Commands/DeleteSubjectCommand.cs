@@ -5,9 +5,9 @@ using MediatR;
 
 namespace CED.Application.Services.Authentication.Commands.Register;
 
-public class CreateUpdateSubjectCommand
+public class DeleteSubjectCommand
     : IRequest<bool>
 {
-    public SubjectDto SubjectDto { get; set; } = null!;
+    public Guid id { get; set; }
 }
 
