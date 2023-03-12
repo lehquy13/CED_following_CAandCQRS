@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CED.Contracts.Entities.Subject;
 
-public class CreateUpdateSubjectDto : IRequest<bool>
+public class CreateUpdateSubjectDto
 {
     [Required]
     [StringLength(128)]

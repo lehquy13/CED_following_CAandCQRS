@@ -6,7 +6,7 @@ using MediatR;
 namespace CED.Application.Services.Authentication.Commands.Register;
 
 public class CreateSubjectCommandHandler
-    : IRequestHandler<CreateUpdateSubjectDto, bool>
+    : IRequestHandler<CreateSubjectCommand, bool>
 {
    
     private readonly ISubjectRepository _subjectRepository;
@@ -14,20 +14,21 @@ public class CreateSubjectCommandHandler
     {      
         _subjectRepository = subjectRepository;
     }
-    public async Task<bool> Handle(CreateUpdateSubjectDto command, CancellationToken cancellationToken)
+    public async Task<bool> Handle(CreateSubjectCommand command, CancellationToken cancellationToken)
     {
 
         //Check if the subject existed
-        if (await _subjectRepository.GetSubjectByName(command.Name) is not null)
+        if (await _subjectRepository.GetSubjectByName(command.SubjectDto.Name) is not null)
         {
             //  return new AuthenticationResult(false, "User has already existed");
             throw new Exception("Subject has already existed");
+            //return false;
         }
 
         var subject = new Subject
         {
-            Name = command.Name,
-            Description= command.Description
+            Name = command.SubjectDto.Name,
+            Description= command.SubjectDto.Description
         };
 
         await _subjectRepository.Insert(subject);

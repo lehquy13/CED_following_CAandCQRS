@@ -1,10 +1,12 @@
-﻿using CED.Application.Services.Authentication.Queries.Login;
+﻿using CED.Application.Services.Authentication.Commands.Register;
+using CED.Application.Services.Authentication.Queries.Login;
 using CED.Contracts.Entities.Subject;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CED.WebAPI.Controllers;
 
@@ -23,11 +25,15 @@ public class SubjectController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("CreateSubject")]
-    public IActionResult CreateSubject(CreateUpdateSubjectDto createUpdateSubjectDto, string hostId)
+    public async Task<IActionResult> CreateSubjectAsync(CreateUpdateSubjectDto createUpdateSubjectDto)
     {
-        return Ok(Array.Empty<string>());
+        var command = _mapper.Map<CreateSubjectCommand>(createUpdateSubjectDto);
+
+        var result = await _mediator.Send(command);
+
+        return Ok(result);
     }
     [HttpGet]
     [Route("GetAllSubjects")]

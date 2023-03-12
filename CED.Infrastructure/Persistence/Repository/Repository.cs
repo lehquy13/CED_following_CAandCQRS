@@ -84,6 +84,8 @@ namespace CED.Infrastructure.Persistence.Repository
             try
             {
                 var result = await _context.Set<TEntity>().AddAsync(entity);
+
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
