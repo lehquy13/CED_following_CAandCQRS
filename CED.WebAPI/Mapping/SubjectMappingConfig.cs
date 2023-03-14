@@ -1,6 +1,6 @@
-﻿using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Queries.Login;
-using CED.Contracts.Entities.Subject;
+﻿using CED.Application.Services.Subjects.Commands;
+using CED.Application.Services.Subjects.Queries;
+using CED.Contracts.Subjects;
 using Mapster;
 
 namespace CED.WebAPI.Mapping;

@@ -1,17 +1,16 @@
 ﻿using CED.Application.Common.Persistence;
-using CED.Contracts.Entities.Subject;
-using CED.Domain.Entities.Subject;
+using CED.Domain.Entities.Subjects;
 using MediatR;
 
-namespace CED.Application.Services.Authentication.Commands.Register;
+namespace CED.Application.Services.Subjects.Commands;
 
 public class CreateSubjectCommandHandler
     : IRequestHandler<CreateUpdateSubjectCommand, bool>
 {
-   
+
     private readonly ISubjectRepository _subjectRepository;
     public CreateSubjectCommandHandler(ISubjectRepository subjectRepository)
-    {      
+    {
         _subjectRepository = subjectRepository;
     }
     public async Task<bool> Handle(CreateUpdateSubjectCommand command, CancellationToken cancellationToken)
@@ -25,7 +24,7 @@ public class CreateSubjectCommandHandler
             {
                 subject.LastModificationTime = DateTime.Now;
                 subject.Description = command.SubjectDto.Description;
-                
+
                 _subjectRepository.Update(subject);
 
                 return true;
@@ -42,13 +41,13 @@ public class CreateSubjectCommandHandler
 
             return true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw new Exception("Error happens when subject is adding or updating." + ex.Message);
         }
-        
+
     }
 
-    
+
 }
 

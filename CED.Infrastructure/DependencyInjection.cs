@@ -35,6 +35,7 @@ namespace CED.Infrastructure
             // Dependency Injection for repository
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
+            services.AddScoped<IClassInformationRepository, ClassInformationRepository>();
             return services;
         }
 

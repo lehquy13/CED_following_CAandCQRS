@@ -1,16 +1,14 @@
-﻿using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Queries.Login;
-using CED.Contracts.Entities.Subject;
+﻿using CED.Application.Services.Subjects.Commands;
+using CED.Application.Services.Subjects.Queries;
+using CED.Contracts.Subjects;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CED.WebAPI.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 [Authorize]
 public class SubjectController : ControllerBase
@@ -35,7 +33,7 @@ public class SubjectController : ControllerBase
 
         return Ok(result);
     }
-    [HttpPost]
+    [HttpPut]
     [Route("UpdateSubject")]
     public async Task<IActionResult> UpdateSubject(CreateUpdateSubjectDto createUpdateSubjectDto)
     {
@@ -58,7 +56,6 @@ public class SubjectController : ControllerBase
     }
 
     // Query
-
     [HttpGet]
     [Route("GetAllSubjects")]
 
@@ -66,13 +63,11 @@ public class SubjectController : ControllerBase
     {
         var query = new GetAllSubjectsQuery();
         List<SubjectDto> subjects = await _mediator.Send(query);
-
-
         return Ok(subjects);
     }
+
     [HttpGet]
     [Route("GetSubject/{id}")]
-
     public async Task<IActionResult> GetSubject(Guid id)
     {
         var query = _mapper.Map<GetSubjectQuery>(id);

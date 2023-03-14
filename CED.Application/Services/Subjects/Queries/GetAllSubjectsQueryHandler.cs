@@ -1,9 +1,9 @@
 ﻿using CED.Application.Common.Persistence;
-using CED.Contracts.Entities.Subject;
+using CED.Contracts.Subjects;
 using MapsterMapper;
 using MediatR;
 
-namespace CED.Application.Services.Authentication.Queries.Login;
+namespace CED.Application.Services.Subjects.Queries;
 
 public class GetAllSubjectsQueryHandler
     : IRequestHandler<GetAllSubjectsQuery, List<SubjectDto>>
@@ -13,7 +13,7 @@ public class GetAllSubjectsQueryHandler
     public GetAllSubjectsQueryHandler(ISubjectRepository subjectRepository, IMapper mapper)
     {
         _subjectRepository = subjectRepository;
-        _mapper= mapper;
+        _mapper = mapper;
     }
     public async Task<List<SubjectDto>> Handle(GetAllSubjectsQuery query, CancellationToken cancellationToken)
     {

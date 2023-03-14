@@ -1,6 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 
-namespace CED.Contracts.Entities.Subject;
+namespace CED.Contracts.Subjects;
 
 public class SubjectDto : FullAuditedEntityDto<Guid>
 {

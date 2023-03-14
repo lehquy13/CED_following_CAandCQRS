@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace CED.Contracts.Entities.Subject;
+namespace CED.Contracts.Subjects;
 
 public class CreateUpdateSubjectDto
 {

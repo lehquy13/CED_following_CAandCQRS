@@ -1,0 +1,22 @@
+@host = http://localhost:5223
+
+Post {{host}}/api/ClassInformation/CreateClassInformation
+Content-Type: application/json
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOGZhZjA5YS0zNTM5LTQ1N2MtYjU1Mi1hOTY1OWJhZWNjMTIiLCJnaXZlbl9uYW1lIjoiTGUiLCJmYW1pbHlfbmFtZSI6IkxlIiwianRpIjoiMjBmMzZiNzUtYTYyMi00NmM1LTk4OTItZjBkYWFjMWY3ZTI5IiwiZXhwIjoxNjc4NzY5ODczLCJpc3MiOiJDRUQtRGV2ZWxvcGVyIiwiYXVkIjoiQ0VELURldmVsb3BlciJ9.jeGU7IQLxUihx6-ZJbQSIDh0_V1bo3OGMIx3GnLzxik
+
+{
+    "title": "First class",
+  "description": "first class description",
+  "status": 0,
+  "learningMode": 0,
+  "fee": 0,
+  "chargeFee": 0,
+  "genderRequirement": 0,
+  "academicLevel": 0,
+  "studentGender": 0,
+  "numberOfStudent": 0,
+  "minutePerSession": 0,
+  "sessionPerWeek": 0,
+  "address": "string",
+  "subjectId": "18de68d4-1af4-41c5-2f02-08db22a2f1bb"
+}

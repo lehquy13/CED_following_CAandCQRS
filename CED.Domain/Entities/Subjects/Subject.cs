@@ -1,6 +1,6 @@
 ﻿using Abp.Domain.Entities.Auditing;
 
-namespace CED.Domain.Entities.Subject;
+namespace CED.Domain.Entities.Subjects;
 
 public class Subject : FullAuditedAggregateRoot<Guid>
 {

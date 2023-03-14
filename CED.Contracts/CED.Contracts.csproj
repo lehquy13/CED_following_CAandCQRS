@@ -11,4 +11,12 @@
     <PackageReference Include="MediatR" Version="12.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CED.Domain.Shared\CED.Domain.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClassInformations\Interfaces\" />
+  </ItemGroup>
+
 </Project>

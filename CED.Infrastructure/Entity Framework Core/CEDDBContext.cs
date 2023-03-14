@@ -1,4 +1,5 @@
-﻿using CED.Domain.Entities.Subject;
+﻿using CED.Domain.Entities.ClassInformations;
+using CED.Domain.Entities.Subjects;
 using CED.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -8,6 +9,7 @@ namespace CED.Infrastructure.Persistence;
 public class CEDDBContext : DbContext
 {
     public DbSet<Subject> _subjects { get; set; } = null!;
+    public DbSet<ClassInformation> _classInformation { get; set; } = null!;
     public DbSet<User> _users { get; set; } = null!;
     public CEDDBContext(DbContextOptions<CEDDBContext> options) : base(options)
     {
@@ -18,6 +20,7 @@ public class CEDDBContext : DbContext
     {
         modelBuilder.Entity<Subject>().ToTable("Subject");
         modelBuilder.Entity<User>().ToTable("User");
+        modelBuilder.Entity<ClassInformation>().ToTable("ClassInformation");
     }
 }
 

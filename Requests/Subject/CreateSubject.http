@@ -1,0 +1,10 @@
+@host = http://localhost:5223
+
+Post {{host}}/api/Subject/CreateSubject
+Content-Type: application/json
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOGZhZjA5YS0zNTM5LTQ1N2MtYjU1Mi1hOTY1OWJhZWNjMTIiLCJnaXZlbl9uYW1lIjoiTGUiLCJmYW1pbHlfbmFtZSI6IkxlIiwianRpIjoiN2JkNDNlZmItZjJmZS00ZDIxLWE3N2UtZjJkMjkxYTE5OTAwIiwiZXhwIjoxNjc4NzY5MjI0LCJpc3MiOiJDRUQtRGV2ZWxvcGVyIiwiYXVkIjoiQ0VELURldmVsb3BlciJ9.MohRQUFmXgq3ApIpNLOhLZhk5okvRmBaKBzitw-t3YE
+
+{
+    "name": "Physics",
+    "description": "science"
+}

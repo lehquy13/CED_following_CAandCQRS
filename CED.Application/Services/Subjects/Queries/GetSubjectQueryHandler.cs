@@ -1,10 +1,10 @@
 ﻿using CED.Application.Common.Persistence;
-using CED.Contracts.Entities.Subject;
-using CED.Domain.Entities.Subject;
+using CED.Contracts.Subjects;
+using CED.Domain.Entities.Subjects;
 using MapsterMapper;
 using MediatR;
 
-namespace CED.Application.Services.Authentication.Queries.Login;
+namespace CED.Application.Services.Subjects.Queries;
 
 public class GetSubjectQueryHandler
     : IRequestHandler<GetSubjectQuery, SubjectDto>
