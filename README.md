@@ -28,6 +28,11 @@ known as the Clean Architecture, or sometimes the Onion
 Architecture:
 ![image](https://user-images.githubusercontent.com/91002362/225193758-1be5bd9f-b955-4b81-bc53-93e77018c23b.png)
 
+The diagram below shows the essential dependencies (project references) between the projects in the solution
+
+![image](https://user-images.githubusercontent.com/91002362/225205924-8fd2341f-2dc1-4b71-9509-35c46b9ed6ea.png)
+
+
 # References:
 - Implementing Domain Driven Design - Halil İbrahim Kalkan
 - ASP.NET 6 REST API Following CLEAN ARCHITECTURE & DDD - Amichai Mantinband
