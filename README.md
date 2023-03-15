@@ -30,3 +30,4 @@ Architecture:
 
 # References:
 - Implementing Domain Driven Design - Halil İbrahim Kalkan
+- ASP.NET 6 REST API Following CLEAN ARCHITECTURE & DDD - Amichai Mantinband
