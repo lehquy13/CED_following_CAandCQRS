@@ -5,7 +5,7 @@ using MediatR;
 namespace CED.Application.Services.ClassInformations.Commands;
 
 public class CreateClassInformationCommandHandler
-    : IRequestHandler<CreateClassInformationCommand, bool>
+    : IRequestHandler<CreateUpdateClassInformationCommand, bool>
 {
 
     private readonly IClassInformationRepository _classInformationRepository;
@@ -15,7 +15,7 @@ public class CreateClassInformationCommandHandler
         _classInformationRepository = classInformationRepository;
         _mapper = mapper;
     }
-    public async Task<bool> Handle(CreateClassInformationCommand command, CancellationToken cancellationToken)
+    public async Task<bool> Handle(CreateUpdateClassInformationCommand command, CancellationToken cancellationToken)
     {
 
         try

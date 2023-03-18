@@ -1,7 +1,9 @@
 using CED.Application;
+using CED.Application.Common.Logger;
 using CED.Infrastructure;
 using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Persistence;
+using CED.Infrastructure.Services.Logging;
 using CED.WebAPI;
 using CED.WebAPI.Filters;
 
@@ -22,6 +24,8 @@ var builder = WebApplication.CreateBuilder(args);
          .AddEndpointsApiExplorer();
     builder.Services
         .AddSwaggerGen();
+    builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
 
 }
 

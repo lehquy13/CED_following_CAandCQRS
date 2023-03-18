@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CED.Infrastructure", "CED.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CED.WebAPI", "CED.WebAPI\CED.WebAPI.csproj", "{3F33FBC9-0FED-486B-8A56-153B59AFDCED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CED.Domain.Shared", "CED.Domain.Shared\CED.Domain.Shared.csproj", "{5438E04F-BE99-49ED-A63C-8512D40FACC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CED.Domain.Shared", "CED.Domain.Shared\CED.Domain.Shared.csproj", "{5438E04F-BE99-49ED-A63C-8512D40FACC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CED.Test", "CED.Test", "{B40CDC16-C662-4BF9-8599-4CE4DB5937CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{F8D3D8B8-453B-4681-AE5C-141541BC85B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +49,16 @@ Global
 		{5438E04F-BE99-49ED-A63C-8512D40FACC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5438E04F-BE99-49ED-A63C-8512D40FACC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5438E04F-BE99-49ED-A63C-8512D40FACC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8D3D8B8-453B-4681-AE5C-141541BC85B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8D3D8B8-453B-4681-AE5C-141541BC85B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8D3D8B8-453B-4681-AE5C-141541BC85B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8D3D8B8-453B-4681-AE5C-141541BC85B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8D3D8B8-453B-4681-AE5C-141541BC85B8} = {B40CDC16-C662-4BF9-8599-4CE4DB5937CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA6A71EF-54C8-4F56-9738-7C9A6D5D277C}

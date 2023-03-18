@@ -53,7 +53,7 @@ namespace CED.WebAPI.Controllers
         [Route("CreateClassInformation")]
         public async Task<IActionResult> CreateClassInformation(CreateUpdateClassInformationDto createUpdateClassInformationDto)
         {
-            var command = _mapper.Map<CreateClassInformationCommand>(createUpdateClassInformationDto);
+            var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
 
             var result = await _mediator.Send(command);
 
@@ -65,7 +65,7 @@ namespace CED.WebAPI.Controllers
         [Route("UpdateClassInformation")]
         public async Task<IActionResult> UpdateClassInformation(CreateUpdateClassInformationDto createUpdateClassInformationDto)
         {
-            var command = _mapper.Map<CreateClassInformationCommand>(createUpdateClassInformationDto);
+            var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
 
             var result = await _mediator.Send(command);
 

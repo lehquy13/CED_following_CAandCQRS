@@ -5,17 +5,17 @@ using MediatR;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetAllClassInformationQueryHandler
-    : IRequestHandler<GetAllClassInformationQuery, List<ClassInformationDto>>
+public class GetAllClassInformationsQueryHandler
+    : IRequestHandler<GetAllClassInformationsQuery, List<ClassInformationDto>>
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly IMapper _mapper;
-    public GetAllClassInformationQueryHandler(IClassInformationRepository classInformationRepository, IMapper mapper)
+    public GetAllClassInformationsQueryHandler(IClassInformationRepository classInformationRepository, IMapper mapper)
     {
         _classInformationRepository = classInformationRepository;
         _mapper = mapper;
     }
-    public async Task<List<ClassInformationDto>> Handle(GetAllClassInformationQuery query, CancellationToken cancellationToken)
+    public async Task<List<ClassInformationDto>> Handle(GetAllClassInformationsQuery query, CancellationToken cancellationToken)
     {
         try
         {
