@@ -1,13 +1,14 @@
 ﻿using Abp.Domain.Entities.Auditing;
 
-namespace CED.Domain.Entities.Subjects;
+namespace CED.Domain.Subjects;
 
 public class Subject : FullAuditedAggregateRoot<Guid>
 {
     public string Name { get; set; }
     public string Description { get; set; }
 
-    public Subject() {
+    public Subject()
+    {
         Name = string.Empty;
         Description = string.Empty;
     }

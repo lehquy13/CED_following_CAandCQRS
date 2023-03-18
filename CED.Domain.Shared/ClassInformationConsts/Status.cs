@@ -1,4 +1,4 @@
-﻿namespace CED.Domain.Shared.Enums;
+﻿namespace CED.Domain.Shared.ClassInformationConsts;
 public enum Status
 {
     Waiting,

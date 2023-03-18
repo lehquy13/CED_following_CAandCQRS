@@ -1,5 +1,4 @@
-﻿using CED.Application.Common.Persistence;
-using CED.Domain.Entities.ClassInformations;
+﻿using CED.Domain.ClassInformations;
 using MapsterMapper;
 using MediatR;
 

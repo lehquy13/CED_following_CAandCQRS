@@ -1,5 +1,4 @@
-﻿using CED.Application.Common.Persistence;
-using CED.Domain.Entities.Subjects;
+﻿using CED.Domain.Subjects;
 using MediatR;
 
 namespace CED.Application.Services.Subjects.Commands;

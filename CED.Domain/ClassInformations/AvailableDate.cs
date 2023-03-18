@@ -1,6 +1,6 @@
 ﻿using Abp.Domain.Entities.Auditing;
 using System;
-namespace CED.Domain.Entities.ClassInformations;
+namespace CED.Domain.ClassInformations;
 
 public class AvailableDate : AuditedAggregateRoot<Guid>
 {

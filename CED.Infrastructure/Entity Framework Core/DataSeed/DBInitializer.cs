@@ -1,4 +1,4 @@
-﻿using CED.Domain.Entities.Subjects;
+﻿using CED.Domain.Subjects;
 using CED.Infrastructure.Persistence;
 
 namespace CED.Infrastructure.Entity_Framework_Core;

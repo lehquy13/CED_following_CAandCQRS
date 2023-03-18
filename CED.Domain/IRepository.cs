@@ -1,4 +1,4 @@
-﻿namespace CED.Application.Common.Persistence
+﻿namespace CED.Domain
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : class
     {

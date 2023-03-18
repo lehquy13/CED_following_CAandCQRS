@@ -1,5 +1,5 @@
 ﻿using CED.Contracts.ClassInformations;
-using CED.Domain.Entities.ClassInformations;
+using CED.Domain.ClassInformations;
 using Mapster;
 
 namespace CED.Application.Mapping;

@@ -1,5 +1,4 @@
-﻿using Abp.Extensions;
-using CED.Application.Common.Persistence;
+﻿using CED.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository

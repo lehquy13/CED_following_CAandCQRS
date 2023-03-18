@@ -1,5 +1,4 @@
-﻿using CED.Application.Common.Persistence;
-using CED.Domain.Entities.User;
+﻿using CED.Domain.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository;

@@ -1,6 +1,5 @@
-﻿using CED.Application.Common.Persistence;
-using CED.Contracts.Subjects;
-using CED.Domain.Entities.Subjects;
+﻿using CED.Contracts.Subjects;
+using CED.Domain.Subjects;
 using MapsterMapper;
 using MediatR;
 

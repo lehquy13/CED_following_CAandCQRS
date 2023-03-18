@@ -1,5 +1,5 @@
 ﻿using CED.Contracts.Subjects;
-using CED.Domain.Entities.Subjects;
+using CED.Domain.Subjects;
 using Mapster;
 
 namespace CED.Application.Mapping;

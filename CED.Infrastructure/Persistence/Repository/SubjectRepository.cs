@@ -1,5 +1,4 @@
-﻿using CED.Application.Common.Persistence;
-using CED.Domain.Entities.Subjects;
+﻿using CED.Domain.Subjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository;

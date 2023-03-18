@@ -1,5 +1,4 @@
-﻿using CED.Domain.Entities.User;
-namespace CED.Application.Common.Persistence;
+﻿namespace CED.Domain.User;
 
 public interface IUserRepository : IRepository<User>
 {

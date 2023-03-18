@@ -1,5 +1,4 @@
-﻿using CED.Application.Services.Authentication.Commands.Register;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 
 namespace CED.Application.Common.Behaviors;

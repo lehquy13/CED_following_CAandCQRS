@@ -1,7 +1,7 @@
 ﻿using Abp.Domain.Entities.Auditing;
-using CED.Domain.Shared.Enums;
+using CED.Domain.Shared.ClassInformationConsts;
 
-namespace CED.Domain.Entities.ClassInformations;
+namespace CED.Domain.ClassInformations;
 
 public class ClassInformation : FullAuditedAggregateRoot<Guid>
 {

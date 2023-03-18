@@ -1,6 +1,4 @@
-﻿using CED.Domain.Entities.Subjects;
-
-namespace CED.Application.Common.Persistence;
+﻿namespace CED.Domain.Subjects;
 
 public interface ISubjectRepository : IRepository<Subject>
 {

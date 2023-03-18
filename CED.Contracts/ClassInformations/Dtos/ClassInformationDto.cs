@@ -1,6 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
-using CED.Domain.Shared.Enums;
-
+using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations;
 

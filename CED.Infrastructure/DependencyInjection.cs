@@ -1,16 +1,22 @@
 ﻿using CED.Application.Common.Authentication;
-using CED.Application.Common.Persistence;
 using CED.Application.Common.Services;
+
+using CED.Domain.ClassInformations;
+using CED.Domain.Subjects;
+using CED.Domain.User;
+
 using CED.Infrastructure.Authentication;
 using CED.Infrastructure.Persistence;
 using CED.Infrastructure.Persistence.Repository;
 using CED.Infrastructure.Services;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
 using System.Text;
 
 namespace CED.Infrastructure
