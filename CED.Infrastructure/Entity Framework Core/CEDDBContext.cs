@@ -1,6 +1,6 @@
 ﻿using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
-using CED.Domain.User;
+using CED.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

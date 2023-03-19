@@ -10,6 +10,8 @@ public class SubjectMappingConfig : IRegister
     {
 
         config.NewConfig<Subject, SubjectDto>();
+        config.NewConfig<SubjectDto, Subject>();
+
 
     }
 }

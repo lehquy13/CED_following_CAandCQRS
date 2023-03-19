@@ -1,23 +1,20 @@
-﻿using CED.Contracts.Subjects;
+﻿using CED.Application.Common.Services.QueryHandlers;
+using CED.Contracts.Subjects;
 using CED.Domain.Subjects;
 using MapsterMapper;
-using MediatR;
 
 namespace CED.Application.Services.Subjects.Queries;
 
-public class GetSubjectQueryHandler
-    : IRequestHandler<GetSubjectQuery, SubjectDto>
+public class GetSubjectQueryHandler : GetByIdQueryHandler<GetSubjectQuery, SubjectDto>
 {
     private readonly ISubjectRepository _subjectRepository;
-    private readonly IMapper _mapper;
-    public GetSubjectQueryHandler(ISubjectRepository subjectRepository, IMapper mapper)
+    public GetSubjectQueryHandler(ISubjectRepository subjectRepository, IMapper mapper) : base(mapper)
     {
         _subjectRepository = subjectRepository;
-        _mapper = mapper;
     }
-    public async Task<SubjectDto> Handle(GetSubjectQuery query, CancellationToken cancellationToken)
-    {
 
+    public override async Task<SubjectDto> Handle(GetSubjectQuery query, CancellationToken cancellationToken)
+    {
         Subject? subject = await _subjectRepository.GetById(query.id);
         if (subject == null)
         {
@@ -25,8 +22,6 @@ public class GetSubjectQueryHandler
 
         }
         return _mapper.Map<SubjectDto>(subject);
-
-
     }
 }
 

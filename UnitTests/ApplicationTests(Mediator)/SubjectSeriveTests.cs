@@ -45,6 +45,9 @@ namespace UnitTests.ApplicationTests
               .Setup(x => x.GetById(_sampleId))
               .ReturnsAsync(subject);
             _mockMapper
+                .Setup(x => x.Map<Subject>(subjectDto))
+                .Returns(new Subject { Id = subjectDto.Id, Description = subjectDto.Description, Name = subjectDto.Name });
+             _mockMapper
                 .Setup(x => x.Map<SubjectDto>(subject))
                 .Returns(new SubjectDto { Id = subject.Id, Description = subject.Description, Name = subject.Name });
 
@@ -88,7 +91,7 @@ namespace UnitTests.ApplicationTests
         public async Task CreateSubject()
         {
             var command = new CreateUpdateSubjectCommand { SubjectDto = subjectDto };
-            var handler = new CreateSubjectCommandHandler(_mockSubjectRepo.Object);
+            var handler = new CreateSubjectCommandHandler(_mockSubjectRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(command, CancellationToken.None);
 
             Assert.True(result);

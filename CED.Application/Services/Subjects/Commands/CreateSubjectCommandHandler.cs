@@ -1,20 +1,21 @@
-﻿using CED.Domain.Subjects;
-using MediatR;
+﻿using CED.Application.Common.Services.CommandHandlers;
+using CED.Domain.Subjects;
+using MapsterMapper;
 
 namespace CED.Application.Services.Subjects.Commands;
 
-public class CreateSubjectCommandHandler
-    : IRequestHandler<CreateUpdateSubjectCommand, bool>
+public class CreateSubjectCommandHandler : CreateCommandHandler<CreateUpdateSubjectCommand>
 {
 
     private readonly ISubjectRepository _subjectRepository;
-    public CreateSubjectCommandHandler(ISubjectRepository subjectRepository)
+
+    public CreateSubjectCommandHandler(ISubjectRepository subjectRepository, IMapper mapper) : base(mapper)
     {
         _subjectRepository = subjectRepository;
     }
-    public async Task<bool> Handle(CreateUpdateSubjectCommand command, CancellationToken cancellationToken)
-    {
 
+    public override async Task<bool> Handle(CreateUpdateSubjectCommand command, CancellationToken cancellationToken)
+    {
         try
         {
             var subject = await _subjectRepository.GetSubjectByName(command.SubjectDto.Name);
@@ -29,14 +30,9 @@ public class CreateSubjectCommandHandler
                 return true;
             }
 
-            subject = new Subject
-            {
-                Name = command.SubjectDto.Name,
-                Description = command.SubjectDto.Description
-            };
+            subject = _mapper.Map<Subject>(command.SubjectDto);
 
             await _subjectRepository.Insert(subject);
-
 
             return true;
         }
@@ -44,9 +40,6 @@ public class CreateSubjectCommandHandler
         {
             throw new Exception("Error happens when subject is adding or updating." + ex.Message);
         }
-
     }
-
-
 }
 

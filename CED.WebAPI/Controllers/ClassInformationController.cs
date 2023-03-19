@@ -29,7 +29,7 @@ namespace CED.WebAPI.Controllers
 
         public async Task<IActionResult> GetAllClassInformations()
         {
-            var query = new GetAllClassInformationQuery();
+            var query = new GetAllClassInformationsQuery();
             List<ClassInformationDto> classInformation = await _mediator.Send(query);
 
 

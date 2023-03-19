@@ -1,0 +1,36 @@
+﻿using CED.Domain.Shared.ClassInformationConsts;
+
+namespace CED.Domain.Users;
+public class User
+{
+    //User information
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public Gender Gender { get; set; } = Gender.Male;
+    public int BirthYear { get; set; } = 1960;
+    public string Address { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+
+    //Account References
+    public string Email { get; set; } = string.Empty;
+    public bool IsEmailConfirmed { get; set; } = false;
+
+    public string PhoneNumber { get; set; } = string.Empty;
+    public string Password { get; set; } = "1q2w3E*";
+
+    //is tutor related informtions
+    public UserRole Role { get; set; } = UserRole.Student;
+    public AcademicLevel AcademicLevel { get; set; }
+    public string University { get; set;} = string.Empty;
+    public bool isVerified { get; set; } = false;
+
+    public void TutorRegistration(User tutorDto)
+    {
+        Role = tutorDto.Role;
+        AcademicLevel = tutorDto.AcademicLevel;
+        University = tutorDto.University;
+    }
+
+}
+

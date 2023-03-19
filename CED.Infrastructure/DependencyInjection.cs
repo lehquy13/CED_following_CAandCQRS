@@ -3,7 +3,7 @@ using CED.Application.Common.Services;
 
 using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
-using CED.Domain.User;
+using CED.Domain.Users;
 
 using CED.Infrastructure.Authentication;
 using CED.Infrastructure.Persistence;

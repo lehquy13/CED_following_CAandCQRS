@@ -1,4 +1,4 @@
-using CED.Domain.User;
+using CED.Domain.Users;
 
 namespace CED.Application.Services.Authentication;
 

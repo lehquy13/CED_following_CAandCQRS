@@ -1,23 +1,21 @@
-﻿using CED.Contracts.ClassInformations;
+﻿using CED.Application.Common.Services.QueryHandlers;
+using CED.Contracts.ClassInformations;
 using CED.Domain.ClassInformations;
 using MapsterMapper;
-using MediatR;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetClassInformationQueryHandler
-    : IRequestHandler<GetClassInformationQuery, ClassInformationDto>
+public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetClassInformationQuery, ClassInformationDto>
 {
     private readonly IClassInformationRepository _classInformationRepository;
-    private readonly IMapper _mapper;
-    public GetClassInformationQueryHandler(IClassInformationRepository classInformationRepository, IMapper mapper)
+
+    public GetClassInformationQueryHandler(IClassInformationRepository classInformationRepository, IMapper mapper) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;
-        _mapper = mapper;
     }
-    public async Task<ClassInformationDto> Handle(GetClassInformationQuery query, CancellationToken cancellationToken)
-    {
 
+    public override async Task<ClassInformationDto> Handle(GetClassInformationQuery query, CancellationToken cancellationToken)
+    {
         var classInformation = await _classInformationRepository.GetById(query.id);
         if (classInformation == null)
         {
@@ -25,8 +23,6 @@ public class GetClassInformationQueryHandler
 
         }
         return _mapper.Map<ClassInformationDto>(classInformation);
-
-
     }
 }
 

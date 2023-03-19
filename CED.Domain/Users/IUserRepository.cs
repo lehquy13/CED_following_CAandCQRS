@@ -1,4 +1,4 @@
-﻿namespace CED.Domain.User;
+﻿namespace CED.Domain.Users;
 
 public interface IUserRepository : IRepository<User>
 {

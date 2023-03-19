@@ -1,5 +1,5 @@
 ﻿using CED.Application.Common.Authentication;
-using CED.Domain.User;
+using CED.Domain.Users;
 using MediatR;
 
 namespace CED.Application.Services.Authentication.Queries.Login;
