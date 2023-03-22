@@ -7,7 +7,7 @@ using Moq;
 
 namespace UnitTests.ApplicationTests
 {
-    public class SubjectSeriveTests
+    public class SubjectServicesTest
     {
         private readonly Mock<ISubjectRepository> _mockSubjectRepo = new();
         private readonly Mock<IMapper> _mockMapper = new();

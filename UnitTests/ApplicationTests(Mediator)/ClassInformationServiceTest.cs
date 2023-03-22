@@ -7,7 +7,7 @@ using Moq;
 
 namespace UnitTests.ApplicationTests
 {
-    public class ClassInformationSeriveTests
+    public class ClassInformationServiceTest
     {
         private readonly Mock<IClassInformationRepository> _mockClassInformationRepo = new();
         private readonly Mock<IMapper> _mockMapper = new();
