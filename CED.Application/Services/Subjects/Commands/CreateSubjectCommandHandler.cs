@@ -4,7 +4,7 @@ using MapsterMapper;
 
 namespace CED.Application.Services.Subjects.Commands;
 
-public class CreateSubjectCommandHandler : CreateCommandHandler<CreateUpdateSubjectCommand>
+public class CreateSubjectCommandHandler : CreateUpdateCommandHandler<CreateUpdateSubjectCommand>
 {
 
     private readonly ISubjectRepository _subjectRepository;

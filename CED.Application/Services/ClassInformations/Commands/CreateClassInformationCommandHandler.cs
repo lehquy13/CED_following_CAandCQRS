@@ -5,7 +5,7 @@ using MapsterMapper;
 namespace CED.Application.Services.ClassInformations.Commands;
 
 public class CreateClassInformationCommandHandler 
-    : CreateCommandHandler<CreateUpdateClassInformationCommand>
+    : CreateUpdateCommandHandler<CreateUpdateClassInformationCommand>
 {
     private readonly IClassInformationRepository _classInformationRepository;
 

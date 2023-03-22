@@ -3,13 +3,13 @@ using MediatR;
 
 namespace CED.Application.Common.Services.CommandHandlers;
 
-public abstract class CreateCommandHandler<TCommand>
+public abstract class CreateUpdateCommandHandler<TCommand>
     : IRequestHandler<TCommand, bool>
     where TCommand : IRequest<bool>
 {
     protected readonly IMapper _mapper;
 
-    public CreateCommandHandler(IMapper mapper)
+    public CreateUpdateCommandHandler(IMapper mapper)
     {
         _mapper = mapper;
     }

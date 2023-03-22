@@ -13,6 +13,10 @@ public class UserMappingConfig : IRegister
             
         config.NewConfig<TutorDto, User>();
 
+        config.NewConfig<User, TutorDto>();
+        config.NewConfig<User, UserDto>();
+        config.NewConfig<User, StudentDto>();
+
     }
 }
 
