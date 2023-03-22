@@ -1,10 +1,10 @@
-﻿using CED.Domain.Shared.ClassInformationConsts;
+﻿using Abp.Application.Services.Dto;
+using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
-public class StudentDto
+public class StudentDto : FullAuditedEntityDto<Guid>
 {
     //Admin information
-    public Guid Id { get; set; } = Guid.NewGuid();
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public Gender Gender { get; set; } = Gender.Male;

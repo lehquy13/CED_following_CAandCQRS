@@ -1,10 +1,10 @@
-﻿using CED.Domain.Shared.ClassInformationConsts;
+﻿using Abp.Domain.Entities.Auditing;
+using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Domain.Users;
-public class User
+public class User : FullAuditedAggregateRoot<Guid>
 {
     //User information
-    public Guid Id { get; set; } = Guid.NewGuid();
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public Gender Gender { get; set; } = Gender.Male;
@@ -25,12 +25,56 @@ public class User
     public string University { get; set;} = string.Empty;
     public bool isVerified { get; set; } = false;
 
-    public void TutorRegistration(User tutorDto)
+    /// <summary>
+    /// Update current user to be tutor
+    /// </summary>
+    /// <param name="tutor"></param>
+
+    public void RegisterToBeTutor(User tutor)
     {
-        Role = tutorDto.Role;
-        AcademicLevel = tutorDto.AcademicLevel;
-        University = tutorDto.University;
+        Role = tutor.Role;
+        AcademicLevel = tutor.AcademicLevel;
+        University = tutor.University;
     }
 
+    /// <summary>
+    /// Update tutor's information and change the state into being verified
+    /// </summary>
+    /// <param name="tutor"></param>
+
+    public void UpdateTutorInformation(User tutor)
+    {
+        FirstName = tutor.FirstName;
+        LastName = tutor.LastName;
+        Gender = tutor.Gender;
+        BirthYear = tutor.BirthYear;
+        Address = tutor.Address;
+        Description = tutor.Description;
+
+        PhoneNumber = tutor.PhoneNumber;
+
+        AcademicLevel = tutor.AcademicLevel;
+        University = tutor.University;
+
+        //wait for being verified
+        isVerified = false;
+
+    }
+
+    /// <summary>
+    /// Update standard user's information
+    /// </summary>
+    /// <param name="user"></param>
+    public void UpdateUserInformation(User user)
+    {
+        FirstName = user.FirstName;
+        LastName = user.LastName;
+        Gender = user.Gender;
+        BirthYear = user.BirthYear;
+        Address = user.Address;
+        Description = user.Description;
+
+        PhoneNumber = user.PhoneNumber;
+    }
 }
 
