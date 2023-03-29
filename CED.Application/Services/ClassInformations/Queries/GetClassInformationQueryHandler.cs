@@ -14,7 +14,7 @@ public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetClassInfor
         _classInformationRepository = classInformationRepository;
     }
 
-    public override async Task<ClassInformationDto> Handle(GetClassInformationQuery query, CancellationToken cancellationToken)
+    public override async Task<ClassInformationDto?> Handle(GetClassInformationQuery query, CancellationToken cancellationToken)
     {
         var classInformation = await _classInformationRepository.GetById(query.id);
         if (classInformation == null)

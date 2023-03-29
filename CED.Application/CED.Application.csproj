@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Persistence\" />
+    <Folder Include="Services\UsersInformations\Student\Queries\" />
   </ItemGroup>
 
   <PropertyGroup>

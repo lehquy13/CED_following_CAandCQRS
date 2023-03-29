@@ -3,7 +3,7 @@ using CED.Domain.Users;
 using Mapster;
 using MapsterMapper;
 
-namespace CED.Application.Services.UsersInformations.Queries;
+namespace CED.Application.Services.UsersInformations.Queries.Handlers;
 
 public class GetUserByIdQueryHandler<TDto> : GetByIdQueryHandler<GetUserByIdQuery<TDto>, TDto?> where TDto : class
 {
@@ -17,7 +17,7 @@ public class GetUserByIdQueryHandler<TDto> : GetByIdQueryHandler<GetUserByIdQuer
         try
         {
             User? user = await _userRepository.GetById(query.Id);
-            if(user is null) { return null; }
+            if (user is null) { return null; }
             TDto? result = _mapper.Map<TDto>(user);
             return await Task.FromResult(result);
         }
