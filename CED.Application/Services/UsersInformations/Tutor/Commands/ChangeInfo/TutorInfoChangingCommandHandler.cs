@@ -3,7 +3,7 @@ using CED.Domain.Shared.ClassInformationConsts;
 using MapsterMapper;
 using CED.Application.Common.Services.CommandHandlers;
 
-namespace CED.Application.Services.UsersInformations.Tutors.Commands.ChangeInfo;
+namespace CED.Application.Services.UsersInformations.Tutor.Commands.ChangeInfo;
 
 public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorInfoChangingCommand>
 {

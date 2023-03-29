@@ -1,5 +1,4 @@
-﻿using Abp.Application.Services.Dto;
-using CED.Domain.Shared.ClassInformationConsts;
+﻿using CED.Domain.Shared.ClassInformationConsts;
 using System.ComponentModel.DataAnnotations;
 
 namespace CED.Contracts.ClassInformations;
@@ -52,6 +51,9 @@ public class CreateUpdateClassInformationDto
 
     //Subject related information
     [Required]
+
     public Guid SubjectId { get; set; }
+
+    public Guid? StudentId { get; set; }
 }
 

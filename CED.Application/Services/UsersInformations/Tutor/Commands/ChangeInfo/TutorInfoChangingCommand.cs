@@ -1,7 +1,7 @@
 ﻿using CED.Contracts.Users;
 using MediatR;
 
-namespace CED.Application.Services.UsersInformations.Tutors.Commands.ChangeInfo;
+namespace CED.Application.Services.UsersInformations.Tutor.Commands.ChangeInfo;
 
 public record TutorInfoChangingCommand
 (

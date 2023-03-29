@@ -34,5 +34,10 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
     //Subject related information
     public Guid SubjectId { get; set; }
     public string SubjectName { get; set; } = string.Empty;
+
+    //Confirmed data related
+
+    public Guid? TutorId { get; set; }
+    public Guid? StudentId { get; set; }
 }
 

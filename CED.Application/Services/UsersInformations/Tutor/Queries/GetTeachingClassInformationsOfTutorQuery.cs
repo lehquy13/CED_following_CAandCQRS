@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetAllClassInformationsQuery : IRequest<List<ClassInformationDto>>
+public class GetTeachingClassInformationsOfTutorQuery : IRequest<List<ClassInformationDto>>
 {
-    public Guid Guid { get; set; }   
+    Guid Guid { get; set; }
 }

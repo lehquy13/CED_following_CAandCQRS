@@ -31,4 +31,7 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
     //Subject related information
     public Guid SubjectId { get; set; }
 
+    public Guid? TutorId { get; set; }
+    public Guid? StudentId { get; set; }
+
 }
