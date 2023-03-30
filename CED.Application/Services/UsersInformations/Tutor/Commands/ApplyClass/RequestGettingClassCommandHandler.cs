@@ -37,6 +37,8 @@ public class ApplyClassCommandHandler : CreateUpdateCommandHandler<TutorInfoChan
         //im doing here
         //user.UpdateTutorInformation(_mapper.Map<User>(command));
 
+        classInfor.TutorId = command.TutorGuid;
+
         var afterUpdatedUser = _userRepository.Update(user);
 
         if (afterUpdatedUser is null) { return false; }
