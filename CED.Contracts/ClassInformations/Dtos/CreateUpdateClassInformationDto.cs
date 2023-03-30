@@ -55,5 +55,7 @@ public class CreateUpdateClassInformationDto
     public Guid SubjectId { get; set; }
 
     public Guid? StudentId { get; set; }
+
+    public Guid? TutorId { get; set; }
 }
 

@@ -1,9 +1,8 @@
-﻿using CED.Contracts.Users;
-using MediatR;
+﻿using MediatR;
 
 namespace CED.Application.Services.UsersInformations.Tutor.Commands.ApplyClass;
 
-public record TutorInfoChangingCommand
+public record RequestGettingClassCommand
 (
     Guid TutorGuid,
     Guid ClassGuid

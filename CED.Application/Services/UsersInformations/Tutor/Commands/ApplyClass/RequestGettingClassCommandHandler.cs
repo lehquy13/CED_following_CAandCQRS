@@ -6,16 +6,16 @@ using CED.Domain.ClassInformations;
 
 namespace CED.Application.Services.UsersInformations.Tutor.Commands.ApplyClass;
 
-public class ApplyClassCommandHandler : CreateUpdateCommandHandler<TutorInfoChangingCommand>
+public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<RequestGettingClassCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly IClassInformationRepository _classInformationRepository;
-    public ApplyClassCommandHandler(IUserRepository userRepository, IClassInformationRepository classInformationRepository, IMapper mapper) : base(mapper)
+    public RequestGettingClassCommandHandler(IUserRepository userRepository, IClassInformationRepository classInformationRepository, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
         _classInformationRepository = classInformationRepository;
     }
-    public override async Task<bool> Handle(TutorInfoChangingCommand command, CancellationToken cancellationToken)
+    public override async Task<bool> Handle(RequestGettingClassCommand command, CancellationToken cancellationToken)
     {
         //Check if the user existed
         var user = await _userRepository.GetById(command.TutorGuid);
@@ -39,7 +39,7 @@ public class ApplyClassCommandHandler : CreateUpdateCommandHandler<TutorInfoChan
 
         classInfor.TutorId = command.TutorGuid;
 
-        var afterUpdatedUser = _userRepository.Update(user);
+        var afterUpdatedUser = _classInformationRepository.Update(classInfor);
 
         if (afterUpdatedUser is null) { return false; }
 
