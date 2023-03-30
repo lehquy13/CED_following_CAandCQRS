@@ -19,7 +19,8 @@ public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetClassInfor
         var classInformation = await _classInformationRepository.GetById(query.id);
         if (classInformation == null)
         {
-            throw new Exception("the class doesn't exist.");
+            return null;
+            //throw new Exception("the class doesn't exist.");
 
         }
         return _mapper.Map<ClassInformationDto>(classInformation);

@@ -18,6 +18,7 @@ public class GetSubjectQueryHandler : GetByIdQueryHandler<GetSubjectQuery, Subje
         Subject? subject = await _subjectRepository.GetById(query.id);
         if (subject == null)
         {
+            return null;
             throw new Exception("the subject doesn't exist.");
 
         }
