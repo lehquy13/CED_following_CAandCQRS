@@ -1,5 +1,6 @@
 ﻿using CED.Application.Common.Services.CommandHandlers;
 using CED.Domain.ClassInformations;
+using Mapster;
 using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Commands;
@@ -32,7 +33,7 @@ public class CreateClassInformationCommandHandler
             }
 
             classInformation = _mapper.Map<ClassInformation>(command.ClassInformationDto);
-
+            //classInformation = _mapper.From(command.ClassInformationDto).Adapt<ClassInformation>();
             await _classInformationRepository.Insert(classInformation);
 
             return true;
