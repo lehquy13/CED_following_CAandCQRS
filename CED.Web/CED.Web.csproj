@@ -8,4 +8,8 @@
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <ProjectReference Include="..\CED.Application\CED.Application.csproj" />
+    <ProjectReference Include="..\CED.Infrastructure\CED.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>

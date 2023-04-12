@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CED.Domain.Shared", "CED.Do
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CED.Test", "CED.Test", "{B40CDC16-C662-4BF9-8599-4CE4DB5937CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{F8D3D8B8-453B-4681-AE5C-141541BC85B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{F8D3D8B8-453B-4681-AE5C-141541BC85B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CED.Web", "CED.Web\CED.Web.csproj", "{83B64158-B3BF-42B7-AB06-45B964954980}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CED.Web", "CED.Web\CED.Web.csproj", "{83B64158-B3BF-42B7-AB06-45B964954980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

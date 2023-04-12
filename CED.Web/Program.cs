@@ -1,7 +1,20 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using CED.Application;
+using CED.Infrastructure;
+using CED.Web;
+
+var builder = WebApplication.CreateBuilder(args);
+{
+    builder.Services.AddControllersWithViews();
+    builder.Services.AddRazorPages(c => c.RootDirectory = "/Pages");
+
+    builder.Services
+         .AddInfrastructure(builder.Configuration)
+         .AddApplication()
+         .AddPresentation();
+}
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 
@@ -23,6 +36,10 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
+
+
 
 app.Run();
 
