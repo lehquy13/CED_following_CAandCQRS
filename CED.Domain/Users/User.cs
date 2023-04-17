@@ -25,6 +25,12 @@ public class User : FullAuditedAggregateRoot<Guid>
     public string University { get; set;} = string.Empty;
     public bool isVerified { get; set; } = false;
 
+    // constructor
+    public User()
+    {
+        this.LastModificationTime = DateTime.Now;
+    }
+
     /// <summary>
     /// Update current user to be tutor
     /// </summary>
@@ -73,7 +79,6 @@ public class User : FullAuditedAggregateRoot<Guid>
         BirthYear = user.BirthYear;
         Address = user.Address;
         Description = user.Description;
-
         PhoneNumber = user.PhoneNumber;
     }
 }

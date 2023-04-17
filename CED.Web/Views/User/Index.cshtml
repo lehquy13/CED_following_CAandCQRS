@@ -1,0 +1,52 @@
+﻿@using CED.Contracts.Users
+@model List<UserDto>
+@{
+    int i = 0;
+}
+
+<a type="button" class="btn btn-success rounded-pill" asp-action="Create" asp-controller="User">Create</a>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Datatables</h5>
+        <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+                <tr>
+
+                    <th scope="col">#</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Birth Year</th>
+                    <th scope="col">Phone Number</th>
+                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var user in Model)
+                {
+                    i++;
+                    <tr>
+                        <th scope="row">
+                            <input hidden name="Id" value="@user.Id" />
+                            @i
+                        </th>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>@user.Gender</td>
+                        <td>@user.BirthYear</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@user.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@user.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+    </div>
+</div>
