@@ -1,0 +1,55 @@
+﻿@using CED.Contracts.Subjects
+@model List<SubjectDto>
+@{
+    int i = 0;
+}
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Datatables</h5>
+        <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+                <tr>
+
+                    <th scope="col">#</th>
+                    <th scope="col">name</th>
+                    <th scope="col">description</th>
+                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var subject in Model)
+                {
+                    i++;
+                    <tr>
+                        <th scope="row">
+                            <input hidden value="@subject.Id" />
+                            @i
+                        </th>
+
+                        <td>@subject.Name</td>
+                        <td>@subject.Description</td>
+
+                        <td>
+                            <button class="bi btn btn-primary bi-arrow-up-short">Detail</button>
+                            <button class="bi btn btn-primary bi-arrow-up-short">Edit</button>
+                            <button class="btn btn-primary bi bi-arrow-up-short">Delete</button>
+                        </td>
+
+
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+</div>
