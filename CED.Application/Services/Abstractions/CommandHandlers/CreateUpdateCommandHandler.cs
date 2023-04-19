@@ -1,7 +1,7 @@
 ﻿using MapsterMapper;
 using MediatR;
 
-namespace CED.Application.Common.Services.CommandHandlers;
+namespace CED.Application.Services.Abstractions.CommandHandlers;
 
 public abstract class CreateUpdateCommandHandler<TCommand>
     : IRequestHandler<TCommand, bool>

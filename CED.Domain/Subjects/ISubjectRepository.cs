@@ -1,4 +1,6 @@
-﻿namespace CED.Domain.Subjects;
+﻿using CED.Domain.Repository;
+
+namespace CED.Domain.Subjects;
 
 public interface ISubjectRepository : IRepository<Subject>
 {

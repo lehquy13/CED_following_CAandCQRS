@@ -1,4 +1,4 @@
-﻿using CED.Application.Common.Services.CommandHandlers;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.ClassInformations;
 
 namespace CED.Application.Services.ClassInformations.Commands;

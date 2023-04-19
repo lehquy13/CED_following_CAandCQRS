@@ -1,4 +1,4 @@
-﻿using CED.Application.Common.Services.QueryHandlers;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.ClassInformations;
 using CED.Domain.ClassInformations;
 using MapsterMapper;

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace CED.Application.Common.Services.CommandHandlers;
+namespace CED.Application.Services.Abstractions.CommandHandlers;
 
 public abstract class DeleteCommandHandler<TCommand>
     : IRequestHandler<TCommand, bool>

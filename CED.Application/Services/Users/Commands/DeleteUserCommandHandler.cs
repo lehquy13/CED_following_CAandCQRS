@@ -1,5 +1,5 @@
 ﻿using CED.Domain.Users;
-using CED.Application.Common.Services.CommandHandlers;
+using CED.Application.Services.Abstractions.CommandHandlers;
 
 namespace CED.Application.Services.Users.Commands;
 

@@ -1,4 +1,5 @@
-﻿using CED.Domain.Shared.ClassInformationConsts;
+﻿using CED.Domain.Repository;
+using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Domain.Users;
 

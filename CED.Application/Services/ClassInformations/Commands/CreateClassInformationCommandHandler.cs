@@ -1,4 +1,4 @@
-﻿using CED.Application.Common.Services.CommandHandlers;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.ClassInformations;
 using Mapster;
 using MapsterMapper;

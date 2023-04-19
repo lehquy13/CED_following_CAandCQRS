@@ -1,4 +1,4 @@
-﻿using CED.Domain;
+﻿using CED.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository

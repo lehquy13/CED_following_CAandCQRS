@@ -2,7 +2,7 @@
 using MediatR;
 
 
-namespace CED.Application.Common.Services.QueryHandlers;
+namespace CED.Application.Services.Abstractions.QueryHandlers;
 
 public abstract class GetAllQueryHandler<TQuery, TDto>
     : IRequestHandler<TQuery, List<TDto>>

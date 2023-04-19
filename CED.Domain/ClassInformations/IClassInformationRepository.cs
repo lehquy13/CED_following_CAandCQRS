@@ -1,4 +1,6 @@
 ﻿
+using CED.Domain.Repository;
+
 namespace CED.Domain.ClassInformations;
 
 public interface IClassInformationRepository : IRepository<ClassInformation>
