@@ -23,8 +23,7 @@ public class CreateUserCommandHandler : CreateUpdateCommandHandler<CreateUserCom
             //Check if the subject existed
             if (user is not null)
             {
-                user.LastModificationTime = DateTime.Now;
-                user.Description = command.UserDto.Description;
+                user.UpdateUserInformation(_mapper.Map<User>(command.UserDto));
 
                 _userRepository.Update(user);
 

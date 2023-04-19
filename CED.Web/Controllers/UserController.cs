@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Subjects.Commands;
 using Microsoft.EntityFrameworkCore;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Web.Models;
+using System.Diagnostics;
 
 namespace CED.Web.Controllers
 {
@@ -83,7 +85,10 @@ namespace CED.Web.Controllers
                         UserDto = userDto
                     };
                     var result = await _mediator.Send(query);
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Updated = true;
+                    return await Edit(Id);
+
+                    
                 }
                 catch (Exception ex)
                 {
@@ -93,7 +98,7 @@ namespace CED.Web.Controllers
                         "see your system administrator.");
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return View(userDto);
         }
 
         [HttpGet("Create")]

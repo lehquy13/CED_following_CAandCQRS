@@ -50,15 +50,6 @@ public class User : FullAuditedAggregateRoot<Guid>
 
     public void UpdateTutorInformation(User tutor)
     {
-        FirstName = tutor.FirstName;
-        LastName = tutor.LastName;
-        Gender = tutor.Gender;
-        BirthYear = tutor.BirthYear;
-        Address = tutor.Address;
-        Description = tutor.Description;
-
-        PhoneNumber = tutor.PhoneNumber;
-
         AcademicLevel = tutor.AcademicLevel;
         University = tutor.University;
 
@@ -79,7 +70,15 @@ public class User : FullAuditedAggregateRoot<Guid>
         BirthYear = user.BirthYear;
         Address = user.Address;
         Description = user.Description;
+
+        Email = user.Email;
         PhoneNumber = user.PhoneNumber;
+
+        if(user.Role == UserRole.Tutor)
+        {
+            UpdateTutorInformation(user);
+        }
     }
+  
 }
 
