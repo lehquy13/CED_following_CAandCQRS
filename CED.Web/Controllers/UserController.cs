@@ -1,5 +1,5 @@
-﻿using CED.Application.Services.UsersInformations.Queries;
-using CED.Application.Services.UsersInformations.Commands;
+﻿using CED.Application.Services.Users.Queries;
+using CED.Application.Services.Users.Commands;
 using CED.Contracts.Users;
 using MapsterMapper;
 using MediatR;

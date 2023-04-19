@@ -1,11 +1,11 @@
-using CED.Application.Services.UsersInformations.Queries;
+using CED.Application.Services.Users.Queries;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Contracts.Users;
 using CED.Domain.Users;
 using MapsterMapper;
 using Moq;
-using CED.Application.Services.UsersInformations.Queries.Handlers;
-using CED.Application.Services.UsersInformations.Commands;
+using CED.Application.Services.Users.Queries.Handlers;
+using CED.Application.Services.Users.Commands;
 
 namespace UnitTests.ApplicationTests
 {
@@ -237,7 +237,7 @@ namespace UnitTests.ApplicationTests
         public async Task GetUserById()
         {
             var query = new GetUserByIdQuery<UserDto> { Id = _sampleId };
-            var handler = new GetUserByIdQueryHandler<UserDto>(_mockUserRepo.Object, _mockMapper.Object);
+            var handler = new GetUserByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.IsNotNull(result);
@@ -246,7 +246,7 @@ namespace UnitTests.ApplicationTests
         public async Task GetTutorById()
         {
             var query = new GetUserByIdQuery<TutorDto> { Id = _sampleId3 };
-            var handler = new GetUserByIdQueryHandler<TutorDto>(_mockUserRepo.Object, _mockMapper.Object);
+            var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.IsNotNull(result);
@@ -255,7 +255,7 @@ namespace UnitTests.ApplicationTests
         public async Task GetStudentById()
         {
             var query = new GetUserByIdQuery<StudentDto> { Id = _sampleId2 };
-            var handler = new GetUserByIdQueryHandler<StudentDto>(_mockUserRepo.Object, _mockMapper.Object);
+            var handler = new GetStudentByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.IsNotNull(result);
