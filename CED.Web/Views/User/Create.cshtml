@@ -2,130 +2,232 @@
 
 @{
     ViewData["Title"] = "Create";
+    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
+    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+    List<string> academics = ViewData["AcademicLevel"] as List<string> ?? new List<string>();
+}
 }
 
 <h1>Create</h1>
 
 <h4>User</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Personal Information</h5>
+
+        <!-- Multi Columns Form -->
+        <form class="row g-3" asp-action="Create" asp-controller="User">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+
+            <div class="col-md-6">
+                <label asp-for="FirstName" class="form-label">First Name</label>
+                <input type="text" asp-for="FirstName" class="form-control">
                 <span asp-validation-for="FirstName" class="text-danger"></span>
+
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+            <div class="col-md-6">
+                <label asp-for="LastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" asp-for="LastName">
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <select asp-for="Gender" class="form-control"></select>
+            <!-- ----------------------------------- -->
+
+            <div class="col-md-4">
+                <label asp-for="Gender" class="form-label">Gender</label>
+                <select asp-for="Gender" class="form-select">
+                    <option selected>@Model.Gender.ToString()</option>
+
+                    @foreach (string i in genders)
+                    {
+                        @if (i != Model.Gender.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="BirthYear" class="control-label"></label>
-                <input asp-for="BirthYear" class="form-control" />
-                <span asp-validation-for="BirthYear" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsEmailConfirmed" /> @Html.DisplayNameFor(model => model.IsEmailConfirmed)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" class="form-control"></select>
+            <div class="col-md-4">
+                <label asp-for="Role" class="form-label">Role</label>
+                <select asp-for="Role" class="form-select">
+                    <option selected>@Model.Role.ToString()</option>
+
+                    @foreach (string i in roles)
+                    {
+                        @if (i != Model.Role.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AcademicLevel" class="control-label"></label>
-                <select asp-for="AcademicLevel" class="form-control"></select>
-                <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+            <div class="col-md-4">
+                <label asp-for="BirthYear" class="form-label">Birth</label>
+                <input type="number" class="form-control" asp-for="BirthYear">
+
+                <span asp-validation-for="BirthYear" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="University" class="control-label"></label>
-                <input asp-for="University" class="form-control" />
-                <span asp-validation-for="University" class="text-danger"></span>
+            <!-- disable email when confirmed -->
+            @if (Model.IsEmailConfirmed == true)
+            {
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+
+                    <div class="input-group mb-3">
+
+                        <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3">
+                        <span class="input-group-text" id="basic-addon3">
+                            <i class="bi bi-check">
+                            </i>
+                        </span>
+
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input type="email" asp-for="Email" class="form-control">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="col-md-6">
+                <label asp-for="PhoneNumber" class="form-label">Number</label>
+                <div class="col-sm-12">
+                    <input type="number" asp-for="PhoneNumber" class="form-control">
+                </div>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isVerified" /> @Html.DisplayNameFor(model => model.isVerified)
-                </label>
+            <div class="col-md-6" hidden>
+                <label asp-for="Password" class="form-label">Password</label>
+                <input type="password" asp-for="Password" class="form-control">
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
+            <!-- ----------------------------------- -->
+
+            <div class="col-12">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St">
+                <span asp-validation-for="Address" class="text-danger"></span>
+
             </div>
-            <div class="form-group">
+            <!-- address advanced set up----------------------------------- -->
+
+            <div class="col-md-6">
+                <label for="inputCity" class="form-label">City</label>
+                <input type="text" class="form-control" id="inputCity">
+            </div>
+            <div class="col-md-4">
+                <label for="inputState" class="form-label">State</label>
+                <select id="inputState" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="inputZip" class="form-label">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+            </div>
+            <!-- ----------------------------------- -->
+
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                </div>
+            </div>
+
+
+            <!-- ----------------------------------- -->
+            @if (Model.Role == CED.Domain.Shared.ClassInformationConsts.UserRole.Tutor)
+            {
+                <h5 class="card-title">Tutor information</h5>
+
+                <div class="col-md-4">
+                    <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
+                    <select asp-for="AcademicLevel" class="form-select">
+                        <option selected>@Model.AcademicLevel.ToString()</option>
+
+                        @foreach (string i in academics)
+                        {
+                            @if (i != Model.AcademicLevel.ToString())
+                            {
+                                <option> @i </option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="University" class="form-label">University</label>
+                    <input type="text" class="form-control" asp-for="University">
+                    <span asp-validation-for="University" class="text-danger"></span>
+                </div>
+                <!-- ----------------------------------- -->
+
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" asp-for="isVerified">
+                        <label class="form-check-label" asp-for="isVerified">
+                            Is tutor verified?
+                        </label>
+
+                    </div>
+                </div>
+            }
+
+
+
+
+            <!-- ----------------------------------- hidden info -->
+
+            <div class="form-group" hidden>
                 <label asp-for="DeleterUserId" class="control-label"></label>
                 <input asp-for="DeleterUserId" class="form-control" />
                 <span asp-validation-for="DeleterUserId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="DeletionTime" class="control-label"></label>
                 <input asp-for="DeletionTime" class="form-control" />
                 <span asp-validation-for="DeletionTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="LastModificationTime" class="control-label"></label>
                 <input asp-for="LastModificationTime" class="form-control" />
                 <span asp-validation-for="LastModificationTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="LastModifierUserId" class="control-label"></label>
                 <input asp-for="LastModifierUserId" class="form-control" />
                 <span asp-validation-for="LastModifierUserId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="CreationTime" class="control-label"></label>
-                <input asp-for="CreationTime" class="form-control" />
+                <input asp-for="CreationTime" value="@DateTime.UtcNow" class="form-control" />
                 <span asp-validation-for="CreationTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="CreatorUserId" class="control-label"></label>
                 <input asp-for="CreatorUserId" class="form-control" />
                 <span asp-validation-for="CreatorUserId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="hidden" asp-for="Id" value="@Guid.NewGuid()" />
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" asp-action="Index" class="btn btn-secondary">Cancel</button>
             </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        </form><!-- End Multi Columns Form -->
+
+    </div>
 </div>
 
 @section Scripts {
