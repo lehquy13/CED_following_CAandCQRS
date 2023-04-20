@@ -19,7 +19,7 @@ public class CreateUserCommandHandler : CreateUpdateCommandHandler<CreateUserCom
     {
         try
         {
-            var user = await _userRepository.GetById(command.UserDto.Id);
+            var user = await _userRepository.GetUserByEmail(command.UserDto.Email);
             //Check if the subject existed
             if (user is not null)
             {

@@ -1,4 +1,4 @@
-﻿using CED.Application.Common.Logger;
+﻿using CED.Contracts.Interfaces.Logger;
 using Microsoft.Extensions.Logging;
 
 namespace CED.Infrastructure.Services.Logging;

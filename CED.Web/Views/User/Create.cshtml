@@ -6,7 +6,7 @@
     List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
     List<string> academics = ViewData["AcademicLevel"] as List<string> ?? new List<string>();
 }
-}
+
 
 <h1>Create</h1>
 
@@ -108,6 +108,7 @@
             <div class="col-md-6" hidden>
                 <label asp-for="Password" class="form-label">Password</label>
                 <input type="password" asp-for="Password" class="form-control">
+                <!--<input type="password" asp-for="Password" value="1q2w3E*" class="form-control">-->
             </div>
             <!-- ----------------------------------- -->
 
@@ -145,11 +146,14 @@
                 </div>
             </div>
 
+            <button class=" btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Sign up as Tutor
+            </button>
 
             <!-- ----------------------------------- -->
-            @if (Model.Role == CED.Domain.Shared.ClassInformationConsts.UserRole.Tutor)
-            {
-                <h5 class="card-title">Tutor information</h5>
+            <div class="collapse row" id="collapseExample">
+
+                <h5 class="col-md-12">Tutor information</h5>
 
                 <div class="col-md-4">
                     <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
@@ -173,7 +177,7 @@
                 </div>
                 <!-- ----------------------------------- -->
 
-                <div class="col-12">
+                <div class="col-md-12">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" asp-for="isVerified">
                         <label class="form-check-label" asp-for="isVerified">
@@ -181,8 +185,11 @@
                         </label>
 
                     </div>
+
                 </div>
-            }
+            </div>
+
+
 
 
 
@@ -231,5 +238,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

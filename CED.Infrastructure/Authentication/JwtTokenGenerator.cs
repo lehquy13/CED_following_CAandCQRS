@@ -1,5 +1,5 @@
-﻿using CED.Application.Common.Authentication;
-using CED.Application.Common.Services;
+﻿using CED.Contracts.Interfaces.Authentication;
+using CED.Contracts.Interfaces.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

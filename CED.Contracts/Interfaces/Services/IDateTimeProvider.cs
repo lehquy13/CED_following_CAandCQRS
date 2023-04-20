@@ -1,4 +1,4 @@
-﻿namespace CED.Application.Common.Services;
+﻿namespace CED.Contracts.Interfaces.Services;
 public interface IDateTimeProvider
 {
     DateTime UtcNow { get; }

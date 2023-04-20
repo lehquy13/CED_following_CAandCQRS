@@ -1,5 +1,4 @@
-﻿
-using CED.Domain.Repository;
+﻿using CED.Domain.Repository;
 
 namespace CED.Domain.ClassInformations;
 

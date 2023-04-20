@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Persistence\" />
     <Folder Include="Services\Users\Student\Queries\" />
   </ItemGroup>
 

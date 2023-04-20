@@ -1,4 +1,4 @@
-﻿using CED.Application.Common.Services;
+﻿using CED.Contracts.Interfaces.Services;
 
 namespace CED.Infrastructure.Services;
 public class DateTimeProvider : IDateTimeProvider

@@ -1,4 +1,4 @@
-﻿using CED.Application.Common.Authentication;
+﻿using CED.Contracts.Interfaces.Authentication;
 using CED.Domain.Users;
 using MediatR;
 

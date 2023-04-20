@@ -1,4 +1,4 @@
-﻿namespace CED.Application.Common.Authentication
+﻿namespace CED.Contracts.Interfaces.Authentication
 {
     public interface IJwtTokenGenerator
     {

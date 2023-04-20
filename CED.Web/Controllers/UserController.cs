@@ -5,11 +5,8 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Subjects.Commands;
-using Microsoft.EntityFrameworkCore;
-using CED.Domain.Shared.ClassInformationConsts;
-using CED.Web.Models;
-using System.Diagnostics;
-using CED.Application.Common.Services;
+using CED.Contracts.Interfaces.Services;
+using CED.Domain.Shared;
 
 namespace CED.Web.Controllers
 {
@@ -26,7 +23,9 @@ namespace CED.Web.Controllers
         public List<UserDto> _userDtos { get; set; } = new List<UserDto>();
 
         //static list
-        private static List<string>? _roles, _academics, _genders;
+        private List<string>? _roles;
+        private List<string>? _academics;
+        private List<string>? _genders {get; init;}
         
 
         public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper,IDateTimeProvider dateTimeProvider)
@@ -35,25 +34,17 @@ namespace CED.Web.Controllers
             _mediator = sender;
             _mapper = mapper;
             _dateTimeProvider = dateTimeProvider;
-            if(_roles == null || _roles.Count == 0 || _academics == null || _academics.Count == 0 || _genders == null || _genders.Count == 0)
+            
+
+            if (_roles == null || _roles.Count == 0 || _academics == null || _academics.Count == 0 || _genders == null || _genders.Count == 0)
             {
-               SetUpStaticList();
+                _roles = CEDEnumProvider.Roles;
+                _academics = CEDEnumProvider.AcademicLevels;
+                _genders = CEDEnumProvider.Genders;
             }
-           
+
         }
 
-        private void SetUpStaticList()
-        {
-            _roles = Enum.GetNames(typeof(UserRole)).AsEnumerable()
-                                 .Where(x => x != "All" && x != "Undefined")
-                                .ToList();
-
-            _genders = Enum.GetNames(typeof(Gender)).AsEnumerable()
-                                  .Where(x => x != "None")
-                                  .ToList();
-            _academics = Enum.GetNames(typeof(AcademicLevel)).AsEnumerable()
-                                  .ToList();
-        }
 
         private void PackStaticListToView()
         {
@@ -123,7 +114,7 @@ namespace CED.Web.Controllers
         public IActionResult Create()
         {
             PackStaticListToView();
-            return View();
+            return View(new UserDto());
         }
 
 
@@ -131,7 +122,7 @@ namespace CED.Web.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserDto userDto) // cant use userdto
         {
-            userDto.CreationTime = _dateTimeProvider.UtcNow;
+            userDto.LastModificationTime = _dateTimeProvider.UtcNow;
             var query = new CreateUserCommand() { UserDto = userDto };
             var result = await _mediator.Send(query);
 
