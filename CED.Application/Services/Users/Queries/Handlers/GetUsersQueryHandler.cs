@@ -19,7 +19,11 @@ public class GetUsersQueryHandler : GetAllQueryHandler<GetUsersQuery<UserDto>, U
         {
             var users = await _userRepository.GetAllList();
 
-            var reuslt = _mapper.Map<List<UserDto>>(users);
+            var reuslt = _mapper.Map<List<UserDto>>(
+                users
+                .Where(x => x.IsDeleted is false)
+                .ToList()
+                );
             return reuslt;
         }
         catch (Exception ex)

@@ -19,7 +19,8 @@ public class GetTutorsQueryHandler : GetAllQueryHandler<GetUsersQuery<TutorDto>,
         try
         {
             var users = _userRepository.GetTutors();
-            var reuslt = _mapper.Map<List<TutorDto>>(users);
+            var reuslt = _mapper.Map<List<TutorDto>>(users.Where(x => x.IsDeleted is false)
+                                                          .ToList());
             return reuslt;
         }
         catch (Exception ex)

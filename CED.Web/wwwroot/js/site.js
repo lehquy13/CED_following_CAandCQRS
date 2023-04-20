@@ -27,3 +27,27 @@ function callPostActionWithForm(formInput) {
     return false;
 
 }
+
+function OpenGetDialog(url, title) {
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {},
+        success: function (res) {
+            //$("#form-modal .modal-body").html(res);
+            //$("#form-modal .modal-title").html(title);
+            //$("#form-modal").modal('show');
+            //debugger;
+            console.log(res);
+            $('#largeModal .modal-title').html(title);
+            $('#largeModal .modal-body').html(res.html);
+
+            $('#modalTriggerButton').click();
+            //alert("<3");
+
+            //$.notify("Access granted", "success", { position: "right" });
+
+        }
+    })
+}

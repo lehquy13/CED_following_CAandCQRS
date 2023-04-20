@@ -18,7 +18,8 @@ public class GetStudentsQueryHandler : GetAllQueryHandler<GetUsersQuery<StudentD
         try
         {
             var users = _userRepository.GetStudents();
-            var reuslt = _mapper.Map<List<StudentDto>>(users);
+            var reuslt = _mapper.Map<List<StudentDto>>(users.Where(x => x.IsDeleted is false)
+                                                            .ToList());
             return reuslt;
         }
         catch (Exception ex)

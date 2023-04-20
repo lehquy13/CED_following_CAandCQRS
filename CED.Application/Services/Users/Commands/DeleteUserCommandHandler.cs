@@ -22,7 +22,7 @@ public class DeleteUserCommandHandler
         
         
         //user.DeleterUserId
-        user.DeletionTime = DateTime.Now;
+        user.DeletionTime = DateTime.UtcNow;
         user.IsDeleted = true;
 
         var afterUpdatedUser = _userRepository.Update(user);

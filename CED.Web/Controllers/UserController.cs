@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Subjects.Commands;
 using CED.Contracts.Interfaces.Services;
 using CED.Domain.Shared;
+using Microsoft.EntityFrameworkCore;
+using CED.Domain.Users;
 
 namespace CED.Web.Controllers
 {
@@ -45,14 +47,12 @@ namespace CED.Web.Controllers
 
         }
 
-
         private void PackStaticListToView()
         {
             ViewData["Roles"] = _roles;
             ViewData["Genders"] = _genders;
             ViewData["AcademicLevel"] = _academics;
         }
-
 
         [HttpGet]
         [Route("")]
@@ -128,5 +128,49 @@ namespace CED.Web.Controllers
 
             return View(result);
         }
+
+        [HttpGet("Delete")]
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var query = new GetUserByIdQuery<UserDto>() {Id= (Guid)id };
+            var result = await _mediator.Send(query);
+            
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Json(new
+            {
+                html = Helper.RenderRazorViewToString(this, "Delete", result)
+
+            });
+           // return View(result);
+        }
+
+        [HttpPost("DeleteConfirmed")]
+        public async Task<IActionResult> DeleteConfirmed(Guid? id)
+        {
+            if (id == null || id.Equals(Guid.Empty))
+            {
+                return NotFound();
+            }
+
+            var query = new DeleteUserCommand((Guid)id);
+            var result = await _mediator.Send(query);
+
+            if (result is true)
+            {
+                return RedirectToAction("Index");
+
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
     }
 }
