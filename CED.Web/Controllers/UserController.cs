@@ -172,5 +172,24 @@ namespace CED.Web.Controllers
             return RedirectToAction("Error", "Home");
         }
 
+        [HttpGet("Detail")]
+        public async Task<IActionResult> Detail(Guid? id) 
+        {
+            if (id == null || id.Equals(Guid.Empty))
+            {
+                return NotFound();
+            }
+
+            var query = new GetUserByIdQuery<UserDto>() { Id= (Guid)id };
+            var result = await _mediator.Send(query);
+
+            if (result is not null)
+            {
+                return View(result);
+
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
     }
 }
