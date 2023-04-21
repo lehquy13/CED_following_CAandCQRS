@@ -7,7 +7,7 @@ using CED.Web;
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddControllersWithViews();
-    builder.Services.AddRazorPages(c => c.RootDirectory = "/Pages");
+    //builder.Services.AddRazorPages(c => c.RootDirectory = "/Pages");
 
     builder.Services
          .AddInfrastructure(builder.Configuration)
@@ -50,9 +50,9 @@ var app = builder.Build();
 
     app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{controller=Authentication}/{action=Index}/{id?}");
 
-    app.MapRazorPages();
+    //app.MapRazorPages();
 
     //app.UseAuthentication();
 

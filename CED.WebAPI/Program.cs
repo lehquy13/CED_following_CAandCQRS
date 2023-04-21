@@ -1,5 +1,5 @@
 using CED.Application;
-using CED.Domain.Interfaces.Logger;
+using CED.Contracts.Interfaces.Logger;
 using CED.Infrastructure;
 using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Persistence;
