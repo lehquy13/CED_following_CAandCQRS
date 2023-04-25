@@ -7,7 +7,6 @@ using CED.Web;
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddControllersWithViews();
-    //builder.Services.AddRazorPages(c => c.RootDirectory = "/Pages");
 
     builder.Services
          .AddInfrastructure(builder.Configuration)
@@ -25,7 +24,6 @@ var app = builder.Build();
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
-    app.UseExceptionHandler("/Home/Error");
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
@@ -41,20 +39,25 @@ var app = builder.Build();
         }
     }
 
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
 
+    app.UseHttpsRedirection();
+
+    app.UseAuthentication();
     app.UseRouting();
 
     app.UseAuthorization();
+    app.UseExceptionHandler("/Home/Error");
 
+    app.UseStaticFiles();
+
+    
     app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Authentication}/{action=Index}/{id?}");
+        pattern: "{controller=Home}/{action=Index}/{id?}");
 
-    //app.MapRazorPages();
-
-    //app.UseAuthentication();
+    //app.MapControllerRoute(
+    //    name: "auth",
+    //    pattern: "{controller=Authentication}/{action=Index}/{id?}");
 
     app.Run();
 

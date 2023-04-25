@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using CED.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using CED.Contracts.Users;
 
 namespace CED.Web.Controllers;
 
-[Route("[controller]")]
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -16,7 +19,7 @@ public class HomeController : Controller
 
     }
 
-    [Route("Index")]
+    [Route("")]
     public IActionResult Index()
     {
         return View();
