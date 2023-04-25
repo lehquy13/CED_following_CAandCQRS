@@ -20,17 +20,18 @@ public class CEDDBContext : DbContext
     {
         modelBuilder.Entity<Subject>().ToTable("Subject");
         modelBuilder.Entity<User>().ToTable("User");
-        modelBuilder.Entity<ClassInformation>()
-                    .ToTable("ClassInformation")
-                    .HasKey(r => r.Id);
+       
         modelBuilder.Entity<ClassInformation>(re =>{
             re.ToTable("ClassInformation");
             re.HasKey(r => r.Id);
             re.Property(r => r.Title).IsRequired().HasMaxLength(128);
-            re.Property(r => r.Description).IsRequired().IsUnicode(); // vd des la tieng viet, lusc nay db co the luu tieng viet => nvarchar
+            re.Property(r => r.Description).IsRequired().IsUnicode();
             re.Property(r => r.Fee).IsRequired();
             re.HasOne<Subject>().WithMany().HasForeignKey(x => x.SubjectId).IsRequired();
 
+            //haven't added to migration, will be struggle right here
+            re.HasOne<User>().WithMany().HasForeignKey(x => x.StudentId);
+            re.HasOne<User>().WithMany().HasForeignKey(x => x.TutorId);
 
         });
     }
