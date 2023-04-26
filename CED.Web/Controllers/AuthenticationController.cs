@@ -1,16 +1,15 @@
-﻿using CED.Application.Services.Authentication.Queries.Login;
+﻿using CED.Application.Services.Authentication.Commands.Register;
+using CED.Application.Services.Authentication.Commands.SaveToken;
+using CED.Application.Services.Authentication.Queries.Login;
+using CED.Application.Services.Authentication.Queries.ValidateToken;
 using CED.Contracts.Authentication;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.Linq.Dynamic.Core.Tokenizer;
+
 
 namespace CED.Web.Controllers;
 
-[Route("[controller]")]
 public class AuthenticationController : Controller
 {
     private readonly ISender _mediator;
@@ -26,11 +25,25 @@ public class AuthenticationController : Controller
     }
 
     [Route("")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View("Login", new LoginRequest("",""));
+        string validateToken = HttpContext.Request.Cookies["access_token"] ?? "";
+        if (validateToken is "")
+        {
+            return View("Login", new LoginRequest("", ""));
+        }
+        var query = new ValidateTokenQuery(validateToken);
+
+        var loginResult = await _mediator.Send(query);
+
+        if (loginResult is true)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View("Login", new LoginRequest("", ""));
     }
-  
+
 
     [HttpPost("Login")]
     public async Task<IActionResult> Login(LoginRequest request)
@@ -39,18 +52,34 @@ public class AuthenticationController : Controller
 
         var loginResult = await _mediator.Send(query);
 
-        // Store the JWT token in a cookie
-        var token = loginResult.Token;
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Strict,
-            Secure = true,
-            Expires = DateTime.UtcNow.AddDays(1),
-           // Domain = "yourdomain.com",
-        };
-        HttpContext.Response.Cookies.Append("access_token", token,cookieOptions);
         
+        if(loginResult.IsSuccess is false)
+        {
+            ViewBag.isFail = true;
+            return View("Login", new LoginRequest("", ""));
+        }
+        // Store the JWT token in a cookie
+        var command = new SaveTokenCommand(loginResult.Token,HttpContext);
+        var result = await _mediator.Send(command);
+        if (result is false) { return View("Index", this.ModelState); }
+
+        return RedirectToAction("Index", "Home");
+    }
+    [HttpPost("Logout")]
+    public IActionResult Logout()
+    {
+        HttpContext.Response.Cookies.Delete("access_token");
+
+        return View("Login", new LoginRequest("", ""));
+    }
+
+    [HttpPost("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword(string email)
+    {
+        var query = new ForgotPasswordCommand(email);
+
+        var loginResult = await _mediator.Send(query);
+
         return RedirectToAction("Index", "Home");
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CED.Contracts.Interfaces.Authentication;
 using CED.Contracts.Interfaces.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -36,13 +37,47 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         };
 
         var securityToken = new JwtSecurityToken(
-            issuer:_jwtSettings.Issuer,
+            issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             expires: _dateTimeProvider.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
             claims: claims,
             signingCredentials: signingCreadential
         );
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
+    }
+
+    public bool ValidateToken(string token)
+    {
+        string accessToken = token;
+
+        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secrect));
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        
+        tokenHandler.ValidateToken(accessToken, new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = symmetricSecurityKey,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = _jwtSettings.Issuer,
+            ValidAudience = _jwtSettings.Audience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero // zero tolerance for the token lifetime expiration time
+        }, out SecurityToken validatedToken);
+
+        var jwtToken = (JwtSecurityToken)validatedToken;
+
+        if (jwtToken.ValidTo < DateTime.UtcNow)
+        {
+            // token is expired, redirect to authentication page
+            return false;
+        }
+        else
+        {
+            // token is still valid, navigate to home page
+            return true;
+        }
     }
 }
 

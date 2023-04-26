@@ -20,15 +20,16 @@ public class LoginQueryHandler
         //1. Check if user exist
         if (await _userRepository.GetUserByEmail(query.Email) is not User user)
         {
-            //return new AuthenticationResult(false, "User has already existed");
-            throw new Exception("User with an email doesn't exist");
+            return new AuthenticationResult(null,"",false, "User has already existed");
+            //throw new Exception("User with an email doesn't exist");
         }
 
         //2. Check if logining with right password
 
         if (user.Password != query.Password)
         {
-            throw new Exception("Wrong password");
+            return new AuthenticationResult(null, "", false, "Wrong password");
+
         }
         //3. Generate token
         var loginToken = _jwtTokenGenerator.GenerateToken(
@@ -36,7 +37,7 @@ public class LoginQueryHandler
             user.FirstName,
             user.LastName);
 
-        return new AuthenticationResult(user, loginToken);
+        return new AuthenticationResult(user, loginToken, true, "Login successfully");
     }
 }
 

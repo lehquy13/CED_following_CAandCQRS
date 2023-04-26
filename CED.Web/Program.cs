@@ -43,9 +43,11 @@ var app = builder.Build();
     app.UseHttpsRedirection();
 
     app.UseAuthentication();
+
     app.UseRouting();
 
     app.UseAuthorization();
+
     app.UseExceptionHandler("/Home/Error");
 
     app.UseStaticFiles();

@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using CED.Web.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using CED.Contracts.Users;
 
 namespace CED.Web.Controllers;
 
 [Authorize]
+[Route("[controller]")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -16,7 +15,6 @@ public class HomeController : Controller
     public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-
     }
 
     [Route("")]

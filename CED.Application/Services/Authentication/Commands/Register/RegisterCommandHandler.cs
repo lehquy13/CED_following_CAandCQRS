@@ -42,7 +42,7 @@ public class RegisterCommandHandler
             command.LastName);
 
 
-        return new AuthenticationResult(user, token);
+        return new AuthenticationResult(user, token,true,"Register successfully");
     }
 }
 
