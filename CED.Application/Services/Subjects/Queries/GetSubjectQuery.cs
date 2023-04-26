@@ -5,5 +5,5 @@ namespace CED.Application.Services.Subjects.Queries;
 
 public class GetSubjectQuery : IRequest<SubjectDto>
 {
-    public Guid id { get; set; }
+    public Guid Id { get; set; }
 }

@@ -16,8 +16,8 @@
                 <tr>
 
                     <th scope="col">#</th>
-                    <th scope="col">name</th>
-                    <th scope="col">description</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
                     <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
 
                 </tr>
@@ -37,9 +37,7 @@
                         <td>@subject.Description</td>
 
                         <td>
-                            <button class="bi btn btn-primary bi-arrow-up-short">Detail</button>
-                            <button class="bi btn btn-primary bi-arrow-up-short">Edit</button>
-                            <button class="btn btn-primary bi bi-arrow-up-short">Delete</button>
+                            <a class="bi btn btn-primary bi-arrow-up-short" asp-controller="Subject" asp-action="Edit" asp-route-id="@subject.Id">Edit</a>
                         </td>
 
 

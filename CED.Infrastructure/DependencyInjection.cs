@@ -77,7 +77,7 @@ namespace CED.Infrastructure
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
 
-                options.LoginPath = "/Authentication";
+                options.LoginPath = "/";
                 options.LogoutPath = "/Authentication/Logout";
                 options.AccessDeniedPath = "/AccessDenied";
 

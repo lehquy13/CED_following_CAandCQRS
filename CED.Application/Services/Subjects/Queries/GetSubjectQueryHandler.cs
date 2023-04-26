@@ -15,7 +15,7 @@ public class GetSubjectQueryHandler : GetByIdQueryHandler<GetSubjectQuery, Subje
 
     public override async Task<SubjectDto?> Handle(GetSubjectQuery query, CancellationToken cancellationToken)
     {
-        Subject? subject = await _subjectRepository.GetById(query.id);
+        Subject? subject = await _subjectRepository.GetById(query.Id);
         if (subject == null)
         {
             return null;

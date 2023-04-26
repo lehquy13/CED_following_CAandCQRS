@@ -53,31 +53,39 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secrect));
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        
-        tokenHandler.ValidateToken(accessToken, new TokenValidationParameters
+        try
         {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = symmetricSecurityKey,
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidIssuer = _jwtSettings.Issuer,
-            ValidAudience = _jwtSettings.Audience,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero // zero tolerance for the token lifetime expiration time
-        }, out SecurityToken validatedToken);
+            tokenHandler.ValidateToken(accessToken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = symmetricSecurityKey,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidIssuer = _jwtSettings.Issuer,
+                ValidAudience = _jwtSettings.Audience,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero // zero tolerance for the token lifetime expiration time
+            }, out SecurityToken validatedToken);
 
-        var jwtToken = (JwtSecurityToken)validatedToken;
+            var jwtToken = (JwtSecurityToken)validatedToken;
 
-        if (jwtToken.ValidTo < DateTime.UtcNow)
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                // token is expired, redirect to authentication page
+                return false;
+            }
+            else
+            {
+                // token is still valid, navigate to home page
+                return true;
+            }
+        }
+        catch
         {
-            // token is expired, redirect to authentication page
             return false;
+
         }
-        else
-        {
-            // token is still valid, navigate to home page
-            return true;
-        }
+
     }
 }
 

@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using Abp.Application.Services.Dto;
 using System.ComponentModel.DataAnnotations;
 
 namespace CED.Contracts.Subjects;
 
-public class CreateUpdateSubjectDto
+public class CreateUpdateSubjectDto : FullAuditedEntityDto<Guid>
 {
     [Required]
     [StringLength(128)]

@@ -68,7 +68,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetSubjectById()
         {
-            var query = new GetSubjectQuery { id = _sampleId };
+            var query = new GetSubjectQuery { Id = _sampleId };
             var handler = new GetSubjectQueryHandler(_mockSubjectRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -100,7 +100,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task DeleteSubject()
         {
-            var command = new DeleteSubjectCommand { id = _sampleId };
+            var command = new DeleteSubjectCommand ( _sampleId );
             var handler = new DeleteSubjectCommandHandler(_mockSubjectRepo.Object);
             var result = await handler.Handle(command, CancellationToken.None);
 
