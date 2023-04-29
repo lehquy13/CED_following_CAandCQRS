@@ -21,13 +21,14 @@ public class CreateClassInformationCommandHandler
         try
         {
             var classInformation = await _classInformationRepository.GetById(command.ClassInformationDto.Id);
+            
             //Check if the class existed
             if (classInformation is not null)
             {
-                classInformation = _mapper.Map<ClassInformation>(command.ClassInformationDto);
-                classInformation.LastModificationTime = DateTime.Now;
+                var classInformation1 = _mapper.Map<ClassInformation>(command.ClassInformationDto);
+                classInformation1.LastModificationTime = DateTime.Now;
 
-                _classInformationRepository.Update(classInformation);
+                _classInformationRepository.Update(classInformation1);
 
                 return true;
             }

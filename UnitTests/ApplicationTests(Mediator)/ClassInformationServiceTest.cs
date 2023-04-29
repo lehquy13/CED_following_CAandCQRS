@@ -69,7 +69,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetClassInformationById()
         {
-            var query = new GetClassInformationQuery { id = _sampleId };
+            var query = new GetClassInformationQuery { Id = _sampleId };
             var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 

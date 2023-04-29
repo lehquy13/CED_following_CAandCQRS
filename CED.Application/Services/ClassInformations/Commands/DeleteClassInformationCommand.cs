@@ -2,9 +2,6 @@
 
 namespace CED.Application.Services.ClassInformations.Commands;
 
-public class DeleteClassInformationCommand
-    : IRequest<bool>
-{
-    public Guid id { get; set; }
-}
+public record DeleteClassInformationCommand
 
+(Guid id) : IRequest<bool>;

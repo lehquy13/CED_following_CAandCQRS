@@ -5,5 +5,5 @@ namespace CED.Application.Services.ClassInformations.Queries;
 
 public class GetClassInformationQuery : IRequest<ClassInformationDto>
 {
-    public Guid id { get; set; }
+    public Guid Id { get; set; }
 }

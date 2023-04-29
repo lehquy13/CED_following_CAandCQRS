@@ -16,10 +16,14 @@ public class CEDEnumProvider
                                                        .Where(x => x != "None")
                                                        .ToList();
 
-    public static List<string>? AcademicLevels { get; } = Enum.GetNames(typeof(Gender))
-                                              .AsEnumerable()
-                                              .Where(x => x != "None")
+    public static List<string>? AcademicLevels { get; } = Enum.GetNames(typeof(AcademicLevel))
                                               .ToList();
+    public static List<string>? LearningModes { get; } = Enum.GetNames(typeof(LearningMode))
+                                              .ToList();
+
+    public static List<string>? Status { get; } = Enum.GetNames(typeof(Status))
+                                              .ToList();
+    
 
 
 

@@ -1,6 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.ClassInformations;
 using CED.Domain.ClassInformations;
+using CED.Domain.Subjects;
 using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Queries;
@@ -8,9 +9,12 @@ namespace CED.Application.Services.ClassInformations.Queries;
 public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClassInformationsQuery,ClassInformationDto>
 {
     private readonly IClassInformationRepository _classInformationRepository;
-    public GetAllClassInformationsQueryHandler(IClassInformationRepository classInformationRepository, IMapper mapper) : base(mapper)
+    private readonly ISubjectRepository _subjectRepository;
+
+    public GetAllClassInformationsQueryHandler(IClassInformationRepository classInformationRepository, ISubjectRepository subjectRepository ,IMapper mapper) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;
+        _subjectRepository = subjectRepository;
     }
 
     public override async Task<List<ClassInformationDto>> Handle(GetAllClassInformationsQuery query, CancellationToken cancellationToken)
@@ -18,8 +22,21 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
         try
         {
             var classInformations = await _classInformationRepository.GetAllList();
+            var subjects = (await _subjectRepository.GetAllList());
 
-            return _mapper.Map<List<ClassInformationDto>>(classInformations);
+            var classInformationDtos = _mapper.Map<List<ClassInformationDto>>(classInformations);
+
+
+
+            foreach (var classIn in classInformationDtos)
+            {
+                if( subjects.FirstOrDefault( x => x.Id == classIn.SubjectId ) is Subject subject)
+                {
+                    classIn.SubjectName = subject.Name;
+                }
+            }
+
+            return classInformationDtos;
         }
         catch (Exception ex)
         {

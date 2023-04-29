@@ -48,6 +48,8 @@ var app = builder.Build();
 
     app.UseAuthorization();
 
+    app.UseSession();
+
     app.UseExceptionHandler("/Home/Error");
 
     app.UseStaticFiles();

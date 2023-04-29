@@ -1,9 +1,10 @@
-﻿using CED.Domain.Repository;
+﻿using Abp.Domain.Entities.Auditing;
+using CED.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAuditedAggregateRoot<Guid>
 {
     protected readonly CEDDBContext _context;
     protected Repository(CEDDBContext cEDDBContext)
@@ -72,7 +73,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         try
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            return await _context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
         catch (Exception ex)
         {
@@ -98,6 +99,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         try
         {
+            
             var updateEntity =  _context.Set<TEntity>().Update(entity);
             _context.SaveChanges();
             return entity;

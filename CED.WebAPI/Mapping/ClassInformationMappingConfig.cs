@@ -11,7 +11,7 @@ public class ClassInformationMappingConfig : IRegister
     {
 
         config.NewConfig<Guid, GetClassInformationQuery>()
-           .Map(dest => dest.id, src => src);
+           .Map(dest => dest.Id, src => src);
         config.NewConfig<Guid, DeleteClassInformationCommand>()
             .Map(dest => dest.id, src => src);
         

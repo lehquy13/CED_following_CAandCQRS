@@ -1,10 +1,11 @@
-﻿using CED.Domain.Shared.ClassInformationConsts;
+﻿using Abp.Application.Services.Dto;
+using CED.Domain.Shared.ClassInformationConsts;
 using System.ComponentModel.DataAnnotations;
 
 namespace CED.Contracts.ClassInformations;
 
 
-public class CreateUpdateClassInformationDto
+public class CreateUpdateClassInformationDto : FullAuditedEntityDto<Guid>
 {
     [Required]
     [StringLength(128)]

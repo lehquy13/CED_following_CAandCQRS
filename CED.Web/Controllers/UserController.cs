@@ -25,8 +25,8 @@ public class UserController : Controller
     public List<UserDto> _userDtos { get; set; } = new List<UserDto>();
 
     //static list
-    private List<string>? _roles;
-    private List<string>? _academics;
+    private List<string>? _roles { get; init; }
+    private List<string>? _academics { get; init; }
     private List<string>? _genders {get; init;}
     
 
@@ -51,7 +51,7 @@ public class UserController : Controller
     {
         ViewData["Roles"] = _roles;
         ViewData["Genders"] = _genders;
-        ViewData["AcademicLevel"] = _academics;
+        ViewData["AcademicLevels"] = _academics;
     }
 
     #region basic user management

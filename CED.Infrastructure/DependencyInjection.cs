@@ -59,7 +59,16 @@ namespace CED.Infrastructure
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings._SectionName, jwtSettings);
             services.AddSingleton(Options.Create(jwtSettings));
+
             //services.Configure<JwtSettings>(configuration.GetSection(JwtSettings._SectionName));
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
@@ -75,7 +84,7 @@ namespace CED.Infrastructure
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
 
                 options.LoginPath = "/";
                 options.LogoutPath = "/Authentication/Logout";
@@ -107,31 +116,6 @@ namespace CED.Infrastructure
             });
 
 
-
-            // Configure cookie authentication
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie(options =>
-            //    {
-            //        options.LoginPath = "/Authentication";
-            //        options.AccessDeniedPath = "/Authentication/AccessDenied";
-            //        options.Cookie.HttpOnly = true;
-            //        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //        options.Cookie.SameSite = SameSiteMode.Strict;
-            //        options.Cookie.Name = "MyAppCookie";
-            //        options.Events = new CookieAuthenticationEvents
-            //        {
-            //            OnSigningIn = async context =>
-            //            {
-            //                // Get the JWT token from the AuthenticationProperties
-            //                if (context.Principal != null && context.Properties.Items.TryGetValue("jwt", out string? jwt))
-            //                {
-            //                    // Add the JWT token as a claim
-            //                    context.Principal.Identities.First().AddClaim(new Claim("jwt", jwt ?? ""));
-            //                }
-            //                await Task.CompletedTask;
-            //            }
-            //        };
-            //    });
             return services;
         }
     }

@@ -1,10 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.ClassInformations.Queries;
-using CED.Contracts.ClassInformations;
 using CED.Contracts.Subjects;
 using CED.Domain.Subjects;
 using MapsterMapper;
-using MediatR;
 
 namespace CED.Application.Services.Subjects.Queries;
 
