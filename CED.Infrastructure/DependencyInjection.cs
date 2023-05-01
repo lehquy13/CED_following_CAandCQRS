@@ -76,6 +76,7 @@ namespace CED.Infrastructure
                     {
                         scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                         scheme.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        
                     })
                     .AddCookie(options =>
                     {
@@ -83,11 +84,14 @@ namespace CED.Infrastructure
                         options.Cookie.HttpOnly = true;
                         options.Cookie.SameSite = SameSiteMode.Strict;
                         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                        options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                        //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                        options.Cookie.Expiration = TimeSpan.FromMinutes(90);
 
                         options.LoginPath = "/";
                         options.LogoutPath = "/Logout";
                         options.AccessDeniedPath = "/";
+
+                        
 
                     })
                     .AddJwtBearer(options =>

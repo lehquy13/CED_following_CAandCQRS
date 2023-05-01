@@ -4,11 +4,12 @@
     int i = 0;
 }
 
-<a type="button" class="btn btn-success rounded-pill" asp-action="Create" asp-controller="User">Create</a>
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Datatables</h5>
-        <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
+        <div class="card-title">Users' information</div>
+        <div class="col d-flex justify-content-end">
+            <a type="button" class="btn btn-success rounded-pill col-1" asp-action="Create" asp-controller="User">Create</a>
+        </div>
 
         <!-- Table with stripped rows -->
         <table id="example" class="table datatable">

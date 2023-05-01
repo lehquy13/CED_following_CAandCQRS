@@ -1,20 +1,16 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using CED.Web.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using CED.Contracts.Subjects;
 using MapsterMapper;
 using MediatR;
 using CED.Application.Services.Subjects.Queries;
-using CED.Application.Services.Users.Queries;
-using CED.Contracts.Users;
 using CED.Application.Services.Subjects.Commands;
 using CED.Contracts.Interfaces.Services;
-using CED.Application.Services.Users.Commands;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CED.Web.Controllers;
 
 [Route("[controller]")]
-//[Authorize]
+[Authorize]
 public class SubjectController : Controller
 {
     private readonly ILogger<SubjectController> _logger;
@@ -23,7 +19,7 @@ public class SubjectController : Controller
     private readonly IMapper _mapper;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public List<SubjectDto> subjectDtos { get; set; } = new List<SubjectDto>();
+
 
     public SubjectController(ILogger<SubjectController> logger, ISender sender, IMapper mapper, IDateTimeProvider dateTimeProvider)
     {
@@ -38,7 +34,7 @@ public class SubjectController : Controller
     public async Task<IActionResult> Index()
     {
         var query = new GetAllSubjectsQuery();
-        subjectDtos = await _mediator.Send(query);
+        var subjectDtos = await _mediator.Send(query);
 
         return View(subjectDtos);
     }
@@ -142,7 +138,7 @@ public class SubjectController : Controller
 
         if (result is true)
         {
-            return RedirectToAction("Index");
+            return Json(new { res = "deleted" }) ;
 
         }
         return RedirectToAction("Error", "Home");

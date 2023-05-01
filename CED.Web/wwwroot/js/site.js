@@ -16,8 +16,14 @@ function callPostActionWithForm(formInput) {
         success: function (res) {
             //$('#successAlert').removeAttr('hidden');
             //$('#successAlert').show();
-            if(res.res === true)
+            if (res.res === true)
                 $('#successAlertButton').click();
+            else if (res.res === "deleted") {
+                $('#verticalycentered').modal('hide');
+                location.reload();
+            }
+               
+
 
         },
         error: function (err) {
@@ -74,4 +80,11 @@ function OpenGetDialog(url, title) {
 
         }
     })
+}
+function OpenConfirmDialog(url, title) {
+    $('#verticalycentered .modal-title').html(title);
+
+    $('#confirmDialogForm').attr('action', url);
+    $('#verticalycentered').modal('show')
+   
 }
