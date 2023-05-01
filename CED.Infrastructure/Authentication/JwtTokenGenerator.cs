@@ -64,10 +64,11 @@ public class JwtTokenGenerator : IJwtTokenGenerator
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidAudience = _jwtSettings.Audience,
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero // zero tolerance for the token lifetime expiration time
+               // ClockSkew = TimeSpan.Zero // zero tolerance for the token lifetime expiration time
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
+
 
             if (jwtToken.ValidTo < DateTime.UtcNow)
             {

@@ -16,7 +16,31 @@ function callPostActionWithForm(formInput) {
         success: function (res) {
             //$('#successAlert').removeAttr('hidden');
             //$('#successAlert').show();
-            $('#successAlertButton').click();
+            if(res.res === true)
+                $('#successAlertButton').click();
+
+        },
+        error: function (err) {
+            console.log(err);
+            alert(err);
+        }
+    })
+    return false;
+
+}
+function ChangePassword(formInput) {
+
+    var formData = new FormData(formInput);
+
+    $.ajax({
+        type: "POST",
+        url: formInput.action,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            if(res === true)
+                $('#successUpdatePasswordAlert').click();
 
         },
         error: function (err) {

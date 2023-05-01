@@ -1,0 +1,387 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model CED.Contracts.Users.UserDto
+@{
+    bool isFail = ViewBag.isFail ?? false;
+    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+
+}
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successUpdatePasswordAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Change password successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successUpdatePasswordButton" data-bs-target="#successUpdatePasswordAlert" aria-expanded="false" aria-controls="successUpdatePasswordAlert" aria-label="Close"></button>
+</div>
+<section class="section profile">
+    <div class="row">
+        <div class="col-xl-4">
+
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                    <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                    <h2>@Model.FirstName @Model.LastName</h2>
+                    <h3>@Model.Role</h3>
+                    <div class="social-links mt-2">
+                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                            <h5 class="card-title">About</h5>
+                            <p class="small fst-italic">@Model.Description</p>
+
+                            <h5 class="card-title">Profile Details</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                <div class="col-lg-9 col-md-8">@Model.FirstName @Model.LastName</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Company</div>
+                                <div class="col-lg-9 col-md-8">Educational Development And Consulting Center - CED</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Role</div>
+                                <div class="col-lg-9 col-md-8">@Model.Role</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Address</div>
+                                <div class="col-lg-9 col-md-8">USA</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Address</div>
+                                <div class="col-lg-9 col-md-8">@Model.Address</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Phone</div>
+                                <div class="col-lg-9 col-md-8">@Model.PhoneNumber</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Email</div>
+                                <div class="col-lg-9 col-md-8">@Model.Email</div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+                            <form asp-action="Edit" asp-controller="User" onsubmit="return callPostActionWithForm(this);">
+                                <div class="row mb-3">
+                                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <img src="assets/img/profile-img.jpg" alt="Profile">
+                                        <div class="pt-2">
+                                            <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                                            <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="FirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="FirstName" type="text" class="form-control" id="fullname">
+                                        </div>
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label asp-for="LastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input asp-for="LastName" type="text" class="form-control">
+                                        </div>
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+
+                                    </div>
+
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+
+                                        <label asp-for="Gender" class="form-label">Gender</label>
+                                        <select asp-for="Gender" class="form-select">
+                                            <option selected>@Model.Gender.ToString()</option>
+
+                                            @foreach (string i in genders)
+                                            {
+                                                @if (i != Model.Gender.ToString())
+                                                {
+                                                    <option> @i </option>
+                                                }
+                                            }
+                                        </select>
+                                        <span asp-validation-for="Gender" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+
+
+                                        <label asp-for="BirthYear" class="form-label">Birth</label>
+                                        <input type="number" class="form-control" asp-for="BirthYear" />
+
+                                        <span asp-validation-for="BirthYear" class="text-danger"></span>
+
+                                    </div>
+
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <textarea asp-for="Description" class="form-control" id="about" style="height: 100px"></textarea>
+                                    </div>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input readonly name="company" type="text" class="form-control" id="company" value="Educational Development And Consulting Center - CED ">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label asp-for="Role" class="col-md-4 col-lg-3 col-form-label">Role</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input readonly asp-for="Role" type="text" class="form-control" id="Job">
+                                    </div>
+                                    <span asp-validation-for="Role" class="text-danger"></span>
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="country" type="text" class="form-control" id="Country" value="USA">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label asp-for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="Address" readonly type="text" class="form-control" id="Address">
+                                    </div>
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label asp-for="PhoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="PhoneNumber" readonly type="text" class="form-control" id="Phone">
+                                    </div>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label asp-for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="Email" readonly type="email" class="form-control" id="Email">
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
+                                    </div>
+                                </div>
+                                <!-- hidden info-->>
+                                <div class="col-md-6" hidden>
+                                    <label asp-for="Password" class="form-label">Password</label>
+                                    <input type="password" asp-for="Password" class="form-control">
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="DeleterUserId" class="control-label"></label>
+                                    <input asp-for="DeleterUserId" class="form-control" />
+                                    <span asp-validation-for="DeleterUserId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="DeletionTime" class="control-label"></label>
+                                    <input asp-for="DeletionTime" class="form-control" />
+                                    <span asp-validation-for="DeletionTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="LastModificationTime" class="control-label"></label>
+                                    <input asp-for="LastModificationTime" class="form-control" />
+                                    <span asp-validation-for="LastModificationTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="LastModifierUserId" class="control-label"></label>
+                                    <input asp-for="LastModifierUserId" class="form-control" />
+                                    <span asp-validation-for="LastModifierUserId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="CreationTime" class="control-label"></label>
+                                    <input asp-for="CreationTime" class="form-control" />
+                                    <span asp-validation-for="CreationTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="CreatorUserId" class="control-label"></label>
+                                    <input asp-for="CreatorUserId" class="form-control" />
+                                    <span asp-validation-for="CreatorUserId" class="text-danger"></span>
+                                </div>
+                                <input type="hidden" asp-for="Id" />
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form><!-- End Profile Edit Form -->
+
+                        </div>
+
+                        <div class="tab-pane fade pt-3" id="profile-settings">
+
+                            <!-- Settings Form -->
+                            <form>
+
+                                <div class="row mb-3">
+                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                                            <label class="form-check-label" for="changesMade">
+                                                Changes made to your account
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="newProducts" checked>
+                                            <label class="form-check-label" for="newProducts">
+                                                Information on new products and services
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="proOffers">
+                                            <label class="form-check-label" for="proOffers">
+                                                Marketing and promo offers
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
+                                            <label class="form-check-label" for="securityNotify">
+                                                Security alerts
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form><!-- End settings Form -->
+
+                        </div>
+
+                        <div class="tab-pane fade pt-3" id="profile-change-password">
+                            <!-- Change Password Form -->
+                            <form asp-action="ChangePassword" asp-controller="Authentication" onsubmit="return ChangePassword(this);">
+                                <input asp-for="Id" hidden />
+
+                                <div class="row mb-3">
+                                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="currentPassword" type="password" class="form-control" id="currentPassword">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="Newpassword" type="password" class="form-control" id="newPassword">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="confirmedPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="confirmedPassword" type="password" class="form-control" id="confirmedPassword">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Change Password</button>
+                                </div>
+                            </form><!-- End Change Password Form -->
+
+                        </div>
+
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

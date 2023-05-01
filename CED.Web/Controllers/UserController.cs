@@ -9,6 +9,7 @@ using CED.Contracts.Interfaces.Services;
 using CED.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using CED.Domain.Users;
+using Newtonsoft.Json;
 
 namespace CED.Web.Controllers;
 
@@ -23,13 +24,7 @@ public class UserController : Controller
     private readonly IDateTimeProvider _dateTimeProvider;
 
     public List<UserDto> _userDtos { get; set; } = new List<UserDto>();
-
-    //static list
-    private List<string>? _roles { get; init; }
-    private List<string>? _academics { get; init; }
-    private List<string>? _genders {get; init;}
-    
-
+  
     public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper,IDateTimeProvider dateTimeProvider)
     {
         _logger = logger;
@@ -38,20 +33,14 @@ public class UserController : Controller
         _dateTimeProvider = dateTimeProvider;
         
 
-        if (_roles == null || _roles.Count == 0 || _academics == null || _academics.Count == 0 || _genders == null || _genders.Count == 0)
-        {
-            _roles = CEDEnumProvider.Roles;
-            _academics = CEDEnumProvider.AcademicLevels;
-            _genders = CEDEnumProvider.Genders;
-        }
 
     }
 
     private void PackStaticListToView()
     {
-        ViewData["Roles"] = _roles;
-        ViewData["Genders"] = _genders;
-        ViewData["AcademicLevels"] = _academics;
+        ViewData["Roles"] = CEDEnumProvider.Roles;
+        ViewData["Genders"] = CEDEnumProvider.Genders;
+        ViewData["AcademicLevels"] = CEDEnumProvider.AcademicLevels;
     }
 
     #region basic user management
@@ -97,7 +86,8 @@ public class UserController : Controller
                 };
                 var result = await _mediator.Send(query);
                 ViewBag.Updated = true;
-                return await Edit(Id);
+                //return await Edit(Id);
+                return Json(new {res = true});
 
                 
             }

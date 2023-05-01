@@ -73,47 +73,45 @@ namespace CED.Infrastructure
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
             services.AddAuthentication(scheme =>
-            {
-                scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                scheme.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
-            })
-                    .AddCookie(options =>
-            {
-                options.Cookie.Name = "access_token";
-                options.Cookie.HttpOnly = true;
-                options.Cookie.SameSite = SameSiteMode.Strict;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.ExpireTimeSpan = TimeSpan.FromHours(1);
-
-                options.LoginPath = "/";
-                options.LogoutPath = "/Authentication/Logout";
-                options.AccessDeniedPath = "/AccessDenied";
-
-
-            })
-                    .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secrect)),
-                };
-
-                options.Events = new JwtBearerEvents()
-                {
-                    OnMessageReceived = context =>
                     {
-                        context.Token = context.Request.Cookies["access_token"];
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+                        scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                        scheme.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    })
+                    .AddCookie(options =>
+                    {
+                        options.Cookie.Name = "access_token";
+                        options.Cookie.HttpOnly = true;
+                        options.Cookie.SameSite = SameSiteMode.Strict;
+                        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                        options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+
+                        options.LoginPath = "/";
+                        options.LogoutPath = "/Logout";
+                        options.AccessDeniedPath = "/";
+
+                    })
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidIssuer = jwtSettings.Issuer,
+                            ValidAudience = jwtSettings.Audience,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secrect)),
+                        };
+
+                        options.Events = new JwtBearerEvents()
+                        {
+                            OnMessageReceived = context =>
+                            {
+                                context.Token = context.Request.Cookies["access_token"];
+                                return Task.CompletedTask;
+                            }
+                        };
+                    });
 
 
             return services;
