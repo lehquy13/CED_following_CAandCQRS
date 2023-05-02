@@ -91,7 +91,7 @@ namespace UnitTests.ApplicationTests
         public async Task CreateSubject()
         {
             var command = new CreateUpdateSubjectCommand { SubjectDto = subjectDto };
-            var handler = new CreateSubjectCommandHandler(_mockSubjectRepo.Object, _mockMapper.Object);
+            var handler = new CreateUpdateSubjectCommandHandler(_mockSubjectRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(command, CancellationToken.None);
 
             Assert.True(result);

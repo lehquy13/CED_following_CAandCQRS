@@ -2,6 +2,7 @@ using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts.ClassInformations;
 using CED.Domain.ClassInformations;
+using CED.Domain.Subjects;
 using MapsterMapper;
 using Moq;
 
@@ -10,6 +11,7 @@ namespace UnitTests.ApplicationTests
     public class ClassInformationServiceTest
     {
         private readonly Mock<IClassInformationRepository> _mockClassInformationRepo = new();
+        private readonly Mock<ISubjectRepository> _mockSubjectRepo = new();
         private readonly Mock<IMapper> _mockMapper = new();
 
         private readonly Guid _sampleId = Guid.NewGuid();
@@ -70,7 +72,7 @@ namespace UnitTests.ApplicationTests
         public async Task GetClassInformationById()
         {
             var query = new GetClassInformationQuery { Id = _sampleId };
-            var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object, _mockMapper.Object);
+            var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object,_mockSubjectRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(result);
@@ -82,7 +84,7 @@ namespace UnitTests.ApplicationTests
            
            
             var query = new GetAllClassInformationsQuery { };
-            var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object, _mockMapper.Object);
+            var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object, _mockSubjectRepo.Object , _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(result);
@@ -92,7 +94,7 @@ namespace UnitTests.ApplicationTests
         public async Task CreateClassInformation()
         {
             var command = new CreateUpdateClassInformationCommand { ClassInformationDto = ClassInformationDto };
-            var handler = new CreateClassInformationCommandHandler(_mockClassInformationRepo.Object,_mockMapper.Object);
+            var handler = new CreateUpdateClassInformationCommandHandler(_mockClassInformationRepo.Object,_mockMapper.Object);
             var result = await handler.Handle(command, CancellationToken.None);
 
             Assert.True(result);
@@ -101,7 +103,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task DeleteClassInformation()
         {
-            var command = new DeleteClassInformationCommand { id = _sampleId };
+            var command = new DeleteClassInformationCommand ( _sampleId );
             var handler = new DeleteClassInformationCommandHandler(_mockClassInformationRepo.Object);
             var result = await handler.Handle(command, CancellationToken.None);
 
