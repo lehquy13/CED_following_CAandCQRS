@@ -1,4 +1,4 @@
-﻿namespace CED.Contracts.Interfaces.Logger;
+﻿namespace CED.Domain.Interfaces.Logger;
 
 /// <summary>
 /// This type eliminates the need to depend directly on the ASP.NET Core logging types.

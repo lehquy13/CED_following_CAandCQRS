@@ -1,5 +1,5 @@
-﻿using CED.Contracts.Interfaces.Authentication;
-using CED.Contracts.Interfaces.Services;
+﻿using CED.Domain.Interfaces.Authentication;
+using CED.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
