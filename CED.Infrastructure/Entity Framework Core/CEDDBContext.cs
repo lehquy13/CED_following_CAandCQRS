@@ -20,8 +20,9 @@ public class CEDDBContext : DbContext
     {
         modelBuilder.Entity<Subject>().ToTable("Subject");
         modelBuilder.Entity<User>().ToTable("User");
-       
-        modelBuilder.Entity<ClassInformation>(re =>{
+
+        modelBuilder.Entity<ClassInformation>(re =>
+        {
             re.ToTable("ClassInformation");
             re.HasKey(r => r.Id);
             re.Property(r => r.Title).IsRequired().HasMaxLength(128);
@@ -29,14 +30,17 @@ public class CEDDBContext : DbContext
             re.Property(r => r.Fee).IsRequired();
             re.HasOne<Subject>().WithMany().HasForeignKey(x => x.SubjectId).IsRequired();
 
-            //haven't added to migration, will be struggle right here
-            re.HasOne<User>().WithMany().HasForeignKey(x => x.StudentId);
-            re.HasOne<User>().WithMany().HasForeignKey(x => x.TutorId);
+        });
 
+        modelBuilder.Entity<UserClassInformation>(re =>
+        {
+            re.ToTable("UserClassInformation");
+            re.HasKey(r => r.Id);
+            re.HasOne<User>().WithMany().HasForeignKey(r => r.UserId).IsRequired();
+            re.HasOne<ClassInformation>().WithMany().HasForeignKey(r => r.ClassInformationId).IsRequired();
         });
     }
 }
-
 //using to support addmigration
 public class CEDDBContextFactory : IDesignTimeDbContextFactory<CEDDBContext>
 {

@@ -1,5 +1,5 @@
-﻿using CED.Contracts.Interfaces.Authentication;
-using CED.Contracts.Interfaces.Services;
+﻿using CED.Domain.Interfaces.Authentication;
+using CED.Domain.Interfaces.Services;
 
 using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
@@ -17,8 +17,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using System.Text;
+using CED.Domain.Interfaces.Logger;
+using CED.Infrastructure.Services.Logging;
 
 namespace CED.Infrastructure
 {
@@ -41,6 +42,9 @@ namespace CED.Infrastructure
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+
             // Dependency Injection for repository
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();

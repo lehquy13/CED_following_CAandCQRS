@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CED.Contracts\CED.Contracts.csproj" />
     <ProjectReference Include="..\CED.Domain\CED.Domain.csproj" />
   </ItemGroup>
 </Project>
