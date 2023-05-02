@@ -9,11 +9,13 @@ using CED.Application.Services.Users.Queries;
 using CED.Contracts.Authentication;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
+using CED.Web.Utilities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Dynamic.Core.Tokenizer;
 using System.Security.Claims;
 
 namespace CED.Web.Controllers;
@@ -24,12 +26,14 @@ public class AuthenticationController : Controller
     private readonly IMapper _mapper;
 
     private readonly ILogger<AuthenticationController> _logger;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger)
+    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger, IWebHostEnvironment webHostEnvironment)
     {
         _mediator = mediator;
         _mapper = mapper;
         _logger = logger;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     private void PackStaticListToView()
@@ -75,9 +79,17 @@ public class AuthenticationController : Controller
             return View("Login", new LoginRequest("", ""));
         }
         // Store the JWT token in a cookie
-        var command = new SaveTokenCommand(loginResult.Token, HttpContext);
-        var result = await _mediator.Send(command);
-        if (result is false) { return View("Index", this.ModelState); }
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            SameSite = SameSiteMode.Strict,
+            Secure = true,
+            IsEssential = true,
+            Expires = DateTime.UtcNow.AddDays(1),
+            //Domain = "yourdomain.com",
+        };
+        HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
 
         var returnUrl = TempData["ReturnUrl"] as string;
         if (returnUrl is null)
@@ -118,7 +130,7 @@ public class AuthenticationController : Controller
     [Authorize]
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, UserDto userDto)
+    public async Task<IActionResult> Edit(Guid Id, UserDto userDto, IFormFile formFile)
     {
         if (Id != userDto.Id)
         {
@@ -128,6 +140,7 @@ public class AuthenticationController : Controller
         {
             try
             {
+                await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
                 var query = new CreateUserCommand()
                 {
                     UserDto = userDto

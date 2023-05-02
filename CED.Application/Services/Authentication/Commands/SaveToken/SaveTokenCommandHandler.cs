@@ -1,9 +1,9 @@
-﻿using CED.Contracts.Interfaces.Authentication;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace CED.Application.Services.Authentication.Commands.SaveToken;
 
+//this currently fails the architecture
 public class SaveTokenCommandHandler
     : IRequestHandler<SaveTokenCommand, bool>
 {

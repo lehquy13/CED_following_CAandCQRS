@@ -11,6 +11,7 @@ public class User : FullAuditedAggregateRoot<Guid>
     public int BirthYear { get; set; } = 1960;
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
+    public string Image { get; set; } = string.Empty;
 
     //Account References
     public string Email { get; set; } = string.Empty;

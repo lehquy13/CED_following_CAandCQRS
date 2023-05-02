@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace CED.Web;
+namespace CED.Web.Utilities;
 
 public class Helper
 {
+ 
+
     public static string RenderRazorViewToString(Controller? controller, string viewName, object? model = null)
     {
         if (controller is null) return string.Empty;
@@ -31,20 +33,37 @@ public class Helper
             return sw.GetStringBuilder().ToString();
         }
     }
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class NoDirectAccessAttribute : ActionFilterAttribute
+   
+    public static async Task<string> SaveFiles(IFormFile formFile, string wwwRootPath)
     {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        if (formFile != null && formFile.Length > 0)
         {
-            if (
-                filterContext.HttpContext.Request.GetTypedHeaders().Referer == null ||
-                 filterContext.HttpContext.Request.GetTypedHeaders().Host.Host.ToString()
-                 != filterContext.HttpContext.Request.GetTypedHeaders().Referer?.Host.ToString()
-                 )
+            string fileName = formFile.FileName;
+            string path = Path.Combine(wwwRootPath + "/avatar/", fileName);
+            using (var fileStream = new FileStream(path, FileMode.Create))
             {
-                filterContext.HttpContext.Response.Redirect("/");
+                await formFile.CopyToAsync(fileStream);
+                
             }
+            return fileName;
+        }
+
+        return string.Empty;
+    }
+}
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+public class NoDirectAccessAttribute : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext filterContext)
+    {
+        if (
+            filterContext.HttpContext.Request.GetTypedHeaders().Referer == null ||
+             filterContext.HttpContext.Request.GetTypedHeaders().Host.Host.ToString()
+             != filterContext.HttpContext.Request.GetTypedHeaders().Referer?.Host.ToString()
+             )
+        {
+            filterContext.HttpContext.Response.Redirect("/");
         }
     }
 }

@@ -8,6 +8,7 @@ using CED.Application.Services.ClassInformations.Commands;
 using CED.Domain.Shared;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using CED.Web.Utilities;
 
 namespace CED.Web.Controllers;
 

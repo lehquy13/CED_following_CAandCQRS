@@ -2,6 +2,7 @@
 using CED.Domain.Shared.ClassInformationConsts;
 using MapsterMapper;
 using CED.Application.Services.Abstractions.CommandHandlers;
+using Abp.Domain.Entities;
 
 namespace CED.Application.Services.Users.Commands;
 
@@ -21,7 +22,8 @@ public class UserInfoChangingCommandHandler
         {
             throw new Exception("User with an email doesn't exist");
         }
-        
+
+       
 
         user.UpdateUserInformation(_mapper.Map<User>(command.UserDto));
 
