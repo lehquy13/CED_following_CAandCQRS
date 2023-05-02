@@ -1,5 +1,4 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
-using CED.Domain.Subjects;
 using CED.Domain.Users;
 using MapsterMapper;
 

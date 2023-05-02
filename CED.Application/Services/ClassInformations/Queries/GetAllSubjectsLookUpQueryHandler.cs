@@ -3,7 +3,6 @@ using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts.ClassInformations;
 using CED.Domain.Subjects;
 using MapsterMapper;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace CED.Application.Services.Subjects.Queries;
@@ -21,12 +20,6 @@ public class GetAllSubjectsLookUpQueryHandler : GetAllQueryHandler<GetAllSubject
         {
             var subjects = await _subjectRepository.GetAllList();
             var subjectDtos = _mapper.Map<List<SubjectLookupDto>>(subjects);
-
-
-            var serializes = JsonConvert.SerializeObject(subjectDtos);
-            query.HttpContext.Session.SetString("SubjectList", serializes);
-
-            //return Enumerable.Empty<SubjectLookupDto>().ToList();
             return subjectDtos;
         }
         catch (Exception ex)

@@ -1,4 +1,3 @@
-using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
 using MediatR;
 

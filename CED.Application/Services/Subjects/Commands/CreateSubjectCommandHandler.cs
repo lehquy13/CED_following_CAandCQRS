@@ -4,12 +4,12 @@ using MapsterMapper;
 
 namespace CED.Application.Services.Subjects.Commands;
 
-public class CreateSubjectCommandHandler : CreateUpdateCommandHandler<CreateUpdateSubjectCommand>
+public class CreateUpdateSubjectCommandHandler : CreateUpdateCommandHandler<CreateUpdateSubjectCommand>
 {
 
     private readonly ISubjectRepository _subjectRepository;
 
-    public CreateSubjectCommandHandler(ISubjectRepository subjectRepository, IMapper mapper) : base(mapper)
+    public CreateUpdateSubjectCommandHandler(ISubjectRepository subjectRepository, IMapper mapper) : base(mapper)
     {
         _subjectRepository = subjectRepository;
     }

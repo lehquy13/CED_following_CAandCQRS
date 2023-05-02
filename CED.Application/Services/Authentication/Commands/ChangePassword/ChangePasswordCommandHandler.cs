@@ -1,4 +1,4 @@
-﻿using CED.Contracts.Interfaces.Authentication;
+﻿using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Users;
 using MediatR;
 using Microsoft.Extensions.Logging;

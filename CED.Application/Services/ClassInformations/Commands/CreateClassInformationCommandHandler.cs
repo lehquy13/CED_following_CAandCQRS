@@ -1,16 +1,15 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.ClassInformations;
-using Mapster;
 using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Commands;
 
-public class CreateClassInformationCommandHandler 
+public class CreateUpdateClassInformationCommandHandler 
     : CreateUpdateCommandHandler<CreateUpdateClassInformationCommand>
 {
     private readonly IClassInformationRepository _classInformationRepository;
 
-    public CreateClassInformationCommandHandler(IClassInformationRepository classInformationRepository, IMapper mapper)
+    public CreateUpdateClassInformationCommandHandler(IClassInformationRepository classInformationRepository, IMapper mapper)
         :base(mapper)
     {
         _classInformationRepository = classInformationRepository;

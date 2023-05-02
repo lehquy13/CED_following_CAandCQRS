@@ -1,7 +1,5 @@
-﻿using Azure.Core;
-using CED.Application.Services.Authentication.Commands.ChangePassword;
+﻿using CED.Application.Services.Authentication.Commands.ChangePassword;
 using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Commands.SaveToken;
 using CED.Application.Services.Authentication.Queries.Login;
 using CED.Application.Services.Authentication.Queries.ValidateToken;
 using CED.Application.Services.Subjects.Commands;
@@ -14,9 +12,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq.Dynamic.Core.Tokenizer;
-using System.Security.Claims;
+
 
 namespace CED.Web.Controllers;
 

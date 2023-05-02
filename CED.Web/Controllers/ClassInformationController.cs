@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MapsterMapper;
 using MediatR;
-using CED.Contracts.Interfaces.Services;
 using CED.Contracts.ClassInformations;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Commands;
@@ -20,15 +19,13 @@ public class ClassInformationController : Controller
     //dependencies 
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
-    private readonly IDateTimeProvider _dateTimeProvider;
 
 
-    public ClassInformationController(ILogger<ClassInformationController> logger, ISender sender, IMapper mapper, IDateTimeProvider dateTimeProvider)
+    public ClassInformationController(ILogger<ClassInformationController> logger, ISender sender, IMapper mapper)
     {
         _logger = logger;
         _mediator = sender;
         _mapper = mapper;
-        _dateTimeProvider = dateTimeProvider;
 
 
     }
@@ -43,13 +40,13 @@ public class ClassInformationController : Controller
         var value = HttpContext.Session.GetString("SubjectList");
         if (value is null)
         {
-            ViewData["Subjects"] = await _mediator.Send(new GetAllSubjectsLookUpQuery(HttpContext));
-            value = HttpContext.Session.GetString("SubjectList");
+            var subjectLookupDtos = await _mediator.Send(new GetAllSubjectsLookUpQuery(HttpContext));
+            ViewData["Subjects"] = subjectLookupDtos;
+            HttpContext.Session.SetString("SubjectList", JsonConvert.SerializeObject(subjectLookupDtos));
         }
         else
         {
             ViewData["Subjects"] = JsonConvert.DeserializeObject<List<SubjectLookupDto>>(value);
-
         }
     }
 
@@ -68,9 +65,9 @@ public class ClassInformationController : Controller
     public async Task<IActionResult> Edit(Guid Id)
     {
         await PackStaticListToView(this.HttpContext);
-        
-        
-        var query = new GetClassInformationQuery() 
+
+
+        var query = new GetClassInformationQuery()
         {
             Id = Id
         };
@@ -111,15 +108,15 @@ public class ClassInformationController : Controller
     public async Task<IActionResult> Create()
     {
         await PackStaticListToView(this.HttpContext);
-        
+
         return View(new ClassInformationDto());
     }
 
     [HttpPost("Create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ClassInformationDto classDto) 
+    public async Task<IActionResult> Create(ClassInformationDto classDto)
     {
-        classDto.LastModificationTime = _dateTimeProvider.UtcNow;
+        classDto.LastModificationTime = DateTime.UtcNow;
         var query = new CreateUpdateClassInformationCommand() { ClassInformationDto = classDto };
         var result = await _mediator.Send(query);
 

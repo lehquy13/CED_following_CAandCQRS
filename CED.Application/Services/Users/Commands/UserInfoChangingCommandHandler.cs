@@ -1,8 +1,6 @@
 ﻿using CED.Domain.Users;
-using CED.Domain.Shared.ClassInformationConsts;
 using MapsterMapper;
 using CED.Application.Services.Abstractions.CommandHandlers;
-using Abp.Domain.Entities;
 
 namespace CED.Application.Services.Users.Commands;
 

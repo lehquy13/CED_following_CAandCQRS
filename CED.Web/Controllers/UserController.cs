@@ -5,11 +5,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Subjects.Commands;
-using CED.Contracts.Interfaces.Services;
 using CED.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
-using CED.Domain.Users;
-using Newtonsoft.Json;
 using CED.Web.Utilities;
 
 namespace CED.Web.Controllers;
@@ -22,19 +18,14 @@ public class UserController : Controller
 
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
-    private readonly IDateTimeProvider _dateTimeProvider;
 
     public List<UserDto> _userDtos { get; set; } = new List<UserDto>();
   
-    public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper,IDateTimeProvider dateTimeProvider)
+    public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper)
     {
         _logger = logger;
         _mediator = sender;
-        _mapper = mapper;
-        _dateTimeProvider = dateTimeProvider;
-        
-
-
+        _mapper = mapper;      
     }
 
     private void PackStaticListToView()
@@ -115,7 +106,7 @@ public class UserController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(UserDto userDto) // cant use userdto
     {
-        userDto.LastModificationTime = _dateTimeProvider.UtcNow;
+        userDto.LastModificationTime = DateTime.UtcNow;
         var query = new CreateUserCommand() { UserDto = userDto };
         var result = await _mediator.Send(query);
 

@@ -1,6 +1,5 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.Subjects;
-using MapsterMapper;
 
 namespace CED.Application.Services.Subjects.Commands;
 

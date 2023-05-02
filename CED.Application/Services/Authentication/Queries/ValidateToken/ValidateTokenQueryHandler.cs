@@ -1,4 +1,4 @@
-﻿using CED.Contracts.Interfaces.Authentication;
+﻿using CED.Domain.Interfaces.Authentication;
 using MediatR;
 
 namespace CED.Application.Services.Authentication.Queries.ValidateToken;

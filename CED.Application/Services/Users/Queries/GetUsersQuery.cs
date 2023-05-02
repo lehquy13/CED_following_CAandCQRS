@@ -1,5 +1,3 @@
-using CED.Contracts.Users;
-using CED.Domain.Shared.ClassInformationConsts;
 using MediatR;
 
 namespace CED.Application.Services.Users.Queries;

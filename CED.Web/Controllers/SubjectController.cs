@@ -4,7 +4,6 @@ using MapsterMapper;
 using MediatR;
 using CED.Application.Services.Subjects.Queries;
 using CED.Application.Services.Subjects.Commands;
-using CED.Contracts.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
 
@@ -18,16 +17,14 @@ public class SubjectController : Controller
     //dependencies 
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
-    private readonly IDateTimeProvider _dateTimeProvider;
 
 
 
-    public SubjectController(ILogger<SubjectController> logger, ISender sender, IMapper mapper, IDateTimeProvider dateTimeProvider)
+    public SubjectController(ILogger<SubjectController> logger, ISender sender, IMapper mapper)
     {
         _logger = logger;
         _mediator = sender;
         _mapper = mapper;
-        _dateTimeProvider = dateTimeProvider;
     }
 
     [HttpGet]
@@ -96,7 +93,7 @@ public class SubjectController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(SubjectDto subjectDto) // cant use userdto
     {
-        subjectDto.LastModificationTime = _dateTimeProvider.UtcNow;
+        subjectDto.LastModificationTime = DateTime.UtcNow;
         var query = new CreateUpdateSubjectCommand() { SubjectDto = subjectDto };
         var result = await _mediator.Send(query);
 
