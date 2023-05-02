@@ -1,7 +1,5 @@
 ﻿using CED.Application.Services.Authentication;
-using CED.Application.Services.Authentication.Commands.Logout;
 using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Commands.SaveToken;
 using CED.Application.Services.Authentication.Queries.Login;
 using CED.Application.Services.Authentication.Queries.ValidateToken;
 using CED.Contracts.Authentication;
