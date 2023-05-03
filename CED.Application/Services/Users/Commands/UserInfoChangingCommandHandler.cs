@@ -21,8 +21,6 @@ public class UserInfoChangingCommandHandler
             throw new Exception("User with an email doesn't exist");
         }
 
-       
-
         user.UpdateUserInformation(_mapper.Map<User>(command.UserDto));
 
         var afterUpdatedUser = _userRepository.Update(user);

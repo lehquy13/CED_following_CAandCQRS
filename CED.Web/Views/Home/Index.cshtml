@@ -7,8 +7,23 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-<a asp-action="Index" asp-controller="Subject">Test Subjects Destination_Route</a>
-<a asp-action="Index" asp-controller="User">Test Users Destination_Route</a>
+<div class="row mb-3">
+    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+    <div class="col-md-8 col-lg-9">
+        <img src="~/avatar/default_avatar1.png" alt="Profile" id="avatar">
+        <input id="image"  type="text" />
+        <div class="pt-2">
+
+            <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture","Profile",null)','avatar'); return false;" />
+            <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
+                <i class="bi bi-upload"></i>
+            </a>
+
+
+
+        </div>
+    </div>
+</div>
 
 <div class="card">
     <div class="card-body">

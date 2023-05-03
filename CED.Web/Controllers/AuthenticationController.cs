@@ -1,13 +1,8 @@
-﻿using CED.Application.Services.Authentication.Commands.ChangePassword;
-using CED.Application.Services.Authentication.Commands.Register;
+﻿using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.Queries.Login;
 using CED.Application.Services.Authentication.Queries.ValidateToken;
-using CED.Application.Services.Subjects.Commands;
-using CED.Application.Services.Users.Queries;
 using CED.Contracts.Authentication;
-using CED.Contracts.Users;
 using CED.Domain.Shared;
-using CED.Web.Utilities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,14 +17,12 @@ public class AuthenticationController : Controller
     private readonly IMapper _mapper;
 
     private readonly ILogger<AuthenticationController> _logger;
-    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger, IWebHostEnvironment webHostEnvironment)
+    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger)
     {
         _mediator = mediator;
         _mapper = mapper;
         _logger = logger;
-        _webHostEnvironment = webHostEnvironment;
     }
 
     private void PackStaticListToView()
@@ -90,110 +83,13 @@ public class AuthenticationController : Controller
         var returnUrl = TempData["ReturnUrl"] as string;
         if (returnUrl is null)
             return RedirectToAction("Index", "Home");
+
         _logger.Log(LogLevel.Debug, returnUrl);
 
         return Redirect(returnUrl);
     }
 
-    [Authorize]
-    [HttpGet("Profile")]
-    public async Task<IActionResult> Profile()
-    {
-        PackStaticListToView();
-        string validateToken = HttpContext.Request.Cookies["access_token"] ?? "";
-        if (HttpContext.User.Identity is null || HttpContext.User.Identity.IsAuthenticated is false )
-        {
-            return View("Login", new LoginRequest("", ""));
-        }
-        var identity = HttpContext.User.Identities.FirstOrDefault();
-        
-        if (identity == null) { return View("Login", new LoginRequest("", "")); }
-
-        var query = new GetUserByIdQuery<UserDto>() {
-            Id = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
-        };
-
-        var loginResult = await _mediator.Send(query);
-
-        if (loginResult is not null)
-        {
-            return View(loginResult);
-        }
-
-        return View("Login", new LoginRequest("", ""));
-    }
-
-    [Authorize]
-    [HttpPost("Edit")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, UserDto userDto, IFormFile formFile)
-    {
-        if (Id != userDto.Id)
-        {
-            return NotFound();
-        }
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
-                var query = new CreateUserCommand()
-                {
-                    UserDto = userDto
-                };
-                var result = await _mediator.Send(query);
-                ViewBag.Updated = true;
-                return View(userDto);
-
-
-
-            }
-            catch (Exception ex)
-            {
-                //Log the error (uncomment ex variable name and write a log.)
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists, " + ex.Message +
-                    "see your system administrator.");
-            }
-        }
-        return View(userDto);
-    }
-    [Authorize]
-    [HttpPost("ChangePassword")]
-    //[ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
-    {
-        if (changePasswordRequest.ConfirmedPassword != changePasswordRequest.NewPassword)
-        {
-            return View("Profile",ModelState);
-        }
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                var query = _mapper.Map<ChangePasswordCommand>(changePasswordRequest);
-
-                var loginResult = await _mediator.Send(query);
-
-                if(loginResult.IsSuccess)
-                {
-                    ViewBag.Updated = true;
-
-                    return Json(true);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                //Log the error (uncomment ex variable name and write a log.)
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists, " + ex.Message +
-                    "see your system administrator.");
-            }
-        }
-        return View("Profile", ModelState);
-
-    }
+   
 
 
 
@@ -202,7 +98,7 @@ public class AuthenticationController : Controller
     public IActionResult Logout()
     {
         HttpContext.Response.Cookies.Delete("access_token");
-       
+
         return View("Login", new LoginRequest("", ""));
     }
 

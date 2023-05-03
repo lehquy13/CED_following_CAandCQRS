@@ -11,7 +11,7 @@ public class User : FullAuditedAggregateRoot<Guid>
     public int BirthYear { get; set; } = 1960;
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Image { get; set; } = string.Empty;
+    public string Image { get; set; } = "default_avatar1.png";
 
     //Account References
     public string Email { get; set; } = string.Empty;
@@ -74,7 +74,7 @@ public class User : FullAuditedAggregateRoot<Guid>
 
         Email = user.Email;
         PhoneNumber = user.PhoneNumber;
-
+        Image = user.Image;
         if(user.Role == UserRole.Tutor)
         {
             UpdateTutorInformation(user);

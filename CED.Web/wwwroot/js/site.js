@@ -16,8 +16,18 @@ function callPostActionWithForm(formInput) {
         success: function (res) {
             //$('#successAlert').removeAttr('hidden');
             //$('#successAlert').show();
-            if (res.res === true)
-                $('#successAlertButton').click();
+            if (res.res === true) {
+                if (res.viewName === "Profile") {
+                    $('#main').html(res.partialView);
+                    $('#main').click();
+                    $('#successAlertButton').click();
+
+                }
+                else {
+                    $('#successAlertButton').click();
+                }
+            }
+                
             else if (res.res === "deleted") {
                 $('#verticalycentered').modal('hide');
                 location.reload();
@@ -81,10 +91,43 @@ function OpenGetDialog(url, title) {
         }
     })
 }
+
 function OpenConfirmDialog(url, title) {
     $('#verticalycentered .modal-title').html(title);
 
     $('#confirmDialogForm').attr('action', url);
     $('#verticalycentered').modal('show')
+   
+}
+function LoadImage(url, id) {
+ 
+
+    var formData = new FormData();
+    formData.append('formFile', $('#formFile')[0].files[0]);
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+
+            if (res.res === true) {
+                $('#' + id).attr("src", res.image);
+                $('#image').attr("value", res.image);
+                
+                
+            }
+            console.log(res);
+
+        },
+        error: function (err) {
+            console.log(err);
+            alert(err);
+        }
+    })
+
+    return false;
+ 
    
 }
