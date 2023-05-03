@@ -78,8 +78,14 @@ public class UserController : Controller
                 };
                 var result = await _mediator.Send(query);
                 ViewBag.Updated = true;
-                //return await Edit(Id);
-                return Json(new {res = true});
+                PackStaticListToView();
+
+
+                return Helper.RenderRazorViewToString(
+                    this,
+                    "Edit",
+                    userDto
+                    );
 
                 
             }

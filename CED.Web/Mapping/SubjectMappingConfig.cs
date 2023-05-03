@@ -21,10 +21,7 @@ public class SubjectMappingConfig : IRegister
 
 
         //----------------------------------------------------------------
-        config.NewConfig<SubjectDto, SubjectViewModel>()
-            .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.Name, src => src.Name)
-            .Map(dest => dest.Description, src => src.Description);
+     
 
     }
 }

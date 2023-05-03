@@ -17,15 +17,12 @@ function callPostActionWithForm(formInput) {
             //$('#successAlert').removeAttr('hidden');
             //$('#successAlert').show();
             if (res.res === true) {
-                if (res.viewName === "Profile") {
+                
                     $('#main').html(res.partialView);
                     $('#main').click();
                     $('#successAlertButton').click();
 
-                }
-                else {
-                    $('#successAlertButton').click();
-                }
+                
             }
                 
             else if (res.res === "deleted") {

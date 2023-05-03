@@ -101,7 +101,9 @@ public class ClassInformationController : Controller
             return View(classDto);
         }
         ViewBag.Updated = true;
-        return await Edit(Id);
+        await PackStaticListToView(this.HttpContext);
+
+        return Helper.RenderRazorViewToString(this,"Edit",classDto);
     }
 
     [HttpGet("Create")]

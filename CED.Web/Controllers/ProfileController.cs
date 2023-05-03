@@ -107,14 +107,7 @@ namespace CED.Web.Controllers
                     var result = await _mediator.Send(query);
                     ViewBag.Updated = result;
 
-                    return Json(new
-                    {
-                        res = true,
-                        viewName = "Profile",
-                        partialView = Helper.RenderRazorViewToString(this, "Profile", userDto)
-                    });
-
-
+                    return Helper.RenderRazorViewToString(this, "Profile", userDto);
 
                 }
                 catch (Exception ex)

@@ -3,23 +3,42 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Text.Json;
+
 
 namespace CED.Web.Utilities;
 
 public class Helper
 {
- 
 
-    public static string RenderRazorViewToString(Controller? controller, string viewName, object? model = null)
+    public static JsonResult RenderRazorViewToString(Controller? controller, string viewName, object? model = null)
     {
-        if (controller is null) return string.Empty;
+        if (controller is null)
+            return new JsonResult(new
+            {
+                res = false,
+                viewName = "",
+                partialView = ""
+            });
         controller.ViewData.Model = model;
         using (var sw = new StringWriter())
         {
             IViewEngine? viewEngine = controller.HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
-            if (viewEngine is null) return string.Empty;
+            if (viewEngine is null)
+                return new JsonResult(new
+                {
+                    res = false,
+                    viewName = "",
+                    partialView = ""
+                });
             ViewEngineResult viewResult = viewEngine.FindView(controller.ControllerContext, viewName, false);
-            if (viewResult is null || viewResult.View is null) return string.Empty;
+            if (viewResult is null || viewResult.View is null)
+                return new JsonResult(new
+                {
+                    res = false,
+                    viewName = "",
+                    partialView = ""
+                });
 
             ViewContext viewContext = new ViewContext(
                 controller.ControllerContext,
@@ -30,10 +49,16 @@ public class Helper
                 new HtmlHelperOptions()
             );
             viewResult.View.RenderAsync(viewContext);
-            return sw.GetStringBuilder().ToString();
+            return new JsonResult(new
+            {
+                res = true,
+                viewName = viewName,
+                partialView = sw.GetStringBuilder().ToString()
+            });
+
         }
     }
-   
+
     public static async Task<string> SaveFiles(IFormFile formFile, string wwwRootPath)
     {
         if (formFile != null && formFile.Length > 0)
@@ -43,7 +68,7 @@ public class Helper
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
                 await formFile.CopyToAsync(fileStream);
-                
+
             }
             return fileName;
         }
