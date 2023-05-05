@@ -1,5 +1,7 @@
-﻿using CED.Domain.Interfaces.Authentication;
+﻿using CED.Contracts.Authentication;
+using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Users;
+using MapsterMapper;
 using MediatR;
 
 namespace CED.Application.Services.Authentication.Commands.Register;
@@ -9,11 +11,13 @@ public class RegisterCommandHandler
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
     public RegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
-        IUserRepository userRepository)
+        IUserRepository userRepository, IMapper mapper)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
         _userRepository = userRepository;
+        _mapper = mapper;
     }
     public async Task<AuthenticationResult> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
@@ -42,7 +46,7 @@ public class RegisterCommandHandler
             command.LastName);
 
 
-        return new AuthenticationResult(user, token,true,"Register successfully");
+        return new AuthenticationResult(_mapper.Map<UserLoginDto>(user), token,true,"Register successfully");
     }
 }
 

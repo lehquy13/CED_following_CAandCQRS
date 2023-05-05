@@ -25,13 +25,6 @@ public class AuthenticationController : Controller
         _logger = logger;
     }
 
-    private void PackStaticListToView()
-    {
-        ViewData["Roles"] = CEDEnumProvider.Roles;
-        ViewData["Genders"] = CEDEnumProvider.Genders;
-        ViewData["AcademicLevels"] = CEDEnumProvider.AcademicLevels;
-    }
-
     [Route("")]
     public async Task<IActionResult> Index(string? returnUrl)
     {
@@ -62,7 +55,7 @@ public class AuthenticationController : Controller
         var loginResult = await _mediator.Send(query);
 
 
-        if (loginResult.IsSuccess is false)
+        if (loginResult.IsSuccess is false || loginResult.User is null)
         {
             ViewBag.isFail = true;
             return View("Login", new LoginRequest("", ""));
@@ -79,6 +72,7 @@ public class AuthenticationController : Controller
             //Domain = "yourdomain.com",
         };
         HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
+        HttpContext.Response.Cookies.Append("name", loginResult.User.FullName);
 
         var returnUrl = TempData["ReturnUrl"] as string;
         if (returnUrl is null)

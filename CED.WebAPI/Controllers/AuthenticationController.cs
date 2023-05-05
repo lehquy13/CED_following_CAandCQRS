@@ -27,7 +27,7 @@ public class AuthenticationController : ControllerBase
        
         var registerResult = await _mediator.Send(command);
       
-        return Ok(_mapper.Map<AuthenticationResponse>(registerResult));
+        return Ok(registerResult);
     }
 
     [HttpPost("Login")]
@@ -37,7 +37,7 @@ public class AuthenticationController : ControllerBase
 
         var loginResult = await _mediator.Send(query);
 
-        return Ok(_mapper.Map<AuthenticationResponse>(loginResult));
+        return Ok(loginResult);
 
     }
 

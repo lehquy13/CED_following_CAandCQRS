@@ -14,10 +14,7 @@ public class AuthenticationMappingConfig : IRegister
 
         config.NewConfig<RegisterRequest, RegisterCommand>();
         config.NewConfig<LoginRequest, LoginQuery>();
-        config.NewConfig<AuthenticationResult, AuthenticationResponse>()
-            .Map(dest => dest.Token, src => src.Token)
-            .Map(dest => dest, src => src.User);
-
+     
         config.NewConfig<string, ValidateTokenQuery>()
             .Map(dest => dest.validateToken, src => src);
     }

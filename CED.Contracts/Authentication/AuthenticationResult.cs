@@ -1,9 +1,7 @@
-using CED.Domain.Users;
-
-namespace CED.Application.Services.Authentication;
+namespace CED.Contracts.Authentication;
 
 public record AuthenticationResult(
-    User? User,
+    UserLoginDto? User,
     string Token,
     bool IsSuccess,
     string Message
