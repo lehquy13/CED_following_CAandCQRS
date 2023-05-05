@@ -97,7 +97,7 @@ public class SubjectController : Controller
         var query = new CreateUpdateSubjectCommand() { SubjectDto = subjectDto };
         var result = await _mediator.Send(query);
 
-        return View(result);
+        return View("Index");
     }
 
     [HttpGet("Delete")]

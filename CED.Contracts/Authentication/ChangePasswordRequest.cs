@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 namespace CED.Contracts.Authentication;
 public class ChangePasswordRequest
 {
-
     [Required]
     public Guid Id { get; set; } 
 
@@ -15,6 +14,7 @@ public class ChangePasswordRequest
     public string NewPassword { get; set; } = string.Empty;
 
     [Required]
+    [Compare("NewPassword")]
     public string ConfirmedPassword { get; set; } = string.Empty;
 }
 

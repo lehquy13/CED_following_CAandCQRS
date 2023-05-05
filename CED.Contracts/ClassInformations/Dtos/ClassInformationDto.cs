@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations;
@@ -37,7 +38,10 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
 
     //Confirmed data related
 
-    public Guid? TutorId { get; set; }
+    public Guid? TutorDtoId { get; set; }
+    public string TutorName { get; set; } = string.Empty;
+    public string TutorPhoneNumber { get; set; } = string.Empty;
+    public string TutorEmail { get; set; } = string.Empty;
     public Guid? StudentId { get; set; }
 }
 

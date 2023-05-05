@@ -89,11 +89,12 @@ namespace CED.Infrastructure
                         options.Cookie.SameSite = SameSiteMode.Strict;
                         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                         //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-                        options.Cookie.Expiration = TimeSpan.FromMinutes(90);
+                        options.ExpireTimeSpan = TimeSpan.FromMinutes(90);
 
                         options.LoginPath = "/";
                         options.LogoutPath = "/Logout";
                         options.AccessDeniedPath = "/";
+                      
 
                         
 

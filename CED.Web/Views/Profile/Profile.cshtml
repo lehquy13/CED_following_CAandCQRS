@@ -1,9 +1,8 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model CED.Contracts.Users.UserDto
+@model ProfileViewModel
 @{
-    bool isFail = ViewBag.isFail ?? false;
     List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
 
 }
@@ -13,10 +12,10 @@
     <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
 </div>
 
-<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successUpdatePasswordAlert">
+<div class="alert alert-danger alert-dismissible fade collapse" role="alert" id="failAlert">
     <i class="bi bi-check-circle me-1"></i>
-    Change password successfully!
-    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successUpdatePasswordButton" data-bs-target="#successUpdatePasswordAlert" aria-expanded="false" aria-controls="successUpdatePasswordAlert" aria-label="Close"></button>
+    Update Fail!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="failAlertButton" data-bs-target="#failAlert" aria-expanded="false" aria-controls="failAlert" aria-label="Close"></button>
 </div>
 <section class="section profile">
     <div class="row">
@@ -25,9 +24,9 @@
             <div class="card">
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                    <img src="/avatar/@Model.Image" alt="Profile" class="rounded-circle">
-                    <h2>@Model.FirstName @Model.LastName</h2>
-                    <h3>@Model.Role</h3>
+                    <img src="/avatar/@Model.UserDto.Image" alt="Profile" class="rounded-circle">
+                    <h2>@Model.UserDto.FirstName @Model.UserDto.LastName</h2>
+                    <h3>@Model.UserDto.Role</h3>
                     <div class="social-links mt-2">
                         <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -51,7 +50,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                            <button class="nav-link" data-bs-toggle="tab" id ="profile-edit-button" data-bs-target="#profile-edit">Edit Profile</button>
                         </li>
 
                         <li class="nav-item">
@@ -66,202 +65,15 @@
                     <div class="tab-content pt-2">
 
                         <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                            <partial name="_ProfileOverview" model="@Model" />
+                            <partial name="_ProfileOverview" model="@Model.UserDto" />
                         </div>
 
                         <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                             <!-- Profile Edit Form -->
-                            <form asp-action="Edit" asp-controller="Profile" onsubmit="return callPostActionWithForm(this);">
-                                <div class="row mb-3">
-                                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <img src="~/avatar/@Model.Image" alt="Profile" id="avatar">
-                                        <input id="image" asp-for="Image" hidden type="text" />
-                                        <div class="pt-2">
-
-                                            <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture","Profile",null)','avatar'); return false;" />
-                                            <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
-                                                <i class="bi bi-upload"></i>
-                                            </a>
-
-
-
-                                            <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label asp-for="FirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input asp-for="FirstName" type="text" class="form-control" id="firstname">
-
-                                    </div>
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="about" class="col-md-4 col-lg-3 col-form-label">LastName</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input asp-for="LastName" type="text" class="form-control" id="lastname">
-                                    </div>
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
-                                </div>
-                                <div class="row mb-3">
-                                    <label asp-for="BirthYear" class="col-md-4 col-lg-3 col-form-label">Birth</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input type="number" class="form-control" asp-for="BirthYear" />
-                                    </div>
-
-                                    <span asp-validation-for="BirthYear" class="text-danger"></span>
-
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="about" class="col-md-4 col-lg-3 col-form-label">LastName</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <select asp-for="Gender" class="form-select">
-                                            <option selected>@Model.Gender.ToString()</option>
-
-                                            @foreach (string i in genders)
-                                            {
-                                                @if (i != Model.Gender.ToString())
-                                                {
-                                                    <option> @i </option>
-                                                }
-                                            }
-                                        </select>
-                                    </div>
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
-                                </div>
-
-                             
-                           
-                                <div class="row mb-3">
-                                    <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <textarea asp-for="Description" class="form-control" id="about" style="height: 100px"></textarea>
-                                    </div>
-                                    <span asp-validation-for="Description" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input readonly name="company" type="text" class="form-control" id="company" value="Educational Development And Consulting Center - CED ">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label asp-for="Role" class="col-md-4 col-lg-3 col-form-label">Role</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input readonly asp-for="Role" type="text" class="form-control" id="Job">
-                                    </div>
-                                    <span asp-validation-for="Role" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="country" type="text" class="form-control" id="Country" value="USA">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label asp-for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input asp-for="Address" readonly type="text" class="form-control" id="Address">
-                                    </div>
-                                    <span asp-validation-for="Address" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label asp-for="PhoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input asp-for="PhoneNumber" readonly type="text" class="form-control" id="Phone">
-                                    </div>
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label asp-for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input asp-for="Email" readonly type="email" class="form-control" id="Email">
-                                    </div>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
-                                    </div>
-                                </div>
-                                <!-- hidden info-->
-                                <div class="col-md-6" hidden>
-                                    <label asp-for="Password" class="form-label">Password</label>
-                                    <input type="password" asp-for="Password" class="form-control">
-                                </div>
-                                <div class="form-group" hidden>
-                                    <label asp-for="DeleterUserId" class="control-label"></label>
-                                    <input asp-for="DeleterUserId" class="form-control" />
-                                    <span asp-validation-for="DeleterUserId" class="text-danger"></span>
-                                </div>
-                                <div class="form-group" hidden>
-                                    <label asp-for="DeletionTime" class="control-label"></label>
-                                    <input asp-for="DeletionTime" class="form-control" />
-                                    <span asp-validation-for="DeletionTime" class="text-danger"></span>
-                                </div>
-                                <div class="form-group" hidden>
-                                    <label asp-for="LastModificationTime" class="control-label"></label>
-                                    <input asp-for="LastModificationTime" class="form-control" />
-                                    <span asp-validation-for="LastModificationTime" class="text-danger"></span>
-                                </div>
-                                <div class="form-group" hidden>
-                                    <label asp-for="LastModifierUserId" class="control-label"></label>
-                                    <input asp-for="LastModifierUserId" class="form-control" />
-                                    <span asp-validation-for="LastModifierUserId" class="text-danger"></span>
-                                </div>
-                                <div class="form-group" hidden>
-                                    <label asp-for="CreationTime" class="control-label"></label>
-                                    <input asp-for="CreationTime" class="form-control" />
-                                    <span asp-validation-for="CreationTime" class="text-danger"></span>
-                                </div>
-                                <div class="form-group" hidden>
-                                    <label asp-for="CreatorUserId" class="control-label"></label>
-                                    <input asp-for="CreatorUserId" class="form-control" />
-                                    <span asp-validation-for="CreatorUserId" class="text-danger"></span>
-                                </div>
-                                <input type="hidden" asp-for="Id" />
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                </div>
-                            </form><!-- End Profile Edit Form -->
+                            
+                            <partial name="_ProfileEdit" model="@Model.UserDto" view-data="ViewData"/>
+                            <!-- End Profile Edit Form -->
 
                         </div>
 
@@ -309,34 +121,8 @@
 
                         <div class="tab-pane fade pt-3" id="profile-change-password">
                             <!-- Change Password Form -->
-                            <form asp-action="ChangePassword" asp-controller="Profile" onsubmit="return ChangePassword(this);">
-                                <input asp-for="Id" hidden />
-
-                                <div class="row mb-3">
-                                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="currentPassword" type="password" class="form-control" id="currentPassword">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="Newpassword" type="password" class="form-control" id="newPassword">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="confirmedPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                                    <div class="col-md-8 col-lg-9">
-                                        <input name="confirmedPassword" type="password" class="form-control" id="confirmedPassword">
-                                    </div>
-                                </div>
-
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Change Password</button>
-                                </div>
-                            </form><!-- End Change Password Form -->
+                            <partial name="_ChangePassword" model="@Model.ChangePasswordRequest" />
+                            <!-- End Change Password Form -->
 
                         </div>
 

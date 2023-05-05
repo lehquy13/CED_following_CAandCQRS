@@ -14,24 +14,25 @@ function callPostActionWithForm(formInput) {
         contentType: false,
         processData: false,
         success: function (res) {
-            //$('#successAlert').removeAttr('hidden');
-            //$('#successAlert').show();
+    
             if (res.res === true) {
-                
-                    $('#main').html(res.partialView);
-                    $('#main').click();
-                    $('#successAlertButton').click();
+                $('#main').html(res.partialView);
+                //$('#main').click();
 
-                
-            }
-                
-            else if (res.res === "deleted") {
+                $('#successAlertButton').click();
+            } else if (res.res === "Delete") {
                 $('#verticalycentered').modal('hide');
                 location.reload();
+            } else if(res.res === false) {
+                if(res.viewName === "_ProfileEdit"){
+                    $('#profile-edit').html(res.partialView);
+                    $('#profile-edit-button').click();
+                }
+                //location.reload();
+
+                $('#failAlertButton').click();
+             
             }
-               
-
-
         },
         error: function (err) {
             console.log(err);
@@ -41,6 +42,7 @@ function callPostActionWithForm(formInput) {
     return false;
 
 }
+
 function ChangePassword(formInput) {
 
     var formData = new FormData(formInput);
@@ -52,7 +54,7 @@ function ChangePassword(formInput) {
         contentType: false,
         processData: false,
         success: function (res) {
-            if(res === true)
+            if (res === true)
                 $('#successUpdatePasswordAlert').click();
 
         },
@@ -72,18 +74,11 @@ function OpenGetDialog(url, title) {
         url: url,
         data: {},
         success: function (res) {
-            //$("#form-modal .modal-body").html(res);
-            //$("#form-modal .modal-title").html(title);
-            //$("#form-modal").modal('show');
-            //debugger;
-            console.log(res);
             $('#largeModal .modal-title').html(title);
-            $('#largeModal .modal-body').html(res.html);
+            $('#largeModal .modal-body').html(res.partialView);
 
             $('#modalTriggerButton').click();
-            //alert("<3");
 
-            //$.notify("Access granted", "success", { position: "right" });
 
         }
     })
@@ -94,10 +89,11 @@ function OpenConfirmDialog(url, title) {
 
     $('#confirmDialogForm').attr('action', url);
     $('#verticalycentered').modal('show')
-   
+
 }
+
 function LoadImage(url, id) {
- 
+
 
     var formData = new FormData();
     formData.append('formFile', $('#formFile')[0].files[0]);
@@ -112,8 +108,8 @@ function LoadImage(url, id) {
             if (res.res === true) {
                 $('#' + id).attr("src", res.image);
                 $('#image').attr("value", res.image);
-                
-                
+
+
             }
             console.log(res);
 
@@ -125,6 +121,6 @@ function LoadImage(url, id) {
     })
 
     return false;
- 
-   
+
+
 }

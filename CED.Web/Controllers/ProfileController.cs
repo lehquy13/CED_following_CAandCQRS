@@ -1,9 +1,11 @@
 ﻿using CED.Application.Services.Authentication.Commands.ChangePassword;
 using CED.Application.Services.Subjects.Commands;
+using CED.Application.Services.Users.Admin.Commands;
 using CED.Application.Services.Users.Queries;
 using CED.Contracts.Authentication;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
+using CED.Web.Models;
 using CED.Web.Utilities;
 using MapsterMapper;
 using MediatR;
@@ -22,7 +24,8 @@ namespace CED.Web.Controllers
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProfileController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger, IWebHostEnvironment webHostEnvironment)
+        public ProfileController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger,
+            IWebHostEnvironment webHostEnvironment)
         {
             _mediator = mediator;
             _mapper = mapper;
@@ -36,18 +39,13 @@ namespace CED.Web.Controllers
             ViewData["Genders"] = CEDEnumProvider.Genders;
             ViewData["AcademicLevels"] = CEDEnumProvider.AcademicLevels;
         }
+
         [HttpGet("")]
         public async Task<IActionResult> Profile()
         {
             PackStaticListToView();
-            string validateToken = HttpContext.Request.Cookies["access_token"] ?? "";
-            if (HttpContext.User.Identity is null || HttpContext.User.Identity.IsAuthenticated is false)
-            {
-                return RedirectToAction("Login", "Authentication", new LoginRequest("", ""));
-            }
-            var identity = HttpContext.User.Identities.FirstOrDefault();
 
-            if (identity == null) { return View("Login", new LoginRequest("", "")); }
+            var identity = HttpContext.User.Identities.First();
 
             var query = new GetUserByIdQuery<UserDto>()
             {
@@ -58,67 +56,68 @@ namespace CED.Web.Controllers
 
             if (loginResult is not null)
             {
-                return View(loginResult);
+                var changePasswordRequest = _mapper.Map<ChangePasswordRequest>(loginResult);
+                return View(new ProfileViewModel
+                {
+                    UserDto = loginResult,
+                    ChangePasswordRequest = changePasswordRequest
+                });
             }
 
             return RedirectToAction("Login", "Authentication", new LoginRequest("", ""));
-
         }
 
         [HttpPost("ChoosePicture")]
-        public async Task<IActionResult> ChoosePicture(IFormFile formFile)
+        public async Task<IActionResult> ChoosePicture(IFormFile? formFile)
         {
             if (formFile == null)
             {
                 return Json(false);
             }
+
             var image = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
 
             return Json(new { res = true, image = "avatar\\" + image });
-
         }
 
         [HttpPost("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid Id, UserDto userDto, IFormFile formFile)
+        public async Task<IActionResult> Edit(UserDto userDto, IFormFile? formFile)
         {
-            if (Id != userDto.Id)
-            {
-                return NotFound();
-            }
-
             if (formFile != null)
             {
                 userDto.Image = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
             }
+            PackStaticListToView();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var query = new CreateUserCommand(userDto);
 
-                    var query = new CreateUserCommand()
-                    {
-                        UserDto = userDto
-                    };
-                    //var query = new UserInfoChangingCommand(
-                    //    userDto
-                    //);
                     var result = await _mediator.Send(query);
                     ViewBag.Updated = result;
 
-                    return Helper.RenderRazorViewToString(this, "Profile", userDto);
-
+                    return Helper.RenderRazorViewToString(this, "Profile", new ProfileViewModel
+                    {
+                        UserDto = userDto,
+                        ChangePasswordRequest = _mapper.Map<ChangePasswordRequest>(userDto)
+                    });
                 }
                 catch (Exception ex)
                 {
                     //Log the error (uncomment ex variable name and write a log.)
                     ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " + ex.Message +
-                        "see your system administrator.");
+                                                 "Try again, and if the problem persists, " + ex.Message +
+                                                 "see your system administrator.");
                 }
             }
-            return View(userDto);
+
+            return Helper.RenderRazorViewToString(this, "_ProfileEdit",
+                userDto,
+                true
+            );
         }
 
         [HttpPost("ChangePassword")]
@@ -127,8 +126,9 @@ namespace CED.Web.Controllers
         {
             if (changePasswordRequest.ConfirmedPassword != changePasswordRequest.NewPassword)
             {
-                return View("Profile", ModelState);
+                return Helper.RenderRazorViewToString(this, "", "");
             }
+
             if (ModelState.IsValid)
             {
                 try
@@ -139,22 +139,19 @@ namespace CED.Web.Controllers
 
                     if (loginResult.IsSuccess)
                     {
-                        ViewBag.Updated = true;
-
-                        return Json(true);
+                        return Helper.RenderRazorViewToString(this, "", "");
                     }
-
                 }
                 catch (Exception ex)
                 {
                     //Log the error (uncomment ex variable name and write a log.)
                     ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " + ex.Message +
-                        "see your system administrator.");
+                                                 "Try again, and if the problem persists, " + ex.Message +
+                                                 "see your system administrator.");
                 }
             }
-            return View("Profile", ModelState);
 
+            return Helper.RenderRazorViewToString(this, "", "");
         }
     }
 }

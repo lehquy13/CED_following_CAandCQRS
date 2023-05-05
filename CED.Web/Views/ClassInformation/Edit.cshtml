@@ -1,6 +1,7 @@
 ﻿@using Newtonsoft.Json;
 @using CED.Contracts.ClassInformations;
 @model CED.Contracts.ClassInformations.ClassInformationDto
+@using CED.Contracts.Users
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,6 +12,7 @@
     List<string> statuses = ViewData["Statuses"] as List<string> ?? new List<string>();
 
     List<SubjectLookupDto>? subjects = (List<SubjectLookupDto>) (ViewData["Subjects"] ?? "");
+    List<TutorDto> tutors = ViewData["TutorDtos"] as List<TutorDto> ?? new List<TutorDto>();
 
 
 }
@@ -33,14 +35,15 @@
         <form class="row g-3" asp-action="Edit" asp-controller="ClassInformation" onsubmit="return callPostActionWithForm(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <label asp-for="Title" class="form-label">Title</label>
                 <input type="text" asp-for="Title" class="form-control"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
 
             </div>
+            <!-- ----------------------------------- -->
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <label asp-for="SubjectId" class="form-label">Subject Name</label>
                 <select asp-for="SubjectId" class="form-select">
                     <option selected value="@Model.SubjectId">
@@ -54,6 +57,27 @@
                         {
                             <option value="@i.Id">
                                 @i.Name
+
+                                <!--  <input type="text" value="@i.Id" hidden asp-for="SubjectId" class="form-control" /> -->
+                            </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="TutorDtoId" class="form-label">Tutor</label>
+                <select asp-for="TutorDtoId" class="form-select">
+                    <option selected value="@Model.TutorDtoId">
+                        @Model.TutorName
+                    </option>
+
+                    @foreach (var i in tutors)
+                    {
+                        @if (i.Id != Model.TutorDtoId)
+                        {
+                            <option value="@i.Id">
+                                @i.FirstName @i.LastName
 
                                 <!--  <input type="text" value="@i.Id" hidden asp-for="SubjectId" class="form-control" /> -->
                             </option>
@@ -169,19 +193,19 @@
             </div>
             <div class="col-md-3">
                 <label asp-for="NumberOfStudent" class="form-label">Number Of Student</label>
-                <input type="number" class="form-control" asp-for="NumberOfStudent" value="1"/>
+                <input type="number" class="form-control" asp-for="NumberOfStudent" />
                 <span asp-validation-for="NumberOfStudent" class="text-danger"></span>
 
             </div>
             <div class="col-md-3">
                 <label asp-for="MinutePerSession" class="form-label">Minute/Session</label>
-                <input type="number" class="form-control" asp-for="MinutePerSession" value="90"/>
+                <input type="number" class="form-control" asp-for="MinutePerSession" >
                 <span asp-validation-for="MinutePerSession" class="text-danger"></span>
 
             </div>
             <div class="col-md-3">
                 <label asp-for="SessionPerWeek" class="form-label">Session/Week</label>
-                <input type="number" class="form-control" asp-for="SessionPerWeek" value="1"/>
+                <input type="number" class="form-control" asp-for="SessionPerWeek"/>
                 <span asp-validation-for="SessionPerWeek" class="text-danger"></span>
 
             </div>

@@ -4,9 +4,10 @@ using CED.Contracts.Users;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using CED.Application.Services.Subjects.Commands;
+using CED.Application.Services.Users.Admin.Commands;
 using CED.Domain.Shared;
 using CED.Web.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CED.Web.Controllers;
 
@@ -19,7 +20,6 @@ public class UserController : Controller
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
 
-    public List<UserDto> _userDtos { get; set; } = new List<UserDto>();
   
     public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper)
     {
@@ -42,9 +42,9 @@ public class UserController : Controller
     public async Task<IActionResult> Index()
     {
         var query = new GetUsersQuery<UserDto>();
-        _userDtos = await _mediator.Send(query);
+        var userDtos = await _mediator.Send(query);
 
-        return View(_userDtos);
+        return View(userDtos);
     }
 
     [HttpGet("Edit")]
@@ -72,15 +72,15 @@ public class UserController : Controller
         {
             try
             {
-                var query = new CreateUserCommand()
-                {
-                    UserDto = userDto
-                };
+                var query = new CreateUserCommand(userDto);
                 var result = await _mediator.Send(query);
-                ViewBag.Updated = true;
+
+                if (!result)
+                {
+                    _logger.LogError("Create user failed!");
+                    throw new DbUpdateException("Create fail!");
+                }
                 PackStaticListToView();
-
-
                 return Helper.RenderRazorViewToString(
                     this,
                     "Edit",
@@ -113,10 +113,11 @@ public class UserController : Controller
     public async Task<IActionResult> Create(UserDto userDto) // cant use userdto
     {
         userDto.LastModificationTime = DateTime.UtcNow;
-        var query = new CreateUserCommand() { UserDto = userDto };
+        var query = new CreateUserCommand(userDto);
         var result = await _mediator.Send(query);
-
-        return View(result);
+        if(result)
+            return View("Index");
+        return View("Create", userDto);
     }
 
     [HttpGet("Delete")]
@@ -154,10 +155,9 @@ public class UserController : Controller
         var query = new DeleteUserCommand((Guid)id);
         var result = await _mediator.Send(query);
 
-        if (result is true)
+        if (result)
         {
             return RedirectToAction("Index");
-
         }
         return RedirectToAction("Error", "Home");
     }
@@ -196,8 +196,8 @@ public class UserController : Controller
     public async Task<IActionResult> Tutor()
     {
         var query = new GetUsersQuery<TutorDto>();
-        var tutorDtos = await _mediator.Send(query);
-        var userDtos = _mapper.Map<List<UserDto>>(tutorDtos);
-        return View(tutorDtos);
+        var userDtos = await _mediator.Send(query);
+       //var tutorDtos = _mapper.Map<List<UserDto>>(userDtos);
+        return View(userDtos);
     }
 }

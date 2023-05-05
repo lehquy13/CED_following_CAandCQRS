@@ -1,7 +1,9 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.ClassInformations;
+using CED.Contracts.Users;
 using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
+using CED.Domain.Users;
 using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Queries;
@@ -10,11 +12,17 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly ISubjectRepository _subjectRepository;
+    private readonly IUserRepository _userRepository;
 
-    public GetAllClassInformationsQueryHandler(IClassInformationRepository classInformationRepository, ISubjectRepository subjectRepository ,IMapper mapper) : base(mapper)
+    public GetAllClassInformationsQueryHandler(
+        IClassInformationRepository classInformationRepository,
+        ISubjectRepository subjectRepository,
+        IUserRepository userRepository,
+        IMapper mapper) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;
         _subjectRepository = subjectRepository;
+        _userRepository = userRepository;
     }
 
     public override async Task<List<ClassInformationDto>> Handle(GetAllClassInformationsQuery query, CancellationToken cancellationToken)
@@ -22,11 +30,12 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
         try
         {
             var classInformations = await _classInformationRepository.GetAllList();
-            var subjects = (await _subjectRepository.GetAllList());
+            var subjects = await _subjectRepository.GetAllList();
+            var tutors = _userRepository.GetTutors();
 
             var classInformationDtos = _mapper.Map<List<ClassInformationDto>>(classInformations);
 
-
+            
 
             foreach (var classIn in classInformationDtos)
             {
@@ -34,6 +43,14 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
                 {
                     classIn.SubjectName = subject.Name;
                 }
+                if( tutors.FirstOrDefault( x => x.Id == classIn.SubjectId ) is User user)
+                {
+                    classIn.TutorDtoId = user.Id;
+                    classIn.TutorPhoneNumber = user.PhoneNumber;
+                    classIn.TutorEmail = user.Email;
+                    classIn.TutorName = user.FirstName + " " + user.LastName;
+                }
+
             }
 
             return classInformationDtos;

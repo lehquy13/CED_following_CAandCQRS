@@ -15,10 +15,15 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
     public float ChargeFee { get; set; } = 0;
 
     //Tutor related information
+    public Guid? StudentId { get; set; }
+
     public Gender GenderRequirement { get; set; } = Gender.None;
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Optional;
 
     //Student related information
+    //public string StudentName { get; set; } = String.Empty;
+    //public string StudentPhoneNumber { get; set; } = String.Empty;
+
     public Gender StudentGender { get; set; } = Gender.Male;
     public int NumberOfStudent { get; set; } = 1;
 
@@ -31,8 +36,6 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
 
     //Subject related information
     public Guid SubjectId { get; set; }
-
     public Guid? TutorId { get; set; }
-    public Guid? StudentId { get; set; }
 
 }

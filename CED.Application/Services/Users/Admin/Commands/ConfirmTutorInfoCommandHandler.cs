@@ -1,10 +1,9 @@
-﻿using CED.Domain.Users;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Users;
 using MapsterMapper;
-using CED.Application.Services.Users.Admin.Commands.ChangeInfo;
-using CED.Application.Services.Abstractions.CommandHandlers;
 
-namespace CED.Application.Services.Users.Tutor.Commands.ChangeInfo;
+namespace CED.Application.Services.Users.Admin.Commands;
 
 public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<ConfirmTutorInfoCommand>
 {

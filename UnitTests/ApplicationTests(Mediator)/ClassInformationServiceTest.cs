@@ -3,6 +3,7 @@ using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts.ClassInformations;
 using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
+using CED.Domain.Users;
 using MapsterMapper;
 using Moq;
 
@@ -12,6 +13,7 @@ namespace UnitTests.ApplicationTests
     {
         private readonly Mock<IClassInformationRepository> _mockClassInformationRepo = new();
         private readonly Mock<ISubjectRepository> _mockSubjectRepo = new();
+        private readonly Mock<IUserRepository> _mockUserRepo = new();
         private readonly Mock<IMapper> _mockMapper = new();
 
         private readonly Guid _sampleId = Guid.NewGuid();
@@ -72,7 +74,7 @@ namespace UnitTests.ApplicationTests
         public async Task GetClassInformationById()
         {
             var query = new GetClassInformationQuery { Id = _sampleId };
-            var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object,_mockSubjectRepo.Object, _mockMapper.Object);
+            var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object,_mockSubjectRepo.Object,_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(result);
@@ -84,7 +86,7 @@ namespace UnitTests.ApplicationTests
            
            
             var query = new GetAllClassInformationsQuery { };
-            var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object, _mockSubjectRepo.Object , _mockMapper.Object);
+            var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object, _mockSubjectRepo.Object, _mockUserRepo.Object , _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(result);

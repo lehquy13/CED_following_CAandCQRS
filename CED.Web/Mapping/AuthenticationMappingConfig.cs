@@ -3,6 +3,7 @@ using CED.Application.Services.Authentication.Commands.ChangePassword;
 using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.Queries.Login;
 using CED.Contracts.Authentication;
+using CED.Contracts.Users;
 using Mapster;
 
 namespace CED.Web.Mapping;
@@ -14,6 +15,9 @@ public class AuthenticationMappingConfig : IRegister
         config.NewConfig<RegisterRequest, RegisterCommand>();
         config.NewConfig<ChangePasswordRequest, ChangePasswordCommand>();
         config.NewConfig<LoginRequest, LoginQuery>();
+        config.NewConfig<UserDto, ChangePasswordRequest>()
+            .Map(dest => dest.Id, src => src.Id);
+
 
         config.NewConfig<AuthenticationResult, AuthenticationResponse>()
             .Map(dest => dest.Token, src => src.Token)

@@ -1,17 +1,20 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Domain.Interfaces.Logger;
 using CED.Domain.Users;
 using MapsterMapper;
 
-namespace CED.Application.Services.Subjects.Commands;
+namespace CED.Application.Services.Users.Admin.Commands;
 
 public class CreateUserCommandHandler : CreateUpdateCommandHandler<CreateUserCommand>
 {
 
     private readonly IUserRepository _userRepository;
+    private readonly IAppLogger<CreateUserCommandHandler> _logger;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
+    public CreateUserCommandHandler(IUserRepository userRepository,IAppLogger<CreateUserCommandHandler> logger, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
+        _logger = logger;
     }
 
     public override async Task<bool> Handle(CreateUserCommand command, CancellationToken cancellationToken)
@@ -23,11 +26,12 @@ public class CreateUserCommandHandler : CreateUpdateCommandHandler<CreateUserCom
             if (user is not null)
             {
                 user.UpdateUserInformation(_mapper.Map<User>(command.UserDto));
-
+                _logger.LogDebug("ready for updating!");
                 _userRepository.Update(user);
 
                 return true;
             }
+            _logger.LogDebug("ready for creating!");
 
             user = _mapper.Map<User>(command.UserDto);
 

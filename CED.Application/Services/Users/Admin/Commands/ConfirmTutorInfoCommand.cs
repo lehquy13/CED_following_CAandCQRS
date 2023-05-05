@@ -1,7 +1,7 @@
 ﻿using CED.Contracts.Users;
 using MediatR;
 
-namespace CED.Application.Services.Users.Admin.Commands.ChangeInfo;
+namespace CED.Application.Services.Users.Admin.Commands;
 
 public record ConfirmTutorInfoCommand
 (

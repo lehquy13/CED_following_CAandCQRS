@@ -1,11 +1,10 @@
 ﻿using CED.Contracts.Users;
 using MediatR;
 
-namespace CED.Application.Services.Subjects.Commands;
+namespace CED.Application.Services.Users.Admin.Commands;
 
-public class CreateUserCommand
-    : IRequest<bool>
-{
-    public UserDto UserDto { get; set; } = null!;
-}
+public record CreateUserCommand
+    (
+     UserDto UserDto 
+): IRequest<bool>;
 

@@ -8,6 +8,8 @@ using CED.Domain.Shared;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
+using CED.Application.Services.Users.Queries;
+using CED.Contracts.Users;
 
 namespace CED.Web.Controllers;
 
@@ -29,7 +31,7 @@ public class ClassInformationController : Controller
 
 
     }
-    private async Task PackStaticListToView(HttpContext HttpContext)
+    private async Task PackStaticListToView()
     {
         ViewData["Roles"] = CEDEnumProvider.Roles;
         ViewData["Genders"] = CEDEnumProvider.Genders;
@@ -49,6 +51,15 @@ public class ClassInformationController : Controller
             ViewData["Subjects"] = JsonConvert.DeserializeObject<List<SubjectLookupDto>>(value);
         }
     }
+    private async Task PackStudentAndTuTorList()
+    {
+        var tutorDtos = await _mediator.Send(new GetUsersQuery<TutorDto>());
+        var studentDtos = await _mediator.Send(new GetUsersQuery<StudentDto>());
+        ViewData["TutorDtos"] = tutorDtos;
+        ViewData["StudentDtos"] = studentDtos;
+
+    }
+
 
 
     [HttpGet]
@@ -64,8 +75,9 @@ public class ClassInformationController : Controller
     [HttpGet("Edit")]
     public async Task<IActionResult> Edit(Guid Id)
     {
-        await PackStaticListToView(this.HttpContext);
+        await PackStaticListToView();
 
+        await PackStudentAndTuTorList();
 
         var query = new GetClassInformationQuery()
         {
@@ -100,8 +112,8 @@ public class ClassInformationController : Controller
         {
             return View(classDto);
         }
-        ViewBag.Updated = true;
-        await PackStaticListToView(this.HttpContext);
+        await PackStaticListToView();
+        await PackStudentAndTuTorList();
 
         return Helper.RenderRazorViewToString(this,"Edit",classDto);
     }
@@ -109,8 +121,9 @@ public class ClassInformationController : Controller
     [HttpGet("Create")]
     public async Task<IActionResult> Create()
     {
-        await PackStaticListToView(this.HttpContext);
-
+        await PackStaticListToView();
+        //await PackStudentAndTuTorList();
+        
         return View(new ClassInformationDto());
     }
 
@@ -141,11 +154,11 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        return Json(new
-        {
-            html = Helper.RenderRazorViewToString(this, "Delete", result)
+        return
 
-        });
+            Helper.RenderRazorViewToString(this, "Delete", result);
+
+
     }
 
     [HttpPost("DeleteConfirmed")]
