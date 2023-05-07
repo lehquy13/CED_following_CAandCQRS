@@ -1,5 +1,6 @@
 ﻿using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
+using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository;
@@ -14,7 +15,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var users  =  _context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Tutor).ToList();
+            var users  =  Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Tutor).ToList();
             return users;
         }
         catch (Exception ex)
@@ -26,7 +27,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var users  =  _context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Student).ToList();
+            var users  =  Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Student).ToList();
             return users;
         }
         catch (Exception ex)
@@ -39,7 +40,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var user = await _context.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
+            var user = await Context.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
             if (user == null) { return null; }
             return user;
         }
@@ -54,10 +55,10 @@ public class UserRepository : Repository<User>, IUserRepository
         {
             if(userRole == UserRole.All)
             {
-                return _context.Set<User>().AsEnumerable().ToList();
+                return Context.Set<User>().AsEnumerable().ToList();
             }
            
-            return _context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Student).ToList();
+            return Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Student).ToList();
         }
         catch (Exception ex)
         {

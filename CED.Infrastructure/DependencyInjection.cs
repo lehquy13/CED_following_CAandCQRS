@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CED.Domain.Interfaces.Logger;
+using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Services.Logging;
 
 namespace CED.Infrastructure

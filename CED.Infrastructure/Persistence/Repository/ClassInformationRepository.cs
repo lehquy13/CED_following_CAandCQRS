@@ -1,4 +1,5 @@
 ﻿using CED.Domain.ClassInformations;
+using CED.Infrastructure.Entity_Framework_Core;
 
 namespace CED.Infrastructure.Persistence.Repository;
 
@@ -12,7 +13,7 @@ public class ClassInformationRepository : Repository<ClassInformation>, IClassIn
 
     public List<ClassInformation> GetLearningClassInformationsByUserId(Guid guid)
     {
-        var result = _context.Set<ClassInformation>()
+        var result = Context.Set<ClassInformation>()
                              .AsEnumerable()
                              .Where(x => x.StudentId.Equals(guid))
                              .ToList();
@@ -21,7 +22,7 @@ public class ClassInformationRepository : Repository<ClassInformation>, IClassIn
 
     public List<ClassInformation> GetTeachingClassInformationsByUserId(Guid guid)
     {
-        var result = _context.Set<ClassInformation>()
+        var result = Context.Set<ClassInformation>()
                              .AsEnumerable()
                              .Where(x => x.TutorId.Equals(guid))
                              .ToList();

@@ -1,23 +1,24 @@
 ﻿using Abp.Domain.Entities.Auditing;
 using CED.Domain.Repository;
+using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAuditedAggregateRoot<Guid>
 {
-    protected readonly CEDDBContext _context;
-    protected Repository(CEDDBContext cEDDBContext)
+    protected readonly CEDDBContext Context;
+    protected Repository(CEDDBContext cEdDbContext)
     {
-        _context = cEDDBContext;
+        Context = cEdDbContext;
     }
 
     public void Delete(TEntity entity)
     {
         try
         {
-            _context.Set<TEntity>().Remove(entity);
-            _context.SaveChanges();
+            Context.Set<TEntity>().Remove(entity);
+            Context.SaveChanges();
 
         }
         catch (Exception ex)
@@ -31,7 +32,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAudi
         {
             var deleteRecord = await this.GetById(id);
             if (deleteRecord == null) return false;
-            _context.Set<TEntity>().Remove(deleteRecord);
+            Context.Set<TEntity>().Remove(deleteRecord);
 
             return true;
         }
@@ -50,7 +51,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAudi
     {
         try
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            return await Context.Set<TEntity>().ToListAsync();
         }
         catch (Exception ex)
         {
@@ -61,7 +62,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAudi
     {
         try
         {
-            return _context.Set<TEntity>().AsQueryable<TEntity>();
+            return Context.Set<TEntity>().AsQueryable<TEntity>();
         }
         catch (Exception ex)
         {
@@ -73,7 +74,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAudi
     {
         try
         {
-            return await _context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
         catch (Exception ex)
         {
@@ -85,9 +86,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAudi
     {
         try
         {
-            var result = await _context.Set<TEntity>().AddAsync(entity);
+            await Context.Set<TEntity>().AddAsync(entity);
 
-            _context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
@@ -100,9 +101,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAudi
         try
         {
             
-            var updateEntity =  _context.Set<TEntity>().Update(entity);
-            _context.SaveChanges();
-            return entity;
+            var updateEntity =  Context.Set<TEntity>().Update(entity);
+            Context.SaveChanges();
+            return updateEntity.Entity;
         }
         catch (Exception ex)
         {

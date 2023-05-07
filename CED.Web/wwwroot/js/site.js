@@ -28,7 +28,11 @@ function callPostActionWithForm(formInput) {
                     $('#profile-edit').html(res.partialView);
                     $('#profile-edit-button').click();
                 }
-                //location.reload();
+                else if(res.viewName === "_ChangePassword"){
+                    $('#profile-change-password').html(res.partialView);
+                    $('#profile-change-password-button').click();
+                }
+                
 
                 $('#failAlertButton').click();
              

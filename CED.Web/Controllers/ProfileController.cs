@@ -124,10 +124,7 @@ namespace CED.Web.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
-            if (changePasswordRequest.ConfirmedPassword != changePasswordRequest.NewPassword)
-            {
-                return Helper.RenderRazorViewToString(this, "", "");
-            }
+           
 
             if (ModelState.IsValid)
             {
@@ -139,7 +136,7 @@ namespace CED.Web.Controllers
 
                     if (loginResult.IsSuccess)
                     {
-                        return Helper.RenderRazorViewToString(this, "", "");
+                        return Helper.RenderRazorViewToString(this, "_ChangePassword", new ChangePasswordRequest{Id = changePasswordRequest.Id});
                     }
                 }
                 catch (Exception ex)
@@ -151,7 +148,8 @@ namespace CED.Web.Controllers
                 }
             }
 
-            return Helper.RenderRazorViewToString(this, "", "");
+            return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordRequest,true);
+
         }
     }
 }
