@@ -2,7 +2,7 @@ namespace CED.Contracts.Users;
 
 public record AddressDto(List<CityDto> Cities);
 
-public class CityDto
+public sealed class CityDto
 {
     public string Id { get; set; } = String.Empty;
     public string Name { get; set; } = String.Empty;
@@ -10,15 +10,21 @@ public class CityDto
     public List<DistrictDto> Districts { get; set; } = new List<DistrictDto>();
 }
 
-public class DistrictDto
+public sealed class DistrictDto
 {
     public string Id { get; set; } = String.Empty;
     public List<WardDto> Wards { get; set; } = new List<WardDto>();
+    public string Name { get; set; } = String.Empty;
+    public string CityId { get; set; } = String.Empty;
+
     public string? EnglishName { get; set; } = String.Empty;
 }
 
-public class WardDto
+public sealed class WardDto
 {
     public string Id { get; set; } = String.Empty;
+    public string DistrictId { get; set; } = String.Empty;
+
     public string Name { get; set; } = String.Empty;
+    public string WardLevel { get; set; } = String.Empty;
 }

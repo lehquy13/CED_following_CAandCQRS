@@ -4,6 +4,8 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using CED.Application.Services;
+using CED.Contracts.Interfaces.Services;
 
 namespace CED.Application
 {
@@ -17,7 +19,8 @@ namespace CED.Application
 
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
-                typeof(ValidationBehavior<,>));
+                typeof(ValidationBehavior<,>)); 
+            services.AddScoped(typeof(IAddressService), typeof(AddressService));
          
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

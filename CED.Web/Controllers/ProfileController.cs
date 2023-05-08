@@ -1,8 +1,9 @@
-﻿using CED.Application.Services.Authentication.Commands.ChangePassword;
-using CED.Application.Services.Subjects.Commands;
+﻿using CED.Application.Services;
+using CED.Application.Services.Authentication.Commands.ChangePassword;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Application.Services.Users.Queries;
 using CED.Contracts.Authentication;
+using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 using CED.Web.Models;
@@ -20,7 +21,6 @@ namespace CED.Web.Controllers
     {
         private readonly ISender _mediator;
         private readonly IMapper _mapper;
-
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -35,9 +35,11 @@ namespace CED.Web.Controllers
 
         private void PackStaticListToView()
         {
-            ViewData["Roles"] = CEDEnumProvider.Roles;
-            ViewData["Genders"] = CEDEnumProvider.Genders;
-            ViewData["AcademicLevels"] = CEDEnumProvider.AcademicLevels;
+            ViewData["Roles"] = EnumProvider.Roles;
+            ViewData["Genders"] = EnumProvider.Genders;
+            ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
+
+            //ViewData["Addresses"] = _addressService.GetAddresses();
         }
 
         [HttpGet("")]

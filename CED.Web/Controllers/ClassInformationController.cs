@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CED.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 using MapsterMapper;
 using MediatR;
 using CED.Contracts.ClassInformations;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Commands;
-using CED.Domain.Shared;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
 using CED.Application.Services.Users.Queries;
 using CED.Contracts.Users;
+using CED.Domain.Shared;
 
 namespace CED.Web.Controllers;
 
@@ -33,11 +34,11 @@ public class ClassInformationController : Controller
     }
     private async Task PackStaticListToView()
     {
-        ViewData["Roles"] = CEDEnumProvider.Roles;
-        ViewData["Genders"] = CEDEnumProvider.Genders;
-        ViewData["AcademicLevels"] = CEDEnumProvider.AcademicLevels;
-        ViewData["LearningModes"] = CEDEnumProvider.LearningModes;
-        ViewData["Statuses"] = CEDEnumProvider.Status;
+        ViewData["Roles"] = EnumProvider.Roles;
+        ViewData["Genders"] = EnumProvider.Genders;
+        ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
+        ViewData["LearningModes"] = EnumProvider.LearningModes;
+        ViewData["Statuses"] = EnumProvider.Status;
 
         var value = HttpContext.Session.GetString("SubjectList");
         if (value is null)

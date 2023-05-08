@@ -22,7 +22,6 @@ public class CEDDBContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Subject>().ToTable("Subject");
-        modelBuilder.Entity<User>().ToTable("User");
         modelBuilder.Entity<City>(re =>
         {
             re.ToTable("City");
@@ -41,6 +40,11 @@ public class CEDDBContext : DbContext
             re.HasKey(r => r.Id);
             re.HasOne<District>().WithMany().HasForeignKey(r => r.DistrictId).IsRequired();
         });
+        modelBuilder.Entity<User>(re =>
+        {
+            re.ToTable("User");
+            //re.HasOne<Ward>().WithMany().HasForeignKey(r => r.WardId).IsRequired();
+        });
 
         modelBuilder.Entity<ClassInformation>(re =>
         {
@@ -53,13 +57,6 @@ public class CEDDBContext : DbContext
 
         });
 
-        modelBuilder.Entity<UserClassInformation>(re =>
-        {
-            re.ToTable("UserClassInformation");
-            re.HasKey(r => r.Id);
-            re.HasOne<User>().WithMany().HasForeignKey(r => r.UserId).IsRequired();
-            re.HasOne<ClassInformation>().WithMany().HasForeignKey(r => r.ClassInformationId).IsRequired();
-        });
     }
 }
 //using to support addmigration

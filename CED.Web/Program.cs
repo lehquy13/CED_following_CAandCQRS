@@ -1,8 +1,5 @@
 ﻿using CED.Application;
 using CED.Infrastructure;
-using CED.Infrastructure.Entity_Framework_Core;
-using CED.Infrastructure.Entity_Framework_Core.DataSeed;
-using CED.Infrastructure.Persistence;
 using CED.Web;
 
 var builder = WebApplication.CreateBuilder(args);

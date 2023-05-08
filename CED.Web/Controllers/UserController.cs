@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Users.Queries;
+﻿using CED.Application.Services;
+using CED.Application.Services.Users.Queries;
 using CED.Application.Services.Users.Commands;
 using CED.Contracts.Users;
 using MapsterMapper;
@@ -30,9 +31,9 @@ public class UserController : Controller
 
     private void PackStaticListToView()
     {
-        ViewData["Roles"] = CEDEnumProvider.Roles;
-        ViewData["Genders"] = CEDEnumProvider.Genders;
-        ViewData["AcademicLevels"] = CEDEnumProvider.AcademicLevels;
+        ViewData["Roles"] = EnumProvider.Roles;
+        ViewData["Genders"] = EnumProvider.Genders;
+        ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
     }
 
     #region basic user management

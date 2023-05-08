@@ -9,6 +9,8 @@ public class StudentDto : FullAuditedEntityDto<Guid>
     public string LastName { get; set; } = string.Empty;
     public Gender Gender { get; set; } = Gender.Male;
     public int BirthYear { get; set; } = 1960;
+//    public string WardId { get; set; } = "00001";
+
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 

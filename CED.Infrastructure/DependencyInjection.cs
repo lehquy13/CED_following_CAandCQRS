@@ -20,7 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CED.Domain.Interfaces.Logger;
 using CED.Infrastructure.Entity_Framework_Core;
-using CED.Infrastructure.Services.Logging;
+using CED.Infrastructure.Logging;
 
 namespace CED.Infrastructure
 {
@@ -48,6 +48,7 @@ namespace CED.Infrastructure
 
             // Dependency Injection for repository
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<IClassInformationRepository, ClassInformationRepository>();
             return services;

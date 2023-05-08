@@ -9,6 +9,7 @@ public class User : FullAuditedAggregateRoot<Guid>
     public string LastName { get; set; } = string.Empty;
     public Gender Gender { get; set; } = Gender.Male;
     public int BirthYear { get; set; } = 1960;
+    //public string WardId { get; set; } = "00001";
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Image { get; set; } = "default_avatar1.png";
@@ -71,6 +72,7 @@ public class User : FullAuditedAggregateRoot<Guid>
         BirthYear = user.BirthYear;
         Address = user.Address;
         Description = user.Description;
+        
 
         Email = user.Email;
         PhoneNumber = user.PhoneNumber;

@@ -2,7 +2,6 @@
 using CED.Application.Services.Authentication.Queries.Login;
 using CED.Application.Services.Authentication.Queries.ValidateToken;
 using CED.Contracts.Authentication;
-using CED.Domain.Shared;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
