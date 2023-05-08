@@ -2,10 +2,8 @@
 
 namespace CED.Domain.Shared;
 
-public class CEDEnumProvider
+public class EnumProvider
 {
-
-
     public static List<string> Roles { get; } = Enum.GetNames(typeof(UserRole))
                                                     .AsEnumerable()
                                                     .Where(x => x != "All" && x != "Undefined")
@@ -23,8 +21,5 @@ public class CEDEnumProvider
 
     public static List<string>? Status { get; } = Enum.GetNames(typeof(Status))
                                               .ToList();
-    
-
-
 
 }
