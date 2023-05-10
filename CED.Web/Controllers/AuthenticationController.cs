@@ -1,6 +1,7 @@
-﻿using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Queries.Login;
-using CED.Application.Services.Authentication.Queries.ValidateToken;
+﻿using CED.Application.Services.Authentication.Admin.Queries.Login;
+using CED.Application.Services.Authentication.Commands.Register;
+using CED.Application.Services.Authentication.Admin.Queries.Login;
+using CED.Application.Services.Authentication.Admin.Queries.ValidateToken;
 using CED.Contracts.Authentication;
 using MapsterMapper;
 using MediatR;

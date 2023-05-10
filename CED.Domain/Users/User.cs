@@ -23,14 +23,14 @@ public class User : FullAuditedAggregateRoot<Guid>
 
     //is tutor related informtions
     public UserRole Role { get; set; } = UserRole.Student;
-    public AcademicLevel AcademicLevel { get; set; }
+    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
     public string University { get; set;} = string.Empty;
     public bool isVerified { get; set; } = false;
 
     // constructor
     public User()
     {
-        this.LastModificationTime = DateTime.Now;
+        LastModificationTime = DateTime.Now;
     }
 
     /// <summary>

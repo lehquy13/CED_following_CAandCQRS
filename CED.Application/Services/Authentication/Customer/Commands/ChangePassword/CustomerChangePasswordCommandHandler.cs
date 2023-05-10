@@ -1,30 +1,30 @@
-﻿using CED.Contracts.Authentication;
+﻿using CED.Application.Services.Authentication.Commands.ChangePassword;
+using CED.Contracts.Authentication;
 using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Users;
 using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CED.Application.Services.Authentication.Commands.ChangePassword;
+namespace CED.Application.Services.Authentication.Customer.Commands.ChangePassword;
 
-public class ChangePasswordCommandCommandHandler
-    : IRequestHandler<ChangePasswordCommand, AuthenticationResult>
+public class CustomerChangePasswordCommandHandler : IRequestHandler<CustomerChangePasswordCommand, AuthenticationResult>
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     
 
-    ILogger<ChangePasswordCommandCommandHandler> _logger;
-    public ChangePasswordCommandCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
-        IUserRepository userRepository, ILogger<ChangePasswordCommandCommandHandler> logger, IMapper mapper)
+    ILogger<CustomerChangePasswordCommandHandler> _logger;
+    public CustomerChangePasswordCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
+        IUserRepository userRepository, ILogger<CustomerChangePasswordCommandHandler> logger, IMapper mapper)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
         _userRepository = userRepository;
         _logger = logger;
         _mapper = mapper;
     }
-    public async Task<AuthenticationResult> Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
+    public async Task<AuthenticationResult> Handle(CustomerChangePasswordCommand command, CancellationToken cancellationToken)
     {
 
         //Check if the user existed

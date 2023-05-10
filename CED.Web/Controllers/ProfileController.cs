@@ -1,4 +1,5 @@
 ﻿using CED.Application.Services;
+using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 using CED.Application.Services.Authentication.Commands.ChangePassword;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Application.Services.Users.Queries;

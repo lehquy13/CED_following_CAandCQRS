@@ -97,59 +97,59 @@ public class DataSeeder
             //Admin
             new User
             {
-                FirstName = "Matt", LastName = "Le", Description = "Premium Admin", Email = "hoangle.q3@gmail.com",
+                FirstName = "Matt", LastName = "Le", Description = "Premium Admin", Email = "hoangle.q3@gmail.com", Address = "Viet Nam",
                 PhoneNumber = "0965686172", Role = UserRole.Admin
             },
             new User
             {
-                FirstName = "John", LastName = "Doe", Description = "Third admin", Email = "lehquy13@gmail.com",
+                FirstName = "John", LastName = "Doe", Description = "Third admin", Email = "lehquy13@gmail.com",Address = "Viet Nam",
                 PhoneNumber = "0123123120", Role = UserRole.Admin
             },
             tutor,
             new User
             {
-                FirstName = "Nino", LastName = "Walker", Gender = Gender.Female, PhoneNumber = "0123123126",
+                FirstName = "Nino", LastName = "Walker", Gender = Gender.Female, PhoneNumber = "0123123126",Address = "Viet Nam",
                 Description = "Olivetto", Email = "hoangle.q6@gmail.com", Role = UserRole.Tutor
             },
             new User
             {
-                FirstName = "Gytis", LastName = "Gustang", Description = "Barzdukas", PhoneNumber = "0123123122",
+                FirstName = "Gytis", LastName = "Gustang", Description = "Barzdukas", PhoneNumber = "0123123122",Address = "Viet Nam",
                 Email = "hoangle.q4@gmail.com", Role = UserRole.Tutor,
                 University = "University of Information Technology - VNUHCM"
             },
             tutor1, tutor2,
             new User
             {
-                FirstName = "Peggy", LastName = "Scar", Gender = Gender.Female, Description = "Justice",
+                FirstName = "Peggy", LastName = "Scar", Gender = Gender.Female, Description = "Justice",Address = "Viet Nam",
                 PhoneNumber = "0123123124", Email = "hoangle.q3123123@gmail.com", Role = UserRole.Tutor,
                 University = "University of Economics HCMC (UEH)"
             },
             new User
             {
-                FirstName = "Continel", LastName = "Wild", Description = "Second tutor", PhoneNumber = "0123123130",
+                FirstName = "Continel", LastName = "Wild", Description = "Second tutor", PhoneNumber = "0123123130",Address = "Viet Nam",
                 Email = "20520728@gm.uit.edu.com", Role = UserRole.Tutor,
                 University = "Ho Chi Minh City University of Technology (HCMUT)"
             },
             new User
             {
-                FirstName = "Anne", LastName = "Alter", Gender = Gender.Female, Description = "Third tutor",
+                FirstName = "Anne", LastName = "Alter", Gender = Gender.Female, Description = "Third tutor",Address = "Viet Nam",
                 PhoneNumber = "0123123131", Email = "hoangle.q10@gmail.com", Role = UserRole.Tutor
             },
             new User
             {
-                FirstName = "Hector", LastName = "Wunder", Description = "Barzdukas", PhoneNumber = "0123123132",
+                FirstName = "Hector", LastName = "Wunder", Description = "Barzdukas", PhoneNumber = "0123123132",Address = "Viet Nam",
                 Email = "hoangle.q11@gmail.com", Role = UserRole.Tutor,
                 University = "Ho Chi Minh City University of Technology (HCMUT)"
             },
             new User
             {
-                FirstName = "Rosez", LastName = "Rouge", Gender = Gender.Female, Description = "Li",
+                FirstName = "Rosez", LastName = "Rouge", Gender = Gender.Female, Description = "Li",Address = "Viet Nam",
                 PhoneNumber = "0123123133", Email = "hoangle.q12@gmail.com", Role = UserRole.Tutor,
                 University = "Vietnam National University HCM, University of Economics and Law"
             },
             new User
             {
-                FirstName = "Sam", LastName = "Will", Gender = Gender.Female, Description = "Justice",
+                FirstName = "Sam", LastName = "Will", Gender = Gender.Female, Description = "Justice",Address = "Viet Nam",
                 PhoneNumber = "0123123124", Email = "hoangle.q312312312@gmail.com", Role = UserRole.Tutor,
                 University = "Vietnam National University HCM, University of Economics and Law"
             },
@@ -158,48 +158,48 @@ public class DataSeeder
             standardUser,
             new User
             {
-                FirstName = "Arturo", LastName = "Swift", Description = "Anand", PhoneNumber = "0123123121",
+                FirstName = "Arturo", LastName = "Swift", Description = "Anand", PhoneNumber = "0123123121",Address = "Viet Nam",
                 Email = "hoangle.q0@gmail.com"
             },
             new User
             {
-                FirstName = "John", LastName = "Wish", Description = "Forever student", PhoneNumber = "0123123127",
+                FirstName = "John", LastName = "Wish", Description = "Forever student", PhoneNumber = "0123123127",Address = "Viet Nam",
                 Email = "hoangle.q7@gmail.com"
             },
             new User
             {
-                FirstName = "Kang", LastName = "Theconquerer", Description = "Second student",
+                FirstName = "Kang", LastName = "Theconquerer", Description = "Second student",Address = "Viet Nam",
                 PhoneNumber = "0123123128", Email = "hoangle.q8@gmail.com"
             },
             new User
             {
-                FirstName = "Shang", LastName = "Ki", Description = "Third Student", PhoneNumber = "0123123129",
+                FirstName = "Shang", LastName = "Ki", Description = "Third Student", PhoneNumber = "0123123129",Address = "Viet Nam",
                 Email = "hoangle.q9@gmail.com"
             },
 
             new User
             {
-                FirstName = "Loan", LastName = "Stalk", Gender = Gender.Female, Description = "Norman",
+                FirstName = "Loan", LastName = "Stalk", Gender = Gender.Female, Description = "Norman",Address = "Viet Nam",
                 PhoneNumber = "0123123135", Email = "hoangle.q13@gmail.com"
             },
             new User
             {
-                FirstName = "Clint", LastName = "Barton", Description = "Nothing to say",
+                FirstName = "Clint", LastName = "Barton", Description = "Nothing to say",Address = "Viet Nam",
                 PhoneNumber = "0123123136", Email = "hoangle.q14@gmail.com"
             },
             new User
             {
-                FirstName = "Kien", LastName = "Jeanner", Description = "Forever 2nd student",
+                FirstName = "Kien", LastName = "Jeanner", Description = "Forever 2nd student",Address = "Viet Nam",
                 PhoneNumber = "0123123137", Email = "hoangle.q15@gmail.com"
             },
             new User
             {
-                FirstName = "Morgan", LastName = "Stark", Gender = Gender.Female, Description = "5th student",
+                FirstName = "Morgan", LastName = "Stark", Gender = Gender.Female, Description = "5th student",Address = "Viet Nam",
                 PhoneNumber = "0123123138", Email = "hoangle.q16@gmail.com"
             },
             new User
             {
-                FirstName = "Sam", LastName = "Cruise", Description = "6th Student", PhoneNumber = "0123123139",
+                FirstName = "Sam", LastName = "Cruise", Description = "6th Student", PhoneNumber = "0123123139",Address = "Viet Nam",
                 Email = "hoangle.q17@gmail.com"
             },
         };

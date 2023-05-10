@@ -1,7 +1,8 @@
 ﻿@using Newtonsoft.Json;
 @using CED.Contracts.ClassInformations;
-@model CED.Contracts.ClassInformations.ClassInformationDto
 @using CED.Contracts.Users
+
+@model CED.Contracts.ClassInformations.ClassInformationDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,7 +12,7 @@
     List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
     List<string> statuses = ViewData["Statuses"] as List<string> ?? new List<string>();
 
-    List<SubjectLookupDto>? subjects = (List<SubjectLookupDto>) (ViewData["Subjects"] ?? "");
+    List<SubjectLookupDto>? subjects = (List<SubjectLookupDto>)(ViewData["Subjects"] ?? "");
     List<TutorDto> tutors = ViewData["TutorDtos"] as List<TutorDto> ?? new List<TutorDto>();
 
 
@@ -28,6 +29,7 @@
 
 <hr />
 <div class="card">
+
     <div class="card-body">
         <h5 class="card-title">About class' information</h5>
 
@@ -37,9 +39,8 @@
 
             <div class="col-md-12">
                 <label asp-for="Title" class="form-label">Title</label>
-                <input type="text" asp-for="Title" class="form-control"/>
+                <input type="text" asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
-
             </div>
             <!-- ----------------------------------- -->
 
@@ -47,46 +48,45 @@
                 <label asp-for="SubjectId" class="form-label">Subject Name</label>
                 <select asp-for="SubjectId" class="form-select">
                     <option selected value="@Model.SubjectId">
-                        @Model.SubjectName.ToString()
-                        <!--  <input type="text" value="@Model.SubjectId" hidden asp-for="SubjectId" class="form-control" />-->
+                        @Model.SubjectName
                     </option>
 
                     @foreach (var i in subjects)
                     {
-                        @if (i.Name != Model.SubjectName.ToString())
+                        @if (i.Name != Model.SubjectName)
                         {
                             <option value="@i.Id">
                                 @i.Name
-
-                                <!--  <input type="text" value="@i.Id" hidden asp-for="SubjectId" class="form-control" /> -->
                             </option>
                         }
                     }
                 </select>
                 <span asp-validation-for="SubjectId" class="text-danger"></span>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label asp-for="TutorDtoId" class="form-label">Tutor</label>
-                <select asp-for="TutorDtoId" class="form-select">
-                    <option selected value="@Model.TutorDtoId">
-                        @Model.TutorName
-                    </option>
-
-                    @foreach (var i in tutors)
-                    {
-                        @if (i.Id != Model.TutorDtoId)
-                        {
-                            <option value="@i.Id">
-                                @i.FirstName @i.LastName
-
-                                <!--  <input type="text" value="@i.Id" hidden asp-for="SubjectId" class="form-control" /> -->
-                            </option>
-                        }
-                    }
-                </select>
-                <span asp-validation-for="SubjectId" class="text-danger"></span>
+                <input type="text" hidden="hidden" id="tutorId" asp-for="TutorDtoId" class="form-control" />
+                <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly" />
+                <span asp-validation-for="TutorDtoId" class="text-danger"></span>
             </div>
-            <!-- ----------------------------------- -->
+            
+            
+        <div class="col-md-2">
+                <label class="form-label">Action</label>
+            
+            <div class="row">
+
+                <button type="button" class="col-6 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "ClassInformation")','Pick tutor')">
+                    Pick Tutor
+                </button>
+                <button type="button" class="col-6  btn btn-outline-secondary"
+                        onclick="OpenGetDialog('@Url.Action("ViewTutor", "ClassInformation", new { id = @Model.TutorDtoId })','Tutor information')">
+                    View Tutor
+                </button>
+            </div>
+        </div>
+
+        <!-- ----------------------------------- -->
 
             <div class="col-md-4">
                 <label asp-for="GenderRequirement" class="form-label">Gender Requirement</label>
@@ -135,11 +135,11 @@
                 <span asp-validation-for="AcademicLevel" class="text-danger"></span>
             </div>
             <!-- ----------------------------------- -->
-            
+
 
             <div class="col-md-4">
                 <label asp-for="Fee" class="form-label">Fee</label>
-                <input type="number" class="form-control" asp-for="Fee" placeholder="0.99"/>
+                <input type="number" class="form-control" asp-for="Fee" placeholder="0.99" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
 
             </div>
@@ -199,13 +199,13 @@
             </div>
             <div class="col-md-3">
                 <label asp-for="MinutePerSession" class="form-label">Minute/Session</label>
-                <input type="number" class="form-control" asp-for="MinutePerSession" >
+                <input type="number" class="form-control" asp-for="MinutePerSession">
                 <span asp-validation-for="MinutePerSession" class="text-danger"></span>
 
             </div>
             <div class="col-md-3">
                 <label asp-for="SessionPerWeek" class="form-label">Session/Week</label>
-                <input type="number" class="form-control" asp-for="SessionPerWeek"/>
+                <input type="number" class="form-control" asp-for="SessionPerWeek" />
                 <span asp-validation-for="SessionPerWeek" class="text-danger"></span>
 
             </div>
@@ -213,14 +213,14 @@
 
             <div class="col-12">
                 <label asp-for="Address" class="form-label">Address</label>
-                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St"/>
+                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St" />
                 <span asp-validation-for="Address" class="text-danger"></span>
 
             </div>
 
             <div class="col-md-6">
                 <label for="inputCity" class="form-label">City</label>
-                <input type="text" class="form-control" id="inputCity"/>
+                <input type="text" class="form-control" id="inputCity" />
             </div>
             <div class="col-md-4">
                 <label for="inputState" class="form-label">State</label>
@@ -231,14 +231,9 @@
             </div>
             <div class="col-md-2">
                 <label for="inputZip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="inputZip"/>
+                <input type="text" class="form-control" id="inputZip" />
             </div>
             <!-- ----------------------------------- -->
-
-            
-
-
-
             <!-- ----------------------------------- hidden info -->
 
             <div class="form-group" hidden>
@@ -277,11 +272,12 @@
                 <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
             @Html.AntiForgeryToken()
-        </form><!-- End Multi Columns Form -->
+        </form>
+        <!-- End Multi Columns Form -->
 
     </div>
-</div>
 
+</div>
 
 
 @section Scripts {
@@ -289,4 +285,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-

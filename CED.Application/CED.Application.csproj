@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\Authentication\Admin" />
     <Folder Include="Services\Users\Student\Queries\" />
   </ItemGroup>
 

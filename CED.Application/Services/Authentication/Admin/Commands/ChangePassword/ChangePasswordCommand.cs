@@ -1,7 +1,7 @@
 ﻿using CED.Contracts.Authentication;
 using MediatR;
 
-namespace CED.Application.Services.Authentication.Commands.ChangePassword;
+namespace CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 
 public record ChangePasswordCommand
 (

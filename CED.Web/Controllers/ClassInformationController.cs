@@ -200,7 +200,45 @@ public class ClassInformationController : Controller
         }
         return RedirectToAction("Error", "Home");
     }
+    
+    [HttpGet]
+    [Route("PickTutor")]
+    public async Task<IActionResult> PickTutor()
+    {
+        var query = new GetUsersQuery<TutorDto>();
+        var userDtos = await _mediator.Send(query);
+        return Helper.RenderRazorViewToString(this, "PickTutor", userDtos);
 
+
+    }
+    [HttpGet("ViewTutor")]
+    public async Task<IActionResult> ViewTutor(Guid? id) 
+    {
+        if (id == null || id.Equals(Guid.Empty))
+        {
+            return NotFound();
+        }
+
+        var query = new GetUserByIdQuery<TutorDto>() { Id= (Guid)id };
+        var result = await _mediator.Send(query);
+
+        if (result is not null)
+        {
+            return Helper.RenderRazorViewToString(this, "ViewTutor", result);
+
+        }
+        return RedirectToAction("Error", "Home");
+    }
+    [HttpPost("Choose")]
+    public  IActionResult Choose(Guid? tutorId) 
+    {
+        if (tutorId == null || tutorId.Equals(Guid.Empty))
+        {
+            return NotFound();
+        }
+
+        return Json(new {tutorId = tutorId});
+    }
 
 }
 

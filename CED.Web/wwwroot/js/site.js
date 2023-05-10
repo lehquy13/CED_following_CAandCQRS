@@ -97,8 +97,6 @@ function OpenConfirmDialog(url, title) {
 }
 
 function LoadImage(url, id) {
-
-
     var formData = new FormData();
     formData.append('formFile', $('#formFile')[0].files[0]);
     $.ajax({
@@ -123,8 +121,14 @@ function LoadImage(url, id) {
             alert(err);
         }
     })
-
     return false;
+}
 
-
+function ChooseTutor(id,name,phone){
+    $('#largeModal').modal("hide");
+    $('#largeModal .modal-body').html("");
+    
+    $('#tutorId').attr("value",id);
+    $('#tutorInfor').attr("value",name + " - " +phone);
+    
 }

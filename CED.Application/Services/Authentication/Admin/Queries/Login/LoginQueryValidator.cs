@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
-namespace CED.Application.Services.Authentication.Queries.Login;
+
+namespace CED.Application.Services.Authentication.Admin.Queries.Login;
 
 public class LoginQueryValidator : AbstractValidator<LoginQuery>
 {

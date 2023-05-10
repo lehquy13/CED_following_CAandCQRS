@@ -1,7 +1,7 @@
 ﻿using CED.Domain.Interfaces.Authentication;
 using MediatR;
 
-namespace CED.Application.Services.Authentication.Queries.ValidateToken;
+namespace CED.Application.Services.Authentication.Admin.Queries.ValidateToken;
 
 public class ValidateTokenQueryHandler
     : IRequestHandler<ValidateTokenQuery, bool>
@@ -16,7 +16,7 @@ public class ValidateTokenQueryHandler
     public async Task<bool> Handle(ValidateTokenQuery query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
-        return _jwtTokenGenerator.ValidateToken(query.validateToken);
+        return _jwtTokenGenerator.ValidateToken(query.ValidateToken);
     }
 }
 

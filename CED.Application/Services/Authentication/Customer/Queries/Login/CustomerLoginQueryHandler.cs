@@ -1,24 +1,26 @@
-﻿using CED.Contracts.Authentication;
+﻿using CED.Application.Services.Authentication.Queries.Login;
+using CED.Contracts.Authentication;
 using CED.Domain.Interfaces.Authentication;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 using MapsterMapper;
 using MediatR;
 
-namespace CED.Application.Services.Authentication.Queries.Login;
+namespace CED.Application.Services.Authentication.Customer.Queries.Login;
 
-public class LoginQueryHandler
-    : IRequestHandler<LoginQuery, AuthenticationResult>
+public class CustomerLoginQueryHandler
+    : IRequestHandler<CustomerLoginQuery, AuthenticationResult>
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    public LoginQueryHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository, IMapper mapper)
+    public CustomerLoginQueryHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository, IMapper mapper)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
         _userRepository = userRepository;
         _mapper = mapper;
     }
-    public async Task<AuthenticationResult> Handle(LoginQuery query, CancellationToken cancellationToken)
+    public async Task<AuthenticationResult> Handle(CustomerLoginQuery query, CancellationToken cancellationToken)
     {
         //await Task.CompletedTask;
         //1. Check if user exist
@@ -29,8 +31,8 @@ public class LoginQueryHandler
         }
 
         //2. Check if logining with right password
-
-        if (user.Password != query.Password)
+        
+        if (user.Password != query.Password || user.Role == UserRole.Admin)
         {
             return new AuthenticationResult(null, "", false, "Wrong password");
 

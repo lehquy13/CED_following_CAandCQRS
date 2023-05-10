@@ -7,52 +7,52 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Class Informations</h5>
-       
+
         <div class="col d-flex justify-content-end">
             <a type="button" class="btn btn-success rounded-pill" asp-action="Create" asp-controller="ClassInformation">Create</a>
-           
+
         </div>
 
         <!-- Table with stripped rows -->
         <table id="example" class="table datatable">
             <thead>
-                <tr>
+            <tr>
 
-                    <th scope="col">#</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Academic Level</th>
-                    <th scope="col">Gender Requirement</th>
-                    <th scope="col">Learning mode</th>
-                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Status</th>
+                <th scope="col">Academic Level</th>
+                <th scope="col">Gender Requirement</th>
+                <th scope="col">Learning mode</th>
+                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
 
-                </tr>
+            </tr>
             </thead>
             <tbody>
 
-                @foreach (var user in Model)
-                {
-                    i++;
-                    <tr>
-                        <th scope="row">
-                            <input hidden name="Id" value="@user.Id" />
-                            @i
-                        </th>
-                        <td>@user.Title</td>
-                        <td>@user.SubjectName</td>
-                        <td>@user.Status</td>
-                        <td>@user.AcademicLevel</td>
-                        <td>@user.GenderRequirement</td>
-                        <td>@user.LearningMode</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@user.Id">Edit</a>|
-                            <a asp-action="Detail" asp-route-id="@user.Id">Details</a> |
-                            
-                            <a href="#" onclick="OpenGetDialog('@Url.Action("Delete","ClassInformation",new {id = @user.Id})','Are you sure you want to delete this class?');">Delete</a>
-                        </td>
-                    </tr>
-                }
+            @foreach (var user in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">
+                        <input hidden name="Id" value="@user.Id"/>
+                        @i
+                    </th>
+                    <td>@user.Title</td>
+                    <td>@user.SubjectName</td>
+                    <td>@user.Status</td>
+                    <td>@user.AcademicLevel</td>
+                    <td>@user.GenderRequirement</td>
+                    <td>@user.LearningMode</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@user.Id">Edit</a>|
+                        <a asp-action="Detail" asp-route-id="@user.Id">Details</a> |
+
+                        <a href="#" onclick="OpenGetDialog('@Url.Action("Delete", "ClassInformation", new { id = @user.Id })','Are you sure you want to delete this class?');">Delete</a>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
         <!-- End Table with stripped rows -->
@@ -60,24 +60,3 @@
 </div>
 
 
-<button type="button" hidden class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal" id="modalTriggerButton">
-    Large Modal
-</button>
-
-<div class="modal fade" id="largeModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Large Modal</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
-            </div>
-        @*    <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>*@
-        </div>
-    </div>
-</div><!-- End Large Modal-->

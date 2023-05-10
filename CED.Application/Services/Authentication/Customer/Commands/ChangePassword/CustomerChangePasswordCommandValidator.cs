@@ -1,9 +1,10 @@
-﻿using FluentValidation;
+﻿using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
+using FluentValidation;
 namespace CED.Application.Services.Authentication.Commands.ChangePassword;
 
-public class ChangePasswordCommandCommandValidator : AbstractValidator<ChangePasswordCommand>
+public class CustomerChangePasswordCommandCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
-    public ChangePasswordCommandCommandValidator()
+    public CustomerChangePasswordCommandCommandValidator()
     {
         RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.NewPassword).NotEmpty();
