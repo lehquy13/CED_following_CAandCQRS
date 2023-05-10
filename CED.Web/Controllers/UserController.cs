@@ -73,7 +73,7 @@ public class UserController : Controller
         {
             try
             {
-                var query = new CreateUserCommand(userDto);
+                var query = new CreateUpdateUserCommand(userDto);
                 var result = await _mediator.Send(query);
 
                 if (!result)
@@ -114,7 +114,7 @@ public class UserController : Controller
     public async Task<IActionResult> Create(UserDto userDto) // cant use userdto
     {
         userDto.LastModificationTime = DateTime.UtcNow;
-        var query = new CreateUserCommand(userDto);
+        var query = new CreateUpdateUserCommand(userDto);
         var result = await _mediator.Send(query);
         if(result)
             return View("Index");

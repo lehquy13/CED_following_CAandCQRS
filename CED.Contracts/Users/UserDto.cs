@@ -27,7 +27,7 @@ public class UserDto : FullAuditedEntityDto<Guid>
     public UserRole Role { get; set; } = UserRole.Student;
     public AcademicLevel AcademicLevel { get; set; }
     public string University { get; set;} = string.Empty;
-    public bool isVerified { get; set; } = false;
+    public bool IsVerified { get; set; } = false;
 
 
 

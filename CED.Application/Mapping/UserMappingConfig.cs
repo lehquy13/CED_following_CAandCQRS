@@ -24,7 +24,7 @@ public class UserMappingConfig : IRegister
             .Map(des => des.Role, src => src.Role)
             .Map(des => des.AcademicLevel, src => src.AcademicLevel)
             .Map(des => des.University, src => src.University)
-            .Map(des => des.isVerified, src => src.isVerified)
+            .Map(des => des.IsVerified, src => src.IsVerified)
             //.Map(des => des.WardId, src => src.WardId)
             .Ignore(des => des.Password)
             ;

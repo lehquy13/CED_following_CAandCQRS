@@ -97,7 +97,7 @@ namespace CED.Web.Controllers
             {
                 try
                 {
-                    var query = new CreateUserCommand(userDto);
+                    var query = new CreateUpdateUserCommand(userDto);
 
                     var result = await _mediator.Send(query);
                     ViewBag.Updated = result;

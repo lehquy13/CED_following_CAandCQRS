@@ -22,7 +22,7 @@ public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<Confirm
         }
         if (user.Role != UserRole.Tutor) return false;
 
-        command.TutorDto.isVerified = true;
+        command.TutorDto.IsVerified = true;
         user.UpdateTutorInformation(_mapper.Map<User>(command.TutorDto));
 
         var afterUpdatedUser = _userRepository.Update(user);

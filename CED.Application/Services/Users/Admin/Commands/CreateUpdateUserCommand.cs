@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CED.Application.Services.Users.Admin.Commands;
 
-public record CreateUserCommand
+public record CreateUpdateUserCommand
     (
      UserDto UserDto 
 ): IRequest<bool>;

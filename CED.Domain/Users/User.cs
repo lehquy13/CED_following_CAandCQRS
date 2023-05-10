@@ -25,7 +25,7 @@ public class User : FullAuditedAggregateRoot<Guid>
     public UserRole Role { get; set; } = UserRole.Student;
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
     public string University { get; set;} = string.Empty;
-    public bool isVerified { get; set; } = false;
+    public bool IsVerified { get; set; } = false;
 
     // constructor
     public User()
@@ -56,7 +56,7 @@ public class User : FullAuditedAggregateRoot<Guid>
         University = tutor.University;
 
         //wait for being verified
-        isVerified = false;
+        IsVerified = false;
 
     }
 
@@ -79,7 +79,11 @@ public class User : FullAuditedAggregateRoot<Guid>
         Image = user.Image;
         if(user.Role == UserRole.Tutor)
         {
-            UpdateTutorInformation(user);
+            AcademicLevel = user.AcademicLevel;
+            University = user.University;
+
+            //wait for being verified
+            IsVerified = user.IsVerified;
         }
     }
   

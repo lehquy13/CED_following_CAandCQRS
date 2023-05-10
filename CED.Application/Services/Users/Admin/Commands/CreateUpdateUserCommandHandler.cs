@@ -5,19 +5,19 @@ using MapsterMapper;
 
 namespace CED.Application.Services.Users.Admin.Commands;
 
-public class CreateUserCommandHandler : CreateUpdateCommandHandler<CreateUserCommand>
+public class CreateUpdateUserCommandHandler : CreateUpdateCommandHandler<CreateUpdateUserCommand>
 {
 
     private readonly IUserRepository _userRepository;
-    private readonly IAppLogger<CreateUserCommandHandler> _logger;
+    private readonly IAppLogger<CreateUpdateUserCommandHandler> _logger;
 
-    public CreateUserCommandHandler(IUserRepository userRepository,IAppLogger<CreateUserCommandHandler> logger, IMapper mapper) : base(mapper)
+    public CreateUpdateUserCommandHandler(IUserRepository userRepository,IAppLogger<CreateUpdateUserCommandHandler> logger, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
         _logger = logger;
     }
 
-    public override async Task<bool> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+    public override async Task<bool> Handle(CreateUpdateUserCommand command, CancellationToken cancellationToken)
     {
         try
         {
