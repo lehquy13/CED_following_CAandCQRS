@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
-using Castle.Core.Internal;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.DashBoard.Queries;
 using CED.Application.Services.Users.Queries;
+using CED.Contracts.Charts;
 using CED.Contracts.Users;
 using Microsoft.AspNetCore.Mvc;
 using CED.Web.Models;
@@ -11,10 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 
 namespace CED.Web.Controllers;
-
-record secrect(string name, List<int> data);
-record secrect1(int value, string name);
-
 [Authorize]
 [Route("[controller]")]
 public class HomeController : Controller
@@ -33,106 +30,25 @@ public class HomeController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var classInfors = await _sender.Send(new GetAllClassInformationsQuery());
+        var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
         var tutorDtos = await _sender.Send(new GetUsersQuery<TutorDto>());
         var studentDtos = await _sender.Send(new GetUsersQuery<StudentDto>());
-
-        var classInforsPie = classInfors
-            .GroupBy(x => x.Status)
-            .Select((x) => new { key = x.Key, count = x.Count() });
-
-       
-
-        List<int> dates = new List<int>();
-
-        var startday = DateTime.Today.Subtract(TimeSpan.FromDays(6));
-
-        for (int i = 0; i < 7; i++)
-        {
-            dates.Add(startday.Day);
-            startday = startday.AddDays(1);
-        }
-
-        startday = DateTime.Today.Subtract(TimeSpan.FromDays(6));
-
-
-        var classesInWeek = dates.GroupJoin(
-                classInfors
-                    .Where(x => x.CreationTime >= startday)
-                    .GroupBy(x => x.CreationTime.Day),
-                d => d,
-                c => c.Key,
-                (d, c) => new
-                {
-                    dates = d,
-                    classInfo = c.FirstOrDefault()?.Count() ?? 0
-                })
-            .Select(x => x.classInfo)
-            .ToList();
-        var studentsInWeek = dates.GroupJoin(
-                studentDtos
-                    .Where(x => x.CreationTime >= startday)
-                    .GroupBy(x => x.CreationTime.Day),
-                d => d,
-                c => c.Key,
-                (d, c) => new
-                {
-                    dates = d,
-                    classInfo = c.FirstOrDefault()?.Count() ?? 0
-                })
-            .Select(x => x.classInfo)
-            .ToList();
-
-        var tutorsInWeek = dates.GroupJoin(
-                studentDtos
-                    .Where(x => x.CreationTime >= startday)
-                    .GroupBy(x => x.CreationTime.Day),
-                d => d,
-                c => c.Key,
-                (d, c) => new
-                {
-                    dates = d,
-                    classInfo = c.FirstOrDefault()?.Count() ?? 0
-                })
-            .Select(x => x.classInfo)
-            .ToList();
-
-        secrect[] chartWeekData = new[]
-        {
-            new secrect(
-                "Classes",
-                classesInWeek
-            ),
-            new secrect(
-                "Tutors",
-                tutorsInWeek
-            ),
-            new secrect(
-                "Students",
-                studentsInWeek
-            ),
-        };
-        List<secrect1> pieWeekData = new List<secrect1>();
-        foreach (var c in classInforsPie)
-        {
-            pieWeekData.Add(new secrect1(
-                c.count,
-                c.key.ToString()
-            )); 
-        }
+        
+        LineChartData lineChartData = await _sender.Send(new GetLineChartDataQuery(classDtos,studentDtos,tutorDtos,""));
+        DonutChartData donutChartData = await _sender.Send(new GetDonutChartDataQuery(classDtos,""));
         var datesWeekData = new JsonResult(new
         {
             type = "string",
-            categories = dates.ToArray()
+            categories = lineChartData.dates
         });
 
-        var check = JsonConvert.SerializeObject(chartWeekData);
-        var check1 = JsonConvert.SerializeObject(pieWeekData);
+        var check = JsonConvert.SerializeObject(lineChartData.LineDatas);
+        var check1 = JsonConvert.SerializeObject(donutChartData.DonutDatas);
         return View(
             new DashBoardViewModel
             {
                 StudentDtos = studentDtos,
-                ClassInformationDtos = classInfors,
+                ClassInformationDtos = classDtos,
                 TutorDtos = tutorDtos,
                 ChartWeekData = check,
                 PieWeekData = check1,
