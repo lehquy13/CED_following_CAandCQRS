@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 namespace CED.Web.Controllers;
 
 record secrect(string name, List<int> data);
+record secrect1(int value, string name);
 
 [Authorize]
 [Route("[controller]")]
@@ -36,6 +37,11 @@ public class HomeController : Controller
         var tutorDtos = await _sender.Send(new GetUsersQuery<TutorDto>());
         var studentDtos = await _sender.Send(new GetUsersQuery<StudentDto>());
 
+        var classInforsPie = classInfors
+            .GroupBy(x => x.Status)
+            .Select((x) => new { key = x.Key, count = x.Count() });
+
+       
 
         List<int> dates = new List<int>();
 
@@ -106,6 +112,14 @@ public class HomeController : Controller
                 studentsInWeek
             ),
         };
+        List<secrect1> pieWeekData = new List<secrect1>();
+        foreach (var c in classInforsPie)
+        {
+            pieWeekData.Add(new secrect1(
+                c.count,
+                c.key.ToString()
+            )); 
+        }
         var datesWeekData = new JsonResult(new
         {
             type = "string",
@@ -113,6 +127,7 @@ public class HomeController : Controller
         });
 
         var check = JsonConvert.SerializeObject(chartWeekData);
+        var check1 = JsonConvert.SerializeObject(pieWeekData);
         return View(
             new DashBoardViewModel
             {
@@ -120,6 +135,7 @@ public class HomeController : Controller
                 ClassInformationDtos = classInfors,
                 TutorDtos = tutorDtos,
                 ChartWeekData = check,
+                PieWeekData = check1,
                 DatesWeekData = JsonConvert.SerializeObject(datesWeekData.Value)
             }
         );
