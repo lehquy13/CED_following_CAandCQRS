@@ -132,3 +132,4 @@ function ChooseTutor(id,name,phone){
     $('#tutorInfor').attr("value",name + " - " +phone);
     
 }
+

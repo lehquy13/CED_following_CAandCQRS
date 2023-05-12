@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using Castle.Core.Internal;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Subjects.Queries;
 using CED.Contracts.Charts;
 using CED.Contracts.Subjects;
@@ -13,8 +14,11 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
     {
     }
 
-    public override async Task<DonutChartData?> Handle(GetDonutChartDataQuery query, CancellationToken cancellationToken)
+    public override async Task<DonutChartData?> Handle(GetDonutChartDataQuery query,
+        CancellationToken cancellationToken)
     {
+        await Task.CompletedTask;
+
         var startDay = DateTime.Today;
         switch (query.ByTime)
         {
@@ -22,8 +26,8 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
                 startDay = DateTime.Today.Subtract(TimeSpan.FromDays(29));
 
                 break;
-            case "year":
-                startDay = DateTime.Today.Subtract(TimeSpan.FromDays(355));
+            case "week":
+                startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
                 break;
         }
 
@@ -31,18 +35,25 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
         var classInforsPie = query.ClassInformationDtos
             .Where(x => x.CreationTime >= startDay)
             .GroupBy(x => x.Status)
-            .Select((x) => new { key = x.Key, count = x.Count() });
+            .Select((x) => new { key = x.Key.ToString(), count = x.Count() });
 
 
-        var pieWeekData = new List<DonutData>();
-        foreach (var c in classInforsPie)
+        List<int> resultInts = classInforsPie
+            .Select(x => x.count)
+            .ToList();
+        if (resultInts.IsNullOrEmpty())
         {
-            pieWeekData.Add(new DonutData(
-                c.count,
-                c.key.ToString()
-            ));
+            resultInts.Add(1);
+        }
+        List<string> resultStrings = classInforsPie
+            .Select(x => x.key)
+            .ToList();
+        if (resultStrings.IsNullOrEmpty())
+        {
+            resultStrings.Add("None");
         }
 
-        return new DonutChartData(pieWeekData);
+
+        return new DonutChartData(resultInts, resultStrings);
     }
 }

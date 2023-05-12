@@ -15,6 +15,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
 
     public override async Task<LineChartData?> Handle(GetLineChartDataQuery query, CancellationToken cancellationToken)
     {
+        await Task.CompletedTask;
         List<int> dates = new List<int>();
 
         var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
@@ -28,14 +29,14 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
                     startDay = startDay.AddDays(1);
                 }
                 break;
-            case "year":
-                startDay = DateTime.Today.Subtract(TimeSpan.FromDays(355));
-                for (int i = 0; i < 365; i++)
-                {
-                    dates.Add(startDay.Day);
-                    startDay = startDay.AddDays(1);
-                }
-                break;
+            // case "week":
+            //     startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
+            //     for (int i = 0; i < 7; i++)
+            //     {
+            //         dates.Add(startDay.Day);
+            //         startDay = startDay.AddDays(1);
+            //     }
+            //     break;
             default:
                 for (int i = 0; i < 7; i++)
                 {

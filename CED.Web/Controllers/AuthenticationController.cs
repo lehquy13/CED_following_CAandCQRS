@@ -1,6 +1,5 @@
 ﻿using CED.Application.Services.Authentication.Admin.Queries.Login;
 using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Admin.Queries.Login;
 using CED.Application.Services.Authentication.Admin.Queries.ValidateToken;
 using CED.Contracts.Authentication;
 using MapsterMapper;
@@ -38,7 +37,7 @@ public class AuthenticationController : Controller
 
         var loginResult = await _mediator.Send(query);
 
-        if (loginResult is true)
+        if (loginResult)
         {
             return RedirectToAction("Index", "Home");
         }

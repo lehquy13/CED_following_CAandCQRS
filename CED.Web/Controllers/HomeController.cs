@@ -30,20 +30,26 @@ public class HomeController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
+        _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
         var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
         var tutorDtos = await _sender.Send(new GetUsersQuery<TutorDto>());
         var studentDtos = await _sender.Send(new GetUsersQuery<StudentDto>());
-        
+        _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
+
+        _logger.LogDebug("On getting lineChartData, donutChartData...");
         LineChartData lineChartData = await _sender.Send(new GetLineChartDataQuery(classDtos,studentDtos,tutorDtos,""));
         DonutChartData donutChartData = await _sender.Send(new GetDonutChartDataQuery(classDtos,""));
-        var datesWeekData = new JsonResult(new
-        {
-            type = "string",
-            categories = lineChartData.dates
-        });
+        var datesWeekData = new ChartDataType(
+        
+            "string",
+            lineChartData.dates
+        );
+        _logger.LogDebug("Got lineChartData, donutChartData! Serializing and return.");
 
         var check = JsonConvert.SerializeObject(lineChartData.LineDatas);
-        var check1 = JsonConvert.SerializeObject(donutChartData.DonutDatas);
+        var check2 = JsonConvert.SerializeObject(donutChartData.names);
+        var check1 = JsonConvert.SerializeObject(donutChartData.values);
+        var check3 = JsonConvert.SerializeObject(datesWeekData);
         return View(
             new DashBoardViewModel
             {
@@ -51,11 +57,62 @@ public class HomeController : Controller
                 ClassInformationDtos = classDtos,
                 TutorDtos = tutorDtos,
                 ChartWeekData = check,
-                PieWeekData = check1,
-                DatesWeekData = JsonConvert.SerializeObject(datesWeekData.Value)
+                PieWeekData1 = check1,
+                PieWeekData2 = check2,
+                DatesWeekData =check3
             }
         );
     }
+    
+    [HttpGet]
+    [Route("FitlerLineChart/{byTime?}")]
+    public async Task<IActionResult> FitlerLineChart(string? byTime)
+    {
+        _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
+        var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
+        var tutorDtos = await _sender.Send(new GetUsersQuery<TutorDto>());
+        var studentDtos = await _sender.Send(new GetUsersQuery<StudentDto>());
+        _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
+
+        _logger.LogDebug("On getting lineChartData...");
+        LineChartData lineChartData = await _sender.Send(new GetLineChartDataQuery(classDtos,studentDtos,tutorDtos,byTime??""));
+        var datesWeekData = new ChartDataType(
+        
+             "string",
+            lineChartData.dates
+        );
+        var check = JsonConvert.SerializeObject(lineChartData.LineDatas);
+        var check1 = JsonConvert.SerializeObject(datesWeekData);
+
+        return Json(new
+        {
+            ChartWeekData = check,
+            DatesWeekData = check1
+
+        });
+    }
+    [HttpGet]
+    [Route("FitlerPieChart/{byTime?}")]
+    public async Task<IActionResult> FitlerPieChart(string? byTime)
+    {
+        _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
+        var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
+        
+        DonutChartData donutChartData = await _sender.Send(new GetDonutChartDataQuery(classDtos,byTime??""));
+
+        _logger.LogDebug("Got lineChartData, donutChartData! Serializing and return.");
+
+        var check2 = JsonConvert.SerializeObject(donutChartData.names);
+        var check1 = JsonConvert.SerializeObject(donutChartData.values);
+
+        return Json(new
+        {
+            pieWeekData1 = check1,
+            pieWeekData2 = check2,
+
+        });
+    }
+    
 
     [Route("Privacy")]
     public IActionResult Privacy()
