@@ -21,11 +21,9 @@ public class ValidationBehavior<TRequest, TResponse> :
 
         if (_validator == null) { return await next(); }
         // before the handler
-        var validationResult = await _validator.ValidateAsync(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         // after the handler
-
-
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.ToList();
