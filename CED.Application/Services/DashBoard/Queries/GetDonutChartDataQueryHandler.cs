@@ -1,17 +1,17 @@
 ﻿using Castle.Core.Internal;
 using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.Subjects.Queries;
 using CED.Contracts.Charts;
-using CED.Contracts.Subjects;
-using CED.Domain.Subjects;
+using CED.Domain.ClassInformations;
 using MapsterMapper;
 
 namespace CED.Application.Services.DashBoard.Queries;
 
 public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDataQuery, DonutChartData>
 {
-    public GetDonutChartDataQueryHandler(IMapper mapper) : base(mapper)
+    private readonly IClassInformationRepository _classInformationRepository;
+    public GetDonutChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository) : base(mapper)
     {
+        _classInformationRepository = classInformationRepository;
     }
 
     public override async Task<DonutChartData?> Handle(GetDonutChartDataQuery query,
@@ -31,11 +31,13 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
                 break;
         }
 
+     
 
-        var classInforsPie = query.ClassInformationDtos
+        var classInforsPie = _classInformationRepository.GetAll()
             .Where(x => x.CreationTime >= startDay)
             .GroupBy(x => x.Status)
-            .Select((x) => new { key = x.Key.ToString(), count = x.Count() });
+            .Select((x) => new { key = x.Key.ToString(), count = x.Count()})
+            .ToList();
 
 
         List<int> resultInts = classInforsPie

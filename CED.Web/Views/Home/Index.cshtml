@@ -22,7 +22,7 @@
           <div class="row">
           <!-- Class Card -->
             <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
+              <div class="card info-card revenue-card" id="_TotalClasses">
 
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -30,33 +30,36 @@
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    
+                    <li>
+                      <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalClasses", "Home", new { ByTime = "" })')">
+                        Today
+                      </a>
+                    </li>
+                    <li>
+                      
+                      <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalClasses", "Home", new { ByTime = ByTime.Month })')">
+                        This Month
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalClasses", "Home", new { ByTime = ByTime.Year })')">
+                        This Year
+                      </a>
+                    </li>
+                    
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Classes <span>| This Month</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-info-square"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>@Model.ClassInformationDtos.Count</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase or decrease</span>
-
-                    </div>
-                  </div>
+                  <partial name="_TotalClasses" model="Model.ClassTotalValueModel" />
                 </div>
 
               </div>
             </div><!-- End Revenue Card -->
             <!-- Tutors Card -->
             <div class="col-xxl-4 col-md-6">
-              <div class="card info-card sales-card">
+              <div class="card info-card sales-card" id="_TotalTutors">
 
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -65,25 +68,20 @@
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                     <li><a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalTutors", "Home", new { ByTime = "" })')">
+                         Today
+                       </a></li>
+                    <li><a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalTutors", "Home", new { ByTime = ByTime.Month })')">
+                        This Month
+                      </a></li>
+                    <li><a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalTutors", "Home", new { ByTime = ByTime.Year })')">
+                        This Year</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Tutors<span>| Today</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>@Model.TutorDtos.Count</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase or descrease</span>
-
-                    </div>
-                  </div>
+                  <partial name="_TotalTutors" model="Model.TutorTotalValueModel" />
+                  
                 </div>
 
               </div>
@@ -92,7 +90,7 @@
           <!-- Students Card -->
             <div class="col-xxl-4 col-xl-12">
 
-              <div class="card info-card customers-card">
+              <div class="card info-card customers-card" id="_TotalStudents">
 
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -101,26 +99,20 @@
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalStudents", "Home", new { ByTime = "" })')">
+                         Today
+                       </a></li>
+                  <li><a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalStudents", "Home", new { ByTime = ByTime.Month })')">
+                      This Month
+                    </a></li>
+                  <li><a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FitlerTotalStudents", "Home", new { ByTime = ByTime.Year })')">
+                      This Year</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Students <span>| Today</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>@Model.StudentDtos.Count</h6>
-                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-
-                    </div>
-                  </div>
-
+                  <partial name="_TotalStudents" model="Model.StudentTotalValueModel" />
+                  
                 </div>
               </div>
 
@@ -137,13 +129,6 @@
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
-
-                    @* <li> *@
-                    @*   <a class="dropdown-item" *@
-                    @*      href="javascript:ChartReload('@Url.Action("FitlerLineChart", "Home", new { ByTime = "" })')"> *@
-                    @*     Today *@
-                    @*   </a> *@
-                    @* </li> *@
                     <li>
                       <a class="dropdown-item"
                          href="javascript:ChartReload('@Url.Action("FitlerLineChart", "Home", new { ByTime = "week" })')">
@@ -246,7 +231,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                     @foreach (var classInfo in Model.ClassInformationDtos)
+                     @foreach (var classInfo in Model.ClassTotalValueModel.Models)
                      {
                        @if (i > 4)
                        {
@@ -538,7 +523,11 @@
                   <h6>Filter</h6>
                 </li>
 
-                <li><a class="dropdown-item"  href="javascript:PieChartReload('@Url.Action("FitlerPieChart", "Home", new { ByTime = "" })')">Today</a></li>
+                <li>
+                  <a class="dropdown-item" href="javascript:PieChartReload('@Url.Action("FitlerPieChart", "Home", new { ByTime = "" })')">
+                    Today
+                  </a>
+                </li>
                
                 <li>
                   <a class="dropdown-item"

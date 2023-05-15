@@ -2,15 +2,21 @@
 using CED.Application.Services.Subjects.Queries;
 using CED.Contracts.Charts;
 using CED.Contracts.Subjects;
+using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
+using CED.Domain.Users;
 using MapsterMapper;
 
 namespace CED.Application.Services.DashBoard.Queries;
 
 public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartDataQuery, LineChartData>
 {
-    public GetLineChartDataQueryHandler(IMapper mapper) : base(mapper)
+    private readonly IClassInformationRepository _classInformationRepository;
+    private readonly IUserRepository _userRepository;
+    public GetLineChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository, IUserRepository userRepository) : base(mapper)
     {
+        _classInformationRepository = classInformationRepository;
+        _userRepository = userRepository;
     }
 
     public override async Task<LineChartData?> Handle(GetLineChartDataQuery query, CancellationToken cancellationToken)
@@ -29,14 +35,6 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
                     startDay = startDay.AddDays(1);
                 }
                 break;
-            // case "week":
-            //     startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
-            //     for (int i = 0; i < 7; i++)
-            //     {
-            //         dates.Add(startDay.Day);
-            //         startDay = startDay.AddDays(1);
-            //     }
-            //     break;
             default:
                 for (int i = 0; i < 7; i++)
                 {
@@ -49,7 +47,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
         startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
 
         var classesInWeek = dates.GroupJoin(
-                query.ClassInformationDtos
+                _classInformationRepository.GetAll()
                     .Where(x => x.CreationTime >= startDay)
                     .GroupBy(x => x.CreationTime.Day),
                 d => d,
@@ -62,7 +60,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
             .Select(x => x.classInfo)
             .ToList();
         var studentsInWeek = dates.GroupJoin(
-                query.StudentDtos
+                _userRepository.GetStudents()
                     .Where(x => x.CreationTime >= startDay)
                     .GroupBy(x => x.CreationTime.Day),
                 d => d,
@@ -76,7 +74,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
             .ToList();
 
         var tutorsInWeek = dates.GroupJoin(
-                query.TutorDtos
+                _userRepository.GetTutors()
                     .Where(x => x.CreationTime >= startDay)
                     .GroupBy(x => x.CreationTime.Day),
                 d => d,
