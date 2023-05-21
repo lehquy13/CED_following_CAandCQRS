@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using LazyCache;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -29,7 +28,7 @@ public class CachingBehavior<TRequest, TResponse>
 
         return _cache.GetOrAddAsync(key, async entry =>
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
             return await next();
         });
     }
