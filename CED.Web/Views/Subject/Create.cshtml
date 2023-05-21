@@ -17,7 +17,7 @@
         <h5 class="card-title">Create new subject</h5>
 
         <!-- Multi Columns Form -->
-        <form class="row g-3" asp-action="Create" asp-controller="Subject" onsubmit="return callPostActionWithForm(this);">
+        <form class="row g-3" asp-action="Create" asp-controller="Subject">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="col-md-12">
@@ -79,11 +79,7 @@
             </div>
             @Html.AntiForgeryToken()
         </form><!-- End Multi Columns Form -->
-        <form asp-action="DeleteConfirmed" asp-controller="Subject">
-            <button type="submit" class="btn btn-danger">Delete</button>
-            <input type="hidden" asp-for="Id" />
-
-        </form>
+      
     </div>
 </div>
 

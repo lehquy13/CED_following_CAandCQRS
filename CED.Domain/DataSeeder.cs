@@ -18,52 +18,53 @@ public class DataSeeder
 
     private void SeedData()
     {
-        var programming = new Subject { Name = "Programing", Description = "Basic subject" };
-        var informatics = new Subject { Name = "Informatics", Description = "Alonso" };
-        var otherSubject = new Subject { Name = "Other", Description = "Other subject" };
-        var korean = new Subject { Name = "Korean", Description = "korean" };
-        var vietnameses = new Subject { Name = "Vietnamese for foreigner", Description = "Justice" };
-        var german = new Subject { Name = "German", Description = "german" };
-        var english = new Subject { Name = "English", Description = "Olivetto" };
-        var guitar = new Subject { Name = "Guitar", Description = "Barzdukas" };
-        var chemistry = new Subject { Name = "Chemistry", Description = "Alonso" };
-        var dance = new Subject { Name = "Dance", Description = "Oslon" };
+        var programming = new Subject { Id= Guid.NewGuid(), Name = "Programing", Description = "Basic subject" };
+        var informatics = new Subject { Id = Guid.NewGuid(), Name = "Informatics", Description = "Alonso" };
+        var otherSubject = new Subject { Id = Guid.NewGuid(), Name = "Other", Description = "Other subject" };
+        var korean = new Subject { Id = Guid.NewGuid(), Name = "Korean", Description = "korean" };
+        var vietnameses = new Subject { Id = Guid.NewGuid(), Name = "Vietnamese for foreigner", Description = "Justice" };
+        var german = new Subject { Id = Guid.NewGuid(), Name = "German", Description = "german" };
+        var english = new Subject { Id = Guid.NewGuid(), Name = "English", Description = "Olivetto" };
+        var guitar = new Subject { Id = Guid.NewGuid(), Name = "Guitar", Description = "Barzdukas" };
+        var chemistry = new Subject { Id = Guid.NewGuid(), Name = "Chemistry", Description = "Alonso" };
+        var dance = new Subject { Id = Guid.NewGuid(), Name = "Dance", Description = "Oslon" };
 
         var subjects = new List<Subject>()
         {
-            new Subject { Name = "Physics", Description = "Alexander" },
+            new Subject { Id= Guid.NewGuid(),Name = "Physics", Description = "Alexander" },
             chemistry,
-            new Subject { Name = "Biology", Description = "Anand" },
-            new Subject { Name = "Geography", Description = "Barzdukas" },
-            new Subject { Name = "Information Technology", Description = "Li" },
-            new Subject { Name = "Fine Art", Description = "Justice" },
-            new Subject { Name = "Literature", Description = "Norman" },
-            new Subject { Name = "History", Description = "Olivetto" },
+            new Subject { Id= Guid.NewGuid(),Name = "Biology", Description = "Anand" },
+            new Subject { Id= Guid.NewGuid(),Name = "Geography", Description = "Barzdukas" },
+            new Subject {Id= Guid.NewGuid(), Name = "Information Technology", Description = "Li" },
+            new Subject {Id = Guid.NewGuid(),  Name = "Fine Art", Description = "Justice" },
+            new Subject {Id= Guid.NewGuid(), Name = "Literature", Description = "Norman" },
+            new Subject {Id = Guid.NewGuid(),  Name = "History", Description = "Olivetto" },
 
-            new Subject { Name = "Engineering", Description = "Alexander" },
+            new Subject { Id= Guid.NewGuid(),Name = "Engineering", Description = "Alexander" },
             informatics,
-            new Subject { Name = "Technology", Description = "Anand" },
-            new Subject { Name = "Politics", Description = "Barzdukas" },
-            new Subject { Name = "Psychology", Description = "Li" },
-            new Subject { Name = "Economics", Description = "Justice" },
-            new Subject { Name = "Physical Education", Description = "Norman" },
+            new Subject {Id = Guid.NewGuid(),  Name = "Technology", Description = "Anand" },
+            new Subject {Id = Guid.NewGuid(),  Name = "Politics", Description = "Barzdukas" },
+            new Subject {Id= Guid.NewGuid(), Name = "Psychology", Description = "Li" },
+            new Subject {Id = Guid.NewGuid(),  Name = "Economics", Description = "Justice" },
+            new Subject {Id= Guid.NewGuid(), Name = "Physical Education", Description = "Norman" },
             english,
 
-            new Subject { Name = "C# programing", Description = "Barzdukas" },
+            new Subject {Id = Guid.NewGuid(),  Name = "C# programing", Description = "Barzdukas" },
             programming,
-            new Subject { Name = "Java programing", Description = "Li" },
-            new Subject { Name = "Python programing", Description = "Justice" },
-            new Subject { Name = "Web programing", Description = "Norman" },
-            new Subject { Name = "HTML,CSS & Javascript", Description = "Olivetto" },
+            new Subject {Id = Guid.NewGuid(),  Name = "Java programing", Description = "Li" },
+            new Subject {Id= Guid.NewGuid(), Name = "Python programing", Description = "Justice" },
+            new Subject {Id = Guid.NewGuid(),  Name = "Web programing", Description = "Norman" },
+            new Subject {Id = Guid.NewGuid(),  Name = "HTML,CSS & Javascript", Description = "Olivetto" },
 
             guitar, dance,
-            new Subject { Name = "Piano", Description = "Li" },
+            new Subject {Id = Guid.NewGuid(),  Name = "Piano", Description = "Li" },
             otherSubject,
             german, korean, vietnameses
         };
         this.Subjects = subjects;
         var tutor = new User //Tutor
         {
+            Id = Guid.NewGuid(),
             FirstName = "Meredith", LastName = "Smith", Description = "Premium tutor",
             PhoneNumber = "0123123120", Email = "20520727@gm.uit.edu.com",
             University = "University of Information Technology - VNUHCM",
@@ -72,6 +73,7 @@ public class DataSeeder
 
         var tutor1 = new User
         {
+            Id = Guid.NewGuid(),
             FirstName = "Yan", LastName = "Woo", Gender = Gender.Female, Description = "Multi-subject tutor",
             PhoneNumber = "0123123123", Email = "hoangle.q5@gmail.com", Role = UserRole.Tutor,
             University = "University of Economics HCMC (UEH)"
@@ -79,6 +81,7 @@ public class DataSeeder
 
         var tutor2 = new User
         {
+            Id = Guid.NewGuid(),
             FirstName = "Nay", LastName = "Woo", Gender = Gender.Female,
             Description = "Multi-subject tutor, Yan's sister",
             PhoneNumber = "0123123332", Email = "hoangle.qq5@gmail.com", Role = UserRole.Tutor,
@@ -87,6 +90,7 @@ public class DataSeeder
 
         var standardUser = new User
         {
+            Id = Guid.NewGuid(),
             FirstName = "Laura", LastName = "Grey", Gender = Gender.Female, Description = "Norman",
             PhoneNumber = "0123123125", Email = "hoangle.q2@gmail.com"
         };
@@ -207,6 +211,7 @@ public class DataSeeder
         Users = users;
         var classInfos = new List<ClassInformation>()
         {
+       
             new ClassInformation
             {
                 Title = "Tìm Gia Sư Dạy Laravel Tại Thủ Đức, Hồ Chí Minh", Description = "Không có nội dung mô tả",

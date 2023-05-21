@@ -24,7 +24,7 @@ public class User : FullAuditedAggregateRoot<Guid>
     //is tutor related informtions
     public UserRole Role { get; set; } = UserRole.Student;
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
-    public string University { get; set;} = string.Empty;
+    public string? University { get; set;} = string.Empty;
     public bool IsVerified { get; set; } = false;
 
     // constructor

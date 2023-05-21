@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Domain.Shared;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.Utilities;
 using Microsoft.EntityFrameworkCore;
 
@@ -116,8 +117,20 @@ public class UserController : Controller
         userDto.LastModificationTime = DateTime.UtcNow;
         var query = new CreateUpdateUserCommand(userDto);
         var result = await _mediator.Send(query);
-        if(result)
-            return View("Index");
+        if (result)
+        {
+            switch (userDto.Role)
+            {
+                case UserRole.Student:
+                    return RedirectToAction("Student");
+                case UserRole.Tutor:
+                    return RedirectToAction("Tutor");
+                default:
+                    return RedirectToAction("Index");
+
+            }
+        }
+            
         return View("Create", userDto);
     }
 
@@ -189,8 +202,8 @@ public class UserController : Controller
     {
         var query = new GetUsersQuery<StudentDto>();
         var studentDtos = await _mediator.Send(query);
-        var userDtos = _mapper.Map<List<UserDto>>(studentDtos);
-        return View("Index", userDtos);
+        
+        return View( studentDtos);
     }
 
     [HttpGet("Tutor")]

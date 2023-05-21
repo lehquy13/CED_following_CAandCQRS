@@ -33,7 +33,7 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
             var subjects = await _subjectRepository.GetAllList();
             var tutors = _userRepository.GetTutors();
 
-            var classInformationDtos = _mapper.Map<List<ClassInformationDto>>(classInformations);
+            var classInformationDtos = _mapper.Map<List<ClassInformationDto>>(classInformations.Where(x => x.IsDeleted == false).ToList());
 
             
 

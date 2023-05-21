@@ -22,7 +22,8 @@ public class DeleteClassInformationCommandHandler
             throw new Exception("Class has already existed");
         }
 
-        _classInformationRepository.Delete(classInformation);
+        classInformation.IsDeleted = true;
+        _classInformationRepository.Update(classInformation);
 
         return true;
     }

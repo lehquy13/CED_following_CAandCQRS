@@ -64,7 +64,7 @@
                 <span asp-validation-for="SubjectId" class="text-danger"></span>
             </div>
             <div class="col-md-4">
-                <label asp-for="TutorDtoId" class="form-label">Tutor</label>
+                <label  class="form-label">Tutor</label>
                 <input type="text" hidden="hidden" id="tutorId" asp-for="TutorDtoId" class="form-control" />
                 <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly" />
                 <span asp-validation-for="TutorDtoId" class="text-danger"></span>

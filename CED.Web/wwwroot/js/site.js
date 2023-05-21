@@ -16,7 +16,8 @@ function callPostActionWithForm(formInput) {
         success: function (res) {
     
             if (res.res === true) {
-                $('#main').html(res.partialView);
+                if(res.viewName === "Profile" )
+                    $('#main').html(res.partialView);
                 //$('#main').click();
 
                 $('#successAlertButton').click();
@@ -125,9 +126,11 @@ function LoadImage(url, id) {
 }
 
 function ChooseTutor(id,name,phone){
-    $('#largeModal').modal("hide");
-    $('#largeModal .modal-body').html("");
+    $('#largeModal').modal('hide');
     
+    $('#largeModal .modal-body').html("");
+    $(document.body).removeClass('modal-open');
+    $('.modal-backdrop').remove();
     $('#tutorId').attr("value",id);
     $('#tutorInfor').attr("value",name + " - " +phone);
     

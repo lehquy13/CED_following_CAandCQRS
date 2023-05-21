@@ -23,6 +23,10 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.TutorEmail, src => src.Item3.Email)
             .Map(dest => dest.TutorName, src => $"{src.Item3.FirstName} {src.Item3.LastName}")
             .Map(dest => dest, src => src.Item1);
+        config.NewConfig<(ClassInformation, Subject), ClassInformationDto>() // in case the class doesnt have tutor
+            .Map(dest => dest.SubjectName, src => src.Item2.Name)
+            .Map(dest => dest.SubjectId, src => src.Item2.Id)
+            .Map(dest => dest, src => src.Item1);
 
 
         config.NewConfig<Subject, SubjectLookupDto>();

@@ -22,6 +22,8 @@ internal static class Program
             var seeder = new DataSeeder();
             context.Subjects.AddRange(seeder.Subjects);
             context.Users.AddRange(seeder.Users);
+            context.SaveChanges();
+
             context.ClassInformations.AddRange(seeder.ClassInformations);
             var addresses = ConvertCSVtoDataTable(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\")) +
                                                   "AddressData.csv");
@@ -64,7 +66,6 @@ internal static class Program
             context.Cities.AddRange(cities);
             context.Districts.AddRange(districts);
             context.Wards.AddRange(wards);
-            context.SaveChanges();
             context.SaveChanges();
         }
     }

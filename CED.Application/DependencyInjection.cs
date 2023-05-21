@@ -6,9 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using CED.Application.Common.Caching;
 using CED.Application.Services;
-using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.Subjects.Queries;
-using CED.Contracts.ClassInformations;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
 
@@ -29,8 +27,8 @@ namespace CED.Application
             services.AddScoped(typeof(IPipelineBehavior<GetAllSubjectsQuery,List<SubjectDto>>), 
                 typeof(CachingBehavior<GetAllSubjectsQuery,List<SubjectDto>>)); 
             
-            services.AddScoped(typeof(IPipelineBehavior<GetAllClassInformationsQuery,List<ClassInformationDto>>), 
-                typeof(CachingBehavior<GetAllClassInformationsQuery,List<ClassInformationDto>>)); 
+            // services.AddScoped(typeof(IPipelineBehavior<GetAllClassInformationsQuery,List<ClassInformationDto>>), 
+            //     typeof(CachingBehavior<GetAllClassInformationsQuery,List<ClassInformationDto>>)); 
             
             services.AddScoped(typeof(IAddressService), typeof(AddressService));
          

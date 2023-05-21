@@ -115,7 +115,7 @@ public class ClassInformationController : Controller
         }
         await PackStaticListToView();
         await PackStudentAndTuTorList();
-
+        
         return Helper.RenderRazorViewToString(this,"Edit",classDto);
     }
 
