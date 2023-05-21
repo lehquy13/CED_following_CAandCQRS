@@ -46,7 +46,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
         
         startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
 
-        var classesInWeek = dates.GroupJoin(
+        var classesInWeek =dates.GroupJoin( 
                 _classInformationRepository.GetAll()
                     .Where(x => x.CreationTime >= startDay)
                     .GroupBy(x => x.CreationTime.Day),

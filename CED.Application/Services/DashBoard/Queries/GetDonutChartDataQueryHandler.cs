@@ -2,6 +2,7 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Charts;
 using CED.Domain.ClassInformations;
+using CED.Domain.Shared.ClassInformationConsts;
 using MapsterMapper;
 
 namespace CED.Application.Services.DashBoard.Queries;
@@ -22,11 +23,11 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
         var startDay = DateTime.Today;
         switch (query.ByTime)
         {
-            case "month":
+            case ByTime.Month:
                 startDay = DateTime.Today.Subtract(TimeSpan.FromDays(29));
 
                 break;
-            case "week":
+            case ByTime.Week:
                 startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
                 break;
         }

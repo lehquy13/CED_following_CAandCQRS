@@ -1,0 +1,51 @@
+﻿@model AreaChartViewModel
+
+ <h5 class="card-title">Area Chart</h5>
+
+<div id="areaChart"></div>
+
+<script>
+
+    new ApexCharts(document.querySelector("#areaChart"), {
+      series: [{
+                name: "@Model.totalRevenue",
+                data: @Html.Raw(Model.totalRevenueSeries)
+              },{
+                name: "@Model.refunded",
+                data: @Html.Raw(Model.refundedSeries)
+              },{
+                name: "@Model.incoming",
+                data: @Html.Raw(Model.incomingSeries)
+              }],
+      chart: {
+        type: 'area',
+        height: 350,
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      subtitle: {
+        text: 'Incomes Movements',
+        align: 'left'
+      },
+      labels: @Html.Raw(Model.dates),
+      xaxis: {
+        type: 'int',
+      },
+      yaxis: {
+        type: 'float',
+        opposite: true
+      },
+      legend: {
+        horizontalAlign: 'left'
+      }
+    }).render();
+
+</script>
+<!-- End Area Chart -->
