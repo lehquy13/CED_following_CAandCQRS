@@ -42,16 +42,14 @@
             <div class="col-md-3">
                 <label asp-for="SubjectId" class="form-label">Subject Name</label>
                 <select asp-for="SubjectId" class="form-select">
-                    <option selected value="@Model.SubjectId">
-                        @Model.SubjectName.ToString()
-                        <!--  <input type="text" value="@Model.SubjectId" hidden asp-for="SubjectId" class="form-control" />-->
-                    </option>
+                    
+                    
 
                     @foreach (var i in subjects)
                     {
                         @if (i.Name != Model.SubjectName.ToString())
                         {
-                            <option value="@i.Id">
+                            <option selected value="@i.Id">
                                 @i.Name
 
                                 <!--  <input type="text" value="@i.Id" hidden asp-for="SubjectId" class="form-control" /> -->
@@ -177,21 +175,7 @@
 
             </div>
 
-            <div class="col-md-6">
-                <label for="inputCity" class="form-label">City</label>
-                <input type="text" class="form-control" id="inputCity" />
-            </div>
-            <div class="col-md-4">
-                <label for="inputState" class="form-label">State</label>
-                <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label for="inputZip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="inputZip" />
-            </div>
+        
             <!-- ----------------------------------- -->
             <!-- ----------------------------------- hidden info -->
 

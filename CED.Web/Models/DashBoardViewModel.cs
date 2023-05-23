@@ -11,6 +11,7 @@ public class DashBoardViewModel
     public object? PieWeekData1 { get; set; }
     public object? PieWeekData2 { get; set; }
     public object? DatesWeekData { get; set; } 
+    public AreaChartViewModel  AreaChartViewModel { get; set; } 
     
     public List<CED.Contracts.Subjects.SubjectDto> SubjectDtos { get; set; } = new();
     

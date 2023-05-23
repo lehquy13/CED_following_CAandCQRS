@@ -64,6 +64,8 @@ public class HomeController : Controller
         var check2 = JsonConvert.SerializeObject(donutChartData.names);
         var check1 = JsonConvert.SerializeObject(donutChartData.values);
         var check3 = JsonConvert.SerializeObject(datesWeekData);
+
+        var areaListData = await AreaChartDataCalculate(ByTime.Week);
         return View(
             new DashBoardViewModel
             {
@@ -95,7 +97,15 @@ public class HomeController : Controller
                 ChartWeekData = check,
                 PieWeekData1 = check1,
                 PieWeekData2 = check2,
-                DatesWeekData = check3
+                DatesWeekData = check3,
+                AreaChartViewModel = new AreaChartViewModel()
+                {
+                    dates = areaListData.ElementAt(0),
+                    totalRevenueSeries = areaListData.ElementAt(1),
+                    refundedSeries = areaListData.ElementAt(2),
+                    incomingSeries = areaListData.ElementAt(3),
+                    ByTime =  ByTime.Week
+                }
             }
         );
     }
@@ -139,26 +149,36 @@ public class HomeController : Controller
                 ByTime = byTime ?? ByTime.Today
             });
     }
-    [HttpGet]
-    [Route("FilterAreaChart/{byTime?}")]
-    public async Task<IActionResult> FilterAreaChart(string? byTime)
+
+    private async Task<List<string>> AreaChartDataCalculate(string? byTime)
     {
         _logger.LogDebug("FitlerPieChart's running! On getting DonutChartData...");
         AreaChartData areaChartData = await _sender.Send(new GetAreaChartDataQuery(byTime ?? ""));
         _logger.LogDebug("Got donutChartData! Serializing and return.");
-
+        
+        var check1 = JsonConvert.SerializeObject(areaChartData.dates);
         var check2 = JsonConvert.SerializeObject(areaChartData.totalRevuenues.data);
         var check3 = JsonConvert.SerializeObject(areaChartData.cenceleds.data);
         var check4 = JsonConvert.SerializeObject(areaChartData.incoming.data);
-        var check1 = JsonConvert.SerializeObject(areaChartData.dates);
 
+        return new List<string>
+        {
+            check1, check2, check3, check4
+        };
+
+    }
+    [HttpGet]
+    [Route("FilterAreaChart/{byTime?}")]
+    public async Task<IActionResult> FilterAreaChart(string? byTime)
+    {
+        var listData = await AreaChartDataCalculate(byTime);
         return Helper.RenderRazorViewToString(this, "_AreaChart",
             new AreaChartViewModel()
             {
-                dates = check1,
-                totalRevenueSeries = check2,
-                refundedSeries = check3,
-                incomingSeries = check4,
+                dates = listData.ElementAt(1),
+                totalRevenueSeries = listData.ElementAt(1),
+                refundedSeries = listData.ElementAt(3),
+                incomingSeries = listData.ElementAt(4),
                 ByTime = byTime ?? ByTime.Today
             });
     }
