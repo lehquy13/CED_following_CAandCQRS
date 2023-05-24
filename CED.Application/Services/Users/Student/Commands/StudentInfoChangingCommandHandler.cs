@@ -1,9 +1,9 @@
-﻿using CED.Domain.Users;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Users;
 using MapsterMapper;
-using CED.Application.Services.Abstractions.CommandHandlers;
 
-namespace CED.Application.Services.Users.TutorRegister.Commands;
+namespace CED.Application.Services.Users.Student.Commands;
 
 public class StudentInfoChangingCommandHandler : CreateUpdateCommandHandler<StudentInfoChangingCommand>
 {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
+using Microsoft.AspNetCore.Mvc;
 using CED.Contracts.Subjects;
 using MapsterMapper;
 using MediatR;
@@ -31,7 +32,7 @@ public class SubjectController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetAllSubjectsQuery();
+        var query = new GetObjectQuery<List<SubjectDto>>();
         var subjectDtos = await _mediator.Send(query);
 
         return View(subjectDtos);
@@ -41,9 +42,9 @@ public class SubjectController : Controller
     public async Task<IActionResult> Edit(Guid Id)
     {
        
-        var query = new GetSubjectQuery()
+        var query = new GetObjectQuery<SubjectDto>()
         {
-            Id = Id
+            Guid = Id
         };
         var result = await _mediator.Send(query);
 
@@ -68,7 +69,10 @@ public class SubjectController : Controller
                 };
                 var result = await _mediator.Send(query);
                 ViewBag.Updated = true;
-                return await Edit(Id);
+                if (result)
+                {
+                    return Helper.RenderRazorViewToString(this,"Edit",subjectDto);
+                }
 
 
             }
@@ -97,7 +101,7 @@ public class SubjectController : Controller
         var query = new CreateUpdateSubjectCommand() { SubjectDto = subjectDto };
         var result = await _mediator.Send(query);
 
-        return View("Index");
+        return RedirectToAction("Index");
     }
 
     [HttpGet("Delete")]

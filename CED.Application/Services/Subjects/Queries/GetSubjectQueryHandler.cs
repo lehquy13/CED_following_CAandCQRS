@@ -5,7 +5,7 @@ using MapsterMapper;
 
 namespace CED.Application.Services.Subjects.Queries;
 
-public class GetSubjectQueryHandler : GetByIdQueryHandler<GetSubjectQuery, SubjectDto>
+public class GetSubjectQueryHandler : GetByIdQueryHandler<GetObjectQuery<SubjectDto>, SubjectDto>
 {
     private readonly ISubjectRepository _subjectRepository;
     public GetSubjectQueryHandler(ISubjectRepository subjectRepository, IMapper mapper) : base(mapper)
@@ -13,14 +13,12 @@ public class GetSubjectQueryHandler : GetByIdQueryHandler<GetSubjectQuery, Subje
         _subjectRepository = subjectRepository;
     }
 
-    public override async Task<SubjectDto?> Handle(GetSubjectQuery query, CancellationToken cancellationToken)
+    public override async Task<SubjectDto?> Handle(GetObjectQuery<SubjectDto> query, CancellationToken cancellationToken)
     {
-        Subject? subject = await _subjectRepository.GetById(query.Id);
+        Subject? subject = await _subjectRepository.GetById(query.Guid);
         if (subject == null)
         {
             return null;
-            throw new Exception("the subject doesn't exist.");
-
         }
         return _mapper.Map<SubjectDto>(subject);
     }

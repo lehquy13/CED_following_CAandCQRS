@@ -1,10 +1,10 @@
 ﻿using CED.Contracts.Users;
 using MediatR;
 
-namespace CED.Application.Services.Users.TutorRegister.Commands;
+namespace CED.Application.Services.Users.Student.Commands;
 
 public record StudentInfoChangingCommand
 (
-    StudentDto StudentDto
+    UserDto StudentDto
     ) : IRequest<bool>;
 

@@ -22,10 +22,10 @@ namespace CED.Web.Controllers
     {
         private readonly ISender _mediator;
         private readonly IMapper _mapper;
-        private readonly ILogger<AuthenticationController> _logger;
+        private readonly ILogger<ProfileController> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProfileController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger,
+        public ProfileController(ISender mediator, IMapper mapper, ILogger<ProfileController> logger,
             IWebHostEnvironment webHostEnvironment)
         {
             _mediator = mediator;

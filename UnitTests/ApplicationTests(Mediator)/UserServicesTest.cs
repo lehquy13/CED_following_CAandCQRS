@@ -265,7 +265,7 @@ namespace UnitTests.ApplicationTests
         public async Task GetAllTutors()
         {
             var query = new GetUsersQuery<TutorDto> { };
-            var handler = new GetTutorsQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
+            var handler = new GetAllTutorsQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.IsNotNull(result);
@@ -275,7 +275,7 @@ namespace UnitTests.ApplicationTests
         public async Task GetAllStudents()
         {
             var query = new GetUsersQuery<StudentDto> { };
-            var handler = new GetStudentsQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
+            var handler = new GetAllStudentsQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.IsNotNull(result);

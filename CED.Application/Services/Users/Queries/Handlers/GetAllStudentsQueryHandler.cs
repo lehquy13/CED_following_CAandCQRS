@@ -5,14 +5,14 @@ using MapsterMapper;
 
 namespace CED.Application.Services.Users.Queries.Handlers;
 
-public class GetStudentsQueryHandler : GetAllQueryHandler<GetUsersQuery<StudentDto>, StudentDto>
+public class GetAllStudentsQueryHandler : GetAllQueryHandler<GetObjectQuery<List<StudentDto>>, StudentDto>
 {
     private readonly IUserRepository _userRepository;
-    public GetStudentsQueryHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
+    public GetAllStudentsQueryHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
     }
-    public override async Task<List<StudentDto>> Handle(GetUsersQuery<StudentDto> query, CancellationToken cancellationToken)
+    public override async Task<List<StudentDto>> Handle(GetObjectQuery<List<StudentDto>> query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try

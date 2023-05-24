@@ -1,9 +1,10 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts.ClassInformations;
 using CED.Domain.ClassInformations;
 using MapsterMapper;
 
-namespace CED.Application.Services.ClassInformations.Queries;
+namespace CED.Application.Services.Users.Tutor.Queries;
 
 public class GetTeachingClassInformationsOfTutorQueryHandler : GetAllQueryHandler<GetAllClassInformationsQuery,ClassInformationDto>
 {

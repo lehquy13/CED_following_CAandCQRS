@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.DashBoard.Queries;
 using CED.Application.Services.Users.Queries;
@@ -35,7 +36,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
-        var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
+        var classDtos = await _sender.Send(new GetObjectQuery<List<ClassInformationDto>>());
         var tutorDtos = await _sender.Send(new GetUsersQuery<TutorDto>());
         var studentDtos = await _sender.Send(new GetUsersQuery<StudentDto>());
         _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
@@ -188,7 +189,7 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerTotalClasses(string? byTime)
     {
         _logger.LogDebug("Index's running! On getting classDtos...");
-        var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
+        var classDtos = await _sender.Send(new GetObjectQuery<List<ClassInformationDto>>());
         _logger.LogDebug("Got classDtos!");
 
         var date = GetByTime(DateTime.Now, byTime);

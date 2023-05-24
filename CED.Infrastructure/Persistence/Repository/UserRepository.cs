@@ -15,7 +15,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var users  =  Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Tutor).ToList();
+            var users  =  Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Tutor && o.IsDeleted == false).ToList();
             return users;
         }
         catch (Exception ex)

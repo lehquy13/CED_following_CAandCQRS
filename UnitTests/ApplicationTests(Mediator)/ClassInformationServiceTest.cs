@@ -1,3 +1,4 @@
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts.ClassInformations;
@@ -85,7 +86,7 @@ namespace UnitTests.ApplicationTests
         {
            
            
-            var query = new GetAllClassInformationsQuery { };
+            var query = new GetObjectQuery<List<ClassInformationDto>>() { };
             var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object, _mockSubjectRepo.Object, _mockUserRepo.Object , _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 

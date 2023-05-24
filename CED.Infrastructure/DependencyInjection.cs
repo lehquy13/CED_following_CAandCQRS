@@ -81,7 +81,6 @@ namespace CED.Infrastructure
             services.AddAuthentication(scheme =>
                     {
                         scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                        scheme.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                         
                     })
                     .AddCookie(options =>

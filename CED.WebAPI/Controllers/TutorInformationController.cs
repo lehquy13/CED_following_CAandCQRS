@@ -1,7 +1,12 @@
-﻿using CED.Application.Services.ClassInformations.Commands;
+﻿
+using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.Users.Queries;
+using CED.Application.Services.Users.Queries.Handlers;
 using CED.Application.Services.Users.Tutor.Commands.ApplyClass;
 using CED.Contracts.ClassInformations;
+using CED.Contracts.Users;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,12 +18,12 @@ namespace CED.WebAPI.Controllers;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class ClassInformationController : ControllerBase
+public class TutorInformationController : ControllerBase
 {
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
 
-    public ClassInformationController(ISender mediator, IMapper mapper)
+    public TutorInformationController(ISender mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -29,13 +34,15 @@ public class ClassInformationController : ControllerBase
     [HttpGet]
     [Route("GetAllClassInformations")]
 
-    public async Task<IActionResult> GetAllClassInformations()
+    public async Task<IActionResult> GetAllTutor(int pageIndex)
     {
-        var query = new GetAllClassInformationsQuery();
-        List<ClassInformationDto> classInformation = await _mediator.Send(query);
-
-
-        return Ok(classInformation);
+        var query = new GetObjectQuery<List<TutorDto>>
+        {
+            PageIndex = pageIndex,
+            PageSize = 10
+        };
+        var tutorDtos = await _mediator.Send(query);
+        return Ok(tutorDtos);
     }
     
     // GET api/<ClassInformationController>/5

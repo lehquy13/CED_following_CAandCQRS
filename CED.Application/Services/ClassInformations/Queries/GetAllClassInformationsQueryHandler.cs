@@ -8,7 +8,7 @@ using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClassInformationsQuery,ClassInformationDto>
+public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetObjectQuery<List<ClassInformationDto>>,ClassInformationDto>
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly ISubjectRepository _subjectRepository;
@@ -25,7 +25,7 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
         _userRepository = userRepository;
     }
 
-    public override async Task<List<ClassInformationDto>> Handle(GetAllClassInformationsQuery query, CancellationToken cancellationToken)
+    public override async Task<List<ClassInformationDto>> Handle(GetObjectQuery<List<ClassInformationDto>> query, CancellationToken cancellationToken)
     {
         try
         {

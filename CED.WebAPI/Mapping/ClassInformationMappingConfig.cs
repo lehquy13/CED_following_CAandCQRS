@@ -1,5 +1,6 @@
 ﻿using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.Users.Tutor.Commands.ApplyClass;
 using CED.Contracts.ClassInformations;
 using Mapster;
 
@@ -17,6 +18,9 @@ public class ClassInformationMappingConfig : IRegister
         
         config.NewConfig<CreateUpdateClassInformationDto, CreateUpdateClassInformationCommand>()
             .Map(dest => dest.ClassInformationDto, src => src);
+        config.NewConfig<RequestGettingClassRequest, RequestGettingClassCommand>()
+            .Map(dest => dest.ClassGuid, src => src.ClassId)
+            .Map(dest => dest.TutorGuid, src => src.UserId);
 
     }
 }

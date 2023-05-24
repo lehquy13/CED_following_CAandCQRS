@@ -6,18 +6,18 @@ using MapsterMapper;
 namespace CED.Application.Services.Users.Queries.Handlers;
 
 //Not using currently
-public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetUserByIdQuery<TutorDto>, TutorDto> 
+public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<TutorDto>, TutorDto> 
 {
     private readonly IUserRepository _userRepository;
     public GetTutorByIdQueryHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
     }
-    public override async Task<TutorDto?> Handle(GetUserByIdQuery<TutorDto> query, CancellationToken cancellationToken)
+    public override async Task<TutorDto?> Handle(GetObjectQuery<TutorDto> query, CancellationToken cancellationToken)
     {
         try
         {
-            User? user = await _userRepository.GetById(query.Id);
+            User? user = await _userRepository.GetById(query.Guid);
             if (user is null) { return null; }
             TutorDto result = _mapper.Map<TutorDto>(user);
             return await Task.FromResult(result);

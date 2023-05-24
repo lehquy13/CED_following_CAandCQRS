@@ -1,4 +1,5 @@
 ﻿using CED.Application.Services;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using Microsoft.AspNetCore.Mvc;
 using MapsterMapper;
 using MediatR;
@@ -67,7 +68,7 @@ public class ClassInformationController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetAllClassInformationsQuery();
+        var query = new GetObjectQuery<List<ClassInformationDto>>();
         var classInformations = await _mediator.Send(query);
 
         return View(classInformations);
