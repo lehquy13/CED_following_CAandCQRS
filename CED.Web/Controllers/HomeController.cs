@@ -37,8 +37,8 @@ public class HomeController : Controller
     {
         _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
         var classDtos = await _sender.Send(new GetObjectQuery<List<ClassInformationDto>>());
-        var tutorDtos = await _sender.Send(new GetUsersQuery<TutorDto>());
-        var studentDtos = await _sender.Send(new GetUsersQuery<StudentDto>());
+        var tutorDtos = await _sender.Send(new GetObjectQuery<List<TutorDto>>());
+        var studentDtos = await _sender.Send(new GetObjectQuery<List<StudentDto>>());
         _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
 
         var date = GetByTime(DateTime.Now, ByTime.Month);
@@ -211,7 +211,7 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerTotalTutors(string? byTime)
     {
         _logger.LogDebug("Index's running! On getting tutorDtos...");
-        var tutorDtos = await _sender.Send(new GetUsersQuery<TutorDto>());
+        var tutorDtos = await _sender.Send(new GetObjectQuery<List<TutorDto>>());
         _logger.LogDebug("Got tutorDtos!");
         var date = GetByTime(DateTime.Now, byTime);
         var result1 = tutorDtos.Where(x => x.CreationTime >= date).ToList();
@@ -233,7 +233,7 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerTotalStudents(string? byTime)
     {
         _logger.LogDebug("Index's running! On getting studentDtos...");
-        var studentDtos = await _sender.Send(new GetUsersQuery<StudentDto>());
+        var studentDtos = await _sender.Send(new GetObjectQuery<List<StudentDto>>());
         _logger.LogDebug("Got studentDtos!");
 
         var date = GetByTime(DateTime.Now, byTime);

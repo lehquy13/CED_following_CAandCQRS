@@ -112,7 +112,7 @@ public class SubjectController : Controller
             return NotFound();
         }
 
-        var query = new GetSubjectQuery() { Id = (Guid)id };
+        var query = new GetObjectQuery<SubjectDto>() { Guid = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result == null)
@@ -154,7 +154,7 @@ public class SubjectController : Controller
             return NotFound();
         }
 
-        var query = new GetSubjectQuery() { Id = (Guid)id };
+        var query = new GetObjectQuery<SubjectDto>() { Guid = (Guid)id };
 
         var result = await _mediator.Send(query);
 

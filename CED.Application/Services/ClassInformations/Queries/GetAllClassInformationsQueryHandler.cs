@@ -43,7 +43,7 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetObjectQ
                 {
                     classIn.SubjectName = subject.Name;
                 }
-                if( tutors.FirstOrDefault( x => x.Id == classIn.SubjectId ) is User user)
+                if( tutors.FirstOrDefault( x => x.Id == classIn.TutorDtoId ) is User user)
                 {
                     classIn.TutorDtoId = user.Id;
                     classIn.TutorPhoneNumber = user.PhoneNumber;

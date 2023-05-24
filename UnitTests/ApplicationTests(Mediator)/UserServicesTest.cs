@@ -1,13 +1,14 @@
+using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Application.Services.Users.Commands;
 using CED.Application.Services.Users.Queries;
-using CED.Domain.Shared.ClassInformationConsts;
+using CED.Application.Services.Users.Queries.Handlers;
 using CED.Contracts.Users;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 using MapsterMapper;
 using Moq;
-using CED.Application.Services.Users.Queries.Handlers;
-using CED.Application.Services.Users.Commands;
 
-namespace UnitTests.ApplicationTests
+namespace UnitTests.ApplicationTests_Mediator_
 {
     public class UserServicesTest
     {
@@ -227,7 +228,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetAllUser()
         {
-            var query = new GetUsersQuery<UserDto> { };
+            var query = new GetObjectQuery<List<UserDto>>(){ };
             var handler = new GetUsersQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -236,7 +237,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetUserById()
         {
-            var query = new GetUserByIdQuery<UserDto> { Id = _sampleId };
+            var query = new GetObjectQuery<UserDto>() { Guid = _sampleId };
             var handler = new GetUserByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -245,7 +246,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetTutorById()
         {
-            var query = new GetUserByIdQuery<TutorDto> { Id = _sampleId3 };
+            var query = new GetObjectQuery<TutorDto>() { Guid = _sampleId3 };
             var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -254,7 +255,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetStudentById()
         {
-            var query = new GetUserByIdQuery<StudentDto> { Id = _sampleId2 };
+            var query = new GetObjectQuery<StudentDto>() { Guid = _sampleId2 };
             var handler = new GetStudentByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -264,7 +265,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetAllTutors()
         {
-            var query = new GetUsersQuery<TutorDto> { };
+            var query = new GetObjectQuery<List<TutorDto>>() { };
             var handler = new GetAllTutorsQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -274,7 +275,7 @@ namespace UnitTests.ApplicationTests
         [Test]
         public async Task GetAllStudents()
         {
-            var query = new GetUsersQuery<StudentDto> { };
+            var query = new GetObjectQuery<List<StudentDto>>() { };
             var handler = new GetAllStudentsQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 

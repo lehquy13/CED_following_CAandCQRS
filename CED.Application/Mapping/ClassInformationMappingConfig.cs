@@ -14,6 +14,9 @@ public class ClassInformationMappingConfig : IRegister
         config.NewConfig<ClassInformationDto, ClassInformation>()        
             .Map(dest => dest.TutorId, src => src.TutorDtoId)
             .Map(dest => dest, src => src);
+        config.NewConfig<ClassInformation,ClassInformationDto >()        
+            .Map(dest => dest.TutorDtoId, src => src.TutorId)
+            .Map(dest => dest, src => src);
 
         config.NewConfig<(ClassInformation, Subject, User), ClassInformationDto>()
             .Map(dest => dest.SubjectName, src => src.Item2.Name)

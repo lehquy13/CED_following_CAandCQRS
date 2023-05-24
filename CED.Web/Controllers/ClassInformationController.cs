@@ -55,8 +55,8 @@ public class ClassInformationController : Controller
     }
     private async Task PackStudentAndTuTorList()
     {
-        var tutorDtos = await _mediator.Send(new GetUsersQuery<TutorDto>());
-        var studentDtos = await _mediator.Send(new GetUsersQuery<StudentDto>());
+        var tutorDtos = await _mediator.Send(new GetObjectQuery<List<TutorDto>>());
+        var studentDtos = await _mediator.Send(new GetObjectQuery<List<StudentDto>>());
         ViewData["TutorDtos"] = tutorDtos;
         ViewData["StudentDtos"] = studentDtos;
 
@@ -81,9 +81,9 @@ public class ClassInformationController : Controller
 
         await PackStudentAndTuTorList();
 
-        var query = new GetClassInformationQuery()
+        var query = new GetObjectQuery<ClassInformationDto>()
         {
-            Id = Id
+            Guid = Id
         };
         var result = await _mediator.Send(query);
         ViewBag.Action = "Edit";
@@ -148,7 +148,7 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetClassInformationQuery() { Id = (Guid)id };
+        var query = new GetObjectQuery<ClassInformationDto>() { Guid = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result == null)
@@ -190,7 +190,7 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetClassInformationQuery() { Id = (Guid)id };
+        var query = new GetObjectQuery<ClassInformationDto>() { Guid = (Guid)id };
 
         var result = await _mediator.Send(query);
 
@@ -206,7 +206,7 @@ public class ClassInformationController : Controller
     [Route("PickTutor")]
     public async Task<IActionResult> PickTutor()
     {
-        var query = new GetUsersQuery<TutorDto>();
+        var query = new GetObjectQuery<List<TutorDto>>();
         var userDtos = await _mediator.Send(query);
         return Helper.RenderRazorViewToString(this, "PickTutor", userDtos);
 
@@ -220,7 +220,7 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetUserByIdQuery<TutorDto>() { Id= (Guid)id };
+        var query = new GetObjectQuery<TutorDto>() { Guid= (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)
