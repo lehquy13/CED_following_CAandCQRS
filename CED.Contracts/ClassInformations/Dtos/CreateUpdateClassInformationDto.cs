@@ -1,8 +1,8 @@
-﻿using Abp.Application.Services.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
 using CED.Domain.Shared.ClassInformationConsts;
-using System.ComponentModel.DataAnnotations;
 
-namespace CED.Contracts.ClassInformations;
+namespace CED.Contracts.ClassInformations.Dtos;
 
 
 public class CreateUpdateClassInformationDto : FullAuditedEntityDto<Guid>
@@ -15,7 +15,7 @@ public class CreateUpdateClassInformationDto : FullAuditedEntityDto<Guid>
     public string Description { get; set; } = string.Empty;
 
     [Required]
-    public Status Status { get; set; } = Status.Waiting;
+    public Status Status { get; set; } = Status.OnConfirming;
 
     [Required]
     public LearningMode LearningMode { get; set; } = LearningMode.Offline;

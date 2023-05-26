@@ -3,7 +3,6 @@ using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.Users.Queries.CustomerQueries;
-using CED.Application.Services.Users.Tutor.Commands.ApplyClass;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.Users;
 using MapsterMapper;

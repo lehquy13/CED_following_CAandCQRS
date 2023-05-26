@@ -2,6 +2,7 @@ using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Subjects.Commands;
 using CED.Application.Services.Subjects.Queries;
 using CED.Contracts.Subjects;
+using CED.Domain.Repository;
 using CED.Domain.Subjects;
 using MapsterMapper;
 using Moq;
@@ -11,6 +12,7 @@ namespace UnitTests.ApplicationTests_Mediator_
     public class SubjectServicesTest
     {
         private readonly Mock<ISubjectRepository> _mockSubjectRepo = new();
+        private readonly Mock<IRepository<TutorMajor>> _mockTutorMajorRepo = new();
         private readonly Mock<IMapper> _mockMapper = new();
 
         private readonly Guid _sampleId = Guid.NewGuid();
@@ -58,6 +60,9 @@ namespace UnitTests.ApplicationTests_Mediator_
             _mockSubjectRepo
                .Setup(x => x.GetAllList())
                .ReturnsAsync(_subjects);
+            _mockSubjectRepo
+               .Setup(x => x.GetAll())
+               .Returns(_subjects.AsQueryable());
             _mockMapper
                 .Setup(x => x.Map<List<SubjectDto>>(_subjects))
                 .Returns(_subjectDtos);
@@ -81,10 +86,8 @@ namespace UnitTests.ApplicationTests_Mediator_
         [Test]
         public async Task GetAllSubjects()
         {
-           
-           
             var query = new GetObjectQuery<List<SubjectDto>>();
-            var handler = new GetAllSubjectsQueryHandler(_mockSubjectRepo.Object, _mockMapper.Object);
+            var handler = new GetAllSubjectsQueryHandler(_mockSubjectRepo.Object,_mockTutorMajorRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(result);

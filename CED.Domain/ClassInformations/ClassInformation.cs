@@ -8,7 +8,7 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public Status Status { get; set; } = Status.Waiting;
+    public Status Status { get; set; } = Status.OnConfirming;
     public LearningMode LearningMode { get; set; } = LearningMode.Offline;
 
     public float Fee { get; set; } = 0;

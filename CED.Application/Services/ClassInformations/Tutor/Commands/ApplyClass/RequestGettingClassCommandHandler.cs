@@ -1,10 +1,10 @@
-﻿using CED.Domain.Users;
-using CED.Domain.Shared.ClassInformationConsts;
-using MapsterMapper;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.ClassInformations;
-using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Users;
+using MapsterMapper;
 
-namespace CED.Application.Services.Users.Tutor.Commands.ApplyClass;
+namespace CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 
 public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<RequestGettingClassCommand>
 {
@@ -38,6 +38,7 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
         //user.UpdateTutorInformation(_mapper.Map<User>(command));
 
         classInfor.TutorId = command.TutorGuid;
+        classInfor.Status = Status.OnPurchasing;
 
         var afterUpdatedUser = _classInformationRepository.Update(classInfor);
 

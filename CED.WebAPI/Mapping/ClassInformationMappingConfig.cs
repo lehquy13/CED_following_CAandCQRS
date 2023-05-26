@@ -1,7 +1,8 @@
 ﻿using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
-using CED.Application.Services.Users.Tutor.Commands.ApplyClass;
+using CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 using CED.Contracts.ClassInformations;
+using CED.Contracts.ClassInformations.Dtos;
 using Mapster;
 
 namespace CED.WebAPI.Mapping;

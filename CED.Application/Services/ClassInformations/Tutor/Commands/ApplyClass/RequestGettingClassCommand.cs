@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace CED.Application.Services.Users.Tutor.Commands.ApplyClass;
+namespace CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 
 public record RequestGettingClassCommand
 (

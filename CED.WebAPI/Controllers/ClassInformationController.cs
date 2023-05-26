@@ -1,6 +1,8 @@
-﻿using CED.Application.Services.ClassInformations.Commands;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
-using CED.Application.Services.Users.Tutor.Commands.ApplyClass;
+using CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
+using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
 using MapsterMapper;
@@ -18,6 +20,7 @@ public class ClassInformationController : ControllerBase
 {
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
+    private readonly int _pageSize = 10;
 
     public ClassInformationController(ISender mediator, IMapper mapper)
     {
@@ -29,12 +32,15 @@ public class ClassInformationController : ControllerBase
     // GET: api/<ClassInformationController>
     [HttpGet]
     [Route("GetAllClassInformations")]
-
-    public async Task<IActionResult> GetAllClassInformations()
+    public async Task<IActionResult> GetAllClassInformations(int pageIndex, string subjectName)
     {
-        var query = new GetAllClassInformationsQuery();
-        List<ClassInformationDto> classInformation = await _mediator.Send(query);
-
+        var query = new GetAllClassInformationsQuery()
+        {
+            PageSize = _pageSize,
+            PageIndex = pageIndex,
+            SubjectName = subjectName
+        };
+        var classInformation = await _mediator.Send(query);
 
         return Ok(classInformation);
     }
@@ -44,8 +50,8 @@ public class ClassInformationController : ControllerBase
     [Route("GetClassInformation/{id}")]
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
-        var query = _mapper.Map<GetClassInformationQuery>(id);
-        ClassInformationDto classInformation = await _mediator.Send(query);
+        var query = new GetObjectQuery<ClassInformationDto>();
+        var classInformation = await _mediator.Send(query);
 
         return Ok(classInformation);
     }

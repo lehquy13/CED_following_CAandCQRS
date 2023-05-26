@@ -1,10 +1,11 @@
-using CED.Contracts.ClassInformations;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.ClassInformations.Dtos;
 using MediatR;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetAllClassInformationsQuery : IRequest<List<ClassInformationDto>>
+public class GetAllClassInformationsQuery : GetObjectQuery<List<ClassInformationDto>>
 {
-    public Guid Guid { get; set; }   
+    public string SubjectName { get; set; } = string.Empty;
+    
 }

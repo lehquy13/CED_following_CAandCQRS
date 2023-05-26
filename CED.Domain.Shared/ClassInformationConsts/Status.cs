@@ -4,5 +4,6 @@ public enum Status
     Waiting,
     Confirmed,
     Canceled,
-    OnConfirming
+    OnConfirming,
+    OnPurchasing
 }
