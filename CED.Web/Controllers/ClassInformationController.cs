@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
 using CED.Application.Services.Users.Queries;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 

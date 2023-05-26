@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using CED.Contracts.Subjects;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
@@ -29,7 +30,7 @@ public class UserDto : FullAuditedEntityDto<Guid>
     public string? University { get; set;} = string.Empty;
     public bool IsVerified { get; set; } = false;
 
-
+    public List<SubjectDto> SubjectDtos = new();
 
 
 }

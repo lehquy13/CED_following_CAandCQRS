@@ -5,6 +5,7 @@ using CED.Application.Services.DashBoard.Queries;
 using CED.Application.Services.Users.Queries;
 using CED.Contracts.Charts;
 using CED.Contracts.ClassInformations;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
 using Microsoft.AspNetCore.Mvc;

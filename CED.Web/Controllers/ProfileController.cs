@@ -1,4 +1,5 @@
 ﻿using CED.Application.Services;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 using CED.Application.Services.Authentication.Commands.ChangePassword;
 using CED.Application.Services.Users.Admin.Commands;
@@ -50,9 +51,9 @@ namespace CED.Web.Controllers
 
             var identity = HttpContext.User.Identities.First();
 
-            var query = new GetUserByIdQuery<UserDto>()
+            var query = new GetObjectQuery<UserDto>()
             {
-                Id = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
+                Guid = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
             };
 
             var loginResult = await _mediator.Send(query);
@@ -101,7 +102,11 @@ namespace CED.Web.Controllers
 
                     var result = await _mediator.Send(query);
                     ViewBag.Updated = result;
-
+                    if (result == true)
+                    {
+                        HttpContext.Response.Cookies.Append("name", query.UserDto.FirstName + query.UserDto.LastName);
+                        HttpContext.Response.Cookies.Append("image", query.UserDto.Image);
+                    }
                     return Helper.RenderRazorViewToString(this, "Profile", new ProfileViewModel
                     {
                         UserDto = userDto,

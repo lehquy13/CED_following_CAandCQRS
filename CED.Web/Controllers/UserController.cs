@@ -1,4 +1,5 @@
 ﻿using CED.Application.Services;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Users.Queries;
 using CED.Application.Services.Users.Commands;
 using CED.Contracts.Users;
@@ -6,6 +7,8 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Users.Admin.Commands;
+using CED.Application.Services.Users.Queries.CustomerQueries;
+using CED.Contracts.Subjects;
 using CED.Domain.Shared;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.Utilities;
@@ -14,7 +17,6 @@ using Microsoft.EntityFrameworkCore;
 namespace CED.Web.Controllers;
 
 [Route("[controller]")]
-
 public class UserController : Controller
 {
     private readonly ILogger<UserController> _logger;
@@ -22,12 +24,12 @@ public class UserController : Controller
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
 
-  
+
     public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper)
     {
         _logger = logger;
         _mediator = sender;
-        _mapper = mapper;      
+        _mapper = mapper;
     }
 
     private void PackStaticListToView()
@@ -43,7 +45,7 @@ public class UserController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetUsersQuery<UserDto>();
+        var query = new GetObjectQuery<List<UserDto>>();
         var userDtos = await _mediator.Send(query);
 
         return View(userDtos);
@@ -53,9 +55,9 @@ public class UserController : Controller
     public async Task<IActionResult> Edit(Guid Id)
     {
         PackStaticListToView();
-        var query = new GetUserByIdQuery<UserDto>()
+        var query = new GetObjectQuery<UserDto>()
         {
-            Id = Id
+            Guid = Id
         };
         var result = await _mediator.Send(query);
 
@@ -64,17 +66,27 @@ public class UserController : Controller
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, UserDto userDto)
+    public async Task<IActionResult> Edit(Guid Id, UserDto userDto, List<Guid> subjectId)
     {
         if (Id != userDto.Id)
         {
             return NotFound();
         }
+
         if (ModelState.IsValid)
         {
             try
             {
-                var query = new CreateUpdateUserCommand(userDto);
+                IRequest<bool>? query;
+                if (subjectId.Count > 0)
+                {
+                    query = new CreateUpdateTutorCommand(userDto, subjectId);
+                }
+                else
+                {
+                    query = new CreateUpdateUserCommand(userDto);
+                }
+
                 var result = await _mediator.Send(query);
 
                 if (!result)
@@ -82,23 +94,24 @@ public class UserController : Controller
                     _logger.LogError("Create user failed!");
                     throw new DbUpdateException("Create fail!");
                 }
+
                 PackStaticListToView();
+
                 return Helper.RenderRazorViewToString(
                     this,
                     "Edit",
                     userDto
-                    );
-
-                
+                );
             }
             catch (Exception ex)
             {
                 //Log the error (uncomment ex variable name and write a log.)
                 ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists, " + ex.Message +
-                    "see your system administrator.");
+                                             "Try again, and if the problem persists, " + ex.Message +
+                                             "see your system administrator.");
             }
         }
+
         return View(userDto);
     }
 
@@ -112,11 +125,19 @@ public class UserController : Controller
 
     [HttpPost("Create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(UserDto userDto) // cant use userdto
+    public async Task<IActionResult> Create(UserDto userDto, List<Guid> subjectId) // cant use userdto
     {
         userDto.LastModificationTime = DateTime.UtcNow;
-        var query = new CreateUpdateUserCommand(userDto);
-        var result = await _mediator.Send(query);
+        IRequest<bool>? command;
+        if (subjectId.Count > 0)
+        {
+            command = new CreateUpdateTutorCommand(userDto, subjectId);
+        }
+        else
+        {
+            command = new CreateUpdateUserCommand(userDto);
+        }
+        var result = await _mediator.Send(command);
         if (result)
         {
             switch (userDto.Role)
@@ -127,10 +148,9 @@ public class UserController : Controller
                     return RedirectToAction("Tutor");
                 default:
                     return RedirectToAction("Index");
-
             }
         }
-            
+
         return View("Create", userDto);
     }
 
@@ -142,9 +162,9 @@ public class UserController : Controller
             return NotFound();
         }
 
-        var query = new GetUserByIdQuery<UserDto>() {Id= (Guid)id };
+        var query = new GetObjectQuery<UserDto>() { Guid = (Guid)id };
         var result = await _mediator.Send(query);
-        
+
         if (result == null)
         {
             return NotFound();
@@ -153,9 +173,8 @@ public class UserController : Controller
         return Json(new
         {
             html = Helper.RenderRazorViewToString(this, "Delete", result)
-
         });
-       // return View(result);
+        // return View(result);
     }
 
     [HttpPost("DeleteConfirmed")]
@@ -173,45 +192,57 @@ public class UserController : Controller
         {
             return RedirectToAction("Index");
         }
+
         return RedirectToAction("Error", "Home");
     }
 
     [HttpGet("Detail")]
-    public async Task<IActionResult> Detail(Guid? id) 
+    public async Task<IActionResult> Detail(Guid? id)
     {
         if (id == null || id.Equals(Guid.Empty))
         {
             return NotFound();
         }
 
-        var query = new GetUserByIdQuery<UserDto>() { Id= (Guid)id };
+        var query = new GetObjectQuery<UserDto>() { Guid = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)
         {
             return View(result);
-
         }
+
         return RedirectToAction("Error", "Home");
     }
+
     #endregion
 
     [HttpGet("Student")]
-
     public async Task<IActionResult> Student()
     {
-        var query = new GetUsersQuery<StudentDto>();
+        var query = new GetObjectQuery<List<StudentDto>>();
         var studentDtos = await _mediator.Send(query);
-        
-        return View( studentDtos);
+
+        return View(studentDtos);
     }
 
     [HttpGet("Tutor")]
     public async Task<IActionResult> Tutor()
     {
-        var query = new GetUsersQuery<TutorDto>();
+        var query = new GetAllTutorInformationsAdvancedQuery();
         var userDtos = await _mediator.Send(query);
-       //var tutorDtos = _mapper.Map<List<UserDto>>(userDtos);
+        //var tutorDtos = _mapper.Map<List<UserDto>>(userDtos);
         return View(userDtos);
+    }
+
+    [HttpGet("Subjects")]
+    public async Task<IActionResult> Subjects(string id)
+    {
+        var query = new GetObjectQuery<List<SubjectDto>>()
+        {
+            Guid = new Guid(id)
+        };
+        var subjectDtos = await _mediator.Send(query);
+        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
     }
 }

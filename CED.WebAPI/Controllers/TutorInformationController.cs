@@ -2,8 +2,7 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
-using CED.Application.Services.Users.Queries;
-using CED.Application.Services.Users.Queries.Handlers;
+using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Tutor.Commands.ApplyClass;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.Users;
@@ -22,6 +21,7 @@ public class TutorInformationController : ControllerBase
 {
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
+    private readonly int _pageSize = 10;
 
     public TutorInformationController(ISender mediator, IMapper mapper)
     {
@@ -34,12 +34,12 @@ public class TutorInformationController : ControllerBase
     [HttpGet]
     [Route("GetAllClassInformations")]
 
-    public async Task<IActionResult> GetAllTutor(int pageIndex)
+    public async Task<IActionResult> GetAllTutor(int pageIndex, string subjectName )
     {
-        var query = new GetObjectQuery<List<TutorDto>>
+        var query = new GetAllTutorInformationsAdvancedQuery()
         {
             PageIndex = pageIndex,
-            PageSize = 10
+            PageSize = _pageSize
         };
         var tutorDtos = await _mediator.Send(query);
         return Ok(tutorDtos);
@@ -51,47 +51,12 @@ public class TutorInformationController : ControllerBase
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
         var query = _mapper.Map<GetClassInformationQuery>(id);
-        ClassInformationDto classInformation = await _mediator.Send(query);
-
+        var classInformation = await _mediator.Send(query);
+        
         return Ok(classInformation);
     }
 
-    // POST api/<ClassInformationController>
-    [HttpPost]
-    [Route("CreateClassInformation")]
-    public async Task<IActionResult> CreateClassInformation(CreateUpdateClassInformationDto createUpdateClassInformationDto)
-    {
-        var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
-
-        var result = await _mediator.Send(command);
-
-        return Ok(result);
-    }
-
-    // PUT api/<ClassInformationController>/5
-    [HttpPut]
-    [Route("UpdateClassInformation")]
-    public async Task<IActionResult> UpdateClassInformation(CreateUpdateClassInformationDto createUpdateClassInformationDto)
-    {
-        var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
-
-        var result = await _mediator.Send(command);
-
-        return Ok(result);
-    }
-
-    // DELETE api/<ClassInformationController>/5
-    
-    
-    [HttpPut]
-    [Route("RequestGettingClass")]
-    public async Task<IActionResult> RequestGettingClass(RequestGettingClassRequest requestGettingClassRequest)
-    {
-        var command = _mapper.Map<RequestGettingClassCommand>(requestGettingClassRequest);
-        var result = await _mediator.Send(command);
-        
-        return Ok(result);
-    }
+   
 
    
 }

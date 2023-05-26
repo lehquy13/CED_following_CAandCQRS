@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using CED.Contracts.Subjects;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
@@ -26,6 +27,8 @@ public class TutorDto : FullAuditedEntityDto<Guid>
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Teacher;
     public string University { get; set; } = string.Empty;
     public bool IsVerified { get; set; } = false;
+
+    public List<SubjectDto> Majors { get; set; } = new();
 
 }
 

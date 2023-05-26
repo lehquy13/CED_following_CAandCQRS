@@ -2,6 +2,7 @@
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.Users.Tutor.Commands.ApplyClass;
 using CED.Contracts.ClassInformations;
+using CED.Contracts.ClassInformations.Dtos;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

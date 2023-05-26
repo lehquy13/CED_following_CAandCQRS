@@ -109,30 +109,6 @@ namespace CED.Infrastructure.Migrations
                     b.ToTable("ClassInformation", (string)null);
                 });
 
-            modelBuilder.Entity("CED.Domain.ClassInformations.UserClassInformation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClassInformationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("isTutor")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassInformationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserClassInformation", (string)null);
-                });
-
             modelBuilder.Entity("CED.Domain.Subjects.Subject", b =>
                 {
                     b.Property<Guid>("Id")
@@ -171,6 +147,27 @@ namespace CED.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subject", (string)null);
+                });
+
+            modelBuilder.Entity("CED.Domain.Subjects.TutorMajor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TutorId");
+
+                    b.ToTable("TutorMajor", (string)null);
                 });
 
             modelBuilder.Entity("CED.Domain.Users.City", b =>
@@ -263,6 +260,9 @@ namespace CED.Infrastructure.Migrations
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
 
@@ -285,11 +285,7 @@ namespace CED.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("University")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isVerified")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -329,17 +325,17 @@ namespace CED.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CED.Domain.ClassInformations.UserClassInformation", b =>
+            modelBuilder.Entity("CED.Domain.Subjects.TutorMajor", b =>
                 {
-                    b.HasOne("CED.Domain.ClassInformations.ClassInformation", null)
+                    b.HasOne("CED.Domain.Subjects.Subject", null)
                         .WithMany()
-                        .HasForeignKey("ClassInformationId")
+                        .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CED.Domain.Users.User", null)
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TutorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

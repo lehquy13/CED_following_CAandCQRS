@@ -11,6 +11,7 @@ public class CEDDBContext : DbContext
     public DbSet<Subject> Subjects { get; set; } = null!;
     public DbSet<ClassInformation> ClassInformations { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<TutorMajor> TutorMajors { get; set; } = null!;
     public DbSet<City> Cities { get; set; } = null!;
     public DbSet<District> Districts { get; set; } = null!;
     public DbSet<Ward> Wards { get; set; } = null!;
@@ -44,6 +45,13 @@ public class CEDDBContext : DbContext
         {
             re.ToTable("User");
             //re.HasOne<Ward>().WithMany().HasForeignKey(r => r.WardId).IsRequired();
+        }); 
+        modelBuilder.Entity<TutorMajor>(re =>
+        {
+            re.ToTable("TutorMajor");
+            re.HasKey(r => r.Id);
+            re.HasOne<User>().WithMany().HasForeignKey(r => r.TutorId).IsRequired();
+            re.HasOne<Subject>().WithMany().HasForeignKey(r => r.SubjectId).IsRequired();
         });
 
         modelBuilder.Entity<ClassInformation>(re =>

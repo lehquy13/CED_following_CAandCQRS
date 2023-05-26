@@ -1,14 +1,15 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using CED.Domain.Repository;
 using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : FullAuditedAggregateRoot<Guid>
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<Guid>
 {
     protected readonly CEDDBContext Context;
-    protected Repository(CEDDBContext cEdDbContext)
+    public Repository(CEDDBContext cEdDbContext)
     {
         Context = cEdDbContext;
     }

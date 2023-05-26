@@ -135,4 +135,16 @@ function ChooseTutor(id,name,phone){
     $('#tutorInfor').attr("value",name + " - " +phone);
     
 }
+function AddMajorSubject(id,name,des){
+  
+    $('#tutorMajorCard .list-group').append(`<input name="SubjectId" value="${id}" hidden="hidden"/>\n` +
+        `    <a class="list-group-item list-group-item-action" href="/Subject/Detail?id=${id}" >\n` +
+        `        <div class="d-flex w-100 justify-content-between">\n` +
+        `            <h5 class="mb-1">`+name+`</h5>\n` +
+        `        </div>\n` +
+        `        <p class="mb-1">`+des+`</p>\n` +
+        `    </a>`);
+
+    
+}
 

@@ -1,8 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
-using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
 
-namespace CED.Contracts.ClassInformations;
+namespace CED.Contracts.ClassInformations.Dtos;
 
 public class ClassInformationDto : FullAuditedEntityDto<Guid>
 {

@@ -1,4 +1,5 @@
 ﻿using CED.Contracts.ClassInformations;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
 using CED.Domain.Users;

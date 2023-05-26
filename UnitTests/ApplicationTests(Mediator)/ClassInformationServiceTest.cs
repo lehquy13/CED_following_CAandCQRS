@@ -2,6 +2,7 @@ using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts.ClassInformations;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.ClassInformations;

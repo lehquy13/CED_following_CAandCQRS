@@ -6,10 +6,8 @@ using CED.Domain.Subjects;
 using CED.Domain.Users;
 
 using CED.Infrastructure.Authentication;
-using CED.Infrastructure.Persistence;
 using CED.Infrastructure.Persistence.Repository;
 using CED.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +17,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CED.Domain.Interfaces.Logger;
+using CED.Domain.Repository;
 using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Logging;
 
@@ -47,6 +46,7 @@ namespace CED.Infrastructure
 
 
             // Dependency Injection for repository
+            services.AddScoped( typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();

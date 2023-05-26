@@ -1,9 +1,8 @@
-﻿using Abp.Application.Services.Dto;
-using Abp.Domain.Entities.Auditing;
+﻿using Abp.Domain.Entities;
 
 namespace CED.Domain.Repository;
 
-public interface IRepository<TEntity> : IDisposable where TEntity : FullAuditedAggregateRoot<Guid>
+public interface IRepository<TEntity> : IDisposable where TEntity : Entity<Guid>
 {
     //Queries
     /// <summary>

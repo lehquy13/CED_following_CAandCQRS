@@ -72,6 +72,7 @@ public class AuthenticationController : Controller
         };
         HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
         HttpContext.Response.Cookies.Append("name", loginResult.User.FullName);
+        HttpContext.Response.Cookies.Append("image", loginResult.User.Image);
 
         var returnUrl = TempData["ReturnUrl"] as string;
         if (returnUrl is null)

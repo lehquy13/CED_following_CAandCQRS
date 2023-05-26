@@ -1,4 +1,5 @@
-﻿@model CED.Contracts.Users.UserDto
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model CED.Contracts.Users.UserDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -28,13 +29,13 @@
 
             <div class="col-md-6">
                 <label asp-for="FirstName" class="form-label">First Name</label>
-                <input type="text" asp-for="FirstName" class="form-control"/>
+                <input type="text" asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
 
             </div>
             <div class="col-md-6">
                 <label asp-for="LastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" asp-for="LastName"/>
+                <input type="text" class="form-control" asp-for="LastName" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <!-- ----------------------------------- -->
@@ -71,7 +72,7 @@
             </div>
             <div class="col-md-4">
                 <label asp-for="BirthYear" class="form-label">Birth</label>
-                <input type="number" class="form-control" asp-for="BirthYear"/>
+                <input type="number" class="form-control" asp-for="BirthYear" />
 
                 <span asp-validation-for="BirthYear" class="text-danger"></span>
             </div>
@@ -83,7 +84,7 @@
 
                     <div class="input-group mb-3">
 
-                        <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3"/>
+                        <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3" />
                         <span class="input-group-text" id="basic-addon3">
                             <i class="bi bi-check">
                             </i>
@@ -98,7 +99,7 @@
             {
                 <div class="col-md-6">
                     <label asp-for="Email" class="form-label">Email</label>
-                    <input type="email" asp-for="Email" class="form-control"/>
+                    <input type="email" asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             }
@@ -106,7 +107,7 @@
             <div class="col-md-6">
                 <label asp-for="PhoneNumber" class="form-label">Number</label>
                 <div class="col-sm-12">
-                    <input type="number" asp-for="PhoneNumber" class="form-control"/>
+                    <input type="number" asp-for="PhoneNumber" class="form-control" />
                 </div>
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
@@ -119,28 +120,28 @@
 
             <div class="col-12">
                 <label asp-for="Address" class="form-label">Address</label>
-                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St"/>
+                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St" />
                 <span asp-validation-for="Address" class="text-danger"></span>
 
             </div>
-            <!-- address advanced set up----------------------------------- 
+            <!-- address advanced set up-----------------------------------
 
-            <div class="col-md-6">
-                <label for="inputCity" class="form-label">City</label>
-                <input type="text" class="form-control" id="inputCity"/>
-            </div>
-            <div class="col-md-4">
-                <label for="inputState" class="form-label">State</label>
-                <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label for="inputZip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="inputZip"/>
-            </div>
-           ----------------------------------- -->
+             <div class="col-md-6">
+                 <label for="inputCity" class="form-label">City</label>
+                 <input type="text" class="form-control" id="inputCity"/>
+             </div>
+             <div class="col-md-4">
+                 <label for="inputState" class="form-label">State</label>
+                 <select id="inputState" class="form-select">
+                     <option selected>Choose...</option>
+                     <option>...</option>
+                 </select>
+             </div>
+             <div class="col-md-2">
+                 <label for="inputZip" class="form-label">Zip</label>
+                 <input type="text" class="form-control" id="inputZip"/>
+             </div>
+            ----------------------------------- -->
 
             <div class="col-12">
                 <div class="form-floating">
@@ -174,23 +175,51 @@
                 </div>
                 <div class="col-md-8">
                     <label asp-for="University" class="form-label">University</label>
-                    <input type="text" class="form-control" asp-for="University"/>
+                    <input type="text" class="form-control" asp-for="University" />
                     <span asp-validation-for="University" class="text-danger"></span>
                 </div>
                 <!-- ----------------------------------- -->
 
                 <div class="col-12">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" asp-for="IsVerified"/>
+                        <input class="form-check-input" type="checkbox" asp-for="IsVerified" />
                         <label class="form-check-label" asp-for="IsVerified">
                             Is tutor verified?
                         </label>
 
                     </div>
                 </div>
+                <div class="card" id="tutorMajorCard">
+                    <div class="card-body">
+                        <div class="card-title row">
+                            <h5 class="col-11" >Tutor Majors</h5>
+                            <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects","User", new {id = @Model.Id})','Add major for @Model.FirstName @Model.LastName')">
+                                <span class="bi bi-plus-circle"> </span>
+                                Add
+                            </button>
+                            
+                        </div>
+
+                        <!-- List group with Advanced Contents -->
+                        <div class="list-group">
+                            @foreach (var s in Model.SubjectDtos)
+                            {
+                                <input name="SubjectId" value="@s.Id" hidden="hidden" />
+                                <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">@s.Name</h5>
+                                    </div>
+                                    <p class="mb-1">@s.Description</p>
+                                </a>
+                            }
+
+
+                        </div><!-- End List group Advanced Content -->
+
+                    </div>
+                </div>
+
             }
-
-
 
 
             <!-- ----------------------------------- hidden info -->
@@ -215,7 +244,7 @@
                 <input asp-for="LastModifierUserId" class="form-control" />
                 <span asp-validation-for="LastModifierUserId" class="text-danger"></span>
             </div>
-            <div class="form-group" hidden>
+            <div class="form-group" hidden="hidden" >
                 <label asp-for="CreationTime" class="control-label"></label>
                 <input asp-for="CreationTime" class="form-control" />
                 <span asp-validation-for="CreationTime" class="text-danger"></span>

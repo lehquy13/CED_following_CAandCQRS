@@ -172,6 +172,36 @@
                     </div>
 
                 </div>
+                
+                 <div class="card" id="tutorMajorCard">
+                    <div class="card-body">
+                        <div class="card-title row">
+                            <h5 class="col-11" >Tutor Majors</h5>
+                            <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects","User", new {id = @Model.Id})','Add major for @Model.FirstName @Model.LastName')">
+                                <span class="bi bi-plus-circle"> </span>
+                                Add
+                            </button>
+                            
+                        </div>
+
+                        <!-- List group with Advanced Contents -->
+                        <div class="list-group">
+                            @foreach (var s in Model.SubjectDtos)
+                            {
+                                <input name="SubjectId" value="@s.Id" hidden="hidden" />
+                                <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">@s.Name</h5>
+                                    </div>
+                                    <p class="mb-1">@s.Description</p>
+                                </a>
+                            }
+
+
+                        </div><!-- End List group Advanced Content -->
+
+                    </div>
+                </div>
             </div>
 
 
@@ -201,9 +231,9 @@
                 <input asp-for="LastModifierUserId" class="form-control" />
                 <span asp-validation-for="LastModifierUserId" class="text-danger"></span>
             </div>
-            <div class="form-group" hidden>
+            <div class="form-group" hidden >
                 <label asp-for="CreationTime" class="control-label"></label>
-                <input asp-for="CreationTime" value="@DateTime.UtcNow" class="form-control" />
+                <input asp-for="CreationTime" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Replace(' ','T')" class="form-control" />
                 <span asp-validation-for="CreationTime" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
