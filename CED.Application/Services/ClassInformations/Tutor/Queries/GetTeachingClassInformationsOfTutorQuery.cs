@@ -1,10 +1,9 @@
-using CED.Contracts.ClassInformations;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.ClassInformations.Dtos;
-using MediatR;
 
-namespace CED.Application.Services.Users.Tutor.Queries;
+namespace CED.Application.Services.ClassInformations.Tutor.Queries;
 
-public class GetTeachingClassInformationsOfTutorQuery : IRequest<List<ClassInformationDto>>
+public class GetTeachingClassInformationsOfTutorQuery : GetObjectQuery<List<ClassInformationDto>>
 {
-    Guid Guid { get; set; }
+    
 }

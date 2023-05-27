@@ -69,7 +69,8 @@ public class ClassInformationController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetObjectQuery<List<ClassInformationDto>>();
+        //var query = new GetObjectQuery<List<ClassInformationDto>>();
+        var query = new GetAllClassInformationsQuery();
         var classInformations = await _mediator.Send(query);
 
         return View(classInformations);

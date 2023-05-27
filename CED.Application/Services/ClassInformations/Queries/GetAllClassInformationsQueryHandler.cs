@@ -1,7 +1,5 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
-using CED.Contracts.Users;
 using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
@@ -9,7 +7,7 @@ using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetObjectQuery<List<ClassInformationDto>>,ClassInformationDto>
+public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClassInformationsQuery, ClassInformationDto>
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly ISubjectRepository _subjectRepository;
@@ -26,7 +24,7 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetObjectQ
         _userRepository = userRepository;
     }
 
-    public override async Task<List<ClassInformationDto>> Handle(GetObjectQuery<List<ClassInformationDto>> query, CancellationToken cancellationToken)
+    public override async Task<List<ClassInformationDto>> Handle(GetAllClassInformationsQuery query, CancellationToken cancellationToken)
     {
         try
         {

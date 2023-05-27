@@ -177,7 +177,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         [Test]
         public async Task GetAllClassInformations()
         {
-            var query = new GetObjectQuery<List<ClassInformationDto>>() { };
+            var query = new GetAllClassInformationsQuery() { };
             var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object,
                 _mockSubjectRepo.Object, _mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);

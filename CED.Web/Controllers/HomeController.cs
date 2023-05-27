@@ -37,7 +37,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
-        var classDtos = await _sender.Send(new GetObjectQuery<List<ClassInformationDto>>());
+        var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
         var tutorDtos = await _sender.Send(new GetObjectQuery<List<TutorDto>>());
         var studentDtos = await _sender.Send(new GetObjectQuery<List<StudentDto>>());
         _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
@@ -190,7 +190,7 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerTotalClasses(string? byTime)
     {
         _logger.LogDebug("Index's running! On getting classDtos...");
-        var classDtos = await _sender.Send(new GetObjectQuery<List<ClassInformationDto>>());
+        var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
         _logger.LogDebug("Got classDtos!");
 
         var date = GetByTime(DateTime.Now, byTime);
