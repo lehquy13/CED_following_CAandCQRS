@@ -1,7 +1,19 @@
-var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+
+using CED.Application;
+using CED.Infrastructure;
+using CED.Web.CustomerSide;
+
+var builder = WebApplication.CreateBuilder(args);
+{
+    builder.Services.AddControllersWithViews();
+
+    builder.Services
+        .AddInfrastructure(builder.Configuration)
+        .AddApplication()
+        .AddPresentation();
+}
 
 var app = builder.Build();
 
@@ -14,11 +26,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

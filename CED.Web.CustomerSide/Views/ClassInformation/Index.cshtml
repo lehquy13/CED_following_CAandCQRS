@@ -1,0 +1,111 @@
+@model List<CED.Contracts.ClassInformations.Dtos.ClassInformationDto>
+
+@{
+}
+
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs">
+    <div class="container">
+        <h2>Courses</h2>
+        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+    </div>
+</div><!-- End Breadcrumbs -->
+<!-- ======= Courses Section ======= -->
+<section id="courses" class="courses">
+    <div class="container" data-aos="fade-up">
+    
+        <form class="row pb-2" asp-action="Index" asp-controller="ClassInformation" method="get" style="height: 60px;">
+            <div class="col-lg-10 col-sm-10 p-0 pe-2 d-flex align-items-stretch">
+                <input  class="form-control"  placeholder="Type a subject" type="text" name="subjectName">
+                
+            </div>
+            <div class="col-lg-2 col-sm-2 p-0 d-flex">
+                <button class="form-control btn btn-primary" style="background-color:#5fcf80;" type="submit">Search</button>
+            </div>
+        </form>
+        
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+
+            @foreach (var i in Model)
+            {
+                <div class="course-item">
+                    <div class="course-content">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4>@i.SubjectName</h4>
+                            <p class="price">$@i.Fee</p>
+                        </div>
+
+                        <h3><a href="course-details.html">@i.Title</a></h3>
+                        <p>@i.Description</p>
+                        <div class="trainer d-flex justify-content-between align-items-center">
+                            <ul class="row requestList">
+                                <!-- <li class="col-sm-4"><i class="far fa-user text-danger mr-10"></i> <b>Phụ huynh:</b> chị Bốn</li> -->
+                                <li class="col-sm-4"><i class="far fa-clock text-danger mr-10"></i> <b>Tạo lúc:</b> 14:10 16.05.2023</li>
+                                <!-- <li class="col-sm-4"><i class="fas fa-bookmark text-danger mr-10"></i> <b>Trạng thái:</b> Đang tìm gia sư</li> -->
+
+                                <li class="col-sm-4">
+                                    <i class="fas fa-transgender text-danger mr-10"></i> <b>Gender Requirements:</b>
+                                    @i.GenderRequirement
+                                </li>
+
+                                <li class="col-sm-4">
+                                    <i class="far fa-calendar-alt text-danger mr-10"></i><b>Academic requirements:</b> @i.AcademicLevel
+                                </li>
+
+                                <li class="col-sm-4">
+                                    <i class="far fa-calendar-alt text-danger mr-10"></i><b>Sessions/week:</b> @i.SessionPerWeek
+                                </li>
+
+
+                                <li class="col-sm-4">
+                                    <i class="far fa-calendar-alt text-danger mr-10"></i>  <b>Student's gender:</b> @i.StudentGender
+                                </li>
+                                @if (i.NumberOfStudent <= 1)
+                                {
+                                    <li class="col-sm-4">
+                                        <i class="far fa-user text-danger mr-10"></i>
+                                        <b>Total students:</b> @i.NumberOfStudent student
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="col-sm-4">
+                                        <i class="far fa-user text-danger mr-10"></i>
+                                        <b>Total students:</b> @i.NumberOfStudent students
+                                    </li>
+                                }
+                                <li class="col-sm-4">
+                                    <i class="far fa-calendar-alt text-danger mr-10"></i>  <b>Minutes/week:</b> @i.MinutePerSession minutes
+                                </li>
+                                <li class="col-sm-12">
+                                    <i class="fas fa-map-marker-alt text-danger mr-10"></i>
+                                    <b>Address:</b> @i.Address
+                                    <a href="https://www.google.com/maps?q={@i.Address}" class="text-danger" target="_blank">
+                                        <small>
+                                            <em>(View map <i class="bi bi-map"></i>)</em>
+                                        </small>
+                                    </a>
+                                </li>
+
+                                @* <li class="col-sm-12">
+                            <i class="far fa-clock text-danger mr-10"></i> <b>Thời gian rãnh:</b>
+                            <ul class="listFreeTime">
+                            <li>Tất cả các ngày trong tuần:  9h đến 11h</li>
+                            </ul>
+                            </li>
+                            <li class="col-sm-12">
+                            <i class="fas fa-book text-danger mr-10"></i> <b>Môn học:</b>
+                            <ul class="listFreeTime">
+                            <li>Lập trình Pascal</li>
+                            </ul>
+                            </li>*@
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+    </div>
+</section><!-- End Courses Section -->

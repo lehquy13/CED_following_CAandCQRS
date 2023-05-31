@@ -6,4 +6,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CED.Application\CED.Application.csproj" />
+      <ProjectReference Include="..\CED.Contracts\CED.Contracts.csproj" />
+      <ProjectReference Include="..\CED.Infrastructure\CED.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -5,6 +5,7 @@ using MapsterMapper;
 using MediatR;
 using CED.Application.Services.Subjects.Queries;
 using CED.Application.Services.Subjects.Commands;
+using CED.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
 
@@ -32,7 +33,7 @@ public class SubjectController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetObjectQuery<List<SubjectDto>>();
+        var query = new GetObjectQuery<PaginatedList<SubjectDto>>();
         var subjectDtos = await _mediator.Send(query);
 
         return View(subjectDtos);

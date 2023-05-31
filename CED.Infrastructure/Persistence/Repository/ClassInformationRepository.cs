@@ -11,21 +11,19 @@ public class ClassInformationRepository : Repository<ClassInformation>, IClassIn
 
     }
 
-    public List<ClassInformation> GetLearningClassInformationsByUserId(Guid guid)
+    public IEnumerable<ClassInformation> GetLearningClassInformationsByUserId(Guid guid)
     {
         var result = Context.Set<ClassInformation>()
-                             .AsEnumerable()
-                             .Where(x => x.StudentId.Equals(guid))
-                             .ToList();
+            .AsEnumerable()
+            .Where(x => x.StudentId.Equals(guid));
         return result;
     }
 
-    public List<ClassInformation> GetTeachingClassInformationsByUserId(Guid guid)
+    public IEnumerable<ClassInformation> GetTeachingClassInformationsByUserId(Guid guid)
     {
         var result = Context.Set<ClassInformation>()
-                             .AsEnumerable()
-                             .Where(x => x.TutorId.Equals(guid))
-                             .ToList();
+            .AsEnumerable()
+            .Where(x => x.TutorId.Equals(guid));
         return result;
     }
 }

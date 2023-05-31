@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string name = Context.Request.Cookies["name"] as string ?? "user";
+    string image = Context.Request.Cookies["image"] as string ?? "default_avatar1.png";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -50,7 +54,7 @@
                         <a href="about.html">About</a>
                     </li>
                     <li>
-                        <a href="courses.html">Courses</a>
+                        <a asp-action="Index" asp-controller="ClassInformation">New Classes</a>
                     </li>
                     <li>
                         <a href="trainers.html">Trainers</a>

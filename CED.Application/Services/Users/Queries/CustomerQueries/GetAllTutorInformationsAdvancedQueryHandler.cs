@@ -1,4 +1,6 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Contracts;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Repository;
@@ -26,15 +28,15 @@ public class GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<Ge
         _tutorMajorRepository = tutorMajorRepository;
     }
 
-    public override async Task<List<TutorDto>> Handle(GetAllTutorInformationsAdvancedQuery query,
+    public override async Task<PaginatedList<TutorDto>> Handle(GetAllTutorInformationsAdvancedQuery query,
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
         {
-            var subjects = _subjectRepository.GetAll();
+            var subjects = await _subjectRepository.GetAllList();
             var tutors = _userRepository.GetTutors().AsEnumerable();
-
+            var totalTutorsCount = tutors.Count();
             var tutorsMajors = _tutorMajorRepository.GetAll()
                 .GroupBy(t => t.TutorId)
                 .Select(major => new
@@ -84,7 +86,11 @@ public class GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<Ge
                 tutors.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize)
                     .ToList()
             );
-            return result;
+
+            var result1 =
+                PaginatedList<TutorDto>.CreateAsync(result, query.PageIndex, query.PageSize, totalTutorsCount);
+
+            return result1;
         }
         catch (Exception ex)
         {

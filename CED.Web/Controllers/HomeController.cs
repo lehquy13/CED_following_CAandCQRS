@@ -2,9 +2,9 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.DashBoard.Queries;
-using CED.Application.Services.Users.Queries;
+using CED.Application.Services.Users.Queries.CustomerQueries;
+using CED.Contracts;
 using CED.Contracts.Charts;
-using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
@@ -38,8 +38,8 @@ public class HomeController : Controller
     {
         _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
         var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
-        var tutorDtos = await _sender.Send(new GetObjectQuery<List<TutorDto>>());
-        var studentDtos = await _sender.Send(new GetObjectQuery<List<StudentDto>>());
+        var tutorDtos = await _sender.Send(new GetAllTutorInformationsAdvancedQuery());
+        var studentDtos = await _sender.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
         _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
 
         var date = GetByTime(DateTime.Now, ByTime.Month);
@@ -208,11 +208,11 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    [Route("FitlerTotalTutors/{byTime?}")]
-    public async Task<IActionResult> FitlerTotalTutors(string? byTime)
+    [Route("FilterTotalTutors/{byTime?}")]
+    public async Task<IActionResult> FilterTotalTutors(string? byTime)
     {
         _logger.LogDebug("Index's running! On getting tutorDtos...");
-        var tutorDtos = await _sender.Send(new GetObjectQuery<List<TutorDto>>());
+        var tutorDtos = await _sender.Send(new GetAllTutorInformationsAdvancedQuery());
         _logger.LogDebug("Got tutorDtos!");
         var date = GetByTime(DateTime.Now, byTime);
         var result1 = tutorDtos.Where(x => x.CreationTime >= date).ToList();
@@ -234,7 +234,7 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerTotalStudents(string? byTime)
     {
         _logger.LogDebug("Index's running! On getting studentDtos...");
-        var studentDtos = await _sender.Send(new GetObjectQuery<List<StudentDto>>());
+        var studentDtos = await _sender.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
         _logger.LogDebug("Got studentDtos!");
 
         var date = GetByTime(DateTime.Now, byTime);
@@ -258,6 +258,9 @@ public class HomeController : Controller
         {
             case ByTime.Month:
                 date = date.Subtract(TimeSpan.FromDays(29));
+                break;
+            case ByTime.Week:
+                date = date.Subtract(TimeSpan.FromDays(6));
                 break;
             case ByTime.Year:
                 date = date.Subtract(TimeSpan.FromDays(364));

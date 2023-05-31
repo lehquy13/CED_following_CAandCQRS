@@ -10,7 +10,9 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
 using CED.Application.Services.Users.Queries;
+using CED.Contracts;
 using CED.Contracts.ClassInformations.Dtos;
+using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 
@@ -45,7 +47,7 @@ public class ClassInformationController : Controller
         var value = HttpContext.Session.GetString("SubjectList");
         if (value is null)
         {
-            var subjectLookupDtos = await _mediator.Send(new GetAllSubjectsLookUpQuery(HttpContext));
+            var subjectLookupDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
             ViewData["Subjects"] = subjectLookupDtos;
             HttpContext.Session.SetString("SubjectList", JsonConvert.SerializeObject(subjectLookupDtos));
         }
@@ -56,8 +58,8 @@ public class ClassInformationController : Controller
     }
     private async Task PackStudentAndTuTorList()
     {
-        var tutorDtos = await _mediator.Send(new GetObjectQuery<List<TutorDto>>());
-        var studentDtos = await _mediator.Send(new GetObjectQuery<List<StudentDto>>());
+        var tutorDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<TutorDto>>());
+        var studentDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
         ViewData["TutorDtos"] = tutorDtos;
         ViewData["StudentDtos"] = studentDtos;
 
@@ -208,7 +210,7 @@ public class ClassInformationController : Controller
     [Route("PickTutor")]
     public async Task<IActionResult> PickTutor()
     {
-        var query = new GetObjectQuery<List<TutorDto>>();
+        var query = new GetObjectQuery<PaginatedList<TutorDto>>();
         var userDtos = await _mediator.Send(query);
         return Helper.RenderRazorViewToString(this, "PickTutor", userDtos);
 

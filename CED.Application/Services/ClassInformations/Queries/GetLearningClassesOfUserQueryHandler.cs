@@ -5,16 +5,17 @@ using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClassInformationsQuery, ClassInformationDto>
+public class GetLearningClassesOfUserQueryHandler : GetAllQueryHandler<GetLearningClassesOfUserQuery, ClassInformationDto>
 {
     private readonly IClassInformationRepository _classInformationRepository;
-    private readonly ISubjectRepository _subjectRepository;
     private readonly IUserRepository _userRepository;
+    private readonly ISubjectRepository _subjectRepository;
 
-    public GetAllClassInformationsQueryHandler(
+    public GetLearningClassesOfUserQueryHandler(
         IClassInformationRepository classInformationRepository,
         ISubjectRepository subjectRepository,
         IUserRepository userRepository,
@@ -25,28 +26,26 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
         _userRepository = userRepository;
     }
 
-    public override async Task<PaginatedList<ClassInformationDto>> Handle(GetAllClassInformationsQuery query,
-        CancellationToken cancellationToken)
+    public override async Task<PaginatedList<ClassInformationDto>> Handle(GetLearningClassesOfUserQuery query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
         {
-            var classInformations = _classInformationRepository.GetAll()
-                .OrderByDescending(x => x.CreationTime)
-                .Where(x => x.IsDeleted == false);
-            var subjects = await _subjectRepository.GetAllList();
-            var tutors = _userRepository.GetTutors();
-
-            if (!string.IsNullOrWhiteSpace(query.SubjectName))
+            var student = await _userRepository.GetById(query.Guid);
+            if (student is null)
             {
-                var subjs = subjects.Where(x => query.SubjectName.ToLower().Contains(x.Name.ToLower()))
-                    .Select(x => x.Id);
-                classInformations = classInformations.Where(x => subjs.Contains(x.SubjectId));
+                throw new Exception("The user does not exist!");
             }
-
+            var classInformations = _classInformationRepository
+                .GetLearningClassInformationsByUserId(query.Guid)
+                .OrderByDescending(x => x.CreationTime)
+                .Where(x => x.IsDeleted == false);;
+            var subjects =  await _subjectRepository.GetAllList();
+            var tutors = _userRepository.GetTutors();
+            
             var classInformationDtos =
                 _mapper.Map<List<ClassInformationDto>>(classInformations.Skip((query.PageIndex - 1) * query.PageSize)
-                    .Take(query.PageSize).ToList());
+                    .Take(query.PageSize));
             
             var resultPaginatedList = PaginatedList<ClassInformationDto>.CreateAsync(classInformationDtos,
                 query.PageIndex, query.PageSize, classInformationDtos.Count);
@@ -54,11 +53,12 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
 
             foreach (var classIn in resultPaginatedList)
             {
-                if (subjects.FirstOrDefault(x => x.Id == classIn.SubjectId) is Subject subject)
+                
+                if (subjects.FirstOrDefault(x => x.Id == classIn.SubjectId) is { } subject)
                 {
                     classIn.SubjectName = subject.Name;
                 }
-
+                
                 if (tutors.FirstOrDefault(x => x.Id == classIn.TutorDtoId) is User user)
                 {
                     //classIn.TutorDtoId = user.Id;
@@ -76,3 +76,4 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
         }
     }
 }
+

@@ -1,6 +1,4 @@
-﻿using CED.Application.Services;
-using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.Users.Queries;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Users.Commands;
 using CED.Contracts.Users;
 using MapsterMapper;
@@ -8,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Application.Services.Users.Queries.CustomerQueries;
+using CED.Contracts;
 using CED.Contracts.Subjects;
 using CED.Domain.Shared;
 using CED.Domain.Shared.ClassInformationConsts;
@@ -45,7 +44,7 @@ public class UserController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetObjectQuery<List<UserDto>>();
+        var query = new GetObjectQuery<PaginatedList<UserDto>>();
         var userDtos = await _mediator.Send(query);
 
         return View(userDtos);
@@ -220,7 +219,7 @@ public class UserController : Controller
     [HttpGet("Student")]
     public async Task<IActionResult> Student()
     {
-        var query = new GetObjectQuery<List<StudentDto>>();
+        var query = new GetObjectQuery<PaginatedList<StudentDto>>();
         var studentDtos = await _mediator.Send(query);
 
         return View(studentDtos);
@@ -238,7 +237,7 @@ public class UserController : Controller
     [HttpGet("Subjects")]
     public async Task<IActionResult> Subjects(string id)
     {
-        var query = new GetObjectQuery<List<SubjectDto>>()
+        var query = new GetObjectQuery<PaginatedList<SubjectDto>>()
         {
             Guid = new Guid(id)
         };

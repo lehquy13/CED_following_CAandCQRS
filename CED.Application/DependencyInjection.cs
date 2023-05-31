@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using CED.Application.Common.Caching;
 using CED.Application.Services;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Subjects.Queries;
+using CED.Contracts;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
 
@@ -24,8 +26,8 @@ namespace CED.Application
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
                 typeof(ValidationBehavior<,>)); 
-            services.AddScoped(typeof(IPipelineBehavior<GetAllSubjectsQuery,List<SubjectDto>>), 
-                typeof(CachingBehavior<GetAllSubjectsQuery,List<SubjectDto>>)); 
+            services.AddScoped(typeof(IPipelineBehavior<GetObjectQuery<PaginatedList<SubjectDto>>,PaginatedList<SubjectDto>>), 
+                typeof(CachingBehavior<GetObjectQuery<PaginatedList<SubjectDto>>,PaginatedList<SubjectDto>>)); 
             
             // services.AddScoped(typeof(IPipelineBehavior<GetAllClassInformationsQuery,List<ClassInformationDto>>), 
             //     typeof(CachingBehavior<GetAllClassInformationsQuery,List<ClassInformationDto>>)); 

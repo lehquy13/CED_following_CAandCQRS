@@ -6,6 +6,6 @@ namespace CED.Application.Services.Subjects.Commands;
 public class CreateUpdateSubjectCommand
     : IRequest<bool>
 {
-    public SubjectDto? SubjectDto { get; set; } = null!;
+    public SubjectDto SubjectDto { get; set; } = null!;
 }
 

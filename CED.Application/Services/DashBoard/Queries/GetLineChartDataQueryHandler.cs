@@ -24,27 +24,33 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
         await Task.CompletedTask;
         List<int> dates = new List<int>();
 
-        var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
+        var startDay = DateTime.Today;
         switch (query.ByTime)
         {
             case "month":
-                startDay = DateTime.Today.Subtract(TimeSpan.FromDays(29));
+                startDay = startDay.Subtract(TimeSpan.FromDays(29));
+                
                 for (int i = 0; i < 30; i++)
                 {
                     dates.Add(startDay.Day);
                     startDay = startDay.AddDays(1);
                 }
+                startDay = startDay.Subtract(TimeSpan.FromDays(29));
+
                 break;
             default:
+                startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
+
                 for (int i = 0; i < 7; i++)
                 {
                     dates.Add(startDay.Day);
                     startDay = startDay.AddDays(1);
                 }
+                startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
+
                 break;
         }
         
-        startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
 
         var classesInWeek =dates.GroupJoin( 
                 _classInformationRepository.GetAll()
