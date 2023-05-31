@@ -1,6 +1,7 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Subjects.Commands;
 using CED.Application.Services.Subjects.Queries;
+using CED.Contracts;
 using CED.Contracts.Subjects;
 using CED.Domain.Repository;
 using CED.Domain.Subjects;
@@ -86,7 +87,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         [Test]
         public async Task GetAllSubjects()
         {
-            var query = new GetObjectQuery<List<SubjectDto>>();
+            var query = new GetObjectQuery<PaginatedList<SubjectDto>>();
             var handler = new GetAllSubjectsQueryHandler(_mockSubjectRepo.Object,_mockTutorMajorRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 

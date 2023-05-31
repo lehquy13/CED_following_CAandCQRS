@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.ClassInformationDto>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+    string optionselected = ViewData["CurrentSort"] as string ?? "price_asc";
+    string? cateselected = ViewData["CurrentCate"] as string;
+    string? subselected = ViewData["CurrentSub"] as string;
+
+    string? range = ViewData["CurrentRange"] as string ?? "";
+
+}
+
+<div class="d-flex w-100 justify-content-center gap-3 mt-3">
+    @*last page*@
+    @if ((Model.PageIndex - 1) > 1)
+    {
+        //<a href="@Url.Action("Index", "Product", new { sortOrder = optionselected, pageIndex = 1, sub = subselected, cate = cateselected })" class="btn btn-default">
+        //    &lt;&lt;
+        //</a>
+        <a asp-controller="ClassInformation" asp-action="Index" asp-route-sortOrder=@optionselected asp-route-pageIndex=1 asp-route-cate=@cateselected asp-route-sub=@subselected asp-route-range=@range
+           class="btn btn-default">
+            &lt;&lt;
+        </a>
+    }
+
+    <a asp-controller="ClassInformation" asp-action="Index" asp-route-sortOrder=@optionselected asp-route-pageIndex=@(Model.PageIndex - 1) asp-route-cate=@cateselected asp-route-sub=@subselected asp-route-range=@range
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+
+    @if ((Model.PageIndex - 1) > 0)
+    {
+        <a asp-controller="ClassInformation" asp-action="Index" asp-route-sortOrder=@optionselected asp-route-pageIndex=@(Model.PageIndex - 1) asp-route-cate=@cateselected asp-route-sub=@subselected asp-route-range=@range
+           class="btn btn-default @prevDisabled">
+            @(Model.PageIndex - 1)
+        </a>
+    }
+    <a asp-controller="ClassInformation" asp-action="Index" asp-route-sortOrder=@optionselected asp-route-pageIndex=@Model.PageIndex asp-route-cate=@cateselected asp-route-sub=@subselected asp-route-range=@range
+       class="btn btn-no-min focus">
+        @Model.PageIndex
+    </a>
+
+    @*next page*@
+    @if (Model.PageIndex + 1 <= Model.TotalPages)
+    {
+        <a asp-controller="ClassInformation" asp-action="Index" asp-route-sortOrder=@optionselected asp-route-pageIndex=@(Model.PageIndex+1) asp-route-cate=@cateselected asp-route-sub=@subselected asp-route-range=@range
+           class="btn btn-default @nextDisabled">
+            @(Model.PageIndex + 1)
+        </a>
+    }
+
+    <a asp-controller="ClassInformation" asp-action="Index" asp-route-sortOrder=@optionselected asp-route-pageIndex=@(Model.PageIndex+1) asp-route-cate=@cateselected asp-route-sub=@subselected asp-route-range=@range
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+
+    @*last page*@
+    @if (Model.TotalPages - (Model.PageIndex + 1) >= 1)
+    {
+        <a asp-controller="ClassInformation" asp-action="Index" asp-route-sortOrder=@optionselected asp-route-pageIndex=@Model.TotalPages asp-route-cate=@cateselected asp-route-sub=@subselected asp-route-range=@range
+           class="btn btn-default">
+            &gt;&gt;
+        </a>
+    }
+</div>

@@ -38,6 +38,20 @@ public class SubjectController : Controller
 
         return View(subjectDtos);
     }
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> Index(int i)
+    {
+        var query = new GetObjectQuery<PaginatedList<SubjectDto>>()
+        {
+            PageIndex = 2,
+            PageSize = 10,
+            
+        };
+        var subjectDtos = await _mediator.Send(query);
+
+        return View(subjectDtos);
+    }
 
     [HttpGet("Edit")]
     public async Task<IActionResult> Edit(Guid Id)

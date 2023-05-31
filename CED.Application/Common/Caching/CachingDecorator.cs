@@ -7,7 +7,7 @@ namespace CED.Application.Common.Caching;
 
 public class CachingBehavior<TRequest, TResponse> 
     : IPipelineBehavior<TRequest, TResponse> 
-    where TRequest : IRequest<TResponse>
+    where TRequest : IRequest<TResponse>, new()
 {
     private readonly IAppCache _cache;
     private readonly ILogger _logger;
@@ -22,15 +22,17 @@ public class CachingBehavior<TRequest, TResponse>
 
     public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
+        var defaultRequestKey = GenerateCacheKey(new TRequest());
         string key = GenerateCacheKey(request);
-        //big problems
-        //return next();
-
-        return _cache.GetOrAddAsync(key, async entry =>
+        if (defaultRequestKey.Equals(key))
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
-            return await next();
-        });
+            return _cache.GetOrAddAsync(key, async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+                return await next();
+            });
+        }
+        return next();
     }
     private string GenerateCacheKey(TRequest request)
     {
@@ -38,6 +40,7 @@ public class CachingBehavior<TRequest, TResponse>
         // You can concatenate request properties or serialize the request object, depending on your requirements
         // Return a string representing the cache key
 
-        return request.GetType().AssemblyQualifiedName + JsonConvert.SerializeObject(request);
+        return request.GetType() + JsonConvert.SerializeObject(request);
+        //return request.GetType().AssemblyQualifiedName + JsonConvert.SerializeObject(request);
     }
 }

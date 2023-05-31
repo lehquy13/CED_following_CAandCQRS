@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
 using CED.Application.Services.Users.Queries;
+using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
@@ -58,7 +59,7 @@ public class ClassInformationController : Controller
     }
     private async Task PackStudentAndTuTorList()
     {
-        var tutorDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<TutorDto>>());
+        var tutorDtos = await _mediator.Send(new GetAllTutorInformationsAdvancedQuery());
         var studentDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
         ViewData["TutorDtos"] = tutorDtos;
         ViewData["StudentDtos"] = studentDtos;

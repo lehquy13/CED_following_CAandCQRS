@@ -1,7 +1,11 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Contracts;
+using CED.Contracts.Subjects;
 using CED.Domain.Subjects;
 using LazyCache;
 using MapsterMapper;
+using Newtonsoft.Json;
 
 namespace CED.Application.Services.Subjects.Commands;
 
@@ -37,7 +41,8 @@ public class CreateUpdateSubjectCommandHandler : CreateUpdateCommandHandler<Crea
             subject = _mapper.Map<Subject>(command.SubjectDto);
 
             await _subjectRepository.Insert(subject);
-            _cache.Remove("");
+            var defaultRequest = new GetObjectQuery<PaginatedList<SubjectDto>>();
+            _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
             return true;
         }
         catch (Exception ex)
