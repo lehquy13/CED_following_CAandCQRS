@@ -14,17 +14,27 @@ internal static class Program
         var mapper = new Mapper();
         var factory = new CEDDBContextFactory();
         var context = factory.CreateDbContext(args);
-
+        Console.WriteLine( "Checking database is created or not..." );
         context.Database.EnsureCreated();
-       
-        if (!context.Subjects.Any())
+        Console.WriteLine("Checked!");
+
+        Console.WriteLine( "Checking subject table is migrated or not..." );
+
+        if (!context.Subjects.Any()) 
         {
+            Console.WriteLine("Start migrating datas...");
+
+            Console.WriteLine("Creating dataseeder object...");
+
             var seeder = new DataSeeder();
             context.Subjects.AddRange(seeder.Subjects);
             context.Users.AddRange(seeder.Users);
             context.SaveChanges();
-
+            Console.WriteLine("Added subjects and users!");
             context.ClassInformations.AddRange(seeder.ClassInformations);
+            Console.WriteLine("Added classInformations!");
+
+            Console.WriteLine("Reading Vietnamese's address data...");
             var addresses = ConvertCSVtoDataTable(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\")) +
                                                   "AddressData.csv");
 
@@ -67,6 +77,10 @@ internal static class Program
             context.Districts.AddRange(districts);
             context.Wards.AddRange(wards);
             context.SaveChanges();
+            Console.WriteLine("Added Vietnamese's address data...!");
+
+            Console.WriteLine("All done! Enjoy my website!");
+
         }
     }
 
@@ -79,7 +93,7 @@ internal static class Program
 
         while (!sr.EndOfStream)
         {
-            string[] rows = sr.ReadLine().Split(',');
+            string[] rows = sr.ReadLine()?.Split(',');
             if (rows.Length == 8)
             {
                 dt.Add(new()

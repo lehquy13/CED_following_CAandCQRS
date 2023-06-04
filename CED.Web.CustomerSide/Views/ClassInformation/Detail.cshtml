@@ -16,43 +16,90 @@
     <div class="container" data-aos="fade-up">
 
         <div class="row">
-            <div class="col-lg-8">
-                <img src="assets/img/course-details.jpg" class="img-fluid" alt="">
-                <h3>Et enim incidunt fuga tempora</h3>
+            <div class="card mb-3 col-lg-12">
+                <h3>@Model.Title</h3>
+                <div class="d-flex justify-content-between align-items-center ">
+
+                    <h4 class="col-lg-6">
+                        <b>Subject: </b> @Model.SubjectName
+                    </h4>
+                    <form asp-controller="ClassInformation" asp-action="RequestGettingClass" class="col-lg-3">
+                        <button class="btn btn-success" type="submit">Register this class (<b>Charge</b>: @Model.ChargeFee $)</button>
+                        <input value="@Model.Id" hidden=""/>
+                    </form>
+
+                </div>
+
                 <p>
-                    Qui et explicabo voluptatem et ab qui vero et voluptas. Sint voluptates temporibus quam autem. Atque nostrum voluptatum laudantium a doloremque enim et ut dicta. Nostrum ducimus est iure minima totam doloribus nisi ullam deserunt. Corporis aut officiis sit nihil est. Labore aut sapiente aperiam.
-                    Qui voluptas qui vero ipsum ea voluptatem. Omnis et est. Voluptatem officia voluptatem adipisci et iusto provident doloremque consequatur. Quia et porro est. Et qui corrupti laudantium ipsa.
-                    Eum quasi saepe aperiam qui delectus quaerat in. Vitae mollitia ipsa quam. Ipsa aut qui numquam eum iste est dolorum. Rem voluptas ut sit ut.
+                    @Model.Description
                 </p>
+                <div class="row">
+                    <p>Requirements</p>
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Status</h5>
+                        <p>@Model.Status</p>
+                    </div>
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Gender requirement</h5>
+                        <p>@Model.GenderRequirement</p>
+                    </div>
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Academic requirements</h5>
+                        <p>@Model.AcademicLevel</p>
+                    </div>
+
+
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Learning Mode</h5>
+                        <p>@Model.LearningMode</p>
+                    </div>
+                    <p> Informations </p>
+
+                    <div class="col-lg-4 ">
+
+                        <div class="course-info d-flex justify-content-between align-items-center">
+                            <h5>Class' Fee</h5>
+                            <p>$@Model.Fee</p>
+                        </div>
+                        <div class="course-info d-flex justify-content-between align-items-center">
+                            <h5>Charge Fee</h5>
+                            <p>$@Model.ChargeFee</p>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-4 ">
+                        <div class="course-info d-flex justify-content-between align-items-center">
+                            <h5>Number of students</h5>
+                            <p>@Model.NumberOfStudent</p>
+                        </div>
+                        <div class="course-info d-flex justify-content-between align-items-center">
+                            <h5>Student's Gender</h5>
+                            <p>@Model.StudentGender</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 ">
+
+
+                        <div class="course-info d-flex justify-content-between align-items-center">
+                            <h5>Minute/Session</h5>
+                            <p>@Model.MinutePerSession</p>
+                        </div>
+                        <div class="course-info d-flex justify-content-between align-items-center">
+                            <h5>Session/Week</h5>
+                            <p>@Model.SessionPerWeek</p>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4">
 
-                <div class="course-info d-flex justify-content-between align-items-center">
-                    <h5>Trainer</h5>
-                    <p>
-                        <a href="#">Walter White</a>
-                    </p>
-                </div>
 
-                <div class="course-info d-flex justify-content-between align-items-center">
-                    <h5>Course Fee</h5>
-                    <p>$165</p>
-                </div>
-
-                <div class="course-info d-flex justify-content-between align-items-center">
-                    <h5>Available Seats</h5>
-                    <p>30</p>
-                </div>
-
-                <div class="course-info d-flex justify-content-between align-items-center">
-                    <h5>Schedule</h5>
-                    <p>5.00 pm - 7.00 pm</p>
-                </div>
-
-            </div>
         </div>
 
     </div>
+
 </section><!-- End Cource Details Section -->
 
 <!-- ======= Cource Details Tabs Section ======= -->

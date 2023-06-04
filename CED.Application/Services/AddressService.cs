@@ -1,3 +1,4 @@
+using CED.Contracts;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Users;
 using CED.Domain.Users;
@@ -36,5 +37,10 @@ public class AddressService : IAddressService
         }
 
         return new AddressDto(cities);
+    }
+
+    public List<CityDto> GetCities()
+    {
+        return _mapper.Map<List<CityDto>>(_addressRepository.GetCities());
     }
 }

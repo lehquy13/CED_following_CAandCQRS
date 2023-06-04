@@ -1,5 +1,6 @@
 ﻿@using Newtonsoft.Json;
 @using CED.Contracts.ClassInformations;
+@using CED.Contracts.Subjects
 @using CED.Domain.Shared.ClassInformationConsts
 @model CED.Contracts.ClassInformations.Dtos.ClassInformationDto
 
@@ -11,7 +12,7 @@
     List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
     List<string> statuses = ViewData["Statuses"] as List<string> ?? new List<string>();
 
-    List<SubjectLookupDto>? subjects = (List<SubjectLookupDto>)(ViewData["Subjects"] ?? "");
+    List<SubjectDto>? subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
 
 }
 <h1>Create new class</h1>
@@ -52,8 +53,6 @@
                         {
                             <option selected value="@i.Id">
                                 @i.Name
-
-                                <!--  <input type="text" value="@i.Id" hidden asp-for="SubjectId" class="form-control" /> -->
                             </option>
                         }
                     }

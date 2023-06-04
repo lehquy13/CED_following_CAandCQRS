@@ -21,7 +21,7 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.ClassInformationDto, src => src);
         config.NewConfig<RequestGettingClassRequest, RequestGettingClassCommand>()
             .Map(dest => dest.ClassGuid, src => src.ClassId)
-            .Map(dest => dest.TutorGuid, src => src.UserId);
+            .Map(dest => dest.Email, src => src.Email);
 
     }
 }

@@ -31,6 +31,7 @@ public class GetAllTutorsQueryHandler //: GetAllQueryHandler<GetObjectQuery<List
     public  async Task<List<TutorDto>> Handle(GetObjectQuery<List<TutorDto>> query,
         CancellationToken cancellationToken)
     {
+        await Task.CompletedTask;
         throw new InvalidOperationException("No more using!!!");
     }
 }

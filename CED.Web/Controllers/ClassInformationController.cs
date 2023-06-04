@@ -24,6 +24,7 @@ namespace CED.Web.Controllers;
 public class ClassInformationController : Controller
 {
     private readonly ILogger<ClassInformationController> _logger;
+
     //dependencies 
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
@@ -34,9 +35,8 @@ public class ClassInformationController : Controller
         _logger = logger;
         _mediator = sender;
         _mapper = mapper;
-
-
     }
+
     private async Task PackStaticListToView()
     {
         ViewData["Roles"] = EnumProvider.Roles;
@@ -45,28 +45,17 @@ public class ClassInformationController : Controller
         ViewData["LearningModes"] = EnumProvider.LearningModes;
         ViewData["Statuses"] = EnumProvider.Status;
 
-        var value = HttpContext.Session.GetString("SubjectList");
-        if (value is null)
-        {
-            var subjectLookupDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
-            ViewData["Subjects"] = subjectLookupDtos;
-            HttpContext.Session.SetString("SubjectList", JsonConvert.SerializeObject(subjectLookupDtos));
-        }
-        else
-        {
-            ViewData["Subjects"] = JsonConvert.DeserializeObject<List<SubjectLookupDto>>(value);
-        }
+
+        ViewData["Subjects"] = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
     }
+
     private async Task PackStudentAndTuTorList()
     {
         var tutorDtos = await _mediator.Send(new GetAllTutorInformationsAdvancedQuery());
         var studentDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
         ViewData["TutorDtos"] = tutorDtos;
         ViewData["StudentDtos"] = studentDtos;
-
     }
-
-
 
     [HttpGet]
     [Route("")]
@@ -104,10 +93,12 @@ public class ClassInformationController : Controller
         {
             return NotFound();
         }
+
         if (!ModelState.IsValid)
         {
             return View(classDto);
         }
+
         var query = new CreateUpdateClassInformationCommand()
         {
             ClassInformationDto = classDto
@@ -119,10 +110,11 @@ public class ClassInformationController : Controller
         {
             return View(classDto);
         }
+
         await PackStaticListToView();
         await PackStudentAndTuTorList();
-        
-        return Helper.RenderRazorViewToString(this,"Edit",classDto);
+
+        return Helper.RenderRazorViewToString(this, "Edit", classDto);
     }
 
     [HttpGet("Create")]
@@ -130,7 +122,7 @@ public class ClassInformationController : Controller
     {
         await PackStaticListToView();
         //await PackStudentAndTuTorList();
-        
+
         return View(new ClassInformationDto());
     }
 
@@ -162,10 +154,7 @@ public class ClassInformationController : Controller
         }
 
         return
-
             Helper.RenderRazorViewToString(this, "Delete", result);
-
-
     }
 
     [HttpPost("DeleteConfirmed")]
@@ -182,8 +171,8 @@ public class ClassInformationController : Controller
         if (result is true)
         {
             return RedirectToAction("Index");
-
         }
+
         return RedirectToAction("Error", "Home");
     }
 
@@ -202,11 +191,11 @@ public class ClassInformationController : Controller
         if (result is not null)
         {
             return View(result);
-
         }
+
         return RedirectToAction("Error", "Home");
     }
-    
+
     [HttpGet]
     [Route("PickTutor")]
     public async Task<IActionResult> PickTutor()
@@ -214,37 +203,35 @@ public class ClassInformationController : Controller
         var query = new GetObjectQuery<PaginatedList<TutorDto>>();
         var userDtos = await _mediator.Send(query);
         return Helper.RenderRazorViewToString(this, "PickTutor", userDtos);
-
-
     }
+
     [HttpGet("ViewTutor")]
-    public async Task<IActionResult> ViewTutor(Guid? id) 
+    public async Task<IActionResult> ViewTutor(Guid? id)
     {
         if (id == null || id.Equals(Guid.Empty))
         {
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorDto>() { Guid= (Guid)id };
+        var query = new GetObjectQuery<TutorDto>() { Guid = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)
         {
             return Helper.RenderRazorViewToString(this, "ViewTutor", result);
-
         }
+
         return RedirectToAction("Error", "Home");
     }
+
     [HttpPost("Choose")]
-    public  IActionResult Choose(Guid? tutorId) 
+    public IActionResult Choose(Guid? tutorId)
     {
         if (tutorId == null || tutorId.Equals(Guid.Empty))
         {
             return NotFound();
         }
 
-        return Json(new {tutorId = tutorId});
+        return Json(new { tutorId = tutorId });
     }
-
 }
-

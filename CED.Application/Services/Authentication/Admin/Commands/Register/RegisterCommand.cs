@@ -1,7 +1,7 @@
 ﻿using CED.Contracts.Authentication;
 using MediatR;
 
-namespace CED.Application.Services.Authentication.Commands.Register;
+namespace CED.Application.Services.Authentication.Admin.Commands.Register;
 
 public record RegisterCommand
 (

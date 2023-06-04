@@ -13,7 +13,7 @@ public class TutorDto : FullAuditedEntityDto<Guid>
     //public string WardId { get; set; } = "00001";
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-
+    public string Image { get; set; } = "default_avatar1.png";
 
     //Account References
     public string Email { get; set; } = string.Empty;
@@ -24,7 +24,7 @@ public class TutorDto : FullAuditedEntityDto<Guid>
 
     //is tutor related informtions
     public UserRole Role { get; set; } = UserRole.Tutor;
-    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Teacher;
+    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
     public string University { get; set; } = string.Empty;
     public bool IsVerified { get; set; } = false;
 

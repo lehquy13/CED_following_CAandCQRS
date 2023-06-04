@@ -15,7 +15,6 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
     public float ChargeFee { get; set; } = 0;
 
     //Tutor related information
-    public Guid? StudentId { get; set; }
 
     public Gender GenderRequirement { get; set; } = Gender.None;
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Optional;
@@ -26,6 +25,10 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
 
     public Gender StudentGender { get; set; } = Gender.Male;
     public int NumberOfStudent { get; set; } = 1;
+    
+    public string ContactNumber { get; set; } = string.Empty;
+    public Guid? StudentId { get; set; }
+
 
     // Time related information
     public int MinutePerSession { get; set; } = 90;

@@ -1,4 +1,5 @@
-﻿using CED.Contracts.Authentication;
+﻿using CED.Application.Services.Authentication.Admin.Commands.Register;
+using CED.Contracts.Authentication;
 using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Users;
 using MapsterMapper;

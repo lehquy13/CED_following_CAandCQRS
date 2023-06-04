@@ -3,6 +3,7 @@ using CED.Application.Services.Users.Commands;
 using CED.Application.Services.Users.Queries;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Queries.Handlers;
+using CED.Contracts;
 using CED.Contracts.Users;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
@@ -233,7 +234,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         [Test]
         public async Task GetAllUser()
         {
-            var query = new GetObjectQuery<List<UserDto>>(){ };
+            var query = new GetObjectQuery<PaginatedList<UserDto>>(){ };
             var handler = new GetUsersQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -252,7 +253,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         public async Task GetTutorById()
         {
             var query = new GetObjectQuery<TutorDto>() { Guid = _sampleId3 };
-            var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
+            var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockSubjectRepo.Object,_mockTutorMajorRepo.Object,_mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.IsNotNull(result);
@@ -280,7 +281,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         [Test]
         public async Task GetAllStudents()
         {
-            var query = new GetObjectQuery<List<StudentDto>>() { };
+            var query = new GetObjectQuery<PaginatedList<StudentDto>>() { };
             var handler = new GetAllStudentsQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 

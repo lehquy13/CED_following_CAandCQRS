@@ -1,0 +1,170 @@
+﻿@using CED.Contracts.Subjects
+@using CED.Domain.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CED.Contracts.ClassInformations.Dtos.CreateClassInformationByCustomer
+
+@{
+    ViewData["Title"] = "Edit";
+
+
+    List<SubjectDto> subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
+    var genders = EnumProvider.FullGendersOption;
+    var academicLevels = EnumProvider.AcademicLevels;
+    //var cities = ViewBag.Cities as List<string>;
+
+}
+<h1>Create new class</h1>
+
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<h4>@Model.Title</h4>
+
+<hr/>
+<section id="course-details" class="course-details">
+    <form asp-action="CreateClassInformation" asp-controller="ClassInformation">
+        <div class="container" data-aos="fade-up">
+            <div class="row">
+                <div class="col-lg-9 row">
+                    <h3>Requirement Description</h3>
+
+                    <div class="col-lg-6 mb-4">
+                        <h6>Contact</h6>
+                        <input class="form-control" asp-for="ContactNumber" type="text" placeholder="ex: 012312****"/>
+                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-lg-6 mb-4 ">
+                        <h6>Subjects</h6>
+
+                        <select asp-for="SubjectId" class="form-select">
+
+                            @foreach (var i in subjects)
+                            {
+                                <option value="@i.Id">@i.Name </option>
+                            }
+                        </select>
+                        <span asp-validation-for="SubjectId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-12 mb-4">
+
+                        <h6>Title</h6>
+                        <input type="text" asp-for="Title" class="form-control" placeholder="ex: Find English tutor at HCMC..."/>
+                        <span asp-validation-for="Title" class="text-danger"></span>
+
+                    </div>
+
+
+                    <div class="col-lg-3 mb-4">
+                        <h6>Total students</h6>
+                        <input class="form-control" asp-for="NumberOfStudent" type="number" value="1"/>
+                        <span asp-validation-for="NumberOfStudent" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-3 mb-4">
+                        <h6>Session/Week</h6>
+                        <input type="number" asp-for="SessionPerWeek" class="form-control" value="2"/>
+                        <span asp-validation-for="SessionPerWeek" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-lg-3 mb-4">
+                        <h6>Minutes/Session</h6>
+                        <input class="form-control" asp-for="MinutePerSession" type="number" value="90"/>
+                        <span asp-validation-for="MinutePerSession" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-3 col-md-4 mb-4">
+                        <h6>Gender</h6>
+
+                        <select name="gender" asp-for="StudentGender" class="form-select">
+                            @foreach (var i in genders)
+                            {
+                                <option class="form-control" value="@i">@i</option>
+                            }
+                        </select>
+                        <span asp-validation-for="StudentGender" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-lg-12 mb-4">
+                        <h6>Address</h6>
+                        <input class="form-control" asp-for="Address" type="text" placeholder="ex: 123 maint st, HCMC..."/>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-lg-12 mb-4">
+                        <h6>Description / Notes</h6>
+                        <input class="form-control" asp-for="Description" type="text" placeholder="ex: ..."/>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <h3>Tutor Requirement</h3>
+
+                    <div class="col-lg-4 mb-4">
+
+                        <h6>Fee ($)</h6>
+                        <input type="number" asp-for="Fee" class="form-control" placeholder="ex: 300"/>
+                        <span asp-validation-for="Fee" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <h6>Tutor's gender</h6>
+
+                        <select name="genderRequirement" asp-for="GenderRequirement" class="form-select">
+                            @foreach (var i in genders)
+                            {
+                                <option class="form-control" value="@i">@i</option>
+                            }
+                        </select>
+                        <span asp-validation-for="GenderRequirement" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <h6>Academic Level</h6>
+
+                        <select name="academicLevel" asp-for="AcademicLevel" class="form-select">
+                            @foreach (var i in academicLevels)
+                            {
+                                <option class="form-control" value="@i">@i</option>
+                            }
+                        </select>
+                        <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+
+                    </div>
+                    <button class="btn btn-success" type="submit">Create</button>
+
+                </div>
+                <div class="col-lg-3">
+
+                    <div class="sidebar mt-sm-30">
+                        <div class="widget">
+                            <div class="right-class-new-top-content">
+                                <h4>Tại sao bạn nên tìm giáo viên trên tainangtre.vn ?</h4>
+                                <p><i class="fa fa-check" aria-hidden="true"></i> Gia sư chất lượng. được kiểm duyệt gắt gao</p>
+                                <p><i class="fa fa-check" aria-hidden="true"></i> Chỉ cần đăng yêu cầu học</p>
+                                <p><i class="fa fa-check" aria-hidden="true"></i> Chúng tôi sẽ làm cầu nối giữa bạn và Gia sư</p>
+                                <p><i class="fa fa-check" aria-hidden="true"></i> Hỗ trợ nhanh chóng, thân thiện.</p>
+                                <p><i class="fa fa-check" aria-hidden="true"></i> Dịch vụ gia sư miễn phí</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</section><!-- End Cource Details Section -->
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

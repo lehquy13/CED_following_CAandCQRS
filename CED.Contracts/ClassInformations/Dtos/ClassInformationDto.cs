@@ -20,6 +20,9 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
     //Student related information
     public Gender StudentGender { get; set; } = Gender.None;
     public int NumberOfStudent { get; set; } = 1;
+    public string ContactNumber { get; set; } = string.Empty;
+    public Guid? StudentId { get; set; }
+
 
     // Time related information
     public int MinutePerSession { get; set; } = 90;
@@ -41,6 +44,5 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
     public string TutorName { get; set; } = string.Empty;
     public string TutorPhoneNumber { get; set; } = string.Empty;
     public string TutorEmail { get; set; } = string.Empty;
-    public Guid? StudentId { get; set; }
 }
 

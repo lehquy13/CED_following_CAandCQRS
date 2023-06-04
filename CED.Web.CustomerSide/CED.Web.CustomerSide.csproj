@@ -12,4 +12,11 @@
       <ProjectReference Include="..\CED.Infrastructure\CED.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Authentication\Login.cshtml" />
+      <AdditionalFiles Include="Views\TutorInformation\Detail.cshtml" />
+      <AdditionalFiles Include="Views\TutorInformation\Index.cshtml" />
+      <AdditionalFiles Include="Views\TutorInformation\_Pagination.cshtml" />
+    </ItemGroup>
+
 </Project>

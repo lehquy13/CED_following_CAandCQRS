@@ -27,6 +27,8 @@ public class CustomerRegisterCommandHandler
         if (await _userRepository.GetUserByEmail(command.Email) is not null)
         {
             //  return new AuthenticationResult(false, "User has already existed");
+            return new AuthenticationResult(null, "",false,"User with an email has already existed");
+
             throw new Exception("User with an email has already existed");
         }
         var user = new User

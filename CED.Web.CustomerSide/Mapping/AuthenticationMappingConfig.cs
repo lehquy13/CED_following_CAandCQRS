@@ -11,7 +11,9 @@ public class AuthenticationMappingConfig : IRegister
     public void Register(TypeAdapterConfig config)
     {
 
-        config.NewConfig<RegisterRequest, CustomerRegisterCommand>();
+        config.NewConfig<RegisterRequest, CustomerRegisterCommand>()
+            .Map(dest => dest, src => src);
+
         config.NewConfig<LoginRequest, CustomerLoginQuery>();
      
         config.NewConfig<string, ValidateTokenQuery>()

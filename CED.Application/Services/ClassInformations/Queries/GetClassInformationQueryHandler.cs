@@ -40,8 +40,6 @@ public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetObjectQuer
             return (classInformation, subject, tutor).Adapt<ClassInformationDto>();
 
         }
-
-        //return _mapper.Map<(ClassInformation, Subject), ClassInformationDto>(new {  });
         return (classInformation, subject).Adapt<ClassInformationDto>();
     }
 }

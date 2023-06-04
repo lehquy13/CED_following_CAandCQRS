@@ -3,5 +3,6 @@ public enum AcademicLevel
 {
     Optional,
     Student,
-    Teacher,
+    Graduated,
+    Lecturer
 }

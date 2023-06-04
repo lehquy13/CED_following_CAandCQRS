@@ -36,6 +36,11 @@ public class CreateUpdateClassInformationDto : FullAuditedEntityDto<Guid>
     public Gender StudentGender { get; set; } = Gender.Male;
     [Required]
     public int NumberOfStudent { get; set; } = 1;
+    
+    public string ContactNumber { get; set; } = string.Empty;
+
+    public Guid? StudentId { get; set; }
+
 
     // Time related information
     [Required]
@@ -54,9 +59,7 @@ public class CreateUpdateClassInformationDto : FullAuditedEntityDto<Guid>
     [Required]
 
     public Guid SubjectId { get; set; }
-
-    public Guid? StudentId { get; set; }
-
+    
     public Guid? TutorId { get; set; }
 }
 

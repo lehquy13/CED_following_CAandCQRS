@@ -1,5 +1,10 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Contracts;
+using CED.Contracts.Subjects;
 using CED.Domain.Subjects;
+using LazyCache;
+using Newtonsoft.Json;
 
 namespace CED.Application.Services.Subjects.Commands;
 
@@ -8,9 +13,12 @@ public class DeleteSubjectCommandHandler
 {
 
     private readonly ISubjectRepository _subjectRepository;
-    public DeleteSubjectCommandHandler(ISubjectRepository subjectRepository) : base()
+    private readonly IAppCache _cache;
+
+    public DeleteSubjectCommandHandler(ISubjectRepository subjectRepository, IAppCache appCache) : base()
     {
         _subjectRepository = subjectRepository;
+        _cache = appCache;
     }
     public override async Task<bool> Handle(DeleteSubjectCommand command, CancellationToken cancellationToken)
     {
@@ -22,6 +30,8 @@ public class DeleteSubjectCommandHandler
         }
 
         _subjectRepository.Delete(subject);
+        var defaultRequest = new GetObjectQuery<PaginatedList<SubjectDto>>();
+        _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
 
         return true;
     }

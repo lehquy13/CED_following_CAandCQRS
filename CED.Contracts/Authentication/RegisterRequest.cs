@@ -1,8 +1,18 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace CED.Contracts.Authentication;
-public record RegisterRequest(
-    string FirstName,
-    string LastName,
-    string Email,
-    string Password
-);
+
+public class RegisterRequest
+{
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+    [Required]
+    public string Email { get; set; }
+    [Required]
+    public string Password { get; set; }
+}
+    
+
 

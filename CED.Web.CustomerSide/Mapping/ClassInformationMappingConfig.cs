@@ -17,11 +17,11 @@ public class ClassInformationMappingConfig : IRegister
         config.NewConfig<Guid, DeleteClassInformationCommand>()
             .Map(dest => dest.id, src => src);
         
-        config.NewConfig<CreateUpdateClassInformationDto, CreateUpdateClassInformationCommand>()
+        config.NewConfig<CreateClassInformationByCustomer, CreateUpdateClassInformationCommand>()
             .Map(dest => dest.ClassInformationDto, src => src);
         config.NewConfig<RequestGettingClassRequest, RequestGettingClassCommand>()
             .Map(dest => dest.ClassGuid, src => src.ClassId)
-            .Map(dest => dest.TutorGuid, src => src.UserId);
+            .Map(dest => dest.Email, src => src.Email);
 
     }
 }

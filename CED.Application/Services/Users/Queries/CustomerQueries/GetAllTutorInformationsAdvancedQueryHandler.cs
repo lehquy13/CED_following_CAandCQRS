@@ -1,6 +1,5 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts;
-using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Repository;
@@ -11,7 +10,8 @@ using MapsterMapper;
 
 namespace CED.Application.Services.Users.Queries.CustomerQueries;
 
-public class GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<GetAllTutorInformationsAdvancedQuery, TutorDto>
+public class
+    GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<GetAllTutorInformationsAdvancedQuery, TutorDto>
 {
     private readonly ISubjectRepository _subjectRepository;
     private readonly IUserRepository _userRepository;
@@ -36,14 +36,8 @@ public class GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<Ge
         {
             var subjects = await _subjectRepository.GetAllList();
             var tutors = _userRepository.GetTutors().AsEnumerable();
-            var totalTutorsCount = tutors.Count();
-            var tutorsMajors = _tutorMajorRepository.GetAll()
-                .GroupBy(t => t.TutorId)
-                .Select(major => new
-                {
-                    tutorId = major.Key,
-                    majorId = major.ToList()
-                });
+            var tutorsMajors = _tutorMajorRepository.GetAll();
+
 
             if (query.Academic != AcademicLevel.Optional)
             {
@@ -65,16 +59,39 @@ public class GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<Ge
                 tutors = tutors.Where(user => user.BirthYear == query.BirthYear);
             }
 
+            if (!string.IsNullOrEmpty(query.SubjectName))
+            {
+                var newsubjects = subjects.Where(s => s.Name.ToLower().Contains(query.SubjectName.ToLower()));
+               
+                tutorsMajors = tutorsMajors.Where(x =>  newsubjects.Select(ns => ns.Id).Contains(x.SubjectId));
+                tutors = tutors.Where(x =>  tutorsMajors.Select(tM => tM.TutorId).Contains(x.Id));
+                
+            }
+
+
+            var tutorsMajorsResult = tutorsMajors
+                .GroupBy(t => t.TutorId)
+                .ToList()
+                .Select(major => new
+                {
+                    tutorId = major.Key,
+                    majorId = major.ToList()
+                })
+                .ToList();
+
+            var enumerable = tutors as User[] ?? tutors.ToArray();
+            var totalPages = enumerable.Count();
+
             var tutorDtos = _mapper.Map<List<TutorDto>>(tutors);
 
             foreach (var t in tutorDtos)
             {
-                var objectMajor = tutorsMajors.FirstOrDefault(x => x.tutorId.Equals(t.Id));
+                var objectMajor = tutorsMajorsResult.FirstOrDefault(x => x.tutorId.Equals(t.Id));
                 if (objectMajor != null)
                 {
-                    foreach (var majorId in objectMajor.majorId)
+                    foreach (var id in objectMajor.majorId)
                     {
-                        var sub = subjects.FirstOrDefault(x => x.Id.Equals(majorId));
+                        var sub = subjects.FirstOrDefault(x => x.Id.ToString().Equals(id.ToString()));
                         if (sub is not null)
                         {
                             t.Majors.Add(_mapper.Map<SubjectDto>(sub));
@@ -82,13 +99,14 @@ public class GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<Ge
                     }
                 }
             }
+
             var result = _mapper.Map<List<TutorDto>>(
-                tutors.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize)
+                enumerable.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize)
                     .ToList()
             );
 
             var result1 =
-                PaginatedList<TutorDto>.CreateAsync(result, query.PageIndex, query.PageSize, totalTutorsCount);
+                PaginatedList<TutorDto>.CreateAsync(result, query.PageIndex, query.PageSize, totalPages);
 
             return result1;
         }

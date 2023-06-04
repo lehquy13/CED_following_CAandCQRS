@@ -38,6 +38,10 @@ namespace CED.Infrastructure.Migrations
                     b.Property<float>("ChargeFee")
                         .HasColumnType("real");
 
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 

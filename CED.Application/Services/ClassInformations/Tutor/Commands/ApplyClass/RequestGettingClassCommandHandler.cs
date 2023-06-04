@@ -18,7 +18,7 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
     public override async Task<bool> Handle(RequestGettingClassCommand command, CancellationToken cancellationToken)
     {
         //Check if the user existed
-        var user = await _userRepository.GetById(command.TutorGuid);
+        var user = await _userRepository.GetUserByEmail(command.Email);
         if (user is null)
         {
             throw new Exception("User doesn't exist");
@@ -37,8 +37,8 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
         //im doing here
         //user.UpdateTutorInformation(_mapper.Map<User>(command));
 
-        classInfor.TutorId = command.TutorGuid;
-        classInfor.Status = Status.OnPurchasing;
+        classInfor.TutorId = user.Id;
+        classInfor.Status = Status.OnVerifying;
 
         var afterUpdatedUser = _classInformationRepository.Update(classInfor);
 

@@ -4,7 +4,7 @@ namespace CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 
 public record RequestGettingClassCommand
 (
-    Guid TutorGuid,
+    string Email,
     Guid ClassGuid
     ) : IRequest<bool>;
 

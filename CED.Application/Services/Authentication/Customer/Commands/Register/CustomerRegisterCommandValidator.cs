@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Authentication.Commands.Register;
+﻿using CED.Application.Services.Authentication.Admin.Commands.Register;
+using CED.Application.Services.Authentication.Commands.Register;
 using FluentValidation;
 
 namespace CED.Application.Services.Authentication.Customer.Commands.Register;

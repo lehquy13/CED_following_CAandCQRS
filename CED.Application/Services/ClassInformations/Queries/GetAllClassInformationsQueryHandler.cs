@@ -43,13 +43,14 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
                     .Select(x => x.Id);
                 classInformations = classInformations.Where(x => subjs.Contains(x.SubjectId));
             }
+            var totalPages = classInformations.Count();
 
             var classInformationDtos =
                 _mapper.Map<List<ClassInformationDto>>(classInformations.Skip((query.PageIndex - 1) * query.PageSize)
                     .Take(query.PageSize).ToList());
             
             var resultPaginatedList = PaginatedList<ClassInformationDto>.CreateAsync(classInformationDtos,
-                query.PageIndex, query.PageSize, classInformationDtos.Count);
+                query.PageIndex, query.PageSize, totalPages);
 
 
             foreach (var classIn in resultPaginatedList)

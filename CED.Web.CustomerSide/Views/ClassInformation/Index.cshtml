@@ -1,6 +1,8 @@
-@model List<CED.Contracts.ClassInformations.Dtos.ClassInformationDto>
+@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.ClassInformationDto>
 
 @{
+    var subject = ViewBag.SubjectSearch as string ?? "";
+
 }
 
 <!-- ======= Breadcrumbs ======= -->
@@ -14,9 +16,9 @@
 <section id="courses" class="courses">
     <div class="container" data-aos="fade-up">
     
-        <form class="row pb-2" asp-action="Index" asp-controller="ClassInformation" method="get" style="height: 60px;">
+        <form class="row pb-3" asp-action="Index" asp-controller="ClassInformation" method="get" >
             <div class="col-lg-10 col-sm-10 p-0 pe-2 d-flex align-items-stretch">
-                <input  class="form-control"  placeholder="Type a subject" type="text" name="subjectName">
+                <input  class="form-control"  placeholder="Type a subject" value="@subject"  type="text" name="subjectName">
                 
             </div>
             <div class="col-lg-2 col-sm-2 p-0 d-flex">
@@ -35,7 +37,7 @@
                             <p class="price">$@i.Fee</p>
                         </div>
 
-                        <h3><a href="course-details.html">@i.Title</a></h3>
+                        <h3><a asp-controller="ClassInformation" asp-action="Detail" asp-route-id="@i.Id">@i.Title</a></h3>
                         <p>@i.Description</p>
                         <div class="trainer d-flex justify-content-between align-items-center">
                             <ul class="row requestList">
@@ -108,4 +110,5 @@
         </div>
 
     </div>
+    <partial name="_Pagination" model="@Model" view-data="ViewData"/>
 </section><!-- End Courses Section -->
