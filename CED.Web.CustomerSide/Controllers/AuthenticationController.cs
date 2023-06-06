@@ -94,8 +94,7 @@ public class AuthenticationController : Controller
 
         _logger.Log(LogLevel.Debug, returnUrl);
 
-        return Redirect(returnUrl);
-    }
+        return Redirect(returnUrl); }
 
 
     void StoreCookie(AuthenticationResult loginResult)
@@ -108,13 +107,17 @@ public class AuthenticationController : Controller
             SameSite = SameSiteMode.Strict,
             Secure = true,
             IsEssential = true,
-            Expires = DateTime.UtcNow.AddDays(1),
+            Expires = DateTime.UtcNow.AddHours(16),
             //Domain = "yourdomain.com",
         };
-        HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
-        HttpContext.Response.Cookies.Append("name", loginResult.User.FullName);
-        HttpContext.Response.Cookies.Append("image", loginResult.User.Image);
-        HttpContext.Response.Cookies.Append("email", loginResult.User.Email);
+        if (loginResult.User != null)
+        {
+            HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
+            HttpContext.Response.Cookies.Append("name", loginResult.User.FullName,cookieOptions);
+            HttpContext.Response.Cookies.Append("image", loginResult.User.Image,cookieOptions);
+            HttpContext.Response.Cookies.Append("email", loginResult.User.Email,cookieOptions);
+        }
+      
     }
 
     [Authorize]
@@ -122,6 +125,9 @@ public class AuthenticationController : Controller
     public IActionResult Logout()
     {
         HttpContext.Response.Cookies.Delete("access_token");
+        HttpContext.Response.Cookies.Delete("name");
+        HttpContext.Response.Cookies.Delete("image");
+        HttpContext.Response.Cookies.Delete("email");
 
         return View("Login", new LoginRequest("", ""));
     }

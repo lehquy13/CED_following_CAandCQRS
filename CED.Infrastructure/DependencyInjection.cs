@@ -83,23 +83,23 @@ namespace CED.Infrastructure
                         scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                         
                     })
-                    .AddCookie(options =>
-                    {
-                        options.Cookie.Name = "access_token";
-                        options.Cookie.HttpOnly = true;
-                        options.Cookie.SameSite = SameSiteMode.Strict;
-                        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                        //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-                        options.ExpireTimeSpan = TimeSpan.FromMinutes(90);
-
-                        options.LoginPath = "/";
-                        options.LogoutPath = "/Logout";
-                        options.AccessDeniedPath = "/";
-                      
-
-                        
-
-                    })
+                    // .AddCookie(options =>
+                    // {
+                    //     options.Cookie.Name = "access_token";
+                    //     options.Cookie.HttpOnly = true;
+                    //     options.Cookie.SameSite = SameSiteMode.Strict;
+                    //     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    //     //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                    //     options.ExpireTimeSpan = TimeSpan.FromMinutes(90);
+                    //
+                    //     options.LoginPath = "/";
+                    //     options.LogoutPath = "/Logout";
+                    //     options.AccessDeniedPath = "/";
+                    //   
+                    //
+                    //     
+                    //
+                    // })
                     .AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters()
@@ -112,14 +112,22 @@ namespace CED.Infrastructure
                             ValidAudience = jwtSettings.Audience,
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secrect)),
                         };
-
+                        
                         options.Events = new JwtBearerEvents()
                         {
                             OnMessageReceived = context =>
                             {
                                 context.Token = context.Request.Cookies["access_token"];
                                 return Task.CompletedTask;
+                            },
+                            OnChallenge = context =>
+                            {
+                                context.HttpContext.Response.Redirect("/");
+                                context.Request.Path = @"/";
+                                return Task.CompletedTask;
+
                             }
+
                         };
                     });
 

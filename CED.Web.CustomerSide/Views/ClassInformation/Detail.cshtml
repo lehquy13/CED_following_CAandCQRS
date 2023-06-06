@@ -1,4 +1,4 @@
-@model CED.Contracts.ClassInformations.Dtos.ClassInformationDto
+@model ClassInformationDetailViewModel
 
 @{
 }
@@ -17,41 +17,41 @@
 
         <div class="row">
             <div class="card mb-3 col-lg-12">
-                <h3>@Model.Title</h3>
+                <h3>@Model.ClassInformationDto.Title</h3>
                 <div class="d-flex justify-content-between align-items-center ">
 
                     <h4 class="col-lg-6">
-                        <b>Subject: </b> @Model.SubjectName
+                        <b>Subject: </b> @Model.ClassInformationDto.SubjectName
                     </h4>
                     <form asp-controller="ClassInformation" asp-action="RequestGettingClass" class="col-lg-3">
-                        <button class="btn btn-success" type="submit">Register this class (<b>Charge</b>: @Model.ChargeFee $)</button>
-                        <input value="@Model.Id" hidden=""/>
+                        <button class="btn btn-success" type="submit">Register this class (<b>Charge</b>: @Model.ClassInformationDto.ChargeFee $)</button>
+                        <input value="@Model.ClassInformationDto.Id" hidden="" name="ClassId"/>
                     </form>
 
                 </div>
 
                 <p>
-                    @Model.Description
+                    @Model.ClassInformationDto.Description
                 </p>
                 <div class="row">
                     <p>Requirements</p>
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Status</h5>
-                        <p>@Model.Status</p>
+                        <p>@Model.ClassInformationDto.Status</p>
                     </div>
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Gender requirement</h5>
-                        <p>@Model.GenderRequirement</p>
+                        <p>@Model.ClassInformationDto.GenderRequirement</p>
                     </div>
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Academic requirements</h5>
-                        <p>@Model.AcademicLevel</p>
+                        <p>@Model.ClassInformationDto.AcademicLevel</p>
                     </div>
 
 
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Learning Mode</h5>
-                        <p>@Model.LearningMode</p>
+                        <p>@Model.ClassInformationDto.LearningMode</p>
                     </div>
                     <p> Informations </p>
 
@@ -59,11 +59,11 @@
 
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Class' Fee</h5>
-                            <p>$@Model.Fee</p>
+                            <p>$@Model.ClassInformationDto.Fee</p>
                         </div>
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Charge Fee</h5>
-                            <p>$@Model.ChargeFee</p>
+                            <p>$@Model.ClassInformationDto.ChargeFee</p>
                         </div>
 
 
@@ -71,11 +71,11 @@
                     <div class="col-lg-4 ">
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Number of students</h5>
-                            <p>@Model.NumberOfStudent</p>
+                            <p>@Model.ClassInformationDto.NumberOfStudent</p>
                         </div>
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Student's Gender</h5>
-                            <p>@Model.StudentGender</p>
+                            <p>@Model.ClassInformationDto.StudentGender</p>
                         </div>
                     </div>
                     <div class="col-lg-4 ">
@@ -83,11 +83,11 @@
 
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Minute/Session</h5>
-                            <p>@Model.MinutePerSession</p>
+                            <p>@Model.ClassInformationDto.MinutePerSession</p>
                         </div>
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Session/Week</h5>
-                            <p>@Model.SessionPerWeek</p>
+                            <p>@Model.ClassInformationDto.SessionPerWeek</p>
                         </div>
 
 
@@ -103,92 +103,29 @@
 </section><!-- End Cource Details Section -->
 
 <!-- ======= Cource Details Tabs Section ======= -->
-<section id="cource-details-tabs" class="cource-details-tabs">
+<section id="courses" class="courses">
     <div class="container" data-aos="fade-up">
-
+        <h3>Related classes</h3>
         <div class="row">
-            <div class="col-lg-3">
-                <ul class="nav nav-tabs flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active show" data-bs-toggle="tab" href="#tab-1">Modi sit est</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#tab-2">Unde praesentium sed</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#tab-3">Pariatur explicabo vel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#tab-4">Nostrum qui quasi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#tab-5">Iusto ut expedita aut</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-9 mt-4 mt-lg-0">
-                <div class="tab-content">
-                    <div class="tab-pane active show" id="tab-1">
-                        <div class="row">
-                            <div class="col-lg-8 details order-2 order-lg-1">
-                                <h3>Architecto ut aperiam autem id</h3>
-                                <p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka</p>
-                                <p>Et nobis maiores eius. Voluptatibus ut enim blanditiis atque harum sint. Laborum eos ipsum ipsa odit magni. Incidunt hic ut molestiae aut qui. Est repellat minima eveniet eius et quis magni nihil. Consequatur dolorem quaerat quos qui similique accusamus nostrum rem vero</p>
+            <div class="col-lg-12 mt-4 mt-lg-0">
+                @foreach (var i in Model.RelatedClasses)
+                {
+                    <div class="course-item">
+                        <div class="course-content">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4>@i.SubjectName</h4>
+                                <p class="price">$@i.Fee</p>
                             </div>
-                            <div class="col-lg-4 text-center order-1 order-lg-2">
-                                <img src="assets/img/course-details-tab-1.png" alt="" class="img-fluid">
-                            </div>
+
+                            <h3>
+                                <a asp-controller="ClassInformation" asp-action="Detail" asp-route-id="@i.Id">@i.Title</a>
+                            </h3>
+                            <p>@i.Description</p>
+
                         </div>
                     </div>
-                    <div class="tab-pane" id="tab-2">
-                        <div class="row">
-                            <div class="col-lg-8 details order-2 order-lg-1">
-                                <h3>Et blanditiis nemo veritatis excepturi</h3>
-                                <p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka</p>
-                                <p>Ea ipsum voluptatem consequatur quis est. Illum error ullam omnis quia et reiciendis sunt sunt est. Non aliquid repellendus itaque accusamus eius et velit ipsa voluptates. Optio nesciunt eaque beatae accusamus lerode pakto madirna desera vafle de nideran pal</p>
-                            </div>
-                            <div class="col-lg-4 text-center order-1 order-lg-2">
-                                <img src="assets/img/course-details-tab-2.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tab-3">
-                        <div class="row">
-                            <div class="col-lg-8 details order-2 order-lg-1">
-                                <h3>Impedit facilis occaecati odio neque aperiam sit</h3>
-                                <p class="fst-italic">Eos voluptatibus quo. Odio similique illum id quidem non enim fuga. Qui natus non sunt dicta dolor et. In asperiores velit quaerat perferendis aut</p>
-                                <p>Iure officiis odit rerum. Harum sequi eum illum corrupti culpa veritatis quisquam. Neque necessitatibus illo rerum eum ut. Commodi ipsam minima molestiae sed laboriosam a iste odio. Earum odit nesciunt fugiat sit ullam. Soluta et harum voluptatem optio quae</p>
-                            </div>
-                            <div class="col-lg-4 text-center order-1 order-lg-2">
-                                <img src="assets/img/course-details-tab-3.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tab-4">
-                        <div class="row">
-                            <div class="col-lg-8 details order-2 order-lg-1">
-                                <h3>Fuga dolores inventore laboriosam ut est accusamus laboriosam dolore</h3>
-                                <p class="fst-italic">Totam aperiam accusamus. Repellat consequuntur iure voluptas iure porro quis delectus</p>
-                                <p>Eaque consequuntur consequuntur libero expedita in voluptas. Nostrum ipsam necessitatibus aliquam fugiat debitis quis velit. Eum ex maxime error in consequatur corporis atque. Eligendi asperiores sed qui veritatis aperiam quia a laborum inventore</p>
-                            </div>
-                            <div class="col-lg-4 text-center order-1 order-lg-2">
-                                <img src="assets/img/course-details-tab-4.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tab-5">
-                        <div class="row">
-                            <div class="col-lg-8 details order-2 order-lg-1">
-                                <h3>Est eveniet ipsam sindera pad rone matrelat sando reda</h3>
-                                <p class="fst-italic">Omnis blanditiis saepe eos autem qui sunt debitis porro quia.</p>
-                                <p>Exercitationem nostrum omnis. Ut reiciendis repudiandae minus. Omnis recusandae ut non quam ut quod eius qui. Ipsum quia odit vero atque qui quibusdam amet. Occaecati sed est sint aut vitae molestiae voluptate vel</p>
-                            </div>
-                            <div class="col-lg-4 text-center order-1 order-lg-2">
-                                <img src="assets/img/course-details-tab-5.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
+
             </div>
         </div>
 

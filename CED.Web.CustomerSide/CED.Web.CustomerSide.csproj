@@ -14,6 +14,10 @@
 
     <ItemGroup>
       <AdditionalFiles Include="Views\Authentication\Login.cshtml" />
+      <AdditionalFiles Include="Views\Profile\Profile.cshtml" />
+      <AdditionalFiles Include="Views\Profile\_ChangePassword.cshtml" />
+      <AdditionalFiles Include="Views\Profile\_ProfileEdit.cshtml" />
+      <AdditionalFiles Include="Views\Profile\_ProfileOverview.cshtml" />
       <AdditionalFiles Include="Views\TutorInformation\Detail.cshtml" />
       <AdditionalFiles Include="Views\TutorInformation\Index.cshtml" />
       <AdditionalFiles Include="Views\TutorInformation\_Pagination.cshtml" />

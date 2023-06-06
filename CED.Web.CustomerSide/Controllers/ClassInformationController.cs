@@ -9,6 +9,7 @@ using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
+using CED.Web.CustomerSide.Models;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -82,8 +83,20 @@ public class ClassInformationController : Controller
             Guid = id
         };
         var classInformation = await _mediator.Send(query);
-
-        return View(classInformation);
+        var query1 = new GetAllClassInformationsQuery()
+        {
+            PageSize = _pageSize,
+            PageIndex = 1,
+            SubjectName = classInformation.SubjectName
+        };
+        var classInformations = await _mediator.Send(query1);
+        
+        return View(
+            new ClassInformationDetailViewModel()
+        {
+            ClassInformationDto = classInformation,
+            RelatedClasses = classInformations
+        });
     }
 
     [HttpGet("Create")]
@@ -131,7 +144,7 @@ public class ClassInformationController : Controller
         return Ok(result);
     }
 
-    // DELETE api/<ClassInformationController>/5
+ 
 
     [Authorize]
     [HttpPost]
@@ -147,7 +160,11 @@ public class ClassInformationController : Controller
         requestGettingClassRequest.Email = email;
         var command = _mapper.Map<RequestGettingClassCommand>(requestGettingClassRequest);
         var result = await _mediator.Send(command);
+        if (result)
+        {
+            return View("SuccessRequestPage");
+        }
+        return View("FailPage");
 
-        return Ok(result);
     }
 }

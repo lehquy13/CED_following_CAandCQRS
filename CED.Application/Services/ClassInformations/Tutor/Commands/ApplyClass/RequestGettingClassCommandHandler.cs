@@ -21,6 +21,7 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
         var user = await _userRepository.GetUserByEmail(command.Email);
         if (user is null)
         {
+            return false;
             throw new Exception("User doesn't exist");
         }
         if (user.Role != UserRole.Tutor) return false;
@@ -28,6 +29,7 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
         var classInfor = await _classInformationRepository.GetById(command.ClassGuid);
         if (classInfor is null)
         {
+            return false;
             throw new Exception("Class doesn't exist");
         }
         if(classInfor.IsDeleted is true || !classInfor.Status.Equals(Status.Waiting))
