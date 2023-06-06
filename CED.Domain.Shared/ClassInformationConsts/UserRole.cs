@@ -4,6 +4,6 @@ public enum UserRole
     Undefined,
     Admin,
     Tutor,
-    Student,
+    Learner,
     All
 }

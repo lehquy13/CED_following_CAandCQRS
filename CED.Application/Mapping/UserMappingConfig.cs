@@ -8,9 +8,8 @@ public class UserMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
+        config.NewConfig<LearnerDto, TutorDto>();
 
-        config.NewConfig<StudentDto, TutorDto>();
-            
         config.NewConfig<TutorDto, User>();
         config.NewConfig<UserDto, User>()
             .Map(des => des.FirstName, src => src.FirstName)
@@ -22,19 +21,21 @@ public class UserMappingConfig : IRegister
             .Map(des => des.Email, src => src.Email)
             .Map(des => des.PhoneNumber, src => src.PhoneNumber)
             .Map(des => des.Role, src => src.Role)
-            .Map(des => des.AcademicLevel, src => src.AcademicLevel)
-            .Map(des => des.University, src => src.University )
-            .Map(des => des.IsVerified, src => src.IsVerified)
+            // .Map(des => des.AcademicLevel, src => src.AcademicLevel)
+            // .Map(des => des.University, src => src.University )
+            // .Map(des => des.IsVerified, src => src.IsVerified)
             //.Map(des => des.WardId, src => src.WardId)
             .Ignore(des => des.Password)
             ;
-           
-        
+
+        config.NewConfig<TutorDto, Tutor>()
+            .Map(des => des.AcademicLevel, src => src.AcademicLevel)
+            .Map(des => des.University, src => src.University)
+            .Map(des => des.IsVerified, src => src.IsVerified)
+            .Map(des => des.Rate, src => src.Rate);
 
         config.NewConfig<User, TutorDto>();
         config.NewConfig<User, UserDto>();
-        config.NewConfig<User, StudentDto>();
-
+        config.NewConfig<User, LearnerDto>();
     }
 }
-

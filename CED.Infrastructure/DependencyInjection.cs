@@ -48,6 +48,7 @@ namespace CED.Infrastructure
             // Dependency Injection for repository
             services.AddScoped( typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITutorRepository, TutorRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<IClassInformationRepository, ClassInformationRepository>();
@@ -60,6 +61,7 @@ namespace CED.Infrastructure
            )
         {
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddSingleton<IValidator, Validator>();
 
             // set configuration settings to jwtSettings and turn it into Singleton
             var jwtSettings = new JwtSettings();

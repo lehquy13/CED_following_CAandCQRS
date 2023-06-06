@@ -5,6 +5,6 @@ namespace CED.Application.Services.Users.Admin.Commands;
 
 public record CreateUpdateTutorCommand
 (
-    UserDto UserDto,
+    TutorDto TutorDto,
     List<Guid> SubjectId
 ) : IRequest<bool>;

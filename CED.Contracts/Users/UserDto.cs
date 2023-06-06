@@ -25,13 +25,7 @@ public class UserDto : FullAuditedEntityDto<Guid>
     public string? Password { get; set; } = "1q2w3E*";
 
     //is tutor related informtions
-    public UserRole Role { get; set; } = UserRole.Student;
-    public AcademicLevel AcademicLevel { get; set; }
-    public string? University { get; set;} = string.Empty;
-    public bool IsVerified { get; set; } = false;
-
-    public List<SubjectDto> SubjectDtos = new();
-
+    public UserRole Role { get; set; } = UserRole.Learner;
 
 }
 

@@ -1,4 +1,5 @@
 ﻿using CED.Domain.ClassInformations;
+using CED.Domain.Review;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,12 @@ public class CEDDBContext : DbContext
     public DbSet<Subject> Subjects { get; set; } = null!;
     public DbSet<ClassInformation> ClassInformations { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Tutor> Tutors { get; set; } = null!;
+    public DbSet<TutorVerificationInfo> TutorVerificationInfos { get; set; } = null!;
+    public DbSet<TutorReview> TutorReviews { get; set; } = null!;
+    //public DbSet<Learner> Users { get; set; } = null!;
     public DbSet<TutorMajor> TutorMajors { get; set; } = null!;
+    public DbSet<RequestGettingClass> RequestGettingClasses { get; set; } = null!;
     public DbSet<City> Cities { get; set; } = null!;
     public DbSet<District> Districts { get; set; } = null!;
     public DbSet<Ward> Wards { get; set; } = null!;
@@ -46,14 +52,23 @@ public class CEDDBContext : DbContext
             re.ToTable("User");
             //re.HasOne<Ward>().WithMany().HasForeignKey(r => r.WardId).IsRequired();
         }); 
+        modelBuilder.Entity<Tutor>(re =>
+        {
+            re.ToTable("Tutor");
+            re.HasOne<User>().WithOne().HasForeignKey<Tutor>(x => x.Id).IsRequired();
+        }); 
         modelBuilder.Entity<TutorMajor>(re =>
         {
             re.ToTable("TutorMajor");
             re.HasKey(r => r.Id);
-            re.HasOne<User>().WithMany().HasForeignKey(r => r.TutorId).IsRequired();
+            re.HasOne<Tutor>().WithMany().HasForeignKey(r => r.TutorId).IsRequired();
             re.HasOne<Subject>().WithMany().HasForeignKey(r => r.SubjectId).IsRequired();
         });
-
+        modelBuilder.Entity<TutorVerificationInfo>(re =>
+        {
+            re.ToTable("TutorVerificationInfo");
+            re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
+        }); 
         modelBuilder.Entity<ClassInformation>(re =>
         {
             re.ToTable("ClassInformation");
@@ -62,9 +77,22 @@ public class CEDDBContext : DbContext
             re.Property(r => r.Description).IsRequired().IsUnicode();
             re.Property(r => r.Fee).IsRequired();
             re.HasOne<Subject>().WithMany().HasForeignKey(x => x.SubjectId).IsRequired();
+            re.HasOne<User>().WithMany().HasForeignKey(x => x.StudentId);
+            re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId);
 
         });
-
+        modelBuilder.Entity<RequestGettingClass>(re =>
+        {
+            re.ToTable("RequestGettingClass");
+            re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
+            re.HasOne<ClassInformation>().WithMany().HasForeignKey(x => x.ClassInformationId);
+        }); 
+        modelBuilder.Entity<TutorReview>(re =>
+        {
+            re.ToTable("TutorReview");
+            re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
+            re.HasOne<User>().WithMany().HasForeignKey(x => x.LearnerId).IsRequired().OnDelete(DeleteBehavior.NoAction);
+        }); 
     }
 }
 //using to support addmigration

@@ -39,7 +39,7 @@ public class HomeController : Controller
         _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
         var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
         var tutorDtos = await _sender.Send(new GetAllTutorInformationsAdvancedQuery());
-        var studentDtos = await _sender.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
+        var studentDtos = await _sender.Send(new GetObjectQuery<PaginatedList<LearnerDto>>());
         _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
 
         var date = GetByTime(DateTime.Now, ByTime.Month);
@@ -71,7 +71,7 @@ public class HomeController : Controller
         return View(
             new DashBoardViewModel
             {
-                StudentTotalValueModel = new TotalValueModel<StudentDto>()
+                StudentTotalValueModel = new TotalValueModel<LearnerDto>()
                 {
                     Models = studentDtos,
                     IsIncrease = resultStudentDtos1.Count > resultStudentDtos2.Count,
@@ -234,7 +234,7 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerTotalStudents(string? byTime)
     {
         _logger.LogDebug("Index's running! On getting studentDtos...");
-        var studentDtos = await _sender.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
+        var studentDtos = await _sender.Send(new GetObjectQuery<PaginatedList<LearnerDto>>());
         _logger.LogDebug("Got studentDtos!");
 
         var date = GetByTime(DateTime.Now, byTime);
@@ -243,7 +243,7 @@ public class HomeController : Controller
         var result2 = studentDtos.Where(x => x.CreationTime >= date2 && x.CreationTime <= date).ToList();
 
 
-        return Helper.RenderRazorViewToString(this, "_TotalStudents", new TotalValueModel<StudentDto>()
+        return Helper.RenderRazorViewToString(this, "_TotalStudents", new TotalValueModel<LearnerDto>()
         {
             Models = result1,
             IsIncrease = result1.Count > result2.Count,

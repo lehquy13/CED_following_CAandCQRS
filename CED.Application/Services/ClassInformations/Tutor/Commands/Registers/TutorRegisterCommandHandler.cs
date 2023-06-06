@@ -1,14 +1,15 @@
-﻿using CED.Domain.Users;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Application.Services.Users.Tutor.Commands.Registers;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Users;
 using MapsterMapper;
-using CED.Application.Services.Abstractions.CommandHandlers;
 
-namespace CED.Application.Services.Users.Tutor.Commands.Registers;
+namespace CED.Application.Services.ClassInformations.Tutor.Commands.Registers;
 
 public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegisterCommand>
 {
-    private readonly IUserRepository _userRepository;
-    public TutorRegisterCommandHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
+    private readonly ITutorRepository _userRepository;
+    public TutorRegisterCommandHandler(ITutorRepository userRepository, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
     }
@@ -22,7 +23,7 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
         }
         if (user.Role == UserRole.Tutor) return false;
 
-        user.UpdateTutorInformation(_mapper.Map<User>(command.TutorDto));
+        user.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
 
         var afterUpdatedUser = _userRepository.Update(user);
 

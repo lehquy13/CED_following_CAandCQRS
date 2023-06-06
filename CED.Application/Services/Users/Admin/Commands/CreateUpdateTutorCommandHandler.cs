@@ -10,13 +10,16 @@ namespace CED.Application.Services.Users.Admin.Commands;
 
 public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<CreateUpdateTutorCommand>
 {
+    private readonly ITutorRepository _tutorRepository;
     private readonly IUserRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
     private readonly IAppLogger<CreateUpdateTutorCommandHandler> _logger;
 
-    public CreateUpdateTutorCommandHandler(IUserRepository userRepository, IRepository<TutorMajor> tutorMajorRepository,
+    public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, IUserRepository userRepository,
+        IRepository<TutorMajor> tutorMajorRepository,
         IAppLogger<CreateUpdateTutorCommandHandler> logger, IMapper mapper) : base(mapper)
     {
+        _tutorRepository = tutorRepository;
         _userRepository = userRepository;
         _logger = logger;
         _tutorMajorRepository = tutorMajorRepository;
@@ -26,12 +29,13 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
     {
         try
         {
-            var user = await _userRepository.GetUserByEmail(command.UserDto.Email);
+            var tutor = await _tutorRepository.GetUserByEmail(command.TutorDto.Email);
+            var tutorAsUser = await _userRepository.GetUserByEmail(command.TutorDto.Email);
             var newMajorUpdate = command.SubjectId.DistinctBy(x => x).ToList();
             //Check if the subject existed
-            if (user is not null && user.Role == UserRole.Tutor)
+            if (tutor is not null && tutorAsUser is not null && tutor.Role == UserRole.Tutor)
             {
-                var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.UserDto.Id));
+                var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id));
                 // check the subject changes
                 foreach (var major in currentMajor)
                 {
@@ -53,45 +57,50 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
                         }
                     }
                 }
-                foreach (var newMU in newMajorUpdate)
+
+                foreach (var newMu in newMajorUpdate)
                 {
                     await _tutorMajorRepository.Insert(new TutorMajor()
                     {
-                        TutorId = user.Id,
-                        SubjectId = newMU
+                        TutorId = tutor.Id,
+                        SubjectId = newMu
                     });
                 }
 
-                user.UpdateUserInformation(_mapper.Map<User>(command.UserDto));
+                tutor.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
+                tutorAsUser.UpdateUserInformation(_mapper.Map<User>(command.TutorDto));
                 _logger.LogDebug("ready for updating!");
-                _userRepository.Update(user);
+                _tutorRepository.Update(tutor);
+                _userRepository.Update(tutorAsUser);
 
                 return true;
             }
-            _logger.LogDebug("ready for creating!");
 
-            user = _mapper.Map<User>(command.UserDto);
-            await _userRepository.Insert(user);
+            _logger.LogDebug("ready for creating!");
+            tutorAsUser = _mapper.Map<User>(command.TutorDto);
+            await _userRepository.Insert(tutorAsUser);
+
+            tutor = _mapper.Map<Domain.Users.Tutor>(command.TutorDto);
+            await _tutorRepository.Insert(tutor);
 
             // add new subjects
 
-            foreach (var newMU in newMajorUpdate)
+            foreach (var newMu in newMajorUpdate)
             {
                 await _tutorMajorRepository.Insert(new TutorMajor()
                 {
-                    TutorId = user.Id,
-                    SubjectId = newMU
+                    TutorId = tutor.Id,
+                    SubjectId = newMu
                 });
             }
-
-
-
-
             return true;
+
         }
         catch (Exception ex)
         {
             throw new Exception("Error happens when user is adding or updating." + ex.Message);
         }
+        
     }
+
 }

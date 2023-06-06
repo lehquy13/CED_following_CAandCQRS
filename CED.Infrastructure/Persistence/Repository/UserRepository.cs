@@ -11,6 +11,20 @@ public class UserRepository : Repository<User>, IUserRepository
     {
     }
 
+    public async Task Insert(User entity)
+    {
+        try
+        {
+            await Context.Set<User>().AddAsync(entity);
+
+            await Context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
     public List<User> GetTutors()
     {
         try
@@ -27,7 +41,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var users  =  Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Student).ToList();
+            var users  =  Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner).ToList();
             return users;
         }
         catch (Exception ex)
@@ -58,7 +72,7 @@ public class UserRepository : Repository<User>, IUserRepository
                 return Context.Set<User>().AsEnumerable().ToList();
             }
            
-            return Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Student).ToList();
+            return Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner).ToList();
         }
         catch (Exception ex)
         {

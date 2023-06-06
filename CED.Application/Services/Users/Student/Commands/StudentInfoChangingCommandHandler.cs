@@ -20,7 +20,7 @@ public class StudentInfoChangingCommandHandler : CreateUpdateCommandHandler<Stud
         {
             throw new Exception("User with an email doesn't exist");
         }
-        if (user.Role != UserRole.Student) return false;
+        if (user.Role != UserRole.Learner) return false;
 
         user.UpdateUserInformation(_mapper.Map<User>(command.StudentDto));
 

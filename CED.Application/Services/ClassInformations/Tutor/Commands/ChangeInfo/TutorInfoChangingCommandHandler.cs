@@ -7,8 +7,8 @@ namespace CED.Application.Services.Users.Tutor.Commands.ChangeInfo;
 
 public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorInfoChangingCommand>
 {
-    private readonly IUserRepository _userRepository;
-    public TutorInfoChangingCommandHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
+    private readonly ITutorRepository _userRepository;
+    public TutorInfoChangingCommandHandler(ITutorRepository userRepository, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
     }
@@ -22,7 +22,7 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
         }
         if (user.Role != UserRole.Tutor) return false;
 
-        user.UpdateTutorInformation(_mapper.Map<User>(command.TutorDto));
+        user.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
 
         var afterUpdatedUser = _userRepository.Update(user);
 

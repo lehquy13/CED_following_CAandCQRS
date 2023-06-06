@@ -14,12 +14,12 @@ public class
     GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<GetAllTutorInformationsAdvancedQuery, TutorDto>
 {
     private readonly ISubjectRepository _subjectRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly ITutorRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
 
     public GetAllTutorInformationsAdvancedQueryHandler(
         ISubjectRepository subjectRepository,
-        IUserRepository userRepository,
+        ITutorRepository userRepository,
         IRepository<TutorMajor> tutorMajorRepository,
         IMapper mapper) : base(mapper)
     {

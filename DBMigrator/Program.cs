@@ -2,6 +2,7 @@
 
 using CED.Domain;
 using CED.Domain.Users;
+using CED.Infrastructure.Authentication;
 using CED.Infrastructure.Entity_Framework_Core;
 using MapsterMapper;
 
@@ -27,11 +28,27 @@ internal static class Program
             Console.WriteLine("Creating dataseeder object...");
 
             var seeder = new DataSeeder();
+            
+            Console.WriteLine("Adding subjects...");
             context.Subjects.AddRange(seeder.Subjects);
+            
+            Console.WriteLine("Hash password for users...");
+            foreach (var u in seeder.Users)
+            {
+                u.Password = (new Validator()).HashPassword(u.Password);
+            }
+            Console.WriteLine("Done hashing password. Adding users...");
             context.Users.AddRange(seeder.Users);
+            
+            Console.WriteLine("Adding tutors...");
+            context.Tutors.AddRange(seeder.Tutors);
             context.SaveChanges();
-            Console.WriteLine("Added subjects and users!");
+            Console.WriteLine("Added subjects, users, tutors!");
+
+            Console.WriteLine("Adding class informations...");
+
             context.ClassInformations.AddRange(seeder.ClassInformations);
+            context.SaveChanges();
             Console.WriteLine("Added classInformations!");
 
             Console.WriteLine("Reading Vietnamese's address data...");

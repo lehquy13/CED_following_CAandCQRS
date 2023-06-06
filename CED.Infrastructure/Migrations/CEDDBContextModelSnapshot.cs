@@ -108,9 +108,62 @@ namespace CED.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StudentId");
+
                     b.HasIndex("SubjectId");
 
+                    b.HasIndex("TutorId");
+
                     b.ToTable("ClassInformation", (string)null);
+                });
+
+            modelBuilder.Entity("CED.Domain.ClassInformations.RequestGettingClass", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassInformationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassInformationId");
+
+                    b.HasIndex("TutorId");
+
+                    b.ToTable("RequestGettingClass", (string)null);
+                });
+
+            modelBuilder.Entity("CED.Domain.Review.TutorReview", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("LearnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<short>("Rate")
+                        .HasColumnType("smallint");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LearnerId");
+
+                    b.HasIndex("TutorId");
+
+                    b.ToTable("TutorReview", (string)null);
                 });
 
             modelBuilder.Entity("CED.Domain.Subjects.Subject", b =>
@@ -211,14 +264,31 @@ namespace CED.Infrastructure.Migrations
                     b.ToTable("District", (string)null);
                 });
 
-            modelBuilder.Entity("CED.Domain.Users.User", b =>
+            modelBuilder.Entity("CED.Domain.Users.TutorVerificationInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AcademicLevel")
-                        .HasColumnType("int");
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TutorId");
+
+                    b.ToTable("TutorVerificationInfo", (string)null);
+                });
+
+            modelBuilder.Entity("CED.Domain.Users.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -264,9 +334,6 @@ namespace CED.Infrastructure.Migrations
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
 
@@ -288,12 +355,11 @@ namespace CED.Infrastructure.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<string>("University")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("CED.Domain.Users.Ward", b =>
@@ -320,11 +386,68 @@ namespace CED.Infrastructure.Migrations
                     b.ToTable("Ward", (string)null);
                 });
 
+            modelBuilder.Entity("CED.Domain.Users.Tutor", b =>
+                {
+                    b.HasBaseType("CED.Domain.Users.User");
+
+                    b.Property<int>("AcademicLevel")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<short>("Rate")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("University")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Tutor", (string)null);
+                });
+
             modelBuilder.Entity("CED.Domain.ClassInformations.ClassInformation", b =>
                 {
+                    b.HasOne("CED.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
                     b.HasOne("CED.Domain.Subjects.Subject", null)
                         .WithMany()
                         .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CED.Domain.Users.Tutor", null)
+                        .WithMany()
+                        .HasForeignKey("TutorId");
+                });
+
+            modelBuilder.Entity("CED.Domain.ClassInformations.RequestGettingClass", b =>
+                {
+                    b.HasOne("CED.Domain.ClassInformations.ClassInformation", null)
+                        .WithMany()
+                        .HasForeignKey("ClassInformationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CED.Domain.Users.Tutor", null)
+                        .WithMany()
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CED.Domain.Review.TutorReview", b =>
+                {
+                    b.HasOne("CED.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("LearnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CED.Domain.Users.Tutor", null)
+                        .WithMany()
+                        .HasForeignKey("TutorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -337,7 +460,7 @@ namespace CED.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CED.Domain.Users.User", null)
+                    b.HasOne("CED.Domain.Users.Tutor", null)
                         .WithMany()
                         .HasForeignKey("TutorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -353,11 +476,29 @@ namespace CED.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CED.Domain.Users.TutorVerificationInfo", b =>
+                {
+                    b.HasOne("CED.Domain.Users.Tutor", null)
+                        .WithMany()
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CED.Domain.Users.Ward", b =>
                 {
                     b.HasOne("CED.Domain.Users.District", null)
                         .WithMany()
                         .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CED.Domain.Users.Tutor", b =>
+                {
+                    b.HasOne("CED.Domain.Users.User", null)
+                        .WithOne()
+                        .HasForeignKey("CED.Domain.Users.Tutor", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

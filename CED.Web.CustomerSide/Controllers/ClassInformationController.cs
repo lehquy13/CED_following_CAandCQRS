@@ -47,7 +47,7 @@ public class ClassInformationController : Controller
     private async Task PackStudentAndTuTorList()
     {
         var tutorDtos = await _mediator.Send(new GetAllTutorInformationsAdvancedQuery());
-        var studentDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<StudentDto>>());
+        var studentDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<LearnerDto>>());
         ViewData["TutorDtos"] = tutorDtos;
         ViewData["StudentDtos"] = studentDtos;
     }

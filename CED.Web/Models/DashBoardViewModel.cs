@@ -5,7 +5,7 @@ namespace CED.Web.Models;
 public class DashBoardViewModel
 {
     public TotalValueModel<CED.Contracts.Users.TutorDto> TutorTotalValueModel{ get; set; } = new();
-    public TotalValueModel<CED.Contracts.Users.StudentDto> StudentTotalValueModel{ get; set; } = new();
+    public TotalValueModel<CED.Contracts.Users.LearnerDto> StudentTotalValueModel{ get; set; } = new();
 
     public TotalValueModel<ClassInformationDto> ClassTotalValueModel{ get; set; } = new();
 

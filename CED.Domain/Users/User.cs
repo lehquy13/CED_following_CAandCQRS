@@ -21,43 +21,14 @@ public class User : FullAuditedAggregateRoot<Guid>
     public string PhoneNumber { get; set; } = string.Empty;
     public string Password { get; set; } = "1q2w3E*";
 
-    //is tutor related informtions
-    public UserRole Role { get; set; } = UserRole.Student;
-    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
-    public string? University { get; set;} = string.Empty;
-    public bool IsVerified { get; set; } = false;
+    public UserRole Role { get; set; } = UserRole.Learner;
+    
+   
 
     // constructor
     public User()
     {
         LastModificationTime = DateTime.Now;
-    }
-
-    /// <summary>
-    /// Update current user to be tutor
-    /// </summary>
-    /// <param name="tutor"></param>
-
-    public void RegisterToBeTutor(User tutor)
-    {
-        Role = tutor.Role;
-        AcademicLevel = tutor.AcademicLevel;
-        University = tutor.University;
-    }
-
-    /// <summary>
-    /// Update tutor's information and change the state into being verified
-    /// </summary>
-    /// <param name="tutor"></param>
-
-    public void UpdateTutorInformation(User tutor)
-    {
-        AcademicLevel = tutor.AcademicLevel;
-        University = tutor.University;
-
-        //wait for being verified
-        IsVerified = false;
-
     }
 
     /// <summary>
@@ -77,14 +48,16 @@ public class User : FullAuditedAggregateRoot<Guid>
         Email = user.Email;
         PhoneNumber = user.PhoneNumber;
         Image = user.Image;
-        if(user.Role == UserRole.Tutor)
-        {
-            AcademicLevel = user.AcademicLevel;
-            University = user.University;
-
-            //wait for being verified
-            IsVerified = user.IsVerified;
-        }
+        
+    }
+    /// <summary>
+    /// Update current user to be tutor
+    /// </summary>
+    /// <param name="tutor"></param>
+    public Tutor RegisterToBeTutor(Tutor tutor)
+    {
+        tutor.Id = Id;
+        return tutor;
     }
   
 }

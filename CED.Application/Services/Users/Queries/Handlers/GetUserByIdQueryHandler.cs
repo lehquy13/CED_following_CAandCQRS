@@ -14,10 +14,10 @@ public class GetUserByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<UserDt
 {
     private readonly ISubjectRepository _subjectRepository;
 
-    private readonly IUserRepository _userRepository;
+    private readonly ITutorRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
 
-    public GetUserByIdQueryHandler(IUserRepository userRepository,ISubjectRepository subjectRepository,
+    public GetUserByIdQueryHandler(ITutorRepository userRepository,ISubjectRepository subjectRepository,
         IRepository<TutorMajor> tutorMajorRepository,
         IMapper mapper) : base(mapper)
     {
@@ -34,24 +34,24 @@ public class GetUserByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<UserDt
             if (user is null) { return null; }
             UserDto? result = _mapper.Map<UserDto>(user);
 
-            if (result.Role == UserRole.Tutor)
-            {
-                var tutorsMajors = _tutorMajorRepository.GetAll()
-                    .Where(t => t.TutorId == result.Id)
-                    .Select(major => major.SubjectId);
-                var subjects = await _subjectRepository.GetAllList();
-
-                foreach (var tm in tutorsMajors)
-                {
-                    var subject = subjects.FirstOrDefault(s => s.Id == tm);
-                    if (subject is not null)
-                    {
-                        result.SubjectDtos.Add(_mapper.Map<SubjectDto>(subject));
-                    }
-                }
-                
-
-            }
+            // if (result.Role == UserRole.Tutor)
+            // {
+            //     var tutorsMajors = _tutorMajorRepository.GetAll()
+            //         .Where(t => t.TutorId == result.Id)
+            //         .Select(major => major.SubjectId);
+            //     var subjects = await _subjectRepository.GetAllList();
+            //
+            //     foreach (var tm in tutorsMajors)
+            //     {
+            //         var subject = subjects.FirstOrDefault(s => s.Id == tm);
+            //         if (subject is not null)
+            //         {
+            //             result.SubjectDtos.Add(_mapper.Map<SubjectDto>(subject));
+            //         }
+            //     }
+            //     
+            //
+            // }
             return await Task.FromResult(result);
         }
         catch (Exception ex)

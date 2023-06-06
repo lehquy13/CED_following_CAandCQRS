@@ -12,13 +12,13 @@ namespace CED.Application.Services.ClassInformations.Queries;
 public class GetLearningClassesOfUserQueryHandler : GetAllQueryHandler<GetLearningClassesOfUserQuery, ClassInformationDto>
 {
     private readonly IClassInformationRepository _classInformationRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly ITutorRepository _userRepository;
     private readonly ISubjectRepository _subjectRepository;
 
     public GetLearningClassesOfUserQueryHandler(
         IClassInformationRepository classInformationRepository,
         ISubjectRepository subjectRepository,
-        IUserRepository userRepository,
+        ITutorRepository userRepository,
         IMapper mapper) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;

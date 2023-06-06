@@ -1,6 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 
-namespace CED.Contracts.ClassInformations;
+namespace CED.Contracts.ClassInformations.Dtos;
 
 public class SubjectLookupDto : EntityDto<Guid>
 {

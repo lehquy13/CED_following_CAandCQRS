@@ -7,8 +7,8 @@ namespace CED.Application.Services.Users.Admin.Commands;
 
 public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<ConfirmTutorInfoCommand>
 {
-    private readonly IUserRepository _userRepository;
-    public ConfirmTutorInfoCommandHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
+    private readonly ITutorRepository _userRepository;
+    public ConfirmTutorInfoCommandHandler(ITutorRepository userRepository, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
     }
@@ -23,7 +23,7 @@ public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<Confirm
         if (user.Role != UserRole.Tutor) return false;
 
         command.TutorDto.IsVerified = true;
-        user.UpdateTutorInformation(_mapper.Map<User>(command.TutorDto));
+        user.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
 
         var afterUpdatedUser = _userRepository.Update(user);
 

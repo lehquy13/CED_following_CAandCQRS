@@ -8,6 +8,8 @@ namespace CED.Domain;
 public class DataSeeder
 {
     public List<User> Users { get; private set; } = new List<User>();
+    public List<Tutor> Tutors { get; private set; } = new List<Tutor>();
+    public List<Learner> Leanrner { get; private set; } = new List<Learner>();
     public List<Subject> Subjects { get; private set; } = new List<Subject>();
     public List<ClassInformation> ClassInformations { get; private set; } = new List<ClassInformation>();
 
@@ -62,7 +64,7 @@ public class DataSeeder
             german, korean, vietnameses
         };
         this.Subjects = subjects;
-        var tutor = new User //Tutor
+        var tutor = new Tutor //Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Meredith", LastName = "Smith", Description = "Premium tutor",
@@ -71,7 +73,7 @@ public class DataSeeder
             Role = UserRole.Tutor
         };
 
-        var tutor1 = new User
+        var tutor1 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Yan", LastName = "Woo", Gender = Gender.Female, Description = "Multi-subject tutor",
@@ -79,7 +81,7 @@ public class DataSeeder
             University = "University of Economics HCMC (UEH)"
         };
 
-        var tutor2 = new User
+        var tutor2 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Nay", LastName = "Woo", Gender = Gender.Female,
@@ -95,8 +97,56 @@ public class DataSeeder
             PhoneNumber = "0123123125", Email = "hoangle.q2@gmail.com"
         };
 
+        Tutors = new List<Tutor>()
+        {
+            tutor,
+            tutor1,
+            tutor2,
+            new Tutor
+            {
+                FirstName = "Gytis", LastName = "Gustang", Description = "Barzdukas", PhoneNumber = "0123123122",
+                Address = "Viet Nam",
+                Email = "hoangle.q4@gmail.com", Role = UserRole.Tutor,
+                University = "University of Information Technology - VNUHCM"
+            },
+            new Tutor
+            {
+                FirstName = "Peggy", LastName = "Scar", Gender = Gender.Female, Description = "Justice",
+                Address = "Viet Nam",
+                PhoneNumber = "0123123124", Email = "hoangle.q3123123@gmail.com", Role = UserRole.Tutor,
+                University = "University of Economics HCMC (UEH)"
+            },
+            new Tutor
+            {
+                FirstName = "Continel", LastName = "Wild", Description = "Second tutor", PhoneNumber = "0123123130",
+                Address = "Viet Nam",
+                Email = "20520728@gm.uit.edu.com", Role = UserRole.Tutor,
+                University = "Ho Chi Minh City University of Technology (HCMUT)"
+            },
+            new Tutor
+            {
+                FirstName = "Hector", LastName = "Wunder", Description = "Barzdukas", PhoneNumber = "0123123132",
+                Address = "Viet Nam",
+                Email = "hoangle.q11@gmail.com", Role = UserRole.Tutor,
+                University = "Ho Chi Minh City University of Technology (HCMUT)"
+            },
+            new Tutor
+            {
+                FirstName = "Rosez", LastName = "Rouge", Gender = Gender.Female, Description = "Li",
+                Address = "Viet Nam",
+                PhoneNumber = "0123123133", Email = "hoangle.q12@gmail.com", Role = UserRole.Tutor,
+                University = "Vietnam National University HCM, University of Economics and Law"
+            },
+            new Tutor
+            {
+                FirstName = "Sam", LastName = "Will", Gender = Gender.Female, Description = "Justice",
+                Address = "Viet Nam",
+                PhoneNumber = "0123123124", Email = "hoangle.q312312312@gmail.com", Role = UserRole.Tutor,
+                University = "Vietnam National University HCM, University of Economics and Law"
+            }
+        };
 
-        var users = new List<User>()
+        Users = new List<User>()
         {
             //Admin
             new User
@@ -109,54 +159,18 @@ public class DataSeeder
                 FirstName = "John", LastName = "Doe", Description = "Third admin", Email = "lehquy13@gmail.com",Address = "Viet Nam",
                 PhoneNumber = "0123123120", Role = UserRole.Admin
             },
-            tutor,
             new User
             {
                 FirstName = "Nino", LastName = "Walker", Gender = Gender.Female, PhoneNumber = "0123123126",Address = "Viet Nam",
                 Description = "Olivetto", Email = "hoangle.q6@gmail.com", Role = UserRole.Tutor
             },
-            new User
-            {
-                FirstName = "Gytis", LastName = "Gustang", Description = "Barzdukas", PhoneNumber = "0123123122",Address = "Viet Nam",
-                Email = "hoangle.q4@gmail.com", Role = UserRole.Tutor,
-                University = "University of Information Technology - VNUHCM"
-            },
-            tutor1, tutor2,
-            new User
-            {
-                FirstName = "Peggy", LastName = "Scar", Gender = Gender.Female, Description = "Justice",Address = "Viet Nam",
-                PhoneNumber = "0123123124", Email = "hoangle.q3123123@gmail.com", Role = UserRole.Tutor,
-                University = "University of Economics HCMC (UEH)"
-            },
-            new User
-            {
-                FirstName = "Continel", LastName = "Wild", Description = "Second tutor", PhoneNumber = "0123123130",Address = "Viet Nam",
-                Email = "20520728@gm.uit.edu.com", Role = UserRole.Tutor,
-                University = "Ho Chi Minh City University of Technology (HCMUT)"
-            },
+            
             new User
             {
                 FirstName = "Anne", LastName = "Alter", Gender = Gender.Female, Description = "Third tutor",Address = "Viet Nam",
                 PhoneNumber = "0123123131", Email = "hoangle.q10@gmail.com", Role = UserRole.Tutor
             },
-            new User
-            {
-                FirstName = "Hector", LastName = "Wunder", Description = "Barzdukas", PhoneNumber = "0123123132",Address = "Viet Nam",
-                Email = "hoangle.q11@gmail.com", Role = UserRole.Tutor,
-                University = "Ho Chi Minh City University of Technology (HCMUT)"
-            },
-            new User
-            {
-                FirstName = "Rosez", LastName = "Rouge", Gender = Gender.Female, Description = "Li",Address = "Viet Nam",
-                PhoneNumber = "0123123133", Email = "hoangle.q12@gmail.com", Role = UserRole.Tutor,
-                University = "Vietnam National University HCM, University of Economics and Law"
-            },
-            new User
-            {
-                FirstName = "Sam", LastName = "Will", Gender = Gender.Female, Description = "Justice",Address = "Viet Nam",
-                PhoneNumber = "0123123124", Email = "hoangle.q312312312@gmail.com", Role = UserRole.Tutor,
-                University = "Vietnam National University HCM, University of Economics and Law"
-            },
+            
 
             //Standard user
             standardUser,
@@ -208,7 +222,7 @@ public class DataSeeder
             },
         };
 
-        Users = users;
+        Users.AddRange(Tutors);
         var classInfos = new List<ClassInformation>()
         {
        

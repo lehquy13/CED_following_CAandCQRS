@@ -13,10 +13,12 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly IUserRepository _userRepository;
-    public GetLineChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository, IUserRepository userRepository) : base(mapper)
+    private readonly ITutorRepository _tutorRepository;
+    public GetLineChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository, IUserRepository userRepository,ITutorRepository tutorRepository) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;
         _userRepository = userRepository;
+        _tutorRepository = tutorRepository;
     }
 
     public override async Task<LineChartData?> Handle(GetLineChartDataQuery query, CancellationToken cancellationToken)
@@ -80,7 +82,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
             .ToList();
 
         var tutorsInWeek = dates.GroupJoin(
-                _userRepository.GetTutors()
+                _tutorRepository.GetTutors()
                     .Where(x => x.CreationTime >= startDay)
                     .GroupBy(x => x.CreationTime.Day),
                 d => d,

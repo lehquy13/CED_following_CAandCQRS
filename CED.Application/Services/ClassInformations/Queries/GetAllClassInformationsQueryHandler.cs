@@ -12,12 +12,12 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly ISubjectRepository _subjectRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly ITutorRepository _userRepository;
 
     public GetAllClassInformationsQueryHandler(
         IClassInformationRepository classInformationRepository,
         ISubjectRepository subjectRepository,
-        IUserRepository userRepository,
+        ITutorRepository userRepository,
         IMapper mapper) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;

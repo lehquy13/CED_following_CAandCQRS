@@ -1,5 +1,4 @@
-﻿@using Newtonsoft.Json;
-@using CED.Contracts.ClassInformations;
+﻿@using CED.Contracts.Subjects
 @using CED.Contracts.Users
 
 @model CED.Contracts.ClassInformations.Dtos.ClassInformationDto
@@ -12,7 +11,7 @@
     List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
     List<string> statuses = ViewData["Statuses"] as List<string> ?? new List<string>();
 
-    List<SubjectLookupDto>? subjects = (List<SubjectLookupDto>)(ViewData["Subjects"] ?? "");
+    List<SubjectDto>? subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
     List<TutorDto> tutors = ViewData["TutorDtos"] as List<TutorDto> ?? new List<TutorDto>();
 
 

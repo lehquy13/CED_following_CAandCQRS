@@ -27,8 +27,9 @@ public class TutorDto : FullAuditedEntityDto<Guid>
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
     public string University { get; set; } = string.Empty;
     public bool IsVerified { get; set; } = false;
-
+    public short Rate { get; set; } = 5;
     public List<SubjectDto> Majors { get; set; } = new();
+    public List<TutorVerificationInfoDto> TutorVerificationInfoDtos { get; set; } = new();
 
 }
 

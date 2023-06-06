@@ -9,22 +9,21 @@ using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts;
 using CED.Contracts.Subjects;
 using CED.Domain.Shared;
-using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Web.Controllers;
 
 [Route("[controller]")]
-public class UserController : Controller
+public class TutorController : Controller
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<TutorController> _logger;
 
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
 
 
-    public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper)
+    public TutorController(ILogger<TutorController> logger, ISender sender, IMapper mapper)
     {
         _logger = logger;
         _mediator = sender;
@@ -38,13 +37,13 @@ public class UserController : Controller
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
     }
 
-    #region basic user management
+    #region basic Tutor management
 
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetObjectQuery<PaginatedList<UserDto>>();
+        var query = new GetAllTutorInformationsAdvancedQuery();
         var userDtos = await _mediator.Send(query);
 
         return View(userDtos);
@@ -54,7 +53,7 @@ public class UserController : Controller
     public async Task<IActionResult> Edit(Guid Id)
     {
         PackStaticListToView();
-        var query = new GetObjectQuery<UserDto>()
+        var query = new GetObjectQuery<TutorDto>()
         {
             Guid = Id
         };
@@ -65,7 +64,7 @@ public class UserController : Controller
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, UserDto userDto, List<Guid> subjectId)
+    public async Task<IActionResult> Edit(Guid Id, TutorDto userDto, List<Guid> subjectId)
     {
         if (Id != userDto.Id)
         {
@@ -76,9 +75,7 @@ public class UserController : Controller
         {
             try
             {
-                var query = new CreateUpdateUserCommand(userDto);
-
-
+                var query = new CreateUpdateTutorCommand(userDto, subjectId);
                 var result = await _mediator.Send(query);
 
                 if (!result)
@@ -111,16 +108,16 @@ public class UserController : Controller
     public IActionResult Create()
     {
         PackStaticListToView();
-        return View(new UserDto());
+        return View(new TutorDto());
     }
 
 
     [HttpPost("Create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(UserDto userDto, List<Guid> subjectId) // cant use userdto
+    public async Task<IActionResult> Create(TutorDto userDto, List<Guid> subjectId) // cant use userdto
     {
         userDto.LastModificationTime = DateTime.UtcNow;
-        var command = new CreateUpdateUserCommand(userDto);
+        var command = new CreateUpdateTutorCommand(userDto, subjectId);
 
 
         var result = await _mediator.Send(command);
@@ -140,7 +137,7 @@ public class UserController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<UserDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<TutorDto>() { Guid = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result == null)
@@ -152,7 +149,6 @@ public class UserController : Controller
         {
             html = Helper.RenderRazorViewToString(this, "Delete", result)
         });
-        // return View(result);
     }
 
     [HttpPost("DeleteConfirmed")]
@@ -194,16 +190,15 @@ public class UserController : Controller
     }
 
     #endregion
-
-    [HttpGet("Student")]
-    public async Task<IActionResult> Student()
+    [HttpGet("Subjects")]
+    public async Task<IActionResult> Subjects(string id)
     {
-        var query = new GetObjectQuery<PaginatedList<LearnerDto>>();
-        var studentDtos = await _mediator.Send(query);
-
-        return View(studentDtos);
+        var query = new GetObjectQuery<PaginatedList<SubjectDto>>()
+        {
+            Guid = new Guid(id)
+        };
+        var subjectDtos = await _mediator.Send(query);
+        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
     }
-
-  
    
 }

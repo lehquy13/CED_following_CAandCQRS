@@ -2,7 +2,7 @@
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
-public class StudentDto : FullAuditedEntityDto<Guid>
+public class LearnerDto : FullAuditedEntityDto<Guid>
 {
     //Admin information
     public string FirstName { get; set; } = string.Empty;
@@ -23,7 +23,7 @@ public class StudentDto : FullAuditedEntityDto<Guid>
     public string Password { get; set; } = "1q2w3E*";
 
     //is tutor related informtions
-    public UserRole Role { get; set; } = UserRole.Student;
+    public UserRole Role { get; set; } = UserRole.Learner;
 
 }
 
