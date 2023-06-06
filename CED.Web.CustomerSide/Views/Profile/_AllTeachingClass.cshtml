@@ -1,0 +1,49 @@
+﻿@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.ClassInformationDto>
+@{
+    int i = 0;
+}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Pick the tutor for class</h5>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+            <tr>
+                <!-- a avatar comlumn will be added -->
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Charge Fee</th>
+                <th scope="col">Status</th>
+                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var classIn in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">
+                        <input hidden name="Id" value="@classIn.Id"/>
+                        @i
+                    </th>
+                    <td>@classIn.Title</td>
+                    <td>@classIn.ChargeFee</td>
+                    <td>@classIn.Status</td>
+                   
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="ChooseTutor('@classIn.Id');">
+                            Detail
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+    </div>
+</div>
+
+
+   
