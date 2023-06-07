@@ -92,6 +92,8 @@ public class AuthenticationController : Controller
     public IActionResult Logout()
     {
         HttpContext.Response.Cookies.Delete("access_token");
+        HttpContext.Response.Cookies.Delete("name");
+        HttpContext.Response.Cookies.Delete("image");
 
         return View("Login", new LoginRequest("", ""));
     }

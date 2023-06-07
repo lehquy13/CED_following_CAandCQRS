@@ -21,8 +21,9 @@ function callPostActionWithForm(formInput) {
                 //$('#main').click();
 
                 $('#successAlertButton').click();
-            } else if (res.res === "Delete") {
+            } else if (res.res === "deleted") {
                 $('#verticalycentered').modal('hide');
+                
                 location.reload();
             } else if(res.res === false) {
                 if(res.viewName === "_ProfileEdit"){

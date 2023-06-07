@@ -68,7 +68,7 @@ namespace CED.Web.Controllers
                 });
             }
 
-            return RedirectToAction("Login", "Authentication", new LoginRequest("", ""));
+            return RedirectToAction("Index", "Authentication", new LoginRequest("", ""));
         }
 
         [HttpPost("ChoosePicture")]

@@ -43,25 +43,30 @@
             </div>
             <!-- ----------------------------------- -->
 
-            <div class="col-md-6">
-                <label asp-for="SubjectId" class="form-label">Subject Name</label>
-                <select asp-for="SubjectId" class="form-select">
-                    <option selected value="@Model.SubjectId">
-                        @Model.SubjectName
-                    </option>
+        <div class="col-md-3">
+            <label asp-for="SubjectId" class="form-label">Subject Name</label>
+            <select asp-for="SubjectId" class="form-select">
+                <option selected value="@Model.SubjectId">
+                    @Model.SubjectName
+                </option>
 
-                    @foreach (var i in subjects)
+                @foreach (var i in subjects)
+                {
+                    @if (i.Name != Model.SubjectName)
                     {
-                        @if (i.Name != Model.SubjectName)
-                        {
-                            <option value="@i.Id">
-                                @i.Name
-                            </option>
-                        }
+                        <option value="@i.Id">
+                            @i.Name
+                        </option>
                     }
-                </select>
-                <span asp-validation-for="SubjectId" class="text-danger"></span>
-            </div>
+                }
+            </select>
+            <span asp-validation-for="SubjectId" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label  class="form-label">Contact Number</label>
+            <input type="text" class="form-control" asp-for="ContactNumber"  />
+            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+        </div>
             <div class="col-md-4">
                 <label  class="form-label">Tutor</label>
                 <input type="text" hidden="hidden" id="tutorId" asp-for="TutorDtoId" class="form-control" />

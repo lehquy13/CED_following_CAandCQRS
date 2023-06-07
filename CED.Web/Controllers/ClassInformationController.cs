@@ -200,7 +200,7 @@ public class ClassInformationController : Controller
     [Route("PickTutor")]
     public async Task<IActionResult> PickTutor()
     {
-        var query = new GetObjectQuery<PaginatedList<TutorDto>>();
+        var query = new GetAllTutorInformationsAdvancedQuery();
         var userDtos = await _mediator.Send(query);
         return Helper.RenderRazorViewToString(this, "PickTutor", userDtos);
     }

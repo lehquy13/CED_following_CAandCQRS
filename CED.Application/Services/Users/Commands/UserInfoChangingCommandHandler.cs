@@ -1,6 +1,7 @@
 ﻿using CED.Domain.Users;
 using MapsterMapper;
 using CED.Application.Services.Abstractions.CommandHandlers;
+using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Commands;
 
@@ -8,7 +9,7 @@ public class UserInfoChangingCommandHandler
     : CreateUpdateCommandHandler<UserInfoChangingCommand>
 {
     private readonly IUserRepository _userRepository;
-    public UserInfoChangingCommandHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
+    public UserInfoChangingCommandHandler(IUserRepository userRepository,ILogger<UserInfoChangingCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _userRepository = userRepository;
     }

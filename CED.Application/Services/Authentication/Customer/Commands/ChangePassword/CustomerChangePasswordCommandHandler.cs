@@ -11,15 +11,18 @@ namespace CED.Application.Services.Authentication.Customer.Commands.ChangePasswo
 public class CustomerChangePasswordCommandHandler : IRequestHandler<CustomerChangePasswordCommand, AuthenticationResult>
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IValidator _validator;
+
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     
 
     ILogger<CustomerChangePasswordCommandHandler> _logger;
-    public CustomerChangePasswordCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
+    public CustomerChangePasswordCommandHandler(IJwtTokenGenerator jwtTokenGenerator,IValidator validator,
         IUserRepository userRepository, ILogger<CustomerChangePasswordCommandHandler> logger, IMapper mapper)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
+        _validator = validator;
         _userRepository = userRepository;
         _logger = logger;
         _mapper = mapper;
@@ -35,13 +38,15 @@ public class CustomerChangePasswordCommandHandler : IRequestHandler<CustomerChan
             _logger.LogError("Can not change password. User doesn't exist.", command);
             return new AuthenticationResult(null,"",false, "User doesn't exist");
         }
+        //2.1 HashPassword
         if( command.NewPassword != command.ConfirmedPassword)
         {
             _logger.LogError("Can not change password. Password doesn't match.", command);
             return new AuthenticationResult(null, "", false, "Password doesn't match.");
         }
-        
-        user.Password = command.NewPassword;
+       
+
+        user.Password = _validator.HashPassword(command.ConfirmedPassword);
 
         var newUser = _userRepository.Update(user);
         

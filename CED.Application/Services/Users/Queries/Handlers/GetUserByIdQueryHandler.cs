@@ -14,10 +14,10 @@ public class GetUserByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<UserDt
 {
     private readonly ISubjectRepository _subjectRepository;
 
-    private readonly ITutorRepository _userRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
 
-    public GetUserByIdQueryHandler(ITutorRepository userRepository,ISubjectRepository subjectRepository,
+    public GetUserByIdQueryHandler(IUserRepository userRepository,ISubjectRepository subjectRepository,
         IRepository<TutorMajor> tutorMajorRepository,
         IMapper mapper) : base(mapper)
     {

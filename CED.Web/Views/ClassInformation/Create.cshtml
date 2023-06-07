@@ -122,6 +122,12 @@
                 <span asp-validation-for="ChargeFee" class="text-danger"></span>
 
             </div>
+            <div class="col-md-4">
+                <label asp-for="ContactNumber" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" asp-for="ContactNumber" placeholder="ex: 09325631723" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+
+            </div>
             <!-- ----------------------------------- -->
             <div class="col-12">
                 <div class="form-floating">
@@ -181,7 +187,7 @@
 
             <div class="form-group" hidden>
                 <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" value="@Status.OnConfirming" />
+                <input asp-for="Status" class="form-control" value="@Status.Available" />
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div> 
             <div class="form-group" hidden>

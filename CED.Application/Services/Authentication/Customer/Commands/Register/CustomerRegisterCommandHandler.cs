@@ -10,12 +10,15 @@ public class CustomerRegisterCommandHandler
     : IRequestHandler<CustomerRegisterCommand, AuthenticationResult>
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IValidator _validator;
+
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    public CustomerRegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
+    public CustomerRegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IValidator validator,
         IUserRepository userRepository, IMapper mapper)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
+        _validator = validator;
         _userRepository = userRepository;
         _mapper = mapper;
     }
@@ -36,7 +39,7 @@ public class CustomerRegisterCommandHandler
             FirstName = command.FirstName,
             LastName = command.LastName,
             Email = command.Email,
-            Password = command.Password
+            Password =   _validator.HashPassword(command.Password)
         };
 
         await _userRepository.Insert(user);

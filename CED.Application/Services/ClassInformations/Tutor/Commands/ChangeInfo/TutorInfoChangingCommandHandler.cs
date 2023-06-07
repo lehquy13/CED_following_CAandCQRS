@@ -1,14 +1,15 @@
-﻿using CED.Domain.Users;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Users;
 using MapsterMapper;
-using CED.Application.Services.Abstractions.CommandHandlers;
+using Microsoft.Extensions.Logging;
 
-namespace CED.Application.Services.Users.Tutor.Commands.ChangeInfo;
+namespace CED.Application.Services.ClassInformations.Tutor.Commands.ChangeInfo;
 
 public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorInfoChangingCommand>
 {
     private readonly ITutorRepository _userRepository;
-    public TutorInfoChangingCommandHandler(ITutorRepository userRepository, IMapper mapper) : base(mapper)
+    public TutorInfoChangingCommandHandler(ITutorRepository userRepository,ILogger<TutorInfoChangingCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _userRepository = userRepository;
     }

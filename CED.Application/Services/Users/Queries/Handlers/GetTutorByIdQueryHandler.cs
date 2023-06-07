@@ -4,19 +4,21 @@ using CED.Contracts.Users;
 using CED.Domain.Repository;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using Mapster;
 using MapsterMapper;
 
 namespace CED.Application.Services.Users.Queries.Handlers;
 
-//Not using currently
 public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<TutorDto>, TutorDto> 
 {
     private readonly IUserRepository _userRepository;
+    private readonly ITutorRepository _tutorRepository;
     private readonly ISubjectRepository _subjectRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
-    public GetTutorByIdQueryHandler(IUserRepository userRepository,ISubjectRepository subjectRepository,IRepository<TutorMajor> tutorMajorRepository, IMapper mapper) : base(mapper)
+    public GetTutorByIdQueryHandler(IUserRepository userRepository,ITutorRepository tutorRepository,ISubjectRepository subjectRepository,IRepository<TutorMajor> tutorMajorRepository, IMapper mapper) : base(mapper)
     {
         _userRepository = userRepository;
+        _tutorRepository = tutorRepository;
         _subjectRepository = subjectRepository;
         _tutorMajorRepository = tutorMajorRepository;
     }
@@ -25,8 +27,9 @@ public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<Tutor
         try
         {
             User? user = await _userRepository.GetById(query.Guid);
-            if (user is null) { return null; }
-            TutorDto result = _mapper.Map<TutorDto>(user);
+            Domain.Users.Tutor? tutor = await _tutorRepository.GetById(query.Guid);
+            if (user is null || tutor is null) { return null; }
+            TutorDto result = (user,tutor).Adapt<TutorDto>();
 
             var tutorMajors = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(user.Id)).ToList();
             

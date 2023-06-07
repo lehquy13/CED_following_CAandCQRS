@@ -11,11 +11,13 @@ public class LoginQueryHandler
     : IRequestHandler<LoginQuery, AuthenticationResult>
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IValidator _validator;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    public LoginQueryHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository, IMapper mapper)
+    public LoginQueryHandler(IJwtTokenGenerator jwtTokenGenerator, IValidator validator, IUserRepository userRepository, IMapper mapper)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
+        _validator = validator;
         _userRepository = userRepository;
         _mapper = mapper;
     }
@@ -30,8 +32,10 @@ public class LoginQueryHandler
         }
 
         //2. Check if logining with right password
-
-        if (user.Password != query.Password || user.Role != UserRole.Admin)
+        //2.1 HashPassword
+        var hashPassword = _validator.HashPassword(query.Password);
+        //2.2 check HashPassword
+        if (user.Password != hashPassword || user.Role != UserRole.Admin)
         {
             return new AuthenticationResult(null, "", false, "Wrong password");
 

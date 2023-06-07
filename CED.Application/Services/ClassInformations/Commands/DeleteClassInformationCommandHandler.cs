@@ -1,16 +1,21 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Application.Services.ClassInformations.Queries;
 using CED.Domain.ClassInformations;
+using LazyCache;
+using Newtonsoft.Json;
 
 namespace CED.Application.Services.ClassInformations.Commands;
 
 public class DeleteClassInformationCommandHandler
     : DeleteCommandHandler<DeleteClassInformationCommand>
 {
-
+    
     private readonly IClassInformationRepository _classInformationRepository;
-    public DeleteClassInformationCommandHandler(IClassInformationRepository classInformationRepository):base()
+    private readonly IAppCache _cache;
+    public DeleteClassInformationCommandHandler(IClassInformationRepository classInformationRepository, IAppCache cache):base()
     {
         _classInformationRepository = classInformationRepository;
+        _cache = cache;
     }
     public override async Task<bool> Handle(DeleteClassInformationCommand command, CancellationToken cancellationToken)
     {
@@ -23,6 +28,9 @@ public class DeleteClassInformationCommandHandler
         }
 
         classInformation.IsDeleted = true;
+        
+        var defaultRequest = new GetAllClassInformationsQuery();
+        _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
         _classInformationRepository.Update(classInformation);
 
         return true;

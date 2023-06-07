@@ -17,7 +17,7 @@
         <h5 class="card-title">Personal Information</h5>
 
         <!-- Multi Columns Form -->
-        <form class="row g-3" asp-action="Create" asp-controller="User">
+        <form class="row g-3" asp-action="Create" asp-controller="Tutor">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="col-md-6">
@@ -105,11 +105,11 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
             </div>
-            <div class="col-md-6" hidden>
-                <label asp-for="Password" class="form-label">Password</label>
-                <input type="password" asp-for="Password" class="form-control">
-                <!--<input type="password" asp-for="Password" value="1q2w3E*" class="form-control">-->
-            </div>
+            @* <div class="col-md-6" hidden> *@
+            @*     <label asp-for="Password" class="form-label">Password</label> *@
+            @*     <input type="password" asp-for="Password" class="form-control"> *@
+            @*     <!--<input type="password" asp-for="Password" value="1q2w3E*" class="form-control">--> *@
+            @* </div> *@
             <!-- ----------------------------------- -->
 
             <div class="col-12">

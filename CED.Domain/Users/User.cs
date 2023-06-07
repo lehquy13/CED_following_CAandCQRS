@@ -43,7 +43,8 @@ public class User : FullAuditedAggregateRoot<Guid>
         BirthYear = user.BirthYear;
         Address = user.Address;
         Description = user.Description;
-        
+
+        Role = user.Role;
 
         Email = user.Email;
         PhoneNumber = user.PhoneNumber;

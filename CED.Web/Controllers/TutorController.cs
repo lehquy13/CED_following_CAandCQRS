@@ -101,7 +101,13 @@ public class TutorController : Controller
             }
         }
 
-        return View(userDto);
+        return Helper.RenderRazorViewToString(
+            this,
+            "Edit",
+            userDto,
+            true
+        );
+        
     }
 
     [HttpGet("Create")]
@@ -178,7 +184,7 @@ public class TutorController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<UserDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<TutorDto>() { Guid = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)

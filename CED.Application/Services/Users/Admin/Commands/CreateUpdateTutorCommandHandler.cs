@@ -5,6 +5,7 @@ using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Admin.Commands;
 
@@ -13,15 +14,13 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
     private readonly ITutorRepository _tutorRepository;
     private readonly IUserRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
-    private readonly IAppLogger<CreateUpdateTutorCommandHandler> _logger;
 
     public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, IUserRepository userRepository,
         IRepository<TutorMajor> tutorMajorRepository,
-        IAppLogger<CreateUpdateTutorCommandHandler> logger, IMapper mapper) : base(mapper)
+        ILogger<CreateUpdateTutorCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _tutorRepository = tutorRepository;
         _userRepository = userRepository;
-        _logger = logger;
         _tutorMajorRepository = tutorMajorRepository;
     }
 

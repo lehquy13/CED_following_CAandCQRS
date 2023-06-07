@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
+using CED.Application.Services.ClassInformations.Tutor.Commands.ChangeInfo;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Application.Services.Users.Queries;
 using CED.Application.Services.Users.Student.Commands;
-using CED.Application.Services.Users.Tutor.Commands.ChangeInfo;
 using CED.Contracts.Authentication;
 using CED.Contracts.Users;
 using CED.Domain.Shared;

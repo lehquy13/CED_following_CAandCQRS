@@ -2,17 +2,18 @@
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Student.Commands;
 
 public class StudentInfoChangingCommandHandler : CreateUpdateCommandHandler<StudentInfoChangingCommand>
 {
     private readonly IUserRepository _userRepository;
-    public StudentInfoChangingCommandHandler(IUserRepository userRepository, IMapper mapper) : base(mapper)
+    public StudentInfoChangingCommandHandler(IUserRepository userRepository,ILogger<StudentInfoChangingCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _userRepository = userRepository;
     }
-    public override async Task<bool> Handle(StudentInfoChangingCommand command, CancellationToken cancellationToken)
+    public override async Task<bool> Handle(StudentInfoChangingCommand command,  CancellationToken cancellationToken) 
     {
         //Check if the user existed
         var user = await _userRepository.GetUserByEmail(command.StudentDto.Email);

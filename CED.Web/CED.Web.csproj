@@ -20,7 +20,6 @@
     <AdditionalFiles Include="Views\Tutor\Edit.cshtml" />
     <AdditionalFiles Include="Views\Tutor\Index.cshtml" />
     <AdditionalFiles Include="Views\Tutor\Student.cshtml" />
-    <AdditionalFiles Include="Views\Tutor\Tutor.cshtml" />
     <AdditionalFiles Include="Views\Tutor\_Subjects.cshtml" />
   </ItemGroup>
 </Project>

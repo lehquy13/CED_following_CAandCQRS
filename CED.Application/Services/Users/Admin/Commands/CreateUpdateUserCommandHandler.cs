@@ -1,7 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
-using CED.Domain.Interfaces.Logger;
 using CED.Domain.Users;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Admin.Commands;
 
@@ -9,12 +9,10 @@ public class CreateUpdateUserCommandHandler : CreateUpdateCommandHandler<CreateU
 {
 
     private readonly IUserRepository _userRepository;
-    private readonly IAppLogger<CreateUpdateUserCommandHandler> _logger;
 
-    public CreateUpdateUserCommandHandler(IUserRepository userRepository,IAppLogger<CreateUpdateUserCommandHandler> logger, IMapper mapper) : base(mapper)
+    public CreateUpdateUserCommandHandler(IUserRepository userRepository,ILogger<CreateUpdateUserCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _userRepository = userRepository;
-        _logger = logger;
     }
 
     public override async Task<bool> Handle(CreateUpdateUserCommand command, CancellationToken cancellationToken)

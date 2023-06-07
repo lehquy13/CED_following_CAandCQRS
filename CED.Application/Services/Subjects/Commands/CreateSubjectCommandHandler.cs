@@ -5,21 +5,21 @@ using CED.Contracts.Subjects;
 using CED.Domain.Subjects;
 using LazyCache;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace CED.Application.Services.Subjects.Commands;
 
 public class CreateUpdateSubjectCommandHandler : CreateUpdateCommandHandler<CreateUpdateSubjectCommand>
 {
-
     private readonly ISubjectRepository _subjectRepository;
     private readonly IAppCache _cache;
 
-    public CreateUpdateSubjectCommandHandler(ISubjectRepository subjectRepository,IAppCache cache, IMapper mapper) : base(mapper)
+    public CreateUpdateSubjectCommandHandler(ISubjectRepository subjectRepository, IAppCache cache,
+        ILogger<CreateUpdateSubjectCommandHandler> logger, IMapper mapper) : base(logger, mapper)
     {
         _subjectRepository = subjectRepository;
         _cache = cache;
-
     }
 
     public override async Task<bool> Handle(CreateUpdateSubjectCommand command, CancellationToken cancellationToken)
@@ -34,13 +34,13 @@ public class CreateUpdateSubjectCommandHandler : CreateUpdateCommandHandler<Crea
                 subject.Description = command.SubjectDto.Description;
 
                 _subjectRepository.Update(subject);
-
-                return true;
+            }
+            else
+            {
+                subject = _mapper.Map<Subject>(command.SubjectDto);
+                await _subjectRepository.Insert(subject);
             }
 
-            subject = _mapper.Map<Subject>(command.SubjectDto);
-
-            await _subjectRepository.Insert(subject);
             var defaultRequest = new GetObjectQuery<PaginatedList<SubjectDto>>();
             _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
             return true;
@@ -51,4 +51,3 @@ public class CreateUpdateSubjectCommandHandler : CreateUpdateCommandHandler<Crea
         }
     }
 }
-

@@ -20,7 +20,7 @@ public class TutorDto : FullAuditedEntityDto<Guid>
     public bool IsEmailConfirmed { get; set; } = false;
 
     public string PhoneNumber { get; set; } = string.Empty;
-    public string Password { get; set; } = "1q2w3E*";
+    //public string Password { get; set; } = "1q2w3E*";
 
     //is tutor related informtions
     public UserRole Role { get; set; } = UserRole.Tutor;

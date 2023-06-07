@@ -2,13 +2,14 @@
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Admin.Commands;
 
 public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<ConfirmTutorInfoCommand>
 {
     private readonly ITutorRepository _userRepository;
-    public ConfirmTutorInfoCommandHandler(ITutorRepository userRepository, IMapper mapper) : base(mapper)
+    public ConfirmTutorInfoCommandHandler(ITutorRepository userRepository,ILogger<ConfirmTutorInfoCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _userRepository = userRepository;
     }

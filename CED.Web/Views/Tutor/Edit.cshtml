@@ -23,7 +23,7 @@
         <h5 class="card-title">Personal Information</h5>
 
         <!-- Multi Columns Form -->
-        <form class="row g-3" asp-action="Edit" asp-controller="User" onsubmit="return callPostActionWithForm(this);">
+        <form class="row g-3" asp-action="Edit" asp-controller="Tutor" onsubmit="return callPostActionWithForm(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="col-md-6">
@@ -59,13 +59,6 @@
                 <select asp-for="Role" class="form-select">
                     <option selected>@Model.Role.ToString()</option>
 
-                    @foreach (string i in roles)
-                    {
-                        @if (i != Model.Role.ToString())
-                        {
-                            <option> @i </option>
-                        }
-                    }
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
@@ -111,10 +104,10 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
             </div>
-            <div class="col-md-6" hidden>
-                <label asp-for="Password" class="form-label">Password</label>
-                <input type="password" asp-for="Password" class="form-control">
-            </div>
+            @* <div class="col-md-6" hidden> *@
+            @*     <label asp-for="Password" class="form-label">Password</label> *@
+            @*     <input type="password" asp-for="Password" class="form-control"> *@
+            @* </div> *@
             <!-- ----------------------------------- -->
 
             <div class="col-12">
@@ -175,7 +168,7 @@
                     <div class="card-body">
                         <div class="card-title row">
                             <h5 class="col-11" >Tutor Majors</h5>
-                            <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects","User", new {id = @Model.Id})','Add major for @Model.FirstName @Model.LastName')">
+                            <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects","Tutor", new {id = @Model.Id})','Add major for @Model.FirstName @Model.LastName')">
                                 <span class="bi bi-plus-circle"> </span>
                                 Add
                             </button>

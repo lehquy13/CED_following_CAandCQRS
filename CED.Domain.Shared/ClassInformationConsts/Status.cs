@@ -5,6 +5,7 @@ public enum Status
     Confirmed,
     Canceled,
     OnConfirming,
+    Available,
     OnPurchasing,
     OnVerifying
 }
