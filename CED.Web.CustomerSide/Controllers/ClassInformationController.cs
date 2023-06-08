@@ -9,6 +9,7 @@ using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.CustomerSide.Models;
 using MapsterMapper;
 using MediatR;
@@ -44,13 +45,6 @@ public class ClassInformationController : Controller
         ViewData["Subjects"] = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
     }
 
-    private async Task PackStudentAndTuTorList()
-    {
-        var tutorDtos = await _mediator.Send(new GetAllTutorInformationsAdvancedQuery());
-        var studentDtos = await _mediator.Send(new GetObjectQuery<PaginatedList<LearnerDto>>());
-        ViewData["TutorDtos"] = tutorDtos;
-        ViewData["StudentDtos"] = studentDtos;
-    }
 
     // Query
     // GET: api/<ClassInformationController>
@@ -62,7 +56,8 @@ public class ClassInformationController : Controller
         {
             PageSize = _pageSize,
             PageIndex = pageIndex,
-            SubjectName = subjectName
+            SubjectName = subjectName,
+            Status = Status.Available
         };
         var classInformations = await _mediator.Send(query);
         if (!string.IsNullOrWhiteSpace(subjectName))
@@ -155,11 +150,13 @@ public class ClassInformationController : Controller
         requestGettingClassRequest.Email = email;
         var command = _mapper.Map<RequestGettingClassCommand>(requestGettingClassRequest);
         var result = await _mediator.Send(command);
-        if (result)
+        if (result.IsFailed)
         {
-            return View("SuccessRequestPage");
+            ViewBag.RequestedMessage = result.Reasons.FirstOrDefault()?.Message ?? "";
+            return View("FailPage");
         }
-        return View("FailPage");
+        return View("SuccessRequestPage");
+
 
     }
 }

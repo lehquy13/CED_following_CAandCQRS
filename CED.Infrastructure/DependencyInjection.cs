@@ -143,7 +143,12 @@ namespace CED.Infrastructure
                             OnAuthenticationFailed = context =>
                             {
                                 //context.HttpContext.Response.Redirect("/");
-                                context.Response.Redirect("/Authentication");
+                                context.Response.Cookies.Delete("access_token");
+                                context.Response.Cookies.Delete("name");
+                                context.Response.Cookies.Delete("image");
+                                context.Response.Cookies.Delete("email");
+                                context.Response.Redirect("/");
+
                                 return Task.CompletedTask;
 
                             }

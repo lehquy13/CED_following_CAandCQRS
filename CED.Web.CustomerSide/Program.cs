@@ -4,6 +4,7 @@
 using CED.Application;
 using CED.Infrastructure;
 using CED.Web.CustomerSide;
+using CED.Web.CustomerSide.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -28,6 +29,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+//app.UseMiddleware<GlobalErrorHandlingMiddleWare>();
 
 app.UseStaticFiles();
 

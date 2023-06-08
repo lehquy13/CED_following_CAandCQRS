@@ -1,4 +1,4 @@
-﻿@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.ClassInformationDto>
+﻿@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.RequestGettingClassDto>
 @{
     int i = 0;
 }
@@ -13,7 +13,7 @@
                 <!-- a avatar comlumn will be added -->
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
-                <th scope="col">Charge Fee</th>
+                <th scope="col">Description</th>
                 <th scope="col">Status</th>
                 <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
             </tr>
@@ -29,8 +29,8 @@
                         @i
                     </th>
                     <td>@classIn.Title</td>
-                    <td>@classIn.ChargeFee</td>
-                    <td>@classIn.Status</td>
+                    <td>@classIn.Description</td>
+                    <td>@classIn.RequestStatus</td>
                    
                     <td>
                         <button type="button" class="btn btn-primary" onclick="ChooseTutor('@classIn.Id');">

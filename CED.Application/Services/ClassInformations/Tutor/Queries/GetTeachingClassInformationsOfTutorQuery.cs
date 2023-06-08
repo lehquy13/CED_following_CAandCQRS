@@ -4,7 +4,7 @@ using CED.Contracts.ClassInformations.Dtos;
 
 namespace CED.Application.Services.ClassInformations.Tutor.Queries;
 
-public class GetTeachingClassInformationsOfTutorQuery : GetObjectQuery<PaginatedList<ClassInformationDto>>
+public class GetTeachingClassInformationsOfTutorQuery : GetObjectQuery<PaginatedList<RequestGettingClassDto>>
 {
     
 }

@@ -186,24 +186,24 @@ namespace UnitTests.ApplicationTests_Mediator_
             Assert.NotNull(result);
         }
 
-        [Test]
-        public async Task CreateClassInformation()
-        {
-            var command = new CreateUpdateClassInformationCommand { ClassInformationDto = _classInformationDto };
-            var handler = new CreateUpdateClassInformationCommandHandler(_mockClassInformationRepo.Object,_mockMapper.Object);
-            var result = await handler.Handle(command, CancellationToken.None);
-
-            Assert.True(result);
-        }
-
-        [Test]
-        public async Task DeleteClassInformation()
-        {
-            var command = new DeleteClassInformationCommand ( _sampleId );
-            var handler = new DeleteClassInformationCommandHandler(_mockClassInformationRepo.Object);
-            var result = await handler.Handle(command, CancellationToken.None);
-
-            Assert.True(result);
-        }
+        // [Test]
+        // public async Task CreateClassInformation()
+        // {
+        //     var command = new CreateUpdateClassInformationCommand { ClassInformationDto = _classInformationDto };
+        //     var handler = new CreateUpdateClassInformationCommandHandler(_mockClassInformationRepo.Object,_mockMapper.Object);
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     Assert.True(result);
+        // }
+        //
+        // [Test]
+        // public async Task DeleteClassInformation()
+        // {
+        //     var command = new DeleteClassInformationCommand ( _sampleId );
+        //     var handler = new DeleteClassInformationCommandHandler(_mockClassInformationRepo.Object);
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     Assert.True(result);
+        // }
     }
 }

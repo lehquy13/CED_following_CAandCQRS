@@ -6,8 +6,8 @@ namespace CED.Web.CustomerSide.Models;
 public class ProfileViewModel
 {
     public CED.Contracts.Users.UserDto UserDto { get; set; } = new();
-    public PaginatedList<ClassInformationDto> ClassInformationDtos { get; set; } = 
-        PaginatedList<ClassInformationDto>.CreateAsync(new List<ClassInformationDto>(),0,0);
+    public PaginatedList<RequestGettingClassDto> ClassInformationDtos { get; set; } = 
+        PaginatedList<RequestGettingClassDto>.CreateAsync(new List<RequestGettingClassDto>(),0,0);
     public CED.Contracts.Authentication.ChangePasswordRequest ChangePasswordRequest { get; set; } = new();
     public bool IsPartialLoad { get; set; } = false;
 

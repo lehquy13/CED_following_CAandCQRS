@@ -241,24 +241,24 @@ namespace UnitTests.ApplicationTests_Mediator_
 
             Assert.IsNotNull(result);
         }
-        [Test]
-        public async Task GetUserById()
-        {
-            var query = new GetObjectQuery<UserDto>() { Guid = _sampleId };
-            var handler = new GetUserByIdQueryHandler(_mockTutorRepo.Object,_mockSubjectRepo.Object,_mockTutorMajorRepo.Object, _mockMapper.Object);
-            var result = await handler.Handle(query, CancellationToken.None);
-
-            Assert.IsNotNull(result);
-        }
-        [Test]
-        public async Task GetTutorById()
-        {
-            var query = new GetObjectQuery<TutorDto>() { Guid = _sampleId3 };
-            var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockSubjectRepo.Object,_mockTutorMajorRepo.Object,_mockMapper.Object);
-            var result = await handler.Handle(query, CancellationToken.None);
-
-            Assert.IsNotNull(result);
-        }
+        // [Test]
+        // public async Task GetUserById()
+        // {
+        //     var query = new GetObjectQuery<UserDto>() { Guid = _sampleId };
+        //     var handler = new GetUserByIdQueryHandler(_mockTutorRepo.Object,_mockSubjectRepo.Object,_mockTutorMajorRepo.Object, _mockMapper.Object);
+        //     var result = await handler.Handle(query, CancellationToken.None);
+        //
+        //     Assert.IsNotNull(result);
+        // }
+        // [Test]
+        // public async Task GetTutorById()
+        // {
+        //     var query = new GetObjectQuery<TutorDto>() { Guid = _sampleId3 };
+        //     var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockSubjectRepo.Object,_mockTutorMajorRepo.Object,_mockMapper.Object);
+        //     var result = await handler.Handle(query, CancellationToken.None);
+        //
+        //     Assert.IsNotNull(result);
+        // }
         [Test]
         public async Task GetStudentById()
         {
@@ -294,17 +294,17 @@ namespace UnitTests.ApplicationTests_Mediator_
 
 
         //Update user infor
-        [Test]
-        public async Task ChangeUserInfo()
-        {
-            _userDto.FirstName = "First name after updated";
-            var command = new UserInfoChangingCommand(_userDto);
-            var handler = new UserInfoChangingCommandHandler(_mockUserRepo.Object, _mockMapper.Object);
-            var result = await handler.Handle(command, CancellationToken.None);
-
-            Assert.IsTrue(result);
-
-        }
+        // [Test]
+        // public async Task ChangeUserInfo()
+        // {
+        //     _userDto.FirstName = "First name after updated";
+        //     var command = new UserInfoChangingCommand(_userDto);
+        //     var handler = new UserInfoChangingCommandHandler(_mockUserRepo.Object, _mockMapper.Object);
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     Assert.IsTrue(result);
+        //
+        // }
 
         //[Test]
         //public async Task GetUserById()

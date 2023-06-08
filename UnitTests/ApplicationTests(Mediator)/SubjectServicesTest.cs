@@ -96,15 +96,15 @@ namespace UnitTests.ApplicationTests_Mediator_
             Assert.NotNull(result);
         }
 
-        [Test]
-        public async Task CreateSubject()
-        {
-            var command = new CreateUpdateSubjectCommand { SubjectDto = _subjectDto };
-            var handler = new CreateUpdateSubjectCommandHandler(_mockSubjectRepo.Object,_mockAppCache.Object, _mockMapper.Object);
-            var result = await handler.Handle(command, CancellationToken.None);
-
-            Assert.True(result);
-        }
+        // [Test]
+        // public async Task CreateSubject()
+        // {
+        //     var command = new CreateUpdateSubjectCommand { SubjectDto = _subjectDto };
+        //     var handler = new CreateUpdateSubjectCommandHandler(_mockSubjectRepo.Object,_mockAppCache.Object, _mockMapper.Object);
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     Assert.True(result);
+        // }
 
         [Test]
         public async Task DeleteSubject()

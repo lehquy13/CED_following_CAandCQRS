@@ -126,6 +126,13 @@ namespace CED.Infrastructure.Migrations
                     b.Property<Guid>("ClassInformationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequestStatus")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("TutorId")
                         .HasColumnType("uniqueidentifier");
 

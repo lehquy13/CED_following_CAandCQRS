@@ -1,14 +1,16 @@
-﻿using CED.Application.Services.Abstractions.CommandHandlers;
+﻿using CED.Application.Common.Errors.ClassInformations;
+using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
+using FluentResults;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 
-public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<RequestGettingClassCommand>
+public class RequestGettingClassCommandHandler : NewCreateUpdateCommandHandler<RequestGettingClassCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITutorRepository _tutorRepository;
@@ -26,7 +28,7 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
         _requestGettingClassRepository = requestGettingClassRepository;
     }
 
-    public override async Task<bool> Handle(RequestGettingClassCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(RequestGettingClassCommand command, CancellationToken cancellationToken)
     {
         try
         {
@@ -49,11 +51,18 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
                 throw new Exception("Class doesn't exist.");
             }
 
-            if (classInfor.IsDeleted is true || !classInfor.Status.Equals(Status.Waiting))
+            if (classInfor.IsDeleted is true || !classInfor.Status.Equals(Status.Available))
             {
                 throw new Exception("Class is deleted or is being verified.");
             }
 
+            var checkIfTheTutorAlreadyRequest = _requestGettingClassRepository.GetAll()
+                .FirstOrDefault(x => x.ClassInformationId.Equals(command.ClassGuid) && x.TutorId.Equals(user.Id));
+            if (checkIfTheTutorAlreadyRequest is not null)
+            {
+                _logger.LogError("Tutor has already requested");
+                return Result.Fail<bool>(new RequestedClassError());
+            }
             //im doing here
             var request = new RequestGettingClass()
             {

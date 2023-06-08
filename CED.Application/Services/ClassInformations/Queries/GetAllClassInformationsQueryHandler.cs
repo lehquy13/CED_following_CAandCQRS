@@ -43,6 +43,10 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
                     .Select(x => x.Id);
                 classInformations = classInformations.Where(x => subjs.Contains(x.SubjectId));
             }
+            if (query.Status is not null)
+            {
+                classInformations = classInformations.Where(x => x.Status == query.Status);
+            }
             var totalPages = classInformations.Count();
 
             var classInformationDtos =

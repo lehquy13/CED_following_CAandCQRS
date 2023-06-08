@@ -32,7 +32,11 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.SubjectId, src => src.Item2.Id)
             .Map(dest => dest, src => src.Item1);
 
+        config.NewConfig<(RequestGettingClass, ClassInformation), RequestGettingClassDto>()
+            .Map(dest => dest.Title, src => src.Item2.Title)
+            .Map(dest => dest, src => src.Item1);
 
+        
         config.NewConfig<Subject, SubjectLookupDto>();
 
 
