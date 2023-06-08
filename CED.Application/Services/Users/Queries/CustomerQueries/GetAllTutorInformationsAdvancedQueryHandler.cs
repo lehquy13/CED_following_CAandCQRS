@@ -79,26 +79,26 @@ public class
                 })
                 .ToList();
 
-            var enumerable = tutors as User[] ?? tutors.ToArray();
+            var enumerable = tutors as Domain.Users.Tutor[] ?? tutors.ToArray();
             var totalPages = enumerable.Count();
 
-            var tutorDtos = _mapper.Map<List<TutorDto>>(tutors);
-
-            foreach (var t in tutorDtos)
-            {
-                var objectMajor = tutorsMajorsResult.FirstOrDefault(x => x.tutorId.Equals(t.Id));
-                if (objectMajor != null)
-                {
-                    foreach (var id in objectMajor.majorId)
-                    {
-                        var sub = subjects.FirstOrDefault(x => x.Id.ToString().Equals(id.ToString()));
-                        if (sub is not null)
-                        {
-                            t.Majors.Add(_mapper.Map<SubjectDto>(sub));
-                        }
-                    }
-                }
-            }
+            // var tutorDtos = _mapper.Map<List<TutorDto>>(tutors);
+            //
+            // foreach (var t in tutorDtos)
+            // {
+            //     var objectMajor = tutorsMajorsResult.FirstOrDefault(x => x.tutorId.Equals(t.Id));
+            //     if (objectMajor != null)
+            //     {
+            //         foreach (var id in objectMajor.majorId)
+            //         {
+            //             var sub = subjects.FirstOrDefault(x => x.Id.ToString().Equals(id.ToString()));
+            //             if (sub is not null)
+            //             {
+            //                 t.Majors.Add(_mapper.Map<SubjectDto>(sub));
+            //             }
+            //         }
+            //     }
+            // }
 
             var result = _mapper.Map<List<TutorDto>>(
                 enumerable.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize)

@@ -54,6 +54,22 @@ public class UserMappingConfig : IRegister
             .Map(des => des.University, src => src.Item2.University)
             .Map(des => des.IsVerified, src => src.Item2.IsVerified)
             .Map(des => des.Rate, src => src.Item2.Rate);
+        config.NewConfig< Tutor, TutorDto>()
+            .Map(des => des.FirstName, src => src.FirstName)
+            .Map(des => des.LastName, src => src.LastName)
+            .Map(des => des.Gender, src => src.Gender)
+            .Map(des => des.BirthYear, src => src.BirthYear)
+            .Map(des => des.Address, src => src.Address)
+            .Map(des => des.Description, src => src.Description)
+            .Map(des => des.Email, src => src.Email)
+            .Map(des => des.PhoneNumber, src => src.PhoneNumber)
+            .Map(des => des.Role, src => src.Role)
+            .Map(des => des.AcademicLevel, src => src.AcademicLevel)
+            .Map(des => des.University, src => src.University)
+            .Map(des => des.IsVerified, src => src.IsVerified)
+            .Map(des => des.Rate, src => src.Rate);
+        
+        
         config.NewConfig<User, UserDto>();
         config.NewConfig<User, LearnerDto>();
     }
