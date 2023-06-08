@@ -9,7 +9,6 @@ using CED.Infrastructure.Authentication;
 using CED.Infrastructure.Persistence.Repository;
 using CED.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +51,13 @@ namespace CED.Infrastructure
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<IClassInformationRepository, ClassInformationRepository>();
+            
+            // set configuration settings to cloudinarySettings and turn it into Singleton
+            var cloudinary = new CloudinarySetting();
+            configuration.Bind(CloudinarySetting._SectionName, cloudinary);
+            services.AddSingleton(Options.Create(cloudinary));
+            services.AddScoped<ICloudinaryFile, CloudinaryFile>();
+            
             return services;
         }
 

@@ -9,5 +9,6 @@ public class ProfileViewModel
     public PaginatedList<ClassInformationDto> ClassInformationDtos { get; set; } = 
         PaginatedList<ClassInformationDto>.CreateAsync(new List<ClassInformationDto>(),0,0);
     public CED.Contracts.Authentication.ChangePasswordRequest ChangePasswordRequest { get; set; } = new();
-    
+    public bool IsPartialLoad { get; set; } = false;
+
 }

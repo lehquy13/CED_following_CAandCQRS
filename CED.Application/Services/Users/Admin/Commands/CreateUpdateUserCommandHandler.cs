@@ -1,4 +1,5 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Domain.Interfaces.Services;
 using CED.Domain.Users;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
@@ -9,10 +10,12 @@ public class CreateUpdateUserCommandHandler : CreateUpdateCommandHandler<CreateU
 {
 
     private readonly IUserRepository _userRepository;
+    private readonly ICloudinaryFile _cloudinaryFile;
 
-    public CreateUpdateUserCommandHandler(IUserRepository userRepository,ILogger<CreateUpdateUserCommandHandler> logger, IMapper mapper) : base(logger,mapper)
+    public CreateUpdateUserCommandHandler(IUserRepository userRepository,ILogger<CreateUpdateUserCommandHandler> logger, ICloudinaryFile cloudinaryFile, IMapper mapper) : base(logger,mapper)
     {
         _userRepository = userRepository;
+        _cloudinaryFile = cloudinaryFile;
     }
 
     public override async Task<bool> Handle(CreateUpdateUserCommand command, CancellationToken cancellationToken)
@@ -23,9 +26,14 @@ public class CreateUpdateUserCommandHandler : CreateUpdateCommandHandler<CreateU
             //Check if the subject existed
             if (user is not null)
             {
+                if (!string.IsNullOrWhiteSpace(command.FilePath))
+                {
+                    command.UserDto.Image = _cloudinaryFile.UploadImage(command.FilePath);
+                }
                 user.UpdateUserInformation(_mapper.Map<User>(command.UserDto));
                 _logger.LogDebug("ready for updating!");
                 _userRepository.Update(user);
+                
 
                 return true;
             }

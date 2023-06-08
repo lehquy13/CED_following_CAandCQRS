@@ -2,11 +2,9 @@
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Tutor.Commands.Registers;
 using CED.Contracts;
-using CED.Contracts.ClassInformations;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
-using CED.Domain.Shared;
 using CED.Domain.Shared.ClassInformationConsts;
 using MapsterMapper;
 using MediatR;

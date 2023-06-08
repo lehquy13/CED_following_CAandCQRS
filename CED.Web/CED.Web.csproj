@@ -22,4 +22,7 @@
     <AdditionalFiles Include="Views\Tutor\Student.cshtml" />
     <AdditionalFiles Include="Views\Tutor\_Subjects.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\temp" />
+  </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@ public class TutorDto : FullAuditedEntityDto<Guid>
     //public string WardId { get; set; } = "00001";
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Image { get; set; } = "default_avatar1.png";
+    public string Image { get; set; } = @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
 
     //Account References
     public string Email { get; set; } = string.Empty;

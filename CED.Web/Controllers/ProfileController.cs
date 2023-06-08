@@ -1,11 +1,7 @@
-﻿using CED.Application.Services;
-using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
-using CED.Application.Services.Authentication.Commands.ChangePassword;
 using CED.Application.Services.Users.Admin.Commands;
-using CED.Application.Services.Users.Queries;
 using CED.Contracts.Authentication;
-using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 using CED.Web.Models;
@@ -80,28 +76,32 @@ namespace CED.Web.Controllers
             }
 
             var image = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
-
-            return Json(new { res = true, image = "avatar\\" + image });
+           
+            return Json(new { res = true, image = "temp\\" +  Path.GetFileName(image) });
         }
 
         [HttpPost("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserDto userDto, IFormFile? formFile)
         {
-            if (formFile != null)
-            {
-                userDto.Image = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
-            }
+           
             PackStaticListToView();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var query = new CreateUpdateUserCommand(userDto);
+                    var filePath = string.Empty;
+                    if (formFile != null)
+                    {
+                        filePath = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
+                    }
+                    var query = new CreateUpdateUserCommand(userDto,filePath);
 
                     var result = await _mediator.Send(query);
                     ViewBag.Updated = result;
+                    Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
+
                     if (result == true)
                     {
                         HttpContext.Response.Cookies.Append("name", query.UserDto.FirstName + query.UserDto.LastName);

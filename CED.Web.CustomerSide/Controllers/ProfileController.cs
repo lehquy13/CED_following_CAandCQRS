@@ -5,6 +5,7 @@ using CED.Application.Services.Users.Admin.Commands;
 using CED.Contracts.Authentication;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.CustomerSide.Models;
 using CED.Web.CustomerSide.Utilities;
 using MapsterMapper;
@@ -54,9 +55,8 @@ public class ProfileController : Controller
         };
 
         var loginResult = await _mediator.Send(query);
-        
-        
-        
+
+
         if (loginResult != null)
         {
             var query1 = new GetTeachingClassInformationsOfTutorQuery()
@@ -87,36 +87,51 @@ public class ProfileController : Controller
 
         var image = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
 
-        return Json(new { res = true, image = "avatar\\" + image });
+        return Json(new { res = true, image = "temp\\"+ Path.GetFileName(image) });
     }
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(UserDto userDto, IFormFile? formFile)
     {
-        if (formFile != null)
-        {
-            userDto.Image = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
-        }
+        
         PackStaticListToView();
 
         if (ModelState.IsValid)
         {
             try
             {
-                var query = new CreateUpdateUserCommand(userDto);
+                bool result = false;
+                var filePath = string.Empty;
+                if (formFile != null)
+                {
+                    filePath = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
+                }
 
-                var result = await _mediator.Send(query);
+                if (userDto.Role == UserRole.Tutor)
+                {
+                    result = await _mediator.Send(new CreateUpdateUserCommand(userDto,filePath));
+                }
+                else
+                {
+                    result = await _mediator.Send(new CreateUpdateUserCommand(userDto,filePath));
+
+                }
+
                 ViewBag.Updated = result;
+                Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
+
                 if (result == true)
                 {
-                    HttpContext.Response.Cookies.Append("name", query.UserDto.FirstName + query.UserDto.LastName);
-                    HttpContext.Response.Cookies.Append("image", query.UserDto.Image);
+                    HttpContext.Response.Cookies.Append("name", userDto.FirstName + userDto.LastName);
+                    HttpContext.Response.Cookies.Append("image", userDto.Image);
                 }
+
                 return Helper.RenderRazorViewToString(this, "Profile", new ProfileViewModel
                 {
                     UserDto = userDto,
-                    ChangePasswordRequest = _mapper.Map<ChangePasswordRequest>(userDto)
+                    ChangePasswordRequest = _mapper.Map<ChangePasswordRequest>(userDto),
+                    IsPartialLoad = true
                 });
             }
             catch (Exception ex)
@@ -138,8 +153,6 @@ public class ProfileController : Controller
     //[ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
     {
-           
-
         if (ModelState.IsValid)
         {
             try
@@ -150,7 +163,8 @@ public class ProfileController : Controller
 
                 if (loginResult.IsSuccess)
                 {
-                    return Helper.RenderRazorViewToString(this, "_ChangePassword", new ChangePasswordRequest{Id = changePasswordRequest.Id});
+                    return Helper.RenderRazorViewToString(this, "_ChangePassword",
+                        new ChangePasswordRequest { Id = changePasswordRequest.Id });
                 }
             }
             catch (Exception ex)
@@ -162,7 +176,6 @@ public class ProfileController : Controller
             }
         }
 
-        return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordRequest,true);
-
+        return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordRequest, true);
     }
 }

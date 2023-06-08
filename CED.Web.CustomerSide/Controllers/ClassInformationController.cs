@@ -124,11 +124,6 @@ public class ClassInformationController : Controller
         return View("SuccessPage");
     }
 
-    [HttpGet("S")]
-    public async Task<IActionResult> S()
-    {
-        return View("SuccessPage");
-    }
 
     // PUT api/<ClassInformationController>/5
     [Authorize]

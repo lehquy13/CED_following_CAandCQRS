@@ -58,16 +58,30 @@ public static class Helper
 
     public static async Task<string> SaveFiles(IFormFile? formFile, string wwwRootPath)
     {
+        await Task.CompletedTask;
         if (formFile != null && formFile.Length > 0)
         {
             string fileName = formFile.FileName;
-            string path = Path.Combine(wwwRootPath + "/avatar/", fileName);
-            using (var fileStream = new FileStream(path, FileMode.Create))
-            {
-                await formFile.CopyToAsync(fileStream);
+            string path = Path.Combine(wwwRootPath + "\\temp\\", fileName);
+             using (var fileStream = new FileStream(path, FileMode.Create))
+             {
+                 await formFile.CopyToAsync(fileStream);
+                 fileStream.Position = 0;
+             }
+            return path;
+        }
 
-            }
-            return fileName;
+        return string.Empty;
+    }
+    public static  string ClearTempFile(string wwwRootPath)
+    {
+        string path = Path.Combine(wwwRootPath + "\\temp\\");
+
+        DirectoryInfo di = new DirectoryInfo(path);
+
+        foreach (FileInfo file in di.GetFiles())
+        {
+            file.Delete(); 
         }
 
         return string.Empty;

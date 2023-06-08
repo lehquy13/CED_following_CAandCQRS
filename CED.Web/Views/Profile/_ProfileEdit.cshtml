@@ -11,7 +11,7 @@
     <div class="row mb-3">
         <label asp-for="Image" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
         <div class="col-md-8 col-lg-9">
-            <img src="~/avatar/@Model.Image" alt="Profile" id="avatar">
+            <img src="@Model.Image" alt="Profile" id="avatar">
             <input id="image" asp-for="Image" hidden type="text"/>
             <div class="pt-2">
 
