@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CED.Web.Controllers;
 
+[Route("[controller]")]
+[Route("")]
 public class AuthenticationController : Controller
 {
     private readonly ISender _mediator;

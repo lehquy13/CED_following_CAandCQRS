@@ -19,6 +19,8 @@ using CED.Domain.Interfaces.Logger;
 using CED.Domain.Repository;
 using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace CED.Infrastructure
 {
@@ -89,25 +91,25 @@ namespace CED.Infrastructure
             services.AddAuthentication(scheme =>
                     {
                         scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                        scheme.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                        scheme.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     })
-                    // .AddCookie(options =>
-                    // {
-                    //     options.Cookie.Name = "access_token";
-                    //     options.Cookie.HttpOnly = true;
-                    //     options.Cookie.SameSite = SameSiteMode.Strict;
-                    //     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    //     //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-                    //     options.ExpireTimeSpan = TimeSpan.FromMinutes(90);
-                    //
-                    //     options.LoginPath = "/";
-                    //     options.LogoutPath = "/Logout";
-                    //     options.AccessDeniedPath = "/";
-                    //   
-                    //
-                    //     
-                    //
-                    // })
+                    .AddCookie(options =>
+                    {
+                        options.Cookie.Name = "access_token";
+                        options.Cookie.HttpOnly = true;
+                        options.Cookie.SameSite = SameSiteMode.Strict;
+                        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                        //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                        options.ExpireTimeSpan = TimeSpan.FromMinutes(90);
+                    
+                        options.LoginPath = "/Authentication";
+                        options.LogoutPath = "/Logout";
+                        options.AccessDeniedPath = "/";
+                      
+                    
+                        
+                    
+                    })
                     .AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters()
@@ -129,6 +131,7 @@ namespace CED.Infrastructure
                                 context.Token = context.Request.Cookies["access_token"];
                                 return Task.CompletedTask;
                             },
+                            
                             
                             OnForbidden = context =>
                             {
