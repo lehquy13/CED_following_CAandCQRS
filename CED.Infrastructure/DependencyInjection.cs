@@ -89,7 +89,7 @@ namespace CED.Infrastructure
             services.AddAuthentication(scheme =>
                     {
                         scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                        
+                        scheme.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     })
                     // .AddCookie(options =>
                     // {
@@ -119,6 +119,7 @@ namespace CED.Infrastructure
                             ValidIssuer = jwtSettings.Issuer,
                             ValidAudience = jwtSettings.Audience,
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secrect)),
+                            
                         };
                         
                         options.Events = new JwtBearerEvents()
@@ -128,15 +129,24 @@ namespace CED.Infrastructure
                                 context.Token = context.Request.Cookies["access_token"];
                                 return Task.CompletedTask;
                             },
-                            OnChallenge = context =>
+                            
+                            OnForbidden = context =>
                             {
-                                context.HttpContext.Response.Redirect("/");
-                                context.Request.Path = @"/";
+                                //context.HttpContext.Response.Redirect("/");
+                                context.Response.Redirect("/Authentication");
+                                return Task.CompletedTask;
+
+                            },
+                            OnAuthenticationFailed = context =>
+                            {
+                                //context.HttpContext.Response.Redirect("/");
+                                context.Response.Redirect("/Authentication");
                                 return Task.CompletedTask;
 
                             }
-
                         };
+                        
+                       
                     });
 
 
