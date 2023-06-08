@@ -8,6 +8,7 @@ public class RequestGettingClassDto : EntityDto<Guid>
     public Guid TutorId { get; set; }
     public Guid ClassInformationId { get; set; }
     public string Title { get; set; } = string.Empty;
+    public string SubjectName { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
 

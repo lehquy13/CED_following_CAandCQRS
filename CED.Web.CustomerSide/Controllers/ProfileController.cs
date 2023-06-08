@@ -55,23 +55,28 @@ public class ProfileController : Controller
         };
 
         var loginResult = await _mediator.Send(query);
+       
 
-
-        if (loginResult != null)
+        if (loginResult != null )
         {
-            var query1 = new GetTeachingClassInformationsOfTutorQuery()
-            {
-                Guid = loginResult.Id
-            };
-            var loginResult1 = await _mediator.Send(query1);
-
             var changePasswordRequest = _mapper.Map<ChangePasswordRequest>(loginResult);
-            return View(new ProfileViewModel
+
+            var viewModelResult = new ProfileViewModel
             {
                 UserDto = loginResult,
-                ClassInformationDtos = loginResult1,
                 ChangePasswordRequest = changePasswordRequest
-            });
+            };
+            if (loginResult.Role == UserRole.Tutor)
+            {
+                var query1 = new GetTeachingClassInformationsOfTutorQuery()
+                {
+                    Guid = loginResult.Id
+                };
+                var loginResult1 = await _mediator.Send(query1);
+
+                viewModelResult.ClassInformationDtos = loginResult1;
+            }
+            return View(viewModelResult);
         }
 
         return RedirectToAction("Login", "Authentication", new LoginRequest("", ""));

@@ -33,7 +33,13 @@
       }
     }
   }
-
+  /**
+   * Initiate Datatables
+   */
+  const datatables = select('.datatable', true)
+  datatables.forEach(datatable => {
+    new simpleDatatables.DataTable(datatable);
+  })
   /**
    * Easy on scroll event listener 
    */

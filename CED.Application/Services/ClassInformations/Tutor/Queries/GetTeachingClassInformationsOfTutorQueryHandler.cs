@@ -48,14 +48,19 @@ public class
                 .Where(x => x.TutorId.Equals(tutor.Id))
                 .ToList();
             var classes = await _classInformationRepository.GetAllList();
+            var subjects = await _subjectRepository.GetAllList();
+
             var classInformations = 
                 requests.GroupJoin(
                     classes,
                     d=>d.ClassInformationId,
                     c => c.Id,
-                    (d,c)=> (d,c.FirstOrDefault()).Adapt<RequestGettingClassDto>()
-                );
-            //var subjects = await _subjectRepository.GetAllList();
+                    (d,c)=>
+                    {
+                        var classIn = c.FirstOrDefault();
+                        var subjectName = subjects.FirstOrDefault(x => x.Id.Equals(classIn?.SubjectId))?.Name;
+                        return (d, classIn,subjectName).Adapt<RequestGettingClassDto>();;
+                    });
             
             var classInformationsL = classInformations.Skip((query.PageIndex - 1) * query.PageSize)
                     .Take(query.PageSize).ToList();

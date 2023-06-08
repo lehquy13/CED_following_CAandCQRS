@@ -27,4 +27,9 @@
       <Folder Include="wwwroot\temp" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\assets\vendor\simple-datatables\simple-datatables.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\vendor\simple-datatables\style.css" />
+    </ItemGroup>
+
 </Project>
