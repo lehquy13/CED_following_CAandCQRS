@@ -23,7 +23,12 @@ public class HomeController : Controller
     public IActionResult Privacy()
     {
         return View();
-    }public IActionResult About()
+    }
+    public IActionResult About()
+    {
+        return View();
+    } 
+    public IActionResult Contact()
     {
         return View();
     }

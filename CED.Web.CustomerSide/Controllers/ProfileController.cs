@@ -1,13 +1,16 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
+using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Tutor.Queries;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Contracts.Authentication;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.CustomerSide.Models;
 using CED.Web.CustomerSide.Utilities;
+using FluentResults;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -183,4 +186,26 @@ public class ProfileController : Controller
 
         return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordRequest, true);
     }
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> TeachingClassDetail(Guid id)
+    {
+        var query = new GetObjectQuery<Result<RequestGettingClassDto>>()
+        {
+            Guid = id
+        };
+        var classInformation = await _mediator.Send(query);
+        if (classInformation.IsSuccess)
+        {
+            return Helper.RenderRazorViewToString(this, "_TeachingClassDetail", classInformation.Value);
+        }
+
+        return View("Error", new ErrorViewModel()
+        {
+            RequestId = classInformation.Reasons.First().Message
+        });
+
+    }
+
+   
 }

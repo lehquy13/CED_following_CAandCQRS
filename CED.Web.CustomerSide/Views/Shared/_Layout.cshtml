@@ -41,11 +41,11 @@
     <header style="background-color: #3ac162;">
     <div class="container d-flex justify-content-between align-items-center" >
        
-                            <span>
-                                <i class="bi bi-telephone-forward text-white"></i> 
+                            <span class="text-white">
+                                <i class="bi bi-telephone-forward "></i> 
                                 <a href="tel:0965686172" class="text-white" >0965686172</a>
                                 -
-                                <i class="bi bi-envelope-check mr-5 text-white"></i> 
+                                <i class="bi bi-envelope-check mr-5"></i> 
                                 <a href="mailto:lehquy13@gmail.com" class="text-white" >lehquy13@gmail.com</a>
                             </span> 
                      
@@ -187,7 +187,7 @@
                                              </ul>
                                          </li>
                                          <li>
-                                             <a href="/">Contact</a>
+                                             <a asp-controller="Home" asp-action="Contact">Contact</a>
                                          </li>
                                      </ul>
                                      <i class="bi bi-list mobile-nav-toggle"></i>
@@ -201,7 +201,47 @@
         <!-- End Header -->
     @RenderBody()
 </main>
+<div class="modal fade" id="verticalycentered" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vertically Centered Dialog's Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure with this process?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form id="confirmDialogForm" onsubmit="return callPostActionWithForm(this);">
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div><!-- End Vertically centered Modal-->
 
+<button type="button" hidden class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal" id="modalTriggerButton">
+    Large Modal
+</button>
+
+<div class="modal fade" id="largeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Large Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+            </div>
+            @*    <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div><!-- End Large Modal-->
     <footer class="border-top footer text-muted" id="footer">
         <div class="footer-top">
             <div class="container">
@@ -223,10 +263,10 @@
                         <h4>Get to know us</h4>
                         <ul>
                             <li>
-                                <i class="bx bx-chevron-right"></i> <a href="#">About us</a>
+                                <i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="About">About us</a>
                             </li>
                             <li>
-                                <i class="bx bx-chevron-right"></i> <a href="#">Contact us</a>
+                                <i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Contact">Contact us</a>
                             </li>
                             <li>
                                 <i class="bx bx-chevron-right"></i> <a href="#">Services</a>
@@ -235,7 +275,7 @@
                                 <i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a>
                             </li>
                             <li>
-                                <i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a>
+                                <i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Privacy">Privacy policy</a>
                             </li>
                         </ul>
                     </div>

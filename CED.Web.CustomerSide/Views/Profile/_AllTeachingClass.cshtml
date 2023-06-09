@@ -34,7 +34,7 @@
                     <td>@classIn.RequestStatus</td>
                    
                     <td>
-                        <button type="button" class="btn btn-primary" onclick="ChooseTutor('@classIn.Id');">
+                        <button type="button" class="btn btn-primary" onclick="OpenGetDialog('@Url.Action("TeachingClassDetail","Profile",new{id = @classIn.Id})','Detail');">
                             Detail
                         </button>
                     </td>

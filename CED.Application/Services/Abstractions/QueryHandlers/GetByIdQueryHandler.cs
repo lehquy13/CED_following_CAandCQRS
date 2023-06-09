@@ -1,4 +1,5 @@
-﻿using MapsterMapper;
+﻿using FluentResults;
+using MapsterMapper;
 using MediatR;
 
 
@@ -18,4 +19,5 @@ public abstract class GetByIdQueryHandler<TQuery, TDto>
     public abstract Task<TDto?> Handle(TQuery request, CancellationToken cancellationToken);
 
 }
+
 
