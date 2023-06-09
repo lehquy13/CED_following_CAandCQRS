@@ -43,54 +43,58 @@
             </div>
             <!-- ----------------------------------- -->
 
-        <div class="col-md-3">
-            <label asp-for="SubjectId" class="form-label">Subject Name</label>
-            <select asp-for="SubjectId" class="form-select">
-                <option selected value="@Model.SubjectId">
-                    @Model.SubjectName
-                </option>
+            <div class="col-md-3">
+                <label asp-for="SubjectId" class="form-label">Subject Name</label>
+                <select asp-for="SubjectId" class="form-select">
+                    <option selected value="@Model.SubjectId">
+                        @Model.SubjectName
+                    </option>
 
-                @foreach (var i in subjects)
-                {
-                    @if (i.Name != Model.SubjectName)
+                    @foreach (var i in subjects)
                     {
-                        <option value="@i.Id">
-                            @i.Name
-                        </option>
+                        @if (i.Name != Model.SubjectName)
+                        {
+                            <option value="@i.Id">
+                                @i.Name
+                            </option>
+                        }
                     }
-                }
-            </select>
-            <span asp-validation-for="SubjectId" class="text-danger"></span>
-        </div>
-        <div class="col-md-3">
-            <label  class="form-label">Contact Number</label>
-            <input type="text" class="form-control" asp-for="ContactNumber"  />
-            <span asp-validation-for="ContactNumber" class="text-danger"></span>
-        </div>
-            <div class="col-md-4">
-                <label  class="form-label">Tutor</label>
+                </select>
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Contact Number</label>
+                <input type="text" class="form-control" asp-for="ContactNumber" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Tutor</label>
                 <input type="text" hidden="hidden" id="tutorId" asp-for="TutorDtoId" class="form-control" />
                 <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly" />
                 <span asp-validation-for="TutorDtoId" class="text-danger"></span>
             </div>
-            
-            
-        <div class="col-md-2">
+
+
+            <div class="col-md-3">
                 <label class="form-label">Action</label>
-            
-            <div class="row">
 
-                <button type="button" class="col-6 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "ClassInformation")','Pick tutor')">
-                    Pick Tutor
-                </button>
-                <button type="button" class="col-6  btn btn-outline-secondary"
-                        onclick="OpenGetDialog('@Url.Action("ViewTutor", "ClassInformation", new { id = @Model.TutorDtoId })','Tutor information')">
-                    View Tutor
-                </button>
+                <div class="row">
+
+                    <button type="button" class="col-6 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "ClassInformation")','Pick tutor')">
+                        Pick Tutor
+                    </button>
+                    <button type="button" class="col-6  btn btn-outline-secondary"
+                            onclick="OpenGetDialog('@Url.Action("ViewTutor", "ClassInformation", new { id = @Model.TutorDtoId })','Tutor information')">
+                        View Tutor
+                    </button>
+                    @* <button type="button" class="col-4  btn btn-outline-secondary" *@
+                    @*         onclick="OpenGetDialog('@Url.Action("ViewRequests", "ClassInformation", new { id = @Model.Id })','Tutor information')"> *@
+                    @*     Requests *@
+                    @* </button> *@
+                </div>
             </div>
-        </div>
 
-        <!-- ----------------------------------- -->
+            <!-- ----------------------------------- -->
 
             <div class="col-md-4">
                 <label asp-for="GenderRequirement" class="form-label">Gender Requirement</label>
@@ -220,8 +224,8 @@
                 <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-        
-            <!-- address advanced set up----------------------------------- 
+
+            <!-- address advanced set up-----------------------------------
             <div class="col-md-6">
                 <label for="inputCity" class="form-label">City</label>
                 <input type="text" class="form-control" id="inputCity" />
@@ -277,13 +281,57 @@
             </div>
             @Html.AntiForgeryToken()
         </form>
-        <!-- End Multi Columns Form -->
-
-    </div>
+    <!-- End Multi Columns Form -->
+   
 
 </div>
 
 
+    </div>
+ <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Pick the tutor for class</h5>
+    
+            <!-- Table with stripped rows -->
+            <table id="example" class="table datatable">
+                <thead>
+                <tr>
+                    <!-- a avatar comlumn will be added -->
+                    <th scope="col">Tutor Name</th>
+                    <th scope="col">Tutor Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
+                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+    
+                @foreach (var requestGettingClassMinimalDto in Model.RequestGettingClassDtos)
+                {
+                    <tr>
+                        <th scope="row">
+                            <input hidden name="Id" value="@requestGettingClassMinimalDto.Id"/>
+                            #
+                        </th>
+                        <td>@requestGettingClassMinimalDto.TutorName</td>
+                        <td>@requestGettingClassMinimalDto.PhoneNumber</td>
+                        <td>@requestGettingClassMinimalDto.Email</td>
+                        <td>@requestGettingClassMinimalDto.RequestStatus</td>
+                       
+                        <td>
+                            <button type="button" class="btn btn-primary"
+                                        onclick="ChooseTutor('@requestGettingClassMinimalDto.TutorId','@requestGettingClassMinimalDto.TutorName', '@requestGettingClassMinimalDto.PhoneNumber');">
+                                Accept
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+        </div>
+    </div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
