@@ -38,16 +38,22 @@ public class CustomerChangePasswordCommandHandler : IRequestHandler<CustomerChan
             _logger.LogError("Can not change password. User doesn't exist.", command);
             return new AuthenticationResult(null,"",false, "User doesn't exist");
         }
+        
         //2.1 HashPassword
-        if( command.NewPassword != command.ConfirmedPassword)
+        if( command.NewPassword != command.ConfirmedPassword || command.NewPassword == command.CurrentPassword)
+        {
+            _logger.LogError("Can not change password. Confirmed Password doesn't match with NewPassword.", command);
+            return new AuthenticationResult(null, "", false, "Password doesn't match.");
+        }
+
+        if (_validator.HashPassword(command.CurrentPassword) != user.Password)
         {
             _logger.LogError("Can not change password. Password doesn't match.", command);
             return new AuthenticationResult(null, "", false, "Password doesn't match.");
         }
-       
-
+        
         user.Password = _validator.HashPassword(command.ConfirmedPassword);
-
+        
         var newUser = _userRepository.Update(user);
         
         return new AuthenticationResult(_mapper.Map<UserLoginDto>(user), "" ,true, "Password changed.");

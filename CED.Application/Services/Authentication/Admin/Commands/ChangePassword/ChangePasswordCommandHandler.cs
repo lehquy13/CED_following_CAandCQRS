@@ -40,7 +40,13 @@ public class ChangePasswordCommandCommandHandler
             return new AuthenticationResult(null, "", false, "User doesn't exist");
         }
 
-        if (command.NewPassword != command.ConfirmedPassword)
+        //2.1 HashPassword
+        if( command.NewPassword != command.ConfirmedPassword || command.NewPassword == command.CurrentPassword ||command.CurrentPassword == command.ConfirmedPassword )
+        {
+            _logger.LogError("Can not change password. Confirmed Password doesn't match with NewPassword.", command);
+            return new AuthenticationResult(null, "", false, "Password doesn't match.");
+        }
+        if (_validator.HashPassword(command.CurrentPassword) != user.Password)
         {
             _logger.LogError("Can not change password. Password doesn't match.", command);
             return new AuthenticationResult(null, "", false, "Password doesn't match.");

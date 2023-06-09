@@ -45,7 +45,7 @@ function callPostActionWithForm(formInput) {
         },
         error: function (err) {
             console.log(err);
-            alert(err);
+            //alert(err);
         }
     })
     return false;
@@ -69,7 +69,7 @@ function ChangePassword(formInput) {
         },
         error: function (err) {
             console.log(err);
-            alert(err);
+            //alert(err);
         }
     })
     return false;
@@ -123,7 +123,7 @@ function LoadImage(url, id) {
         },
         error: function (err) {
             console.log(err);
-            alert(err);
+            //alert(err);
         }
     })
     return false;

@@ -19,6 +19,7 @@ using CED.Domain.Interfaces.Logger;
 using CED.Domain.Repository;
 using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Logging;
+using CED.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 
@@ -41,6 +42,7 @@ namespace CED.Infrastructure
 
             );
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));

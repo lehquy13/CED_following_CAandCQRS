@@ -73,6 +73,10 @@ public class ClassInformationController : Controller
     [Route("{id}")]
     public async Task<IActionResult> Detail(Guid id)
     {
+        if (id.Equals( Guid.Empty))
+        {
+            return NotFound();
+        }
         var query = new GetObjectQuery<ClassInformationDto>()
         {
             Guid = id
@@ -136,16 +140,19 @@ public class ClassInformationController : Controller
 
  
 
-    [Authorize]
     [HttpPost]
     [Route("RequestGettingClass")]
     public async Task<IActionResult> RequestGettingClass(RequestGettingClassRequest requestGettingClassRequest)
     {
         var email = HttpContext.Request.Cookies["email"];
-        if (email is null)
+
+        if (User.Identity is null || !User.Identity.IsAuthenticated || email is null)
         {
-            return RedirectToAction("Login", "Authentication");
+            string? returnUrl = Url.Action("RequestGettingClass");
+            HttpContext.Session.SetString("Value", requestGettingClassRequest.ClassId.ToString());
+            return RedirectToAction("Index", "Authentication",new{returnUrl = returnUrl});
         }
+      
 
         requestGettingClassRequest.Email = email;
         var command = _mapper.Map<RequestGettingClassCommand>(requestGettingClassRequest);

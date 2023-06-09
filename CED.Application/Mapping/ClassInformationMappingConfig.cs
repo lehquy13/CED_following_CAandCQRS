@@ -12,6 +12,7 @@ public class ClassInformationMappingConfig : IRegister
     public void Register(TypeAdapterConfig config)
     {
 
+        config.NewConfig<RequestGettingClass, RequestGettingClassMinimalDto>();
         config.NewConfig<ClassInformationDto, ClassInformation>()        
             .Map(dest => dest.TutorId, src => src.TutorDtoId)
             .Map(dest => dest, src => src);
@@ -19,7 +20,9 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.TutorDtoId, src => src.TutorId)
             .Map(dest => dest, src => src);
 
-        config.NewConfig<(ClassInformation, Subject, User), ClassInformationDto>()
+        
+        config.NewConfig<(ClassInformation, Subject, Tutor,List<RequestGettingClassMinimalDto>), ClassInformationDto>()
+            .Map(dest => dest.RequestGettingClassDtos, src => src.Item4)
             .Map(dest => dest.SubjectName, src => src.Item2.Name)
             .Map(dest => dest.SubjectId, src => src.Item2.Id)
             .Map(dest => dest.TutorDtoId, src => src.Item3.Id)
@@ -36,8 +39,22 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.Title, src => src.Item2.Title)
             .Map(dest => dest.SubjectName, src => src.Item3)
             .Map(dest => dest, src => src.Item1);
+        config.NewConfig<(RequestGettingClass, ClassInformation,Tutor,string), RequestGettingClassFullDto>()
+            .Map(dest => dest.Title, src => src.Item2.Title)
+            .Map(dest => dest.TutorId, src => src.Item3.Id)
+            .Map(dest => dest.Tutor, src => src.Item3)
+            .Map(dest => dest.SubjectName, src => src.Item4)
+            .Map(dest => dest, src => src.Item1);
+        config.NewConfig<(RequestGettingClass, Tutor), RequestGettingClassMinimalDto>()
+            .Map(dest => dest.Id, src => src.Item1.Id)
+            .Map(dest => dest.Description, src => src.Item1.Description)
+            .Map(dest => dest.RequestStatus, src => src.Item1.RequestStatus)
+            .Map(dest => dest.TutorId, src => src.Item2.Id)
+            .Map(dest => dest.TutorName, src => $"{src.Item2.FirstName} " + $"{src.Item2.FirstName}")
+            .Map(dest => dest.PhoneNumber, src => src.Item2.PhoneNumber)
+            .Map(dest => dest.Email, src => src.Item2.Email);
 
-        
+
         config.NewConfig<Subject, SubjectLookupDto>();
 
 

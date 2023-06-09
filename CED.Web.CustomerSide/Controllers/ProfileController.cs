@@ -128,19 +128,27 @@ public class ProfileController : Controller
 
                 ViewBag.Updated = result;
                 Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
-
-                if (result == true)
-                {
-                    HttpContext.Response.Cookies.Append("name", userDto.FirstName + userDto.LastName);
-                    HttpContext.Response.Cookies.Append("image", userDto.Image);
-                }
-
-                return Helper.RenderRazorViewToString(this, "Profile", new ProfileViewModel
+                var viewModelResult = new ProfileViewModel
                 {
                     UserDto = userDto,
                     ChangePasswordRequest = _mapper.Map<ChangePasswordRequest>(userDto),
                     IsPartialLoad = true
-                });
+                };
+                if (result == true)
+                {
+                    HttpContext.Response.Cookies.Append("name", userDto.FirstName + userDto.LastName);
+                    HttpContext.Response.Cookies.Append("image", userDto.Image);
+                    var query1 = new GetTeachingClassInformationsOfTutorQuery()
+                    {
+                        Guid = userDto.Id
+                    };
+                    var loginResult1 = await _mediator.Send(query1);
+
+                    viewModelResult.ClassInformationDtos = loginResult1;
+                }
+              
+                
+                return Helper.RenderRazorViewToString(this, "Profile", viewModelResult);
             }
             catch (Exception ex)
             {

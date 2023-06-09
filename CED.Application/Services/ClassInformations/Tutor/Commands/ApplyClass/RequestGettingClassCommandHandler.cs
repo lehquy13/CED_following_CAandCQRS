@@ -77,7 +77,7 @@ public class RequestGettingClassCommandHandler : NewCreateUpdateCommandHandler<R
         catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return false;
+            return Result.Fail(e.Message);
         }
     }
 }

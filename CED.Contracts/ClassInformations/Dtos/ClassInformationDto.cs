@@ -44,5 +44,9 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
     public string TutorName { get; set; } = string.Empty;
     public string TutorPhoneNumber { get; set; } = string.Empty;
     public string TutorEmail { get; set; } = string.Empty;
+    
+    //List of Request
+
+    public List<RequestGettingClassMinimalDto> RequestGettingClassDtos = new List<RequestGettingClassMinimalDto>();
 }
 

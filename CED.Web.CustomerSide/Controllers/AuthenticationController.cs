@@ -56,10 +56,10 @@ public class AuthenticationController : Controller
         var result = await _mediator.Send(query);
         if (result.IsSuccess)
         {
-            
             StoreCookie(result);
             return RedirectToAction("Index", "Home");
         }
+
         ViewBag.isFail = true;
         return View(registerRequest);
     }
@@ -92,9 +92,16 @@ public class AuthenticationController : Controller
         if (returnUrl is null)
             return RedirectToAction("Index", "Home");
 
+        var value = HttpContext.Session.GetString("Value");
         _logger.Log(LogLevel.Debug, returnUrl);
+        if (value != null)
+        {
+            HttpContext.Session.Remove("Value");
+            return RedirectToAction("Detail", "ClassInformation", new { id = new Guid(value) });
+        }
 
-        return Redirect(returnUrl); }
+        return Redirect(returnUrl);
+    }
 
 
     void StoreCookie(AuthenticationResult loginResult)
@@ -113,11 +120,10 @@ public class AuthenticationController : Controller
         if (loginResult.User != null)
         {
             HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
-            HttpContext.Response.Cookies.Append("name", loginResult.User.FullName,cookieOptions);
-            HttpContext.Response.Cookies.Append("image", loginResult.User.Image,cookieOptions);
-            HttpContext.Response.Cookies.Append("email", loginResult.User.Email,cookieOptions);
+            HttpContext.Response.Cookies.Append("name", loginResult.User.FullName, cookieOptions);
+            HttpContext.Response.Cookies.Append("image", loginResult.User.Image, cookieOptions);
+            HttpContext.Response.Cookies.Append("email", loginResult.User.Email, cookieOptions);
         }
-      
     }
 
     [Authorize]

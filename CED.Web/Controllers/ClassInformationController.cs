@@ -82,6 +82,12 @@ public class ClassInformationController : Controller
         var result = await _mediator.Send(query);
         ViewBag.Action = "Edit";
 
+        
+        // var result = await _mediator.Send(new GetAllRequestGettingClassQuery()
+        // {
+        //     Guid = (Guid)Id
+        // });
+        
         return View(result);
     }
 
@@ -233,5 +239,21 @@ public class ClassInformationController : Controller
         }
 
         return Json(new { tutorId = tutorId });
+    }
+
+    [HttpPost("ViewRequests")]
+    public async Task<IActionResult> ViewRequests(Guid? Id)
+    {
+        if (Id == null || Id.Equals(Guid.Empty))
+        {
+            return NotFound();
+        }
+
+        var result = await _mediator.Send(new GetAllRequestGettingClassQuery()
+        {
+            Guid = (Guid)Id
+        });
+
+        return Json(new { requests = result });
     }
 }

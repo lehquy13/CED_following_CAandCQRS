@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations.Dtos;
@@ -6,6 +7,27 @@ namespace CED.Contracts.ClassInformations.Dtos;
 public class RequestGettingClassDto : EntityDto<Guid>
 {
     public Guid TutorId { get; set; }
+    public Guid ClassInformationId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string SubjectName { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public RequestStatus RequestStatus { get; set; } = RequestStatus.Verifying;
+}
+public class RequestGettingClassMinimalDto : EntityDto<Guid>
+{
+    public Guid TutorId { get; set; }
+    public string TutorName { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public RequestStatus RequestStatus { get; set; } = RequestStatus.Verifying;
+}
+public class RequestGettingClassFullDto : EntityDto<Guid>
+{
+    public Guid TutorId { get; set; }
+    public TutorDto Tutor { get; set; }
     public Guid ClassInformationId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string SubjectName { get; set; } = string.Empty;
