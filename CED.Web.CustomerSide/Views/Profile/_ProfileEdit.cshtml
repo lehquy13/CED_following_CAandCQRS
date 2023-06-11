@@ -1,9 +1,12 @@
 ﻿@using CED.Contracts.Users
+@using CED.Domain.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CED.Contracts.Users.UserDto
 @{
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
     //AddressDto addressDto = ViewData["Addresses"] as AddressDto ?? new AddressDto(new List<CityDto>());
 
+    List<string> genders = EnumProvider.Genders;
+    List<string> academics = EnumProvider.AcademicLevels;
 }
 <!-- Profile Edit Form -->
 
@@ -20,11 +23,12 @@
                     <i class="bi bi-upload"></i>
                 </a>
 
-                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image">
-                    <i class="bi bi-trash"></i>
-                </a>
+                @* <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"> *@
+                @*     <i class="bi bi-trash"></i> *@
+                @* </a> *@
             </div>
         </div>
+        
     </div>
 
     <div class="row mb-3">
@@ -83,12 +87,12 @@
 
     </div>
 
-    <div class="row mb-3">
-        <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
-        <div class="col-md-8 col-lg-9">
-            <input readonly name="company" type="text" class="form-control" id="company" value="Educational Development And Consulting Center - CED ">
-        </div>
-    </div>
+    @* <div class="row mb-3"> *@
+    @*     <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label> *@
+    @*     <div class="col-md-8 col-lg-9"> *@
+    @*         <input readonly name="company" type="text" class="form-control" id="company" value="Educational Development And Consulting Center - CED "> *@
+    @*     </div> *@
+    @* </div> *@
 
     <div class="row mb-3">
         <label asp-for="Role" class="col-md-4 col-lg-3 col-form-label">Role</label>
@@ -127,34 +131,36 @@
 
         </div>
     </div>
+    
+   
 
-    <div class="row mb-3">
-        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
-        <div class="col-md-8 col-lg-9">
-            <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-        <div class="col-md-8 col-lg-9">
-            <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-        <div class="col-md-8 col-lg-9">
-            <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-        <div class="col-md-8 col-lg-9">
-            <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
-        </div>
-    </div>
+    @* <div class="row mb-3"> *@
+    @*     <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label> *@
+    @*     <div class="col-md-8 col-lg-9"> *@
+    @*         <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#"> *@
+    @*     </div> *@
+    @* </div> *@
+    @* *@
+    @* <div class="row mb-3"> *@
+    @*     <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label> *@
+    @*     <div class="col-md-8 col-lg-9"> *@
+    @*         <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#"> *@
+    @*     </div> *@
+    @* </div> *@
+    @* *@
+    @* <div class="row mb-3"> *@
+    @*     <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label> *@
+    @*     <div class="col-md-8 col-lg-9"> *@
+    @*         <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#"> *@
+    @*     </div> *@
+    @* </div> *@
+    @* *@
+    @* <div class="row mb-3"> *@
+    @*     <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label> *@
+    @*     <div class="col-md-8 col-lg-9"> *@
+    @*         <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#"> *@
+    @*     </div> *@
+    @* </div> *@
     <!-- hidden info-->
     <div class="col-md-6" hidden>
         <label asp-for="Password" class="form-label">Password</label>

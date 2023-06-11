@@ -1,13 +1,11 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
-using CED.Application.Services.Users.Tutor.Commands.Registers;
-using CED.Contracts;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
 
-namespace CED.Application.Services.ClassInformations.Tutor.Commands.Registers;
+namespace CED.Application.Services.Users.Tutor.Registers;
 
 public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegisterCommand>
 {

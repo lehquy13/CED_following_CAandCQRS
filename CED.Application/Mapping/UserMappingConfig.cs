@@ -1,4 +1,7 @@
-﻿using CED.Contracts.Users;
+﻿using CED.Contracts;
+using CED.Contracts.ClassInformations.Dtos;
+using CED.Contracts.Subjects;
+using CED.Contracts.Users;
 using CED.Domain.Users;
 using Mapster;
 
@@ -72,5 +75,14 @@ public class UserMappingConfig : IRegister
         
         config.NewConfig<User, UserDto>();
         config.NewConfig<User, LearnerDto>();
+        config.NewConfig<TutorVerificationInfo, TutorVerificationInfoDto>();
+
+        config.NewConfig<(Tutor, PaginatedList<RequestGettingClassDto>, List<SubjectDto>,List<TutorVerificationInfo>), TutorProfileDto>()
+            
+            
+            .Map(des => des.RequestGettingClassDtos, src => src.Item2)
+            .Map(des => des.TutorMainInfoDto, src => src.Item1)
+            .Map(des => des.TutorMainInfoDto.Majors , src => src.Item3)
+            .Map(des => des.TutorMainInfoDto.TutorVerificationInfoDtos, src => src.Item4);
     }
 }

@@ -27,7 +27,7 @@ public class RequestGettingClassMinimalDto : EntityDto<Guid>
 public class RequestGettingClassFullDto : EntityDto<Guid>
 {
     public Guid TutorId { get; set; }
-    public TutorDto Tutor { get; set; }
+    public TutorDto Tutor { get; set; } = null!;
     public Guid ClassInformationId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string SubjectName { get; set; } = string.Empty;

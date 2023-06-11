@@ -12,7 +12,10 @@ public class CreateUpdateUserCommandHandler : CreateUpdateCommandHandler<CreateU
     private readonly IUserRepository _userRepository;
     private readonly ICloudinaryFile _cloudinaryFile;
 
-    public CreateUpdateUserCommandHandler(IUserRepository userRepository,ILogger<CreateUpdateUserCommandHandler> logger, ICloudinaryFile cloudinaryFile, IMapper mapper) : base(logger,mapper)
+    public CreateUpdateUserCommandHandler(IUserRepository userRepository,
+        ILogger<CreateUpdateUserCommandHandler> logger, 
+        ICloudinaryFile cloudinaryFile,
+        IMapper mapper) : base(logger,mapper)
     {
         _userRepository = userRepository;
         _cloudinaryFile = cloudinaryFile;

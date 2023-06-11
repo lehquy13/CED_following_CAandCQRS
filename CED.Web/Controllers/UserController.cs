@@ -65,7 +65,7 @@ public class UserController : Controller
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, UserDto userDto, List<Guid> subjectId)
+    public async Task<IActionResult> Edit(Guid Id, UserDto userDto)
     {
         if (Id != userDto.Id)
         {
@@ -118,7 +118,7 @@ public class UserController : Controller
 
     [HttpPost("Create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(UserDto userDto, List<Guid> subjectId) // cant use userdto
+    public async Task<IActionResult> Create(UserDto userDto) // cant use userdto
     {
         userDto.LastModificationTime = DateTime.UtcNow;
         var command = new CreateUpdateUserCommand(userDto,"");

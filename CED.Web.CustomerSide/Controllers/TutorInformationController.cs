@@ -1,11 +1,12 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Users.Queries.CustomerQueries;
-using CED.Application.Services.Users.Tutor.Commands.Registers;
+using CED.Application.Services.Users.Tutor.Registers;
 using CED.Contracts;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Web.CustomerSide.Utilities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -123,4 +124,5 @@ public class TutorInformationController : Controller
 
         return Json(result); //implement
     }
+   
 }

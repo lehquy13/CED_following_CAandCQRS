@@ -1,10 +1,13 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
-using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Tutor.Queries;
 using CED.Application.Services.Users.Admin.Commands;
+using CED.Application.Services.Users.Queries;
+using CED.Application.Services.Users.Tutor.ChangeInfo;
+using CED.Contracts;
 using CED.Contracts.Authentication;
 using CED.Contracts.ClassInformations.Dtos;
+using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 using CED.Domain.Shared.ClassInformationConsts;
@@ -36,19 +39,19 @@ public class ProfileController : Controller
         _webHostEnvironment = webHostEnvironment;
     }
 
-    private void PackStaticListToView()
+    private async Task PackStaticListToView()
     {
         ViewData["Roles"] = EnumProvider.Roles;
         ViewData["Genders"] = EnumProvider.Genders;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
+        ViewData["Subjects"] = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
 
-        //ViewData["Addresses"] = _addressService.GetAddresses();
     }
 
     [HttpGet("")]
     public async Task<IActionResult> Profile()
     {
-        PackStaticListToView();
+        await PackStaticListToView();
 
         var identity = HttpContext.User.Identities.First();
 
@@ -71,13 +74,15 @@ public class ProfileController : Controller
             };
             if (loginResult.Role == UserRole.Tutor)
             {
-                var query1 = new GetTeachingClassInformationsOfTutorQuery()
+               
+                var query1 = new GetTutorProfileQuery()
                 {
                     Guid = loginResult.Id
                 };
                 var loginResult1 = await _mediator.Send(query1);
 
-                viewModelResult.ClassInformationDtos = loginResult1;
+                viewModelResult.ClassInformationDtos = loginResult1.RequestGettingClassDtos;
+                viewModelResult.TutorDto = loginResult1.TutorMainInfoDto;
             }
             return View(viewModelResult);
         }
@@ -85,6 +90,23 @@ public class ProfileController : Controller
         return RedirectToAction("Login", "Authentication", new LoginRequest("", ""));
     }
 
+    [HttpPost("ChooseProfilePictures")]
+    public async Task<IActionResult> ChooseProfilePictures(List<IFormFile?> formFiles)
+    {
+        if (formFiles.Count <= 0)
+        {
+            return Json(false);
+        }
+
+        var vals = new List<string>();
+        foreach (var i in formFiles)
+        {
+            var image = await Helper.SaveFiles(i, _webHostEnvironment.WebRootPath);
+            vals.Add("temp\\"+ Path.GetFileName(image));
+        }
+
+        return Json(new { res = true, images = vals });
+    }
     [HttpPost("ChoosePicture")]
     public async Task<IActionResult> ChoosePicture(IFormFile? formFile)
     {
@@ -103,13 +125,13 @@ public class ProfileController : Controller
     public async Task<IActionResult> Edit(UserDto userDto, IFormFile? formFile)
     {
         
-        PackStaticListToView();
+        await PackStaticListToView();
 
         if (ModelState.IsValid)
         {
             try
             {
-                bool result = false;
+                bool result;
                 var filePath = string.Empty;
                 if (formFile != null)
                 {
@@ -134,7 +156,7 @@ public class ProfileController : Controller
                     ChangePasswordRequest = _mapper.Map<ChangePasswordRequest>(userDto),
                     IsPartialLoad = true
                 };
-                if (result == true)
+                if (result)
                 {
                     HttpContext.Response.Cookies.Append("name", userDto.FirstName + userDto.LastName);
                     HttpContext.Response.Cookies.Append("image", userDto.Image);
@@ -165,6 +187,60 @@ public class ProfileController : Controller
         );
     }
 
+    [HttpPost("EditTutorInformation")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditTutorInformation(TutorMainInfoDto userDto, List<IFormFile?>? files,List<Guid> subjectId)
+    {
+        
+        await PackStaticListToView();
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                bool result;
+                var filePath = new List<string>();
+                if (files != null)
+                {
+                    foreach (var i in files)
+                    {
+                        if(i is not null)
+                            filePath.Add(await Helper.SaveFiles(i, _webHostEnvironment.WebRootPath));
+                    }
+                }
+
+                if (userDto.Role == UserRole.Tutor)
+                {
+                    result = await _mediator.Send(new TutorInfoChangingCommand(userDto,subjectId,filePath));
+                }
+                else
+                {
+                    throw new Exception("User has not registered as Tutor.");
+
+                }
+
+                ViewBag.Updated = result;
+                Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
+               
+                return Helper.RenderRazorViewToString(this, "_ProfileTutorEdit", userDto);
+
+              
+                
+            }
+            catch (Exception ex)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                                             "Try again, and if the problem persists, " + ex.Message +
+                                             "see your system administrator.");
+            }
+        }
+
+        return Helper.RenderRazorViewToString(this, "_ProfileEdit",
+            userDto,
+            true
+        );
+    }
     [HttpPost("ChangePassword")]
     //[ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
@@ -215,5 +291,14 @@ public class ProfileController : Controller
 
     }
 
-   
+    [HttpGet("Subjects")]
+    public async Task<IActionResult> Subjects(string id)
+    {
+        var query = new GetObjectQuery<PaginatedList<SubjectDto>>()
+        {
+            Guid = new Guid(id)
+        };
+        var subjectDtos = await _mediator.Send(query);
+        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
+    }
 }

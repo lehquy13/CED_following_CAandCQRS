@@ -97,6 +97,7 @@ public class AuthenticationController : Controller
         if (value != null)
         {
             HttpContext.Session.Remove("Value");
+            await HttpContext.Session.CommitAsync();
             return RedirectToAction("Detail", "ClassInformation", new { id = new Guid(value) });
         }
 

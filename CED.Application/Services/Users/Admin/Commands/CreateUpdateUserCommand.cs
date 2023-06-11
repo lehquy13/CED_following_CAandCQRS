@@ -6,6 +6,6 @@ namespace CED.Application.Services.Users.Admin.Commands;
 public record CreateUpdateUserCommand
     (
      UserDto UserDto ,
-     string FilePath
+         string FilePath
 ): IRequest<bool>;
 

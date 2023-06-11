@@ -1,15 +1,11 @@
-﻿using CED.Application.Services;
-using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using Microsoft.AspNetCore.Mvc;
 using MapsterMapper;
 using MediatR;
-using CED.Contracts.ClassInformations;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Commands;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
-using CED.Application.Services.Users.Queries;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts;
 using CED.Contracts.ClassInformations.Dtos;

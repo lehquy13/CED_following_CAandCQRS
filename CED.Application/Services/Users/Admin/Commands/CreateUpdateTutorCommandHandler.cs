@@ -1,5 +1,5 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
-using CED.Domain.Interfaces.Logger;
+using CED.Domain.Interfaces.Services;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
@@ -14,13 +14,19 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
     private readonly ITutorRepository _tutorRepository;
     private readonly IUserRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
+    private readonly ICloudinaryFile _cloudinaryFile;
+
 
     public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, IUserRepository userRepository,
         IRepository<TutorMajor> tutorMajorRepository,
+        ICloudinaryFile cloudinaryFile,
+
         ILogger<CreateUpdateTutorCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _tutorRepository = tutorRepository;
         _userRepository = userRepository;
+        _cloudinaryFile = cloudinaryFile;
+
         _tutorMajorRepository = tutorMajorRepository;
     }
 
@@ -30,7 +36,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
         {
             var tutor = await _tutorRepository.GetUserByEmail(command.TutorDto.Email);
             var tutorAsUser = await _userRepository.GetUserByEmail(command.TutorDto.Email);
-            var newMajorUpdate = command.SubjectId.DistinctBy(x => x).ToList();
+            var newMajorUpdate = command.SubjectIds.DistinctBy(x => x).ToList();
             //Check if the subject existed
             if (tutor is not null && tutorAsUser is not null && tutor.Role == UserRole.Tutor)
             {
@@ -65,7 +71,8 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
                         SubjectId = newMu
                     });
                 }
-
+                
+                
                 tutor.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
                 tutorAsUser.UpdateUserInformation(_mapper.Map<User>(command.TutorDto));
                 _logger.LogDebug("ready for updating!");

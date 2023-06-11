@@ -20,7 +20,7 @@ public class Tutor : User
     /// <param name="tutor"></param>
     public void UpdateTutorInformation(Tutor tutor)
     {
-        base.UpdateUserInformation(tutor);
+        //ase.UpdateUserInformation(tutor);
         AcademicLevel = tutor.AcademicLevel;
         University = tutor.University;
 

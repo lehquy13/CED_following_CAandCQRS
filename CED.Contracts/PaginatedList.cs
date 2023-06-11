@@ -13,15 +13,20 @@ public class PaginatedList<T> : List<T>
         this.AddRange(items);
     }
 
+    public PaginatedList()
+    {
+        
+    }
     public bool HasPreviousPage => PageIndex > 1;
 
     public bool HasNextPage => PageIndex < TotalPages;
 
     public static PaginatedList<T> CreateAsync(IEnumerable<T> source, int pageIndex, int pageSize, int count = 0)
     {
+        var enumerable = source as T[] ?? source.ToArray();
         if (count == 0)
-            source.Count();
+            count = enumerable.Count();
         //var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-        return new PaginatedList<T>(source.ToList(), count, pageIndex, pageSize);
+        return new PaginatedList<T>(enumerable.ToList(), count, pageIndex, pageSize);
     }
 }

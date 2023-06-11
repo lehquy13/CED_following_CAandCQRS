@@ -6,7 +6,42 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$(function () {
+    //$("#loaderbody").addClass('d-none');
 
+    $(document).bind('ajaxStart', function () {
+        //$("#loaderbody").removeClass('d-none');
+        //alert("i 2 was called");
+        $('#preloder').css('display', 'block');
+
+
+       
+    }).bind('ajaxStop', function () {
+
+        $('#preloder').css('display', 'none');
+
+
+    });
+});
+/*------------------
+        Preloader
+    --------------------*/
+$(window).on('load', function () {
+    //$(".loader").fadeOut();
+    $("#preloder").delay(200).fadeOut("slow");
+    
+    /*------------------
+        Product filter
+    --------------------*/
+    $('.filter__controls li').on('click', function () {
+        $('.filter__controls li').removeClass('active');
+        $(this).addClass('active');
+    });
+    if ($('.property__gallery').length > 0) {
+        var containerEl = document.querySelector('.property__gallery');
+        var mixer = mixitup(containerEl);
+    }
+});
 function callPostActionWithForm(formInput) {
 
     var formData = new FormData(formInput);
@@ -103,29 +138,70 @@ function OpenConfirmDialog(url, title) {
 
 function LoadImage(url, id) {
     var formData = new FormData();
-    formData.append('formFile', $('#formFile')[0].files[0]);
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-
-            if (res.res === true) {
-                $('#' + id).attr("src", res.image);
-                $('#image').attr("value", res.image);
-
-
-            }
-            console.log(res);
-
-        },
-        error: function (err) {
-            console.log(err);
-            //alert(err);
+    
+    if(id === 'file'){
+        var filesTemp = $('#file')[0].files;
+        for (var i = 0; i < filesTemp.length; i++) {
+            console.log(filesTemp[i]);
+            formData.append('formFiles', filesTemp[i]);
         }
-    })
+        
+       
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $("#filesInputValues").html('');
+                if (res.res === true) {
+                    for (const value of res.images) {
+                        $("#filesInputValues")
+                            .append('<img src='+value+' style="max-width: 120px;" alt="Profile" id="tempFiles">\n' +
+                                '<input id='+value+' name="TutorVerificationInfoDtos.Image" hidden type="text"/>');
+                    }
+
+                
+
+
+                }
+                console.log(res);
+
+            },
+            error: function (err) {
+                console.log(err);
+                //alert(err);
+            }
+        })
+    }
+    else{
+        formData.append('formFile', $('#formFile')[0].files[0]);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+
+            
+                if (res.res === true) {
+                    $('#' + id).attr("src", res.image);
+                    $('#image').attr("value", res.image);
+
+
+                }
+                console.log(res);
+
+            },
+            error: function (err) {
+                console.log(err);
+                //alert(err);
+            }
+        })
+    }
+   
     return false;
 }
 
