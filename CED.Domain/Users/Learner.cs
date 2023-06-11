@@ -13,9 +13,9 @@ public class Learner : User
     {
         Role = UserRole.Learner;
     }
-    public Tutor RegisterToBeTutor(Tutor tutor)
-    {
-        tutor.Id = Id;
-        return tutor;
-    }
+    // public Tutor RegisterToBeTutor(Tutor tutor)
+    // {
+    //     tutor.Id = Id;
+    //     return tutor;
+    // }
 }

@@ -58,16 +58,38 @@ namespace CED.WebAPI.Controllers
             {
                 try
                 {
-                    IRequest<bool> query;
-                    if (userDto.Role == UserRole.Tutor)
-                    {
-                        query= new TutorInfoChangingCommand(userDto);
-                    }
-                    else 
-                    {
-                        query= new StudentInfoChangingCommand(userDto);
+                    var query = new StudentInfoChangingCommand(userDto);
 
+
+                    var result = await _mediator.Send(query);
+
+                    if (result)
+                    {
+                        return Ok(result);
                     }
+
+                    return Conflict(result);
+                }
+                catch (Exception ex)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                                                 "Try again, and if the problem persists, " + ex.Message +
+                                                 "see your system administrator.");
+                }
+            }
+
+            return BadRequest(userDto);
+        }
+        [HttpPost("EditTutorInfor")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTutorInfor(TutorMainInfoDto userDto, List<Guid> subjectIds, List<string> filePaths)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var query = new TutorInfoChangingCommand(userDto,subjectIds,filePaths);
 
                     var result = await _mediator.Send(query);
 

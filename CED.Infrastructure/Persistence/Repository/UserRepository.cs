@@ -11,19 +11,19 @@ public class UserRepository : Repository<User>, IUserRepository
     {
     }
 
-    public async Task Insert(User entity)
-    {
-        try
-        {
-            await Context.Set<User>().AddAsync(entity);
-
-            await Context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
+    // public async Task Insert(User entity)
+    // {
+    //     try
+    //     {
+    //         await Context.Set<User>().AddAsync(entity);
+    //
+    //         await Context.SaveChangesAsync();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         throw new Exception(ex.Message);
+    //     }
+    // }
 
     public List<User> GetTutors()
     {

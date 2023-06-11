@@ -27,6 +27,11 @@ public class Tutor : User
         //wait for being verified
         IsVerified = false;
     }
+    public void VerifyTutorInformation(Tutor tutor)
+    {
+        UpdateTutorInformation(tutor);
+        IsVerified = true;
+    }
 
    
 }

@@ -51,7 +51,7 @@ public class User : FullAuditedAggregateRoot<Guid>
         Email = user.Email;
         PhoneNumber = user.PhoneNumber;
         Image = user.Image;
-        
+
     }
     /// <summary>
     /// Update current user to be tutor
