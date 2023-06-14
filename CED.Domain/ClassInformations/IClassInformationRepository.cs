@@ -4,7 +4,7 @@ namespace CED.Domain.ClassInformations;
 
 public interface IClassInformationRepository : IRepository<ClassInformation>
 {
-    public IEnumerable<ClassInformation> GetTeachingClassInformationsByUserId(Guid guid);
-    public IEnumerable<ClassInformation> GetLearningClassInformationsByUserId(Guid guid);
+    public List<ClassInformation> GetTeachingClassInformationsByUserId(Guid guid);
+    public List<ClassInformation> GetLearningClassInformationsByUserId(Guid guid);
 }
 

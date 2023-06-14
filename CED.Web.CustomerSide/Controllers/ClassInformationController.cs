@@ -3,6 +3,7 @@ using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 using CED.Application.Services.Users.Queries.CustomerQueries;
+using CED.Application.Services.Users.Student.Queries;
 using CED.Contracts;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
@@ -102,6 +103,18 @@ public class ClassInformationController : Controller
     public async Task<IActionResult> Create()
     {
         await PackStaticListToView();
+
+        var email = HttpContext.Session.GetString("email");
+        if (email is not null)
+        {
+            var query = new GetLearnerByMailQuery()
+            {
+                Email = email
+            };
+            var result = await _mediator.Send(query);
+            if (result != null)
+                return View(_mapper.Map<CreateClassInformationByCustomer>(result));
+        }
         //await PackStudentAndTuTorList();
 
         return View(new CreateClassInformationByCustomer());
@@ -144,7 +157,7 @@ public class ClassInformationController : Controller
     [Route("RequestGettingClass")]
     public async Task<IActionResult> RequestGettingClass(RequestGettingClassRequest requestGettingClassRequest)
     {
-        var email = HttpContext.Request.Cookies["email"];
+        var email = HttpContext.Session.GetString("email");
 
         if (User.Identity is null || !User.Identity.IsAuthenticated || email is null)
         {

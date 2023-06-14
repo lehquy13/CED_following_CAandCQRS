@@ -2,6 +2,7 @@
 using CED.Application.Services.Subjects.Commands;
 using CED.Contracts;
 using CED.Contracts.Subjects;
+using CED.Web.CustomerSide.Utilities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +27,19 @@ public class SubjectController : Controller
         _mediator = sender;
         _mapper = mapper;
     }
-
+    
+    [HttpGet("Subjects")]
+    public async Task<IActionResult> Subjects(string? tutorGuid)
+    {
+        var query = new GetObjectQuery<PaginatedList<SubjectDto>>();
+        
+        if (tutorGuid != null)
+        {
+            query.Guid = new Guid(tutorGuid);
+        }
+        var subjectDtos = await _mediator.Send(query);
+        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
+    }
    
     [HttpGet("Detail")]
     public async Task<IActionResult> Detail(Guid? id)

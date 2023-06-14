@@ -13,8 +13,8 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly IUserRepository _userRepository;
-    private readonly ITutorRepository _tutorRepository;
-    public GetLineChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository, IUserRepository userRepository,ITutorRepository tutorRepository) : base(mapper)
+    private readonly IUserRepository _tutorRepository;
+    public GetLineChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository, IUserRepository userRepository,IUserRepository tutorRepository) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;
         _userRepository = userRepository;

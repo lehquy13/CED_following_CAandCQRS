@@ -6,6 +6,7 @@ using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using Mapster;
 using MapsterMapper;
 
 namespace CED.Application.Services.Users.Queries.CustomerQueries;
@@ -14,18 +15,21 @@ public class
     GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<GetAllTutorInformationsAdvancedQuery, TutorDto>
 {
     private readonly ISubjectRepository _subjectRepository;
-    private readonly ITutorRepository _userRepository;
+    private readonly ITutorRepository _tutorRepository;
+    private readonly IUserRepository _userepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
 
     public GetAllTutorInformationsAdvancedQueryHandler(
         ISubjectRepository subjectRepository,
-        ITutorRepository userRepository,
+        IUserRepository userepository,
+        ITutorRepository tutorRepository,
         IRepository<TutorMajor> tutorMajorRepository,
         IMapper mapper) : base(mapper)
     {
         _subjectRepository = subjectRepository;
-        _userRepository = userRepository;
+        _tutorRepository = tutorRepository;
         _tutorMajorRepository = tutorMajorRepository;
+        _userepository = userepository;
     }
 
     public override async Task<PaginatedList<TutorDto>> Handle(GetAllTutorInformationsAdvancedQuery query,
@@ -35,7 +39,8 @@ public class
         try
         {
             var subjects = await _subjectRepository.GetAllList();
-            var tutors = _userRepository.GetTutors().AsEnumerable();
+            var tutors = _tutorRepository.GetAll().AsEnumerable();
+            var tutorAsUser = _userepository.GetTutors().AsEnumerable();
             var tutorsMajors = _tutorMajorRepository.GetAll();
 
 
@@ -46,17 +51,17 @@ public class
 
             if (!string.IsNullOrEmpty(query.Address))
             {
-                tutors = tutors.Where(user => user.Address.Contains(query.Address));
+                tutorAsUser = tutorAsUser.Where(user => user.Address.Contains(query.Address));
             }
 
             if (query.Gender != Gender.None)
             {
-                tutors = tutors.Where(user => user.Gender == query.Gender);
+                tutorAsUser = tutorAsUser.Where(user => user.Gender == query.Gender);
             }
 
             if (query.BirthYear != 0)
             {
-                tutors = tutors.Where(user => user.BirthYear == query.BirthYear);
+                tutorAsUser = tutorAsUser.Where(user => user.BirthYear == query.BirthYear);
             }
 
             if (!string.IsNullOrEmpty(query.SubjectName))
@@ -68,40 +73,20 @@ public class
                 
             }
 
-
-            var tutorsMajorsResult = tutorsMajors
-                .GroupBy(t => t.TutorId)
-                .ToList()
-                .Select(major => new
-                {
-                    tutorId = major.Key,
-                    majorId = major.ToList()
-                })
-                .ToList();
-
-            var enumerable = tutors as Domain.Users.Tutor[] ?? tutors.ToArray();
+            var enumerable1 = tutors as Domain.Users.Tutor[] ?? tutors.ToArray();
+            var mergeList = enumerable1.GroupJoin(
+                tutorAsUser,
+                tutor => tutor.Id,
+                user => user.Id,
+                (tutor, user) => (user.First(),tutor).Adapt<TutorDto>()
+            );
+       
+            var enumerable = tutors as Domain.Users.Tutor[] ?? enumerable1.ToArray();
             var totalPages = enumerable.Count();
-
-            // var tutorDtos = _mapper.Map<List<TutorDto>>(tutors);
-            //
-            // foreach (var t in tutorDtos)
-            // {
-            //     var objectMajor = tutorsMajorsResult.FirstOrDefault(x => x.tutorId.Equals(t.Id));
-            //     if (objectMajor != null)
-            //     {
-            //         foreach (var id in objectMajor.majorId)
-            //         {
-            //             var sub = subjects.FirstOrDefault(x => x.Id.ToString().Equals(id.ToString()));
-            //             if (sub is not null)
-            //             {
-            //                 t.Majors.Add(_mapper.Map<SubjectDto>(sub));
-            //             }
-            //         }
-            //     }
-            // }
+            
 
             var result = _mapper.Map<List<TutorDto>>(
-                enumerable.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize)
+                mergeList.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize)
                     .ToList()
             );
 

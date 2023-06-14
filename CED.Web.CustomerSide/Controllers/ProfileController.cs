@@ -3,6 +3,7 @@ using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 using CED.Application.Services.ClassInformations.Tutor.Queries;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Application.Services.Users.Queries;
+using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
 using CED.Contracts;
 using CED.Contracts.Authentication;
@@ -51,43 +52,53 @@ public class ProfileController : Controller
     [HttpGet("")]
     public async Task<IActionResult> Profile()
     {
-        await PackStaticListToView();
-
-        var identity = HttpContext.User.Identities.First();
-
-        var query = new GetObjectQuery<UserDto>()
+        try
         {
-            Guid = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
-        };
+            await PackStaticListToView();
 
-        var loginResult = await _mediator.Send(query);
-       
+            var identity = HttpContext.User.Identities.First();
 
-        if (loginResult != null )
-        {
-            var changePasswordRequest = _mapper.Map<ChangePasswordRequest>(loginResult);
-
-            var viewModelResult = new ProfileViewModel
+            var query = new GetObjectQuery<LearnerDto>()
             {
-                UserDto = loginResult,
-                ChangePasswordRequest = changePasswordRequest
+                Guid = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
             };
-            if (loginResult.Role == UserRole.Tutor)
+
+            var loginResult = await _mediator.Send(query);
+
+
+            if (loginResult != null)
             {
-               
-                var query1 = new GetTutorProfileQuery()
+                var changePasswordRequest = _mapper.Map<ChangePasswordRequest>(loginResult);
+
+                var viewModelResult = new ProfileViewModel
                 {
-                    Guid = loginResult.Id
+                    UserDto = loginResult,
+                    ChangePasswordRequest = changePasswordRequest
                 };
-                var loginResult1 = await _mediator.Send(query1);
+                if (loginResult.Role == UserRole.Tutor)
+                {
 
-                viewModelResult.ClassInformationDtos = loginResult1.RequestGettingClassDtos;
-                viewModelResult.TutorDto = loginResult1.TutorMainInfoDto;
+                    var query1 = new GetTutorProfileQuery()
+                    {
+                        Guid = loginResult.Id
+                    };
+                    var loginResult1 = await _mediator.Send(query1);
+
+                    viewModelResult.RequestGettingClassDtos = loginResult1.RequestGettingClassDtos;
+                    viewModelResult.TutorDto = loginResult1.TutorMainInfoDto;
+                }
+
+                return View(viewModelResult);
             }
-            return View(viewModelResult);
-        }
 
-        return RedirectToAction("Login", "Authentication", new LoginRequest("", ""));
+            return RedirectToAction("Login", "Authentication", new LoginRequest("", ""));
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return View("Error");
+
+        }
     }
 
     [HttpPost("ChooseProfilePictures")]
@@ -102,7 +113,7 @@ public class ProfileController : Controller
         foreach (var i in formFiles)
         {
             var image = await Helper.SaveFiles(i, _webHostEnvironment.WebRootPath);
-            vals.Add("temp\\"+ Path.GetFileName(image));
+            vals.Add("\\temp\\"+ Path.GetFileName(image));
         }
 
         return Json(new { res = true, images = vals });
@@ -122,7 +133,7 @@ public class ProfileController : Controller
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(UserDto userDto, IFormFile? formFile)
+    public async Task<IActionResult> Edit(LearnerDto userDto, IFormFile? formFile)
     {
         
         await PackStaticListToView();
@@ -131,22 +142,15 @@ public class ProfileController : Controller
         {
             try
             {
-                bool result;
+                
                 var filePath = string.Empty;
                 if (formFile != null)
                 {
                     filePath = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
                 }
 
-                if (userDto.Role == UserRole.Tutor)
-                {
-                    result = await _mediator.Send(new CreateUpdateUserCommand(userDto,filePath));
-                }
-                else
-                {
-                    result = await _mediator.Send(new CreateUpdateUserCommand(userDto,filePath));
-
-                }
+               
+                bool result = await _mediator.Send(new LearnerInfoChangingCommand(userDto,filePath));
 
                 ViewBag.Updated = result;
                 Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
@@ -166,7 +170,7 @@ public class ProfileController : Controller
                     };
                     var loginResult1 = await _mediator.Send(query1);
 
-                    viewModelResult.ClassInformationDtos = loginResult1;
+                    viewModelResult.RequestGettingClassDtos = loginResult1;
                 }
               
                 
@@ -291,14 +295,5 @@ public class ProfileController : Controller
 
     }
 
-    [HttpGet("Subjects")]
-    public async Task<IActionResult> Subjects(string id)
-    {
-        var query = new GetObjectQuery<PaginatedList<SubjectDto>>()
-        {
-            Guid = new Guid(id)
-        };
-        var subjectDtos = await _mediator.Send(query);
-        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
-    }
+    
 }

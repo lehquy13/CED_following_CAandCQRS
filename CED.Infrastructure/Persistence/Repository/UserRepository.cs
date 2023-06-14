@@ -29,7 +29,8 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var users  =  Context.Set<User>().AsEnumerable().Where(o => o is { Role: UserRole.Tutor, IsDeleted: false }).ToList();
+            var users = Context.Set<User>().AsEnumerable().Where(o => o is { Role: UserRole.Tutor, IsDeleted: false })
+                .ToList();
             return users;
         }
         catch (Exception ex)
@@ -37,12 +38,33 @@ public class UserRepository : Repository<User>, IUserRepository
             throw new Exception(ex.Message);
         }
     }
+
     public List<User> GetStudents()
     {
         try
         {
-            var users  =  Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner).ToList();
+            var users = Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner).ToList();
             return users;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<bool> ExistenceCheck(string? email)
+    {
+        try
+        {
+            if ( email != null)
+            {
+                var user = await Context.Set<User>()
+                    .FirstOrDefaultAsync(o => o.Email.Equals(email));
+    
+                return user != null;
+            }
+
+            return false;
         }
         catch (Exception ex)
         {
@@ -55,29 +77,17 @@ public class UserRepository : Repository<User>, IUserRepository
         try
         {
             var user = await Context.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
-            if (user == null) { return null; }
-            return user;
-        }
-        catch(Exception ex) { 
-            throw new Exception(ex.Message);
-        }
-    }
-
-    public List<User> GetUsersByRole(UserRole userRole = UserRole.All)
-    {
-        try
-        {
-            if(userRole == UserRole.All)
+            if (user == null)
             {
-                return Context.Set<User>().AsEnumerable().ToList();
+                return null;
             }
-           
-            return Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner).ToList();
+
+            return user;
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
     }
+    
 }
-

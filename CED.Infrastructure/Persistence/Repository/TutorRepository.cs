@@ -11,27 +11,19 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
     {
     }
 
-    public List<Tutor> GetTutors()
-    {
-        try
-        {
-            var users  =  Context.Set<Tutor>().AsEnumerable().Where(o => o is { Role: UserRole.Tutor, IsDeleted: false }).ToList();
-            return users;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
+
    
 
     public async Task<Tutor?> GetUserByEmail(string email)
     {
         try
         {
-            var user = await Context.Set<Tutor>().FirstOrDefaultAsync(o => o.Email == email);
+            var user = await Context.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
+            
             if (user == null) { return null; }
-            return user;
+            var tutor = await Context.Set<Tutor>().FirstOrDefaultAsync(o => o.Id.Equals(user.Id));
+
+            return tutor;
         }
         catch(Exception ex) { 
             throw new Exception(ex.Message);

@@ -6,6 +6,6 @@ namespace CED.Domain.Users;
 public interface ITutorRepository : IRepository<Tutor>
 {
     Task<Tutor?> GetUserByEmail(string email);
-    List<Tutor> GetTutors();
+    //List<Tutor> GetTutors();
 }
 

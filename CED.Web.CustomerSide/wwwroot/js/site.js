@@ -159,7 +159,7 @@ function LoadImage(url, id) {
                     for (const value of res.images) {
                         $("#filesInputValues")
                             .append('<img src='+value+' style="max-width: 120px;" alt="Profile" id="tempFiles">\n' +
-                                '<input id='+value+' name="TutorVerificationInfoDtos.Image" hidden type="text"/>');
+                                '<input value='+value+' name="filePaths" hidden type="text"/>');
                     }
 
                 

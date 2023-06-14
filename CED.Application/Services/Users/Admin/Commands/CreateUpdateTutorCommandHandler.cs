@@ -38,7 +38,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
             var tutorAsUser = await _userRepository.GetUserByEmail(command.TutorDto.Email);
             var newMajorUpdate = command.SubjectIds.DistinctBy(x => x).ToList();
             //Check if the subject existed
-            if (tutor is not null && tutorAsUser is not null && tutor.Role == UserRole.Tutor)
+            if (tutor is not null && tutorAsUser is not null && tutorAsUser.Role == UserRole.Tutor)
             {
                 var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id));
                 // check the subject changes

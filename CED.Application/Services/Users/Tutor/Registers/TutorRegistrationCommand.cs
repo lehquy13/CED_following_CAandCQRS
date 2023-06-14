@@ -3,8 +3,11 @@ using MediatR;
 
 namespace CED.Application.Services.Users.Tutor.Registers;
 
-public record TutorRegisterCommand
+public record TutorRegistrationCommand
 (
-    TutorDto TutorDto
+    TutorDto TutorDto,
+    List<string>? SubjectIds,
+    List<string>? FilePaths
+
     ) : IRequest<bool>;
 

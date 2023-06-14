@@ -1,13 +1,8 @@
-﻿using System.Net;
-using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
-using CED.Application.Services.Users.Admin.Commands;
-using CED.Application.Services.Users.Queries;
+﻿using CED.Application.Services.Users.Queries;
 using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
-using CED.Contracts.Authentication;
 using CED.Contracts.Users;
-using CED.Domain.Shared;
-using CED.Domain.Shared.ClassInformationConsts;
+
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -52,13 +47,13 @@ namespace CED.WebAPI.Controllers
 
         [HttpPost("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(UserDto userDto)
+        public async Task<IActionResult> Edit(LearnerDto userDto, string filePath = "")
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var query = new StudentInfoChangingCommand(userDto);
+                    var query = new LearnerInfoChangingCommand(userDto,filePath);
 
 
                     var result = await _mediator.Send(query);

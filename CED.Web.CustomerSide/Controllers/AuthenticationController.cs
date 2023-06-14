@@ -40,12 +40,12 @@ public class AuthenticationController : Controller
 
         var loginResult = await _mediator.Send(query);
 
-        if (loginResult)
+        if (loginResult && HttpContext.Session.GetString("email") != null)
         {
             return RedirectToAction("Index", "Home");
         }
 
-        return View("Login", new LoginRequest("", ""));
+        return await Logout();
     }
 
     [HttpPost]
@@ -56,7 +56,7 @@ public class AuthenticationController : Controller
         var result = await _mediator.Send(query);
         if (result.IsSuccess)
         {
-            StoreCookie(result);
+            await StoreCookie(result);
             return RedirectToAction("Index", "Home");
         }
 
@@ -86,7 +86,7 @@ public class AuthenticationController : Controller
             return View("Login", new LoginRequest("", ""));
         }
 
-        StoreCookie(loginResult);
+        await StoreCookie(loginResult);
 
         var returnUrl = TempData["ReturnUrl"] as string;
         if (returnUrl is null)
@@ -105,7 +105,7 @@ public class AuthenticationController : Controller
     }
 
 
-    void StoreCookie(AuthenticationResult loginResult)
+    private async Task StoreCookie(AuthenticationResult loginResult)
     {
         // Store the JWT token in a cookie
 
@@ -120,21 +120,33 @@ public class AuthenticationController : Controller
         };
         if (loginResult.User != null)
         {
-            HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
-            HttpContext.Response.Cookies.Append("name", loginResult.User.FullName, cookieOptions);
-            HttpContext.Response.Cookies.Append("image", loginResult.User.Image, cookieOptions);
-            HttpContext.Response.Cookies.Append("email", loginResult.User.Email, cookieOptions);
+             HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
+            // HttpContext.Response.Cookies.Append("name", loginResult.User.FullName, cookieOptions);
+            // HttpContext.Response.Cookies.Append("image", loginResult.User.Image, cookieOptions);
+            // HttpContext.Response.Cookies.Append("email", loginResult.User.Email, cookieOptions);
+            
+            //HttpContext.Session.SetString("access_token",loginResult.Token);
+            HttpContext.Session.SetString("name",loginResult.User.FullName);
+            HttpContext.Session.SetString("image",loginResult.User.Image);
+            HttpContext.Session.SetString("email",loginResult.User.Email);
+            HttpContext.Session.SetString("role",loginResult.User.Role.ToString());
+            await HttpContext.Session.CommitAsync();
+
         }
     }
 
     [Authorize]
     [HttpGet("Logout")]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
         HttpContext.Response.Cookies.Delete("access_token");
-        HttpContext.Response.Cookies.Delete("name");
-        HttpContext.Response.Cookies.Delete("image");
-        HttpContext.Response.Cookies.Delete("email");
+        // HttpContext.Response.Cookies.Delete("name");
+        // HttpContext.Response.Cookies.Delete("image");
+        // HttpContext.Response.Cookies.Delete("email");
+        HttpContext.Session.Remove("name");
+        HttpContext.Session.Remove("image");
+        HttpContext.Session.Remove("email");
+        await HttpContext.Session.CommitAsync();
 
         return View("Login", new LoginRequest("", ""));
     }

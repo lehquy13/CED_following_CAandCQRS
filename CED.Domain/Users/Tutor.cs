@@ -1,8 +1,9 @@
+using Abp.Domain.Entities;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Domain.Users;
 
-public class Tutor : User
+public class Tutor : Entity<Guid>
 {
     //is tutor related informtions
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
@@ -10,10 +11,7 @@ public class Tutor : User
     public bool IsVerified { get; set; } = false;
     public short Rate { get; set; } = 5;
 
-    public Tutor()
-    {
-        Role = UserRole.Tutor;
-    }
+    
     /// <summary>
     /// Update tutor's information and change the state into being verified
     /// </summary>

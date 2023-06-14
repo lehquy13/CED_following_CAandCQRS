@@ -60,7 +60,7 @@ public static class Helper
         if (formFile != null && formFile.Length > 0)
         {
             string fileName = formFile.FileName;
-            string path = Path.Combine(wwwRootPath + "\\temp\\", fileName);
+            string path = Path.Combine(wwwRootPath + "\\temp\\", fileName.Replace(" ",""));
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
                 await formFile.CopyToAsync(fileStream);

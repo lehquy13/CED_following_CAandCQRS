@@ -10,19 +10,19 @@ using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetObjectQuery<ClassInformationDto>, ClassInformationDto>
+public class
+    GetClassInformationQueryHandler : GetByIdQueryHandler<GetObjectQuery<ClassInformationDto>, ClassInformationDto>
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly ISubjectRepository _subjectRepository;
-    private readonly ITutorRepository _userRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IRepository<RequestGettingClass> _requestGettingClassRepositoryepository;
 
     public GetClassInformationQueryHandler(IClassInformationRepository classInformationRepository,
         IRepository<RequestGettingClass> requestGettingClassRepositoryepository,
-
-                                           ISubjectRepository subjectRepository,
-        ITutorRepository userRepository,
-                                           IMapper mapper) : base(mapper)
+        ISubjectRepository subjectRepository,
+        IUserRepository userRepository,
+        IMapper mapper) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;
         _requestGettingClassRepositoryepository = requestGettingClassRepositoryepository;
@@ -30,7 +30,8 @@ public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetObjectQuer
         _userRepository = userRepository;
     }
 
-    public override async Task<ClassInformationDto?> Handle(GetObjectQuery<ClassInformationDto> query, CancellationToken cancellationToken)
+    public override async Task<ClassInformationDto?> Handle(GetObjectQuery<ClassInformationDto> query,
+        CancellationToken cancellationToken)
     {
         var classInformation = await _classInformationRepository.GetById(query.Guid);
 
@@ -38,6 +39,7 @@ public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetObjectQuer
         {
             return null;
         }
+
         var subject = await _subjectRepository.GetById(classInformation.SubjectId);
         var tutors = await _userRepository.GetAllList();
 
@@ -47,16 +49,15 @@ public class GetClassInformationQueryHandler : GetByIdQueryHandler<GetObjectQuer
                 tutors,
                 req => req.TutorId,
                 tu => tu.Id,
-                (req,tu)=> (req, tu.FirstOrDefault()).Adapt<RequestGettingClassMinimalDto>()
-                ).ToList();
-        
-        if(classInformation.TutorId is not null)
+                (req, tu) => (req, tu.FirstOrDefault()).Adapt<RequestGettingClassMinimalDto>()
+            ).ToList();
+
+        if (classInformation.TutorId is not null)
         {
             var tutor = tutors.SingleOrDefault(x => x.Id == (Guid)classInformation.TutorId);
-            return (classInformation, subject, tutor,requests).Adapt<ClassInformationDto>();
-
+            return (classInformation, subject, tutor, requests).Adapt<ClassInformationDto>();
         }
+
         return (classInformation, subject).Adapt<ClassInformationDto>();
     }
 }
-

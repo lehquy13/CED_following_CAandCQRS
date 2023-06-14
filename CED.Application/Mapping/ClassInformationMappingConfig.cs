@@ -21,7 +21,7 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest, src => src);
 
         
-        config.NewConfig<(ClassInformation, Subject, Tutor,List<RequestGettingClassMinimalDto>), ClassInformationDto>()
+        config.NewConfig<(ClassInformation, Subject, User,List<RequestGettingClassMinimalDto>), ClassInformationDto>()
             .Map(dest => dest.RequestGettingClassDtos, src => src.Item4)
             .Map(dest => dest.SubjectName, src => src.Item2.Name)
             .Map(dest => dest.SubjectId, src => src.Item2.Id)
@@ -45,7 +45,7 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.Tutor, src => src.Item3)
             .Map(dest => dest.SubjectName, src => src.Item4)
             .Map(dest => dest, src => src.Item1);
-        config.NewConfig<(RequestGettingClass, Tutor), RequestGettingClassMinimalDto>()
+        config.NewConfig<(RequestGettingClass, User), RequestGettingClassMinimalDto>()
             .Map(dest => dest.Id, src => src.Item1.Id)
             .Map(dest => dest.Description, src => src.Item1.Description)
             .Map(dest => dest.RequestStatus, src => src.Item1.RequestStatus)

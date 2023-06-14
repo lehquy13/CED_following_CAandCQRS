@@ -3,8 +3,9 @@ using MediatR;
 
 namespace CED.Application.Services.Users.Student.Commands;
 
-public record StudentInfoChangingCommand
+public record LearnerInfoChangingCommand
 (
-    UserDto StudentDto
+    LearnerDto LearnerDto,
+    string FilePath
     ) : IRequest<bool>;
 

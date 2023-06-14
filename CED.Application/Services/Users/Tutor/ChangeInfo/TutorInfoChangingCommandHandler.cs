@@ -96,7 +96,7 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
         }
 
 
-        if (tutor.Role != UserRole.Tutor) return false;
+        //if (tutor.Role != UserRole.Tutor) return false;
         var mappedTutor = _mapper.Map<Domain.Users.Tutor>(command.TutorDto);
         // check
         tutor.UpdateTutorInformation(mappedTutor);

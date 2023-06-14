@@ -7,6 +7,6 @@ public interface IUserRepository : IRepository<User>
 {
     Task<User?> GetUserByEmail(string email);
     List<User> GetStudents();
-    List<User> GetUsersByRole(UserRole userRole = UserRole.All);
+    Task<bool> ExistenceCheck(string? email);
+    List<User> GetTutors();
 }
-

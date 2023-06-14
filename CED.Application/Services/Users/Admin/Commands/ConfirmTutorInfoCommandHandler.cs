@@ -21,7 +21,7 @@ public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<Confirm
         {
             throw new Exception("Tutor with an email doesn't exist");
         }
-        if (user.Role != UserRole.Tutor) return false;
+        //if (user.Role != UserRole.Tutor) return false;
 
         command.TutorDto.IsVerified = true;
         user.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));

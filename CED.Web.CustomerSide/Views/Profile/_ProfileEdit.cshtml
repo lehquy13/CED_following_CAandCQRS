@@ -1,7 +1,6 @@
-﻿@using CED.Contracts.Users
-@using CED.Domain.Shared
+﻿@using CED.Domain.Shared
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model CED.Contracts.Users.UserDto
+@model CED.Contracts.Users.LearnerDto
 @{
     //AddressDto addressDto = ViewData["Addresses"] as AddressDto ?? new AddressDto(new List<CityDto>());
 
@@ -162,10 +161,10 @@
     @*     </div> *@
     @* </div> *@
     <!-- hidden info-->
-    <div class="col-md-6" hidden>
-        <label asp-for="Password" class="form-label">Password</label>
-        <input type="password" asp-for="Password" class="form-control">
-    </div>
+    @* <div class="col-md-6" hidden> *@
+    @*     <label asp-for="Password" class="form-label">Password</label> *@
+    @*     <input type="password" asp-for="Password" class="form-control"> *@
+    @* </div> *@
     <div class="form-group" hidden>
         <label asp-for="DeleterUserId" class="control-label"></label>
         <input asp-for="DeleterUserId" class="form-control"/>

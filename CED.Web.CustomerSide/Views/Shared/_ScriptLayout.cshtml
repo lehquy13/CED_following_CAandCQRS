@@ -1,5 +1,5 @@
 ﻿@{
-    string name = Context.Request.Cookies["name"] as string ?? "user";
+    string name = Context.Session.GetString("name") as string ?? "user";
 }
 
 <!DOCTYPE html>

@@ -9,86 +9,49 @@
 }
 @if (Model.IsPartialLoad is true)
 {
-     <div id="header"  >
-         <div class="container d-flex align-items-center">
-                 <h1 class="logo me-auto">
-                                 <a href="/">EduSmart</a>
-                             </h1>
-                             <!-- Uncomment below if you prefer to use an image logo -->
-                             <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-                 
-                             <nav id="navbar" class="navbar order-last order-lg-0">
-                                 <ul>
-                                     <li>
-                                         <a href="/">Home</a>
-                                     </li>
-                                     <li>
-                                         <a asp-action="About" asp-controller="Home">About</a>
-                                     </li>
-                                     <li>
-                                         <a asp-action="Index" asp-controller="ClassInformation">New Classes</a>
-                                     </li>
-                                     <li>
-                                         <a asp-action="Index" asp-controller="TutorInformation">Trainers</a>
-                                     </li>
-                                    
-                                     <li>
-                                         <a href="/">Pricing</a>
-                                     </li>
-                 
-                                     <li class="dropdown">
-                                         <a href="#">
-                                             <span>Drop Down</span> <i class="bi bi-chevron-down"></i>
-                                         </a>
-                                         <ul>
-                                             <li>
-                                                 <a href="#">Drop Down 1</a>
-                                             </li>
-                                             <li class="dropdown">
-                                                 <a href="#">
-                                                     <span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i>
-                                                 </a>
-                                                 <ul>
-                                                     <li>
-                                                         <a href="#">Deep Drop Down 1</a>
-                                                     </li>
-                                                     <li>
-                                                         <a href="#">Deep Drop Down 2</a>
-                                                     </li>
-                                                     <li>
-                                                         <a href="#">Deep Drop Down 3</a>
-                                                     </li>
-                                                     <li>
-                                                         <a href="#">Deep Drop Down 4</a>
-                                                     </li>
-                                                     <li>
-                                                         <a href="#">Deep Drop Down 5</a>
-                                                     </li>
-                                                 </ul>
-                                             </li>
-                                             <li>
-                                                 <a href="#">Drop Down 2</a>
-                                             </li>
-                                             <li>
-                                                 <a href="#">Drop Down 3</a>
-                                             </li>
-                                             <li>
-                                                 <a href="#">Drop Down 4</a>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a asp-controller="Home" asp-action="Contact">Contact</a>
-                                     </li>
-                                 </ul>
-                                 <i class="bi bi-list mobile-nav-toggle"></i>
-                             </nav><!-- .navbar -->
-                 
-                             <a asp-action="Create" asp-controller="ClassInformation" class="get-started-btn">Get Started</a>
-         </div>
-            
-    
-            </div>
+    <div id="header">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto">
+                <a href="/">EduSmart</a>
+            </h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a asp-action="About" asp-controller="Home">About</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="ClassInformation">Classes</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="TutorInformation">Tutors</a>
+                    </li>
+                    @if (Model.UserDto.Role != UserRole.Tutor)
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="TutorInformation">Tutor Registration </a>
+                        </li>
+                    }
+                   
+
+                    
+                    <li>
+                        <a asp-controller="Home" asp-action="Contact">Contact</a>
+                    </li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+            <a asp-action="Create" asp-controller="ClassInformation" class="get-started-btn">Get Started</a>
+        </div>
+
+
+    </div>
     <!-- End Header -->
 }
 <div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
@@ -100,7 +63,7 @@
 <div class="alert alert-danger alert-dismissible fade collapse" role="alert" id="failAlert">
     <i class="bi bi-x-circle me-1"></i>
     Update Fail!
-    <button type="button" class="btn-close" data-bs-toggle="collapse" id="failAlertButton" data-bs-target="#failAlert" aria-expanded="false" aria-controls="failAlert"  aria-label="Close"></button>
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="failAlertButton" data-bs-target="#failAlert" aria-expanded="false" aria-controls="failAlert" aria-label="Close"></button>
 </div>
 <section class="section profile">
     <div class="row">
@@ -146,19 +109,21 @@
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" id="profile-edit-button" data-bs-target="#profile-edit">Edit Profile</button>
                         </li>
+
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#learning-class">Learning Class</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" id="profile-change-password-button">Change Password</button>
+                        </li>
+
                         @if (Model.UserDto.Role == UserRole.Tutor)
                         {
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Teaching Class</button>
                             </li>
-                        }
                        
-
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" id="profile-change-password-button">Change Password</button>
-                        </li>
-@if (Model.UserDto.Role == UserRole.Tutor)
-                        {
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tutor-infor">Tutor Informations</button>
                             </li>
@@ -167,35 +132,43 @@
                     <div class="tab-content pt-2">
 
                         <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                            <partial name="_ProfileOverview" model="@Model.UserDto"/>
+                            <partial name="_ProfileOverview" model="@Model.UserDto" />
                         </div>
 
                         <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                             <!-- Profile Edit Form -->
 
-                            <partial name="_ProfileEdit" model="@Model.UserDto" view-data="ViewData"/>
+                            <partial name="_ProfileEdit" model="@Model.UserDto" view-data="ViewData" />
                             <!-- End Profile Edit Form -->
 
                         </div>
- @if (Model.UserDto.Role == UserRole.Tutor)
- {
-     <div class="tab-pane fade pt-3" id="profile-settings">
 
-         <partial name="_AllTeachingClass" model="@Model.ClassInformationDtos" view-data="ViewData"/>
+                        <div class="tab-pane fade pt-3" id="learning-class">
+                            <!-- Learning Classes -->
+                            <partial name="_AllLearningClass" model="@Model.UserDto.LearningClassInformations" />
+                            <!-- End Learning Classes -->
+
+                        </div>
+                        @if (Model.UserDto.Role == UserRole.Tutor)
+                        {
+                            <div class="tab-pane fade pt-3" id="profile-settings">
+
+                                <partial name="_AllTeachingClass" model="@Model.RequestGettingClassDtos" view-data="ViewData" />
 
 
-     </div>
- }
- <div class="tab-pane fade pt-3" id="tutor-infor">
-     <!-- Change Password Form -->
-     <partial name="_ProfileTutorEdit" model="@Model.TutorDto"/>
-     <!-- End Change Password Form -->
+                            </div>
+                            <div class="tab-pane fade pt-3" id="tutor-infor">
+                                <!-- Change Password Form -->
+                                <partial name="_ProfileTutorEdit" model="@Model.TutorDto" />
+                                <!-- End Change Password Form -->
 
- </div>
- <div class="tab-pane fade pt-3" id="profile-change-password">
+                            </div>
+                        }
+                       
+                        <div class="tab-pane fade pt-3" id="profile-change-password">
                             <!-- Change Password Form -->
-                            <partial name="_ChangePassword" model="@Model.ChangePasswordRequest"/>
+                            <partial name="_ChangePassword" model="@Model.ChangePasswordRequest" />
                             <!-- End Change Password Form -->
 
                         </div>
