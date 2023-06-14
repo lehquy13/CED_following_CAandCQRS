@@ -18,6 +18,7 @@ using CED.Domain.Repository;
 using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Logging;
 using CED.Infrastructure.Persistence;
+using CED.Infrastructure.Services.EmailServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 
@@ -33,6 +34,10 @@ namespace CED.Infrastructure
             // Authentication configuration using jwt bearer
             services.AddAuth(configuration);
 
+            // set configuration settings to emailSettingName and turn it into Singleton
+            var emailSettingNames = new EmailSettingNames();
+            configuration.Bind(EmailSettingNames._SectionName, emailSettingNames);
+            services.AddSingleton(Options.Create(emailSettingNames));
             services.AddDbContext<CEDDBContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")
@@ -58,6 +63,7 @@ namespace CED.Infrastructure
             configuration.Bind(CloudinarySetting._SectionName, cloudinary);
             services.AddSingleton(Options.Create(cloudinary));
             services.AddScoped<ICloudinaryFile, CloudinaryFile>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             return services;
         }

@@ -34,7 +34,6 @@ public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<Tutor
     {
         try
         {
-            //Todo birthyear problems
             User? user = await _userRepository.GetById(query.Guid);
             Domain.Users.Tutor? tutor = await _tutorRepository.GetById(query.Guid);
             if (user is null || tutor is null)
