@@ -43,6 +43,10 @@ namespace CED.Infrastructure
                     configuration.GetConnectionString("DefaultConnection")
                 )
             );
+            
+          
+            
+            //Configure DI for Infrastructure services
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -64,7 +68,8 @@ namespace CED.Infrastructure
             services.AddSingleton(Options.Create(cloudinary));
             services.AddScoped<ICloudinaryFile, CloudinaryFile>();
             services.AddScoped<IEmailSender, EmailSender>();
-
+            //configure BackgroundService
+            services.AddHostedService<InfrastructureBackgroundService>();
             return services;
         }
 

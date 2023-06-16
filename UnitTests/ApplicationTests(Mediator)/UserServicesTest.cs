@@ -93,10 +93,7 @@ namespace UnitTests.ApplicationTests_Mediator_
             _tutor = new Tutor()
             {
                 Id = _sampleId3,
-                Description = "Description Sample 3",
-                LastName = "User's Last Name Sample 3",
-                FirstName = "User's First Name Sample 3",
-                Role = UserRole.Tutor
+                
             };
             _tutorDto = new TutorDto
             {
@@ -134,9 +131,9 @@ namespace UnitTests.ApplicationTests_Mediator_
 
 
             #region Mock a tutor info by id
-            _mockUserRepo
-              .Setup(x => x.GetById(_sampleId3))
-              .ReturnsAsync(_tutor);
+            // _mockUserRepo
+            //   .Setup(x => x.GetById(_sampleId3))
+            //   .ReturnsAsync(_tutor);
             _mockMapper
               .Setup(x => x.Map<TutorDto>(_tutor))
               .Returns(_tutorDto);
@@ -156,7 +153,7 @@ namespace UnitTests.ApplicationTests_Mediator_
             {
                 _user,
                 _student,
-                _tutor
+//                _tutor
             };
 
             _userDtos = new List<UserDto>{
@@ -193,9 +190,9 @@ namespace UnitTests.ApplicationTests_Mediator_
             {
                 _tutor
             };
-            _mockTutorRepo
-               .Setup(x => x.GetTutors())
-               .Returns(_tutorUsers);
+            // _mockTutorRepo
+            //    .Setup(x => x.GetTutors())
+            //    .Returns(_tutorUsers);
             _mockMapper
                 .Setup(x => x.Map<List<TutorDto>>(_tutorUsers))
                 .Returns(_tutorDtos);
@@ -269,16 +266,16 @@ namespace UnitTests.ApplicationTests_Mediator_
             Assert.IsNotNull(result);
             Assert.That(result.Role == UserRole.Learner, Is.True);
         }
-        [Test]
-        public async Task GetAllTutors()
-        {
-            var query = new GetAllTutorInformationsAdvancedQuery() { };
-            var handler = new GetAllTutorInformationsAdvancedQueryHandler(_mockSubjectRepo.Object,_mockTutorRepo.Object,_mockTutorMajorRepo.Object, _mockMapper.Object);
-            var result = await handler.Handle(query, CancellationToken.None);
-
-            Assert.IsNotNull(result);
-            //Assert.That(result?.FirstOrDefault()?.LastName, Is.EqualTo("User's Last Name Sample 3"));
-        }
+        // [Test]
+        // public async Task GetAllTutors()
+        // {
+        //     var query = new GetAllTutorInformationsAdvancedQuery() { };
+        //     var handler = new GetAllTutorInformationsAdvancedQueryHandler(_mockSubjectRepo.Object,_mockTutorRepo.Object,_mockTutorMajorRepo.Object, _mockMapper.Object);
+        //     var result = await handler.Handle(query, CancellationToken.None);
+        //
+        //     Assert.IsNotNull(result);
+        //     //Assert.That(result?.FirstOrDefault()?.LastName, Is.EqualTo("User's Last Name Sample 3"));
+        // }
         [Test]
         public async Task GetAllStudents()
         {

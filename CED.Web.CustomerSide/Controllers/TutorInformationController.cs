@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using Abp.Extensions;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Student.Queries;
 using CED.Application.Services.Users.Tutor.Registers;
@@ -149,9 +150,11 @@ public class TutorInformationController : Controller
             Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
             if (result)
             {
-                return View("SuccessPage"); //implement
+                HttpContext.Session.SetString("role",UserRole.Tutor.ToString());
+                return RedirectToAction("SuccessPage","Home"); //implement
             }
 
-        return View("FailPage"); //implement
+            return RedirectToAction("FailPage","Home"); //implement
+
     }
 }

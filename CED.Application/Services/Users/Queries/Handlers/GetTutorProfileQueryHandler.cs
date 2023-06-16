@@ -48,6 +48,7 @@ public class
             var tutor = await _userRepository.GetById(query.Guid);
             if (tutor is null)
             {
+                
                 throw new Exception("The tutor does not exist!");
             }
             var requests = _requestGettingClassRepository.GetAll()

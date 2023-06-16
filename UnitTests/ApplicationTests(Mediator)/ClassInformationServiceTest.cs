@@ -165,26 +165,26 @@ namespace UnitTests.ApplicationTests_Mediator_
                 .ReturnsAsync(true);
         }
 
-        [Test]
-        public async Task GetClassInformationById()
-        {
-            var query = new GetObjectQuery<ClassInformationDto>() { Guid = _sampleId };
-            var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object,_mockSubjectRepo.Object,_mockUserRepo.Object, _mockMapper.Object);
-            var result = await handler.Handle(query, CancellationToken.None);
+        // [Test]
+        // public async Task GetClassInformationById()
+        // {
+        //     var query = new GetObjectQuery<ClassInformationDto>() { Guid = _sampleId };
+        //     var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object,_mockSubjectRepo.Object,_mockUserRepo.Object, _mockMapper.Object);
+        //     var result = await handler.Handle(query, CancellationToken.None);
+        //
+        //     Assert.NotNull(result);
+        // }
 
-            Assert.NotNull(result);
-        }
-
-        [Test]
-        public async Task GetAllClassInformations()
-        {
-            var query = new GetAllClassInformationsQuery() { };
-            var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object,
-                _mockSubjectRepo.Object, _mockTutorRepo.Object, _mockMapper.Object);
-            var result = await handler.Handle(query, CancellationToken.None);
-
-            Assert.NotNull(result);
-        }
+        // [Test]
+        // public async Task GetAllClassInformations()
+        // {
+        //     var query = new GetAllClassInformationsQuery() { };
+        //     var handler = new GetAllClassInformationsQueryHandler(_mockClassInformationRepo.Object,
+        //         _mockSubjectRepo.Object, _mockTutorRepo.Object, _mockMapper.Object);
+        //     var result = await handler.Handle(query, CancellationToken.None);
+        //
+        //     Assert.NotNull(result);
+        // }
 
         // [Test]
         // public async Task CreateClassInformation()

@@ -1,6 +1,7 @@
 ﻿using CED.Domain.ClassInformations;
 using CED.Domain.Review;
 using CED.Domain.Subjects;
+using CED.Domain.Subscriber;
 using CED.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -13,11 +14,17 @@ public class CEDDBContext : DbContext
     public DbSet<ClassInformation> ClassInformations { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Tutor> Tutors { get; set; } = null!;
+    
     public DbSet<TutorVerificationInfo> TutorVerificationInfos { get; set; } = null!;
+    
     public DbSet<TutorReview> TutorReviews { get; set; } = null!;
+    
     //public DbSet<Learner> Users { get; set; } = null!;
+    
     public DbSet<TutorMajor> TutorMajors { get; set; } = null!;
+    
     public DbSet<RequestGettingClass> RequestGettingClasses { get; set; } = null!;
+    public DbSet<Subscriber> Subscribers { get; set; } = null!;
     public DbSet<City> Cities { get; set; } = null!;
     public DbSet<District> Districts { get; set; } = null!;
     public DbSet<Ward> Wards { get; set; } = null!;
@@ -92,6 +99,11 @@ public class CEDDBContext : DbContext
             re.ToTable("TutorReview");
             re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
             re.HasOne<User>().WithMany().HasForeignKey(x => x.LearnerId).IsRequired().OnDelete(DeleteBehavior.NoAction);
+        }); 
+        modelBuilder.Entity<Subscriber>(re =>
+        {
+            re.ToTable("Subscriber");
+            re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
         }); 
     }
 }

@@ -133,7 +133,7 @@ public class ClassInformationController : Controller
 
         var result = await _mediator.Send(command);
 
-        return View("SuccessPage");
+        return RedirectToAction("SuccessPage","Home"); //implement
     }
 
 
@@ -173,9 +173,10 @@ public class ClassInformationController : Controller
         if (result.IsFailed)
         {
             ViewBag.RequestedMessage = result.Reasons.FirstOrDefault()?.Message ?? "";
-            return View("FailPage");
+            return RedirectToAction("FailPage", "Home");
         }
-        return View("SuccessRequestPage");
+        return RedirectToAction("SuccessRequestPage", "Home");
+
 
 
     }

@@ -32,6 +32,18 @@ public class HomeController : Controller
     {
         return View();
     }
+    public IActionResult SuccessPage()
+    {
+        return View();
+    } 
+    public IActionResult FailPage()
+    {
+        return View();
+    }
+    public IActionResult SuccessRequestPage()
+    {
+        return View();
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
