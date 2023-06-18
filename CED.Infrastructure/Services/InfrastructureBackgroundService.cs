@@ -29,7 +29,16 @@ public class InfrastructureBackgroundService : BackgroundService
         _serviceProvider = serviceProvider;
         
         //handling datetime
-        TimeSpan timeSpan = DateTime.Today.AddHours(20) - DateTime.Now;
+        TimeSpan timeSpan = TimeSpan.FromHours(20);
+        if (DateTime.Now > DateTime.Today.AddHours(20)) //after 20pm
+        {
+            timeSpan += DateTime.Today.AddDays(1) - DateTime.Now;
+        }
+        else //before 20pm
+        {
+            timeSpan = DateTime.Today.Add(timeSpan) - DateTime.Now;
+        }
+         
         _periodicTimer = new PeriodicTimer(timeSpan);
 
     }
