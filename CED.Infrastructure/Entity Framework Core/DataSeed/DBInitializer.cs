@@ -16,6 +16,7 @@ public static class DbInitializer
             var seeder = new DataSeeder();
             context.Subjects.AddRange(seeder.Subjects);
             context.Users.AddRange(seeder.Users);
+            context.Tutors.AddRange(seeder.Tutors);
             context.ClassInformations.AddRange(seeder.ClassInformations);
 
             context.SaveChanges();
