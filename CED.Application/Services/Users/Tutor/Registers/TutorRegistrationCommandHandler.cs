@@ -52,6 +52,8 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
             }
 
             user.Role = UserRole.Tutor;
+            user.CreationTime = DateTime.Now;
+            
             _userRepository.Update(user);
 
 

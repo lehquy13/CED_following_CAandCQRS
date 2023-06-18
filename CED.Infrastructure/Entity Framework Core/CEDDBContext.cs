@@ -58,6 +58,12 @@ public class CEDDBContext : DbContext
         {
             re.ToTable("User");
             //re.HasOne<Ward>().WithMany().HasForeignKey(r => r.WardId).IsRequired();
+            re.Property(x => x.FirstName).IsRequired().HasMaxLength(128);
+            re.Property(x => x.LastName).IsRequired().HasMaxLength(128);
+            re.Property(x => x.Email).IsRequired().HasMaxLength(128);
+            re.Property(x => x.Password).IsRequired().HasMaxLength(128);
+            re.Property(x => x.Role).IsRequired();
+            re.Property(x => x.Gender).IsRequired();
         }); 
         modelBuilder.Entity<Tutor>(re =>
         {

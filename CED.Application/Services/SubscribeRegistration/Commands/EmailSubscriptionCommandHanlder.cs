@@ -1,5 +1,7 @@
+using CED.Domain.Interfaces.Logger;
 using CED.Domain.Repository;
 using CED.Domain.Subscriber;
+using CED.Domain.Users;
 using MediatR;
 
 namespace CED.Application.Services.SubscribeRegistration.Commands;
@@ -7,25 +9,38 @@ namespace CED.Application.Services.SubscribeRegistration.Commands;
 public record EmailSubscriptionCommandHanler : IRequestHandler<EmailSubscriptionCommand, bool>
 {
     private readonly IRepository<Subscriber> _subscriberRepository;
-    public EmailSubscriptionCommandHanler(IRepository<Subscriber> subscriberRepository)
+    private readonly IUserRepository _userRepository;
+    private readonly IAppLogger<EmailUnsubscriptionCommandHanlder> _logger;
+    public EmailSubscriptionCommandHanler(IRepository<Subscriber> subscriberRepository, IUserRepository userRepository, IAppLogger<EmailUnsubscriptionCommandHanlder> logger)
     {
         _subscriberRepository = subscriberRepository;
+        _userRepository = userRepository;
+        _logger = logger;
     }
     
     public async Task<bool> Handle(EmailSubscriptionCommand command, CancellationToken cancellationToken)
     {
-        if (command.Id != Guid.Empty)
+        await Task.CompletedTask;
+        var subscriber = await _userRepository.GetUserByEmail(command.Mail);
+        if (subscriber == null)
+        {
+            _logger.LogError("User does not exist");
+            return false;
+        }
+        
+        var checkExisted = _subscriberRepository.GetAll()
+            .FirstOrDefault(x => x.TutorId.Equals(subscriber.Id));
+        if (checkExisted == null)
         {
             await _subscriberRepository.Insert(
-                new Subscriber()
+                new()
                 {
-                    TutorId = command.Id
+                    TutorId = subscriber.Id
                 }
-            );
+                );
             return true;
         }
 
         return false;
-
     }
 }

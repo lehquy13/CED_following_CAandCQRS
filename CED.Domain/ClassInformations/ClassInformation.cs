@@ -17,7 +17,7 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
     //Tutor related information
 
     public Gender GenderRequirement { get; set; } = Gender.None;
-    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Optional;
+    public AcademicLevel AcademicLevelRequirement { get; set; } = AcademicLevel.Optional;
 
     //Student related information
     //public string StudentName { get; set; } = String.Empty;

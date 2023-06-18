@@ -270,8 +270,8 @@
                 <div class="col-lg-4 col-md-6 footer-newsletter">
                     <h4>Join Our Newsletter</h4>
                     <p>Stay connected and be the first to receive updates, valuable insights, and exclusive offers from us.</p>
-                    <form action="" method="post">
-                        <input type="email" name="email"><input type="submit" value="Subscribe">
+                    <form asp-action="Subscribe" asp-controller="Subscribe" method="get">
+                        <input type="email" name="mail"><input type="submit" value="Subscribe">
                     </form>
                 </div>
 
