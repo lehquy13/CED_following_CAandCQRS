@@ -1,11 +1,13 @@
 ﻿using Abp.Extensions;
 using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Application.Services.TutorReviews.Commands;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Student.Queries;
 using CED.Application.Services.Users.Tutor.Registers;
 using CED.Contracts;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
+using CED.Contracts.TutorReview;
 using CED.Contracts.Users;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.CustomerSide.Utilities;
@@ -28,7 +30,8 @@ public class TutorInformationController : Controller
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly int _pageSize = 12;
 
-    public TutorInformationController(ISender mediator,IWebHostEnvironment webHostEnvironment, IMapper mapper, IAddressService addressService)
+    public TutorInformationController(ISender mediator, IWebHostEnvironment webHostEnvironment, IMapper mapper,
+        IAddressService addressService)
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -107,7 +110,7 @@ public class TutorInformationController : Controller
 
         return View(tutorDto);
     }
-    
+
     [Authorize]
     [HttpGet]
     [Route("TutorRegistration")]
@@ -132,29 +135,52 @@ public class TutorInformationController : Controller
     [Authorize]
     [HttpPost]
     [Route("TutorRegistration")]
-    public async Task<IActionResult> TutorRegistration(TutorDto tutorDto, List<string>? SubjectId, List<string>? filePaths)
+    public async Task<IActionResult> TutorRegistration(TutorDto tutorDto, List<string>? SubjectId,
+        List<string>? filePaths)
     {
         if (filePaths != null)
         {
-            for (var i =0; i <filePaths.Count;i++)
+            for (var i = 0; i < filePaths.Count; i++)
             {
                 filePaths[i] = _webHostEnvironment.WebRootPath + filePaths.ElementAt(i);
-            
             }
         }
 
-            var command = new TutorRegistrationCommand(tutorDto, SubjectId, filePaths);
+        var command = new TutorRegistrationCommand(tutorDto, SubjectId, filePaths);
 
-            var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command);
 
-            Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
-            if (result)
+        Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
+        if (result)
+        {
+            HttpContext.Session.SetString("role", UserRole.Tutor.ToString());
+            return RedirectToAction("SuccessPage", "Home"); //implement
+        }
+
+        return RedirectToAction("FailPage", "Home"); //implement
+    }
+
+    [Authorize]
+    [HttpPost]
+    [Route("ReviewTutor")]
+    public async Task<IActionResult> ReviewTutor(TutorReviewRequestDto tutorDto)
+    {
+
+        var command = new CreateReviewCommand
+        {
+            ReviewDto = new TutorReviewDto()
             {
-                HttpContext.Session.SetString("role",UserRole.Tutor.ToString());
-                return RedirectToAction("SuccessPage","Home"); //implement
-            }
+                Rate = tutorDto.Rate,
+                Description = tutorDto.Description,
+                Id = tutorDto.Id
+            },
+            LearnerEmail = HttpContext.Session.GetString("email") ?? "",
+            TutorEmail = tutorDto.TutorEmail,
 
-            return RedirectToAction("FailPage","Home"); //implement
+        };
 
+        var result = await _mediator.Send(command);
+
+        return RedirectToAction("Index"); //implement
     }
 }

@@ -4,6 +4,7 @@ using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CED.Infrastructure.Migrations
 {
     [DbContext(typeof(CEDDBContext))]
-    partial class CEDDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230621074055_refine_review")]
+    partial class refine_review
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,23 +77,13 @@ namespace CED.Infrastructure.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("LearnerGender")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("LearnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("LearnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("LearningMode")
                         .HasColumnType("int");
 
                     b.Property<int>("MinutePerSession")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumberOfLearner")
+                    b.Property<int>("NumberOfStudent")
                         .HasColumnType("int");
 
                     b.Property<int>("SessionPerWeek")
@@ -98,6 +91,12 @@ namespace CED.Infrastructure.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<int>("StudentGender")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("StudentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SubjectId")
                         .HasColumnType("uniqueidentifier");
@@ -112,7 +111,7 @@ namespace CED.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LearnerId");
+                    b.HasIndex("StudentId");
 
                     b.HasIndex("SubjectId");
 
@@ -449,7 +448,7 @@ namespace CED.Infrastructure.Migrations
                 {
                     b.HasOne("CED.Domain.Users.User", null)
                         .WithMany()
-                        .HasForeignKey("LearnerId");
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("CED.Domain.Subjects.Subject", null)
                         .WithMany()

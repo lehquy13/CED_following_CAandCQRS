@@ -10,3 +10,11 @@ public class TutorReviewDto : AuditedEntityDto<Guid>
     public short Rate { get; set; } = 5;
     public string Description { get; set; } = "";
 }
+public class TutorReviewRequestDto : AuditedEntityDto<Guid>
+{
+    public string LearnerEmail { get; set; }
+    public string TutorEmail { get; set; }
+
+    public short Rate { get; set; } = 5;
+    public string Description { get; set; } = "";
+}

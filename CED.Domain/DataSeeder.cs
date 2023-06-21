@@ -256,14 +256,14 @@ public class DataSeeder
                  Description =
                      "học viên làm bên lĩnh vực kinh tế, muốn học lập trình Python để áp dụng vào công việc",
                  Address = "gõ 71/1 Gia Thượng, Ngọc Thụy, quận Long Biên, Hà Nội", SubjectId = programming.Id,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 400, ChargeFee = 480,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 400, ChargeFee = 480,
                  IsDeleted = false, TutorId = tutor.Id
              },
              new ClassInformation
              {
                  Title = "Cần Gia Sư Dạy Lập Trình Game - HỌC Online", Description = "học viên 25 tuổi",
                  Address = "Học Online", SubjectId = programming.Id, LearningMode = LearningMode.Online,
-                 StudentGender = Gender.Male, Fee = 400, ChargeFee = 720,
+                 LearnerGender = Gender.Male, Fee = 400, ChargeFee = 720,
                  IsDeleted = false, TutorId = tutor.Id
              },
              new ClassInformation
@@ -271,7 +271,7 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Lập Trình C# Tại Quận 8, Hồ Chí Minh",
                  Description = "học viên cần học những môn Lý Thuyết đồ thị Lập trình thiết bị di động",
                  Address = "Đào Cam Mộc, phường 4, Quận 8, Hồ Chí Minh", SubjectId = programming.Id,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 200, ChargeFee = 240,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 200, ChargeFee = 240,
                  IsDeleted = false, TutorId = tutor.Id
              },
              new ClassInformation
@@ -279,7 +279,7 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Yoga Tại Nam Từ Liêm, Hà Nội",
                  Description = "Học viên 40 tuổi",
                  Address = "ngõ 199 Hồ Tùng Mậu, Nam Từ Liêm, Hà Nội", SubjectId = otherSubject.Id,
-                 LearningMode = LearningMode.Offline, NumberOfStudent = 2, StudentGender = Gender.None, Fee = 300,
+                 LearningMode = LearningMode.Offline, NumberOfLearner = 2, LearnerGender = Gender.None, Fee = 300,
                  ChargeFee = 300,
                  IsDeleted = false, TutorId = tutor1.Id
              },
@@ -288,7 +288,7 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Võ Thuật Tại Quận 8, Hồ Chí Minh",
                  Description = "bé học tại trung tâm, hoặc vị trí của giáo viên dạy theo lớp hoặc theo nhóm",
                  Address = "khu dân cư Phú Lợi, phường 7, quận 8, Hồ Chí Minh", SubjectId = otherSubject.Id,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Male, Fee = 250, ChargeFee = 500,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Male, Fee = 250, ChargeFee = 500,
                  IsDeleted = false, TutorId = tutor1.Id
              },
              new ClassInformation
@@ -296,7 +296,7 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Thanh Nhạc Tại Vũng Tàu, Bà Rịa - Vũng Tàu",
                  Description = "bé học tại trung tâm, hoặc vị trí của giáo viên dạy theo lớp hoặc theo nhóm",
                  Address = "khu dân cư Phú Lợi, phường 7, quận 8, Hồ Chí Minh", SubjectId = otherSubject.Id,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Male, Fee = 300, ChargeFee = 600,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Male, Fee = 300, ChargeFee = 600,
                  IsDeleted = false, TutorId = tutor1.Id
              },
              new ClassInformation
@@ -305,7 +305,7 @@ public class DataSeeder
                  Description = "chủ yếu học tiếng hàn để giao tiếp và nói chuyện với người hàn",
                  Address = "Nguyễn Thị Thập, Tân Phú, quận 7, Hồ Chí Minh", SubjectId = korean.Id,
                  SessionPerWeek = 3,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 300, ChargeFee = 600,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 300, ChargeFee = 600,
                  IsDeleted = false, TutorId = tutor1.Id
              },
              new ClassInformation
@@ -314,7 +314,7 @@ public class DataSeeder
                  Description = "Học viên 20 tuổi, thời gian linh động sáng, chiều hoặc tối",
                  Address = "đường 30 tháng 4, Phường 12, Vũng Tàu, Bà Rịa - Vũng Tàu", SubjectId = german.Id,
                  SessionPerWeek = 3,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 350, ChargeFee = 840,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 350, ChargeFee = 840,
                  IsDeleted = false, TutorId = tutor1.Id
              },
              new ClassInformation
@@ -323,7 +323,7 @@ public class DataSeeder
                  Description = "Học viên 40 tuổi",
                  Address = "Trần Hưng Đạo, Đông Hòa, Dĩ An, Bình Dương", SubjectId = informatics.Id,
                  SessionPerWeek = 2,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Male, Fee = 300, ChargeFee = 360,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Male, Fee = 300, ChargeFee = 360,
                  IsDeleted = false, TutorId = tutor.Id
              },
              new ClassInformation
@@ -332,8 +332,8 @@ public class DataSeeder
                  Description =
                      "Học viên là Hai bác người Hàn mới qua Việt Nam chưa được bao lâu và chưa biết gì về tiếng Việt, do ban ngày đi làm nên chỉ học được vào buổi tối, học viên giao tiếp bằng Tiếng Hàn học môn Tiếng Việt",
                  Address = "Vinhomes centralpark, Nguyễn Hữu Cảnh, phường 22, Bình Thạnh, Hồ Chí Minh",
-                 SubjectId = vietnameses.Id, SessionPerWeek = 2, NumberOfStudent = 2,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Male, Fee = 500, ChargeFee = 1500,
+                 SubjectId = vietnameses.Id, SessionPerWeek = 2, NumberOfLearner = 2,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Male, Fee = 500, ChargeFee = 1500,
                  IsDeleted = false, TutorId = tutor2.Id
              },
              new ClassInformation
@@ -342,8 +342,8 @@ public class DataSeeder
                  Description =
                      "dạy văn phạm cho bé lớp 9, giáo viên 250k/buổi/90phut, yêu cầu gia sư bên ngành Tiếng Anh",
                  Address = "Hoàng Anh River View - 37 Nguyễn Văn Hưởng, Phường Thảo Điền, quận 2, Hồ Chí Minh",
-                 SubjectId = english.Id, SessionPerWeek = 2, NumberOfStudent = 2,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 200, ChargeFee = 400,
+                 SubjectId = english.Id, SessionPerWeek = 2, NumberOfLearner = 2,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 200, ChargeFee = 400,
                  IsDeleted = false, TutorId = tutor2.Id
              },
              new ClassInformation
@@ -351,8 +351,8 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Guitar Tại Vĩnh Thạnh, Cần Thơ",
                  Description = "học viên 26 tuổi, học từ cơ bản đệm hát",
                  Address = "ấp Thắng Lợi, xã Thạnh Lộc, huyện Vĩnh Thạnh, Cần Thơ",
-                 SubjectId = guitar.Id, SessionPerWeek = 2, NumberOfStudent = 1,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 200, ChargeFee = 400,
+                 SubjectId = guitar.Id, SessionPerWeek = 2, NumberOfLearner = 1,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 200, ChargeFee = 400,
                  IsDeleted = false, TutorId = tutor2.Id
              },
              new ClassInformation
@@ -360,8 +360,8 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Cờ Vua Tại Nha Trang, Khánh Hòa",
                  Description = "Không có nội dung",
                  Address = "đường Thích Quảng Đức, khu đô thị Hà Quang 2, phường Phước Hải, Nha Trang, Khánh Hòa",
-                 SubjectId = otherSubject.Id, SessionPerWeek = 2, NumberOfStudent = 1,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 200, ChargeFee = 200,
+                 SubjectId = otherSubject.Id, SessionPerWeek = 2, NumberOfLearner = 1,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 200, ChargeFee = 200,
                  IsDeleted = false, TutorId = tutor2.Id
              },
              new ClassInformation
@@ -369,8 +369,8 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Guitar Tại Gò Dầu, Tây Ninh",
                  Description = "học viên 44 tuổi, học từ cơ bản",
                  Address = "Gò Dầu, Tây Ninh",
-                 SubjectId = guitar.Id, SessionPerWeek = 2, NumberOfStudent = 1,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Female, Fee = 200, ChargeFee = 200,
+                 SubjectId = guitar.Id, SessionPerWeek = 2, NumberOfLearner = 1,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 200, ChargeFee = 200,
                  IsDeleted = false, TutorId = tutor2.Id
              },
              new ClassInformation
@@ -379,8 +379,8 @@ public class DataSeeder
                  Description = "thứ 6 từ 18h30 - 20h00, thứ 7 từ 15h00 đến 16h30",
                  Address =
                      "hẻm 271 Phan Đăng Lưu, tổ 8, khu phố Hương Điền, phường Long Hương, tp Bà Rịa, Bà Rịa Vũng Tàu",
-                 SubjectId = chemistry.Id, SessionPerWeek = 2, NumberOfStudent = 1,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Male, Fee = 250, ChargeFee = 500,
+                 SubjectId = chemistry.Id, SessionPerWeek = 2, NumberOfLearner = 1,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Male, Fee = 250, ChargeFee = 500,
                  IsDeleted = false, TutorId = tutor2.Id
              },
              new ClassInformation
@@ -388,8 +388,8 @@ public class DataSeeder
                  Title = "Cần Gia Sư Môn Nhảy Shuffle Dance Tại Củ Chi, Hồ Chí Minh",
                  Description = "hoặc học tại Vũ Duy Chí, khu phố 2, tt Củ Chi",
                  Address = "đường Tỉnh Lộ 7, ấp Chợ Cũ, Tỉnh Lộ 7, Củ Chi, Hồ Chí Minh",
-                 SubjectId = dance.Id, SessionPerWeek = 2, NumberOfStudent = 6, MinutePerSession = 120,
-                 LearningMode = LearningMode.Offline, StudentGender = Gender.Male, Fee = 900, ChargeFee = 1800,
+                 SubjectId = dance.Id, SessionPerWeek = 2, NumberOfLearner = 6, MinutePerSession = 120,
+                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Male, Fee = 900, ChargeFee = 1800,
                  IsDeleted = false, TutorId = tutor2.Id
              },
          };

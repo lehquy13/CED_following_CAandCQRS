@@ -294,6 +294,26 @@ public class ProfileController : Controller
         });
 
     }
+    [HttpGet]
+    [Route("GetLearningClass")]
+    public async Task<IActionResult> GetLearningClass(Guid id)
+    {
+        var query = new GetObjectQuery<ClassInformationDto>()
+        {
+            Guid = id
+        };
+        var classInformation = await _mediator.Send(query);
+        if (classInformation != null)
+        {
+            return Helper.RenderRazorViewToString(this, "_LearningClassDetail", classInformation);
+        }
+
+        return View("Error", new ErrorViewModel()
+        {
+            
+        });
+
+    }
 
     
 }

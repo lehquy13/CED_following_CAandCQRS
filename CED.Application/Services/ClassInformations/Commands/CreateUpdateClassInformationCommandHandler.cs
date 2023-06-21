@@ -3,6 +3,7 @@ using CED.Application.Services.ClassInformations.Queries;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Users;
 using LazyCache;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ public class CreateUpdateClassInformationCommandHandler
     : CreateUpdateCommandHandler<CreateUpdateClassInformationCommand>
 {
     private readonly IClassInformationRepository _classInformationRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IAppCache _cache;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRepository<RequestGettingClass> _requestGettingClassRepositoryepository;
@@ -24,13 +26,14 @@ public class CreateUpdateClassInformationCommandHandler
         IRepository<RequestGettingClass> requestGettingClassRepositoryepository,
         IUnitOfWork unitOfWork,
         IAppCache cache,
-        ILogger<CreateUpdateClassInformationCommandHandler> logger, IMapper mapper)
+        ILogger<CreateUpdateClassInformationCommandHandler> logger, IMapper mapper, IUserRepository userRepository)
         : base(logger, mapper)
     {
         _classInformationRepository = classInformationRepository;
         _unitOfWork = unitOfWork;
         _requestGettingClassRepositoryepository = requestGettingClassRepositoryepository;
         _cache = cache;
+        _userRepository = userRepository;
     }
 
     public override async Task<bool> Handle(CreateUpdateClassInformationCommand command,
@@ -67,7 +70,8 @@ public class CreateUpdateClassInformationCommandHandler
                             iClass.RequestStatus = RequestStatus.Canceled;
                         }
                     }
-
+                    
+                    
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 }
@@ -76,6 +80,15 @@ public class CreateUpdateClassInformationCommandHandler
             {
                 classInformation = _mapper.Map<ClassInformation>(command.ClassInformationDto);
                 //classInformation = _mapper.From(command.ClassInformationDto).Adapt<ClassInformation>();
+                if (!string.IsNullOrWhiteSpace(command.email))
+                {
+                 
+                    var user = await _userRepository.GetUserByEmail(command.email);
+                    if (user != null)
+                    {
+                        classInformation.LearnerId = user.Id;
+                    }
+                }
                 await _classInformationRepository.Insert(classInformation);
             }
 

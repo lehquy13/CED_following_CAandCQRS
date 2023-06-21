@@ -14,7 +14,7 @@ public class ClassInformationRepository : Repository<ClassInformation>, IClassIn
     public List<ClassInformation> GetLearningClassInformationsByUserId(Guid guid)
     {
         var result = Context.Set<ClassInformation>()
-            .Where(x => x.StudentId.Equals(guid))
+            .Where(x => x.LearnerId.Equals(guid))
             .ToList();
         return result;
     }

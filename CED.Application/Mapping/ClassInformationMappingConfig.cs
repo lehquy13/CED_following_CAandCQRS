@@ -1,6 +1,7 @@
 ﻿using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Domain.ClassInformations;
+using CED.Domain.Review;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using Mapster;
@@ -21,7 +22,7 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest, src => src);
 
         
-        config.NewConfig<(ClassInformation, Subject, User,List<RequestGettingClassMinimalDto>), ClassInformationDto>()
+        config.NewConfig<(ClassInformation, Subject, User,List<RequestGettingClassMinimalDto>,TutorReview), ClassInformationDto>()
             .Map(dest => dest.RequestGettingClassDtos, src => src.Item4)
             .Map(dest => dest.SubjectName, src => src.Item2.Name)
             .Map(dest => dest.SubjectId, src => src.Item2.Id)
@@ -29,11 +30,21 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.TutorPhoneNumber, src => src.Item3.PhoneNumber)
             .Map(dest => dest.TutorEmail, src => src.Item3.Email)
             .Map(dest => dest.TutorName, src => $"{src.Item3.FirstName} {src.Item3.LastName}")
-            .Map(dest => dest, src => src.Item1);
+            .Map(dest => dest, src => src.Item1)
+            .Map(dest => dest.TutorReviewDto, src => src.Item5)
+            ;
         config.NewConfig<(ClassInformation, Subject), ClassInformationDto>() // in case the class doesnt have tutor
             .Map(dest => dest.SubjectName, src => src.Item2.Name)
             .Map(dest => dest.SubjectId, src => src.Item2.Id)
             .Map(dest => dest, src => src.Item1);
+        
+        config.NewConfig<(ClassInformation, Subject,List<RequestGettingClassMinimalDto>), ClassInformationDto>() // in case the class doesnt have tutor
+            .Map(dest => dest.SubjectName, src => src.Item2.Name)
+            .Map(dest => dest.SubjectId, src => src.Item2.Id)
+            .Map(dest => dest, src => src.Item1)
+            .Map(dest => dest.RequestGettingClassDtos, src => src.Item3)
+            
+            ;
 
         config.NewConfig<(RequestGettingClass, ClassInformation,string), RequestGettingClassDto>()
             .Map(dest => dest.Title, src => src.Item2.Title)

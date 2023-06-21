@@ -43,7 +43,7 @@
             </div>
             <!-- ----------------------------------- -->
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label asp-for="SubjectId" class="form-label">Subject Name</label>
                 <select asp-for="SubjectId" class="form-select">
                     <option selected value="@Model.SubjectId">
@@ -62,57 +62,40 @@
                 </select>
                 <span asp-validation-for="SubjectId" class="text-danger"></span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Contact Number</label>
                 <input type="text" class="form-control" asp-for="ContactNumber" />
                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
             </div>
-            <div class="col-md-3">
-                <label class="form-label">Tutor</label>
-                <input type="text" hidden="hidden" id="tutorId" asp-for="TutorDtoId" class="form-control" />
-                <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly" />
-                <span asp-validation-for="TutorDtoId" class="text-danger"></span>
-            </div>
-
-
-            <div class="col-md-3">
-                <label class="form-label">Action</label>
-
-                <div class="row">
-
-                    <button type="button" class="col-6 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "ClassInformation")','Pick tutor')">
-                        Pick Tutor
-                    </button>
-                    <button type="button" class="col-6  btn btn-outline-secondary"
-                            onclick="OpenGetDialog('@Url.Action("ViewTutor", "ClassInformation", new { id = @Model.TutorDtoId })','Tutor information')">
-                        View Tutor
-                    </button>
-                    @* <button type="button" class="col-4  btn btn-outline-secondary" *@
-                    @*         onclick="OpenGetDialog('@Url.Action("ViewRequests", "ClassInformation", new { id = @Model.Id })','Tutor information')"> *@
-                    @*     Requests *@
-                    @* </button> *@
-                </div>
-            </div>
+           
 
             <!-- ----------------------------------- -->
 
-            <div class="col-md-4">
-                <label asp-for="GenderRequirement" class="form-label">Gender Requirement</label>
-                <select asp-for="GenderRequirement" class="form-select">
-                    <option selected>@Model.GenderRequirement.ToString()</option>
-
-                    @foreach (string i in genders)
-                    {
-                        @if (i != Model.GenderRequirement.ToString())
-                        {
-                            <option> @i </option>
-                        }
-                    }
-                </select>
-                <span asp-validation-for="GenderRequirement" class="text-danger"></span>
-            </div>
-
-            <div class="col-md-4">
+            
+  <div class="col-md-4">
+                         <label class="form-label">Learner</label>
+                         <input type="text" hidden="hidden" id="studentId" asp-for="StudentId" class="form-control" />
+                         <input type="text" class="form-control" id="tutorInfor" value="@Model.LearnerName"  />
+                         <span asp-validation-for="LearnerName" class="text-danger"></span>
+                     </div>
+         
+      
+        <div class="col-md-3">
+                        <label asp-for="GenderRequirement" class="form-label">Gender Requirement</label>
+                        <select asp-for="GenderRequirement" class="form-select">
+                            <option selected>@Model.GenderRequirement.ToString()</option>
+        
+                            @foreach (string i in genders)
+                            {
+                                @if (i != Model.GenderRequirement.ToString())
+                                {
+                                    <option> @i </option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="GenderRequirement" class="text-danger"></span>
+                    </div>
+            <div class="col-md-3">
                 <label asp-for="LearningMode" class="form-label">Learning Mode</label>
                 <select asp-for="LearningMode" class="form-select">
                     <option selected>@Model.LearningMode.ToString()</option>
@@ -127,52 +110,78 @@
                 </select>
                 <span asp-validation-for="LearningMode" class="text-danger"></span>
             </div>
-            <div class="col-md-4">
-                <label asp-for="AcademicLevel" class="form-label">Academic level requirement</label>
-                <select asp-for="AcademicLevel" class="form-select">
-                    <option selected>@Model.AcademicLevel.ToString()</option>
+        <div class="col-md-3">
+            <label asp-for="AcademicLevel" class="form-label">Academic level requirement</label>
+            <select asp-for="AcademicLevel" class="form-select">
+                <option selected>@Model.AcademicLevel.ToString()</option>
 
-                    @foreach (string i in academics)
+                @foreach (string i in academics)
+                {
+                    @if (i != Model.AcademicLevel.ToString())
                     {
-                        @if (i != Model.AcademicLevel.ToString())
-                        {
-                            <option> @i </option>
-                        }
+                        <option> @i </option>
                     }
-                </select>
-                <span asp-validation-for="AcademicLevel" class="text-danger"></span>
-            </div>
+                }
+            </select>
+            <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+        </div>
+           <div class="col-md-3">
+                        <label asp-for="Status" class="form-label">Current status</label>
+                        <select asp-for="Status" class="form-select">
+                            <option selected>@Model.Status.ToString()</option>
+        
+                            @foreach (string i in statuses)
+                            {
+                                @if (i != Model.Status.ToString())
+                                {
+                                    <option> @i </option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+        
+                    </div>
             <!-- ----------------------------------- -->
 
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label asp-for="Fee" class="form-label">Fee</label>
                 <input type="number" class="form-control" asp-for="Fee" placeholder="0.99" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label asp-for="ChargeFee" class="form-label">Charge Fee</label>
                 <input type="number" class="form-control" asp-for="ChargeFee" placeholder="0.99" />
                 <span asp-validation-for="ChargeFee" class="text-danger"></span>
 
             </div>
-            <div class="col-md-4">
-                <label asp-for="Status" class="form-label">Current status</label>
-                <select asp-for="Status" class="form-select">
-                    <option selected>@Model.Status.ToString()</option>
-
-                    @foreach (string i in statuses)
-                    {
-                        @if (i != Model.Status.ToString())
-                        {
-                            <option> @i </option>
-                        }
-                    }
-                </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-
-            </div>
+          <div class="col-md-3">
+                         <label class="form-label">Tutor</label>
+                         <input type="text" hidden="hidden" id="tutorId" asp-for="TutorDtoId" class="form-control" />
+                         <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly" />
+                         <span asp-validation-for="TutorDtoId" class="text-danger"></span>
+                     </div>
+         
+         
+                     <div class="col-md-3">
+                         <label class="form-label">Action</label>
+         
+                         <div class="row">
+         
+                             <button type="button" class="col-6 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "ClassInformation")','Pick tutor')">
+                                 Pick Tutor
+                             </button>
+                             <button type="button" class="col-6  btn btn-outline-secondary"
+                                     onclick="OpenGetDialog('@Url.Action("ViewTutor", "ClassInformation", new { id = @Model.TutorDtoId })','Tutor information')">
+                                 View Tutor
+                             </button>
+                             @* <button type="button" class="col-4  btn btn-outline-secondary" *@
+                             @*         onclick="OpenGetDialog('@Url.Action("ViewRequests", "ClassInformation", new { id = @Model.Id })','Tutor information')"> *@
+                             @*     Requests *@
+                             @* </button> *@
+                         </div>
+                     </div>
             <!-- ----------------------------------- -->
             <div class="col-12">
                 <div class="form-floating">
@@ -225,23 +234,7 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
 
-            <!-- address advanced set up-----------------------------------
-            <div class="col-md-6">
-                <label for="inputCity" class="form-label">City</label>
-                <input type="text" class="form-control" id="inputCity" />
-            </div>
-            <div class="col-md-4">
-                <label for="inputState" class="form-label">State</label>
-                <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label for="inputZip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="inputZip" />
-            </div>
-            ----------------------------------- -->
+          
             <!-- ----------------------------------- hidden info -->
 
             <div class="form-group" hidden>
@@ -297,7 +290,7 @@
                 <thead>
                 <tr>
                     <!-- a avatar comlumn will be added -->
-                    <th scope="col">Tutor Name</th>
+                    <th scope="col">Index</th>
                     <th scope="col">Tutor Name</th>
                     <th scope="col">Phone Number</th>
                     <th scope="col">Email</th>

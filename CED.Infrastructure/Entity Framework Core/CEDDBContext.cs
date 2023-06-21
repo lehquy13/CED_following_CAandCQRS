@@ -90,7 +90,7 @@ public class CEDDBContext : DbContext
             re.Property(r => r.Description).IsRequired().IsUnicode();
             re.Property(r => r.Fee).IsRequired();
             re.HasOne<Subject>().WithMany().HasForeignKey(x => x.SubjectId).IsRequired();
-            re.HasOne<User>().WithMany().HasForeignKey(x => x.StudentId);
+            re.HasOne<User>().WithMany().HasForeignKey(x => x.LearnerId);
             re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId);
 
         });
@@ -103,8 +103,9 @@ public class CEDDBContext : DbContext
         modelBuilder.Entity<TutorReview>(re =>
         {
             re.ToTable("TutorReview");
-            re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
-            re.HasOne<User>().WithMany().HasForeignKey(x => x.LearnerId).IsRequired().OnDelete(DeleteBehavior.NoAction);
+            re.HasOne<ClassInformation>().WithOne().HasForeignKey<TutorReview>(x => x.ClassInformationId).IsRequired();
+
+            //re.HasOne<User>().WithMany().HasForeignKey(x => x.LearnerId).IsRequired().OnDelete(DeleteBehavior.NoAction);
         }); 
         modelBuilder.Entity<Subscriber>(re =>
         {

@@ -8,5 +8,6 @@ public class CreateUpdateClassInformationCommand
     : IRequest<bool>
 {
     public ClassInformationDto ClassInformationDto { get; set; } = null!;
+    public string email { get; set; } = null!;
 }
 

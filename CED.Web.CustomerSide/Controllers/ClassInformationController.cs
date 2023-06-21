@@ -130,7 +130,7 @@ public class ClassInformationController : Controller
         CreateClassInformationByCustomer createUpdateClassInformationDto)
     {
         var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
-
+        command.email = HttpContext.Session.GetString("email") ?? "";
         var result = await _mediator.Send(command);
 
         return RedirectToAction("SuccessPage","Home"); //implement
@@ -180,4 +180,6 @@ public class ClassInformationController : Controller
 
 
     }
+
+    
 }

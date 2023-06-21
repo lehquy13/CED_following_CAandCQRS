@@ -61,7 +61,7 @@
                     <span class="d-none d-md-block dropdown-toggle ps-2">@name</span>
                 </a><!-- End Profile Iamge Icon -->
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow ">
                     <li class="dropdown-header">
                         <h6>@name</h6>
                         <span>Role</span>
@@ -141,7 +141,7 @@
                         <a asp-action="Index" asp-controller="ClassInformation">New Classes</a>
                     </li>
                     <li>
-                        <a asp-action="Index" asp-controller="TutorInformation">Trainers</a>
+                        <a asp-action="Index" asp-controller="TutorInformation">Tutors</a>
                     </li>
 
                     @if (role != UserRole.Tutor.ToString())

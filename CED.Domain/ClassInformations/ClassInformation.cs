@@ -22,12 +22,13 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
     //Student related information
     //public string StudentName { get; set; } = String.Empty;
     //public string StudentPhoneNumber { get; set; } = String.Empty;
+    public string LearnerName { get; set; } = string.Empty;
 
-    public Gender StudentGender { get; set; } = Gender.Male;
-    public int NumberOfStudent { get; set; } = 1;
+    public Gender LearnerGender { get; set; } = Gender.Male;
+    public int NumberOfLearner { get; set; } = 1;
     
     public string ContactNumber { get; set; } = string.Empty;
-    public Guid? StudentId { get; set; }
+    public Guid? LearnerId { get; set; }
 
 
     // Time related information

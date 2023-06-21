@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using CED.Contracts.TutorReview;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations.Dtos;
@@ -18,6 +19,7 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Optional;
 
     //Student related information
+    public string LearnerName { get; set; } = "";
     public Gender StudentGender { get; set; } = Gender.None;
     public int NumberOfStudent { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
@@ -48,5 +50,6 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
     //List of Request
 
     public List<RequestGettingClassMinimalDto> RequestGettingClassDtos = new List<RequestGettingClassMinimalDto>();
+    public TutorReviewDto TutorReviewDto = new();
 }
 
