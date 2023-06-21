@@ -1,8 +1,8 @@
-using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 
 namespace CED.Domain.Review;
 
-public class TutorReview : Entity<Guid>
+public class TutorReview : AuditedEntity<Guid>
 {
     public Guid TutorId { get; set; }
     public Guid LearnerId { get; set; }

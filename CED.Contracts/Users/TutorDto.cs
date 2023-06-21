@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using CED.Contracts.Subjects;
+using CED.Contracts.TutorReview;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
@@ -30,6 +31,9 @@ public class TutorDto : FullAuditedEntityDto<Guid>
     public short Rate { get; set; } = 5;
     public List<SubjectDto> Majors { get; set; } = new();
     public List<TutorVerificationInfoDto> TutorVerificationInfoDtos { get; set; } = new();
+    public PaginatedList<TutorReviewDto> TutorReviewDtos { get; set; } = new();
+    
+    
 
 }
 
