@@ -41,7 +41,10 @@ public class ClassInformationMappingConfig : IRegister
         config.NewConfig<(ClassInformation, Subject,List<RequestGettingClassMinimalDto>), ClassInformationDto>() // in case the class doesnt have tutor
             .Map(dest => dest.SubjectName, src => src.Item2.Name)
             .Map(dest => dest.SubjectId, src => src.Item2.Id)
+            //.Map(dest => dest.TutorReviewDto, src => src.Item4)
+
             .Map(dest => dest, src => src.Item1)
+            
             .Map(dest => dest.RequestGettingClassDtos, src => src.Item3)
             
             ;

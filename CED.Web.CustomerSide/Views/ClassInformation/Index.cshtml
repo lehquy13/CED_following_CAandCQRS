@@ -60,20 +60,20 @@
 
 
                                 <li class="col-sm-4">
-                                    <i class="far fa-calendar-alt text-danger mr-10"></i>  <b>Student's gender:</b> @i.StudentGender
+                                    <i class="far fa-calendar-alt text-danger mr-10"></i>  <b>Student's gender:</b> @i.LearnerGender
                                 </li>
-                                @if (i.NumberOfStudent <= 1)
+                                @if (i.NumberOfLearner <= 1)
                                 {
                                     <li class="col-sm-4">
                                         <i class="far fa-user text-danger mr-10"></i>
-                                        <b>Total students:</b> @i.NumberOfStudent student
+                                        <b>Total students:</b> @i.NumberOfLearner student
                                     </li>
                                 }
                                 else
                                 {
                                     <li class="col-sm-4">
                                         <i class="far fa-user text-danger mr-10"></i>
-                                        <b>Total students:</b> @i.NumberOfStudent students
+                                        <b>Total students:</b> @i.NumberOfLearner students
                                     </li>
                                 }
                                 <li class="col-sm-4">

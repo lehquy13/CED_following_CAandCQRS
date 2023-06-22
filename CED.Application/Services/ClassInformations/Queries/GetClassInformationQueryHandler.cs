@@ -1,6 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
+using CED.Contracts.TutorReview;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Review;
@@ -54,10 +55,14 @@ public class
                 tu => tu.Id,
                 (req, tu) => (req, tu.FirstOrDefault()).Adapt<RequestGettingClassMinimalDto>()
             ).ToList();
-        var review = _reviewRepository.GetAll().FirstOrDefault(x => x.ClassInformationId.Equals(classInformation.Id));
         
-        var classDto = (classInformation, subject, requests,review).Adapt<ClassInformationDto>();
-
+        var classDto = (classInformation, subject, requests).Adapt<ClassInformationDto>();
+        //handle review
+        var review = _reviewRepository.GetAll().FirstOrDefault(x => x.ClassInformationId.Equals(classInformation.Id));
+        if (review is not null)
+        {
+            classDto.TutorReviewDto = _mapper.Map<TutorReviewDto>(review);
+        }
         //handle tutor info
         if (classInformation.TutorId is not null)
         {
@@ -78,6 +83,6 @@ public class
         //handle class's review
 
 
-        return (classInformation, subject, requests).Adapt<ClassInformationDto>();
+        return classDto;
     }
 }

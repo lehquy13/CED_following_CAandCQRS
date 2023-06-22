@@ -47,7 +47,7 @@
             <div class="col-lg-3 mb-4">
                 <h6>Total students</h6>
                 @* <input class="form-control" asp-for="NumberOfStudent" type="number" value="1"/> *@
-                <p class="form-control">@Model.NumberOfStudent</p>
+                <p class="form-control">@Model.NumberOfLearner</p>
                 @* <span asp-validation-for="NumberOfStudent" class="text-danger"></span> *@
             </div>
 
@@ -70,8 +70,8 @@
             <div class="col-lg-3 col-md-4 mb-4">
                 <h6>Gender</h6>
 
-                <select name="gender" asp-for="StudentGender" class="form-select">
-                    <option class="form-control">@Model.StudentGender</option>
+                <select name="gender" asp-for="LearnerGender" class="form-select">
+                    <option class="form-control">@Model.LearnerGender</option>
 
                 </select>
                 @* <span asp-validation-for="StudentGender" class="text-danger"></span> *@

@@ -20,10 +20,10 @@ public class ClassInformationDto : FullAuditedEntityDto<Guid>
 
     //Student related information
     public string LearnerName { get; set; } = "";
-    public Gender StudentGender { get; set; } = Gender.None;
-    public int NumberOfStudent { get; set; } = 1;
+    public Gender LearnerGender { get; set; } = Gender.None;
+    public int NumberOfLearner { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
-    public Guid? StudentId { get; set; }
+    public Guid? LearnerId { get; set; }
 
 
     // Time related information

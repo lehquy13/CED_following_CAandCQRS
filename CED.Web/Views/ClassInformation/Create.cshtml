@@ -144,24 +144,24 @@
             <!-- ----------------------------------- -->
             <!-- student infor -->
             <div class="col-md-3">
-                <label asp-for="StudentGender" class="form-label">Student's Gender</label>
-                <select asp-for="StudentGender" class="form-select">
-                    <option selected>@Model.StudentGender.ToString()</option>
+                <label asp-for="LearnerGender" class="form-label">Student's Gender</label>
+                <select asp-for="LearnerGender" class="form-select">
+                    <option selected>@Model.LearnerGender.ToString()</option>
 
                     @foreach (string i in genders)
                     {
-                        @if (i != Model.StudentGender.ToString())
+                        @if (i != Model.LearnerGender.ToString())
                         {
                             <option> @i </option>
                         }
                     }
                 </select>
-                <span asp-validation-for="StudentGender" class="text-danger"></span>
+                <span asp-validation-for="LearnerGender" class="text-danger"></span>
             </div>
             <div class="col-md-3">
-                <label asp-for="NumberOfStudent" class="form-label">Number Of Student</label>
-                <input type="number" class="form-control" asp-for="NumberOfStudent" value="1" />
-                <span asp-validation-for="NumberOfStudent" class="text-danger"></span>
+                <label asp-for="NumberOfLearner" class="form-label">Number Of Student</label>
+                <input type="number" class="form-control" asp-for="NumberOfLearner" value="1" />
+                <span asp-validation-for="NumberOfLearner" class="text-danger"></span>
 
             </div>
             <div class="col-md-3">

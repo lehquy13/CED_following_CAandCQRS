@@ -30,6 +30,8 @@ public class CreateClassInformationByCustomer
     public int NumberOfStudent { get; set; } = 1;
     [Required]
     public string ContactNumber { get; set; } = string.Empty;
+    
+    public string LearnerName { get; set; } = string.Empty;
 
     public Guid? StudentId { get; set; }
  

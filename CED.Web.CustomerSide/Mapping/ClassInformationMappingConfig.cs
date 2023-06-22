@@ -22,6 +22,7 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.ContactNumber, src => src.PhoneNumber)
             .Map(dest => dest.Address, src => src.Address)
             .Map(dest => dest.StudentGender, src => src.Gender)
+            .Map(dest => dest.LearnerName, src => src.FirstName + " " + src.LastName)
             .Ignore(dest => dest.Description);
         config.NewConfig<CreateClassInformationByCustomer, CreateUpdateClassInformationCommand>()
             .Map(dest => dest.ClassInformationDto, src => src);
