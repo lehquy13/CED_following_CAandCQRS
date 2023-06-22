@@ -172,7 +172,9 @@ public class TutorInformationController : Controller
             {
                 Rate = tutorDto.Rate,
                 Description = tutorDto.Description,
-                Id = tutorDto.Id
+                Id = tutorDto.Id,
+                ClassInformationId = new Guid(tutorDto.ClassId)
+                
             },
             LearnerEmail = HttpContext.Session.GetString("email") ?? "",
             TutorEmail = tutorDto.TutorEmail,
