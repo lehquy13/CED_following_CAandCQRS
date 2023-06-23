@@ -1,6 +1,5 @@
 ﻿using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Interfaces.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,7 +21,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
     public string GenerateToken(Guid userId, string firstName, string lastName)
     {
-        var signingCreadential = new SigningCredentials(
+        var signingCredential = new SigningCredentials(
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtSettings.Secrect)
                 ),
@@ -33,7 +32,8 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.GivenName, firstName),
             new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            //new Claim(ClaimTypes.Role, "Role")
         };
 
         var securityToken = new JwtSecurityToken(
@@ -41,7 +41,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             audience: _jwtSettings.Audience,
             expires: _dateTimeProvider.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
             claims: claims,
-            signingCredentials: signingCreadential
+            signingCredentials: signingCredential
         );
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }

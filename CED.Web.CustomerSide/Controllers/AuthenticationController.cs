@@ -1,9 +1,12 @@
-﻿using CED.Application.Services.Authentication.Admin.Commands.Register;
+﻿using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
+using CED.Application.Services.Authentication.Admin.Commands.Register;
 using CED.Application.Services.Authentication.Admin.Queries.ValidateToken;
 using CED.Application.Services.Authentication.Commands.Register;
+using CED.Application.Services.Authentication.Customer.Commands.ChangePassword;
 using CED.Application.Services.Authentication.Customer.Commands.Register;
 using CED.Application.Services.Authentication.Customer.Queries.Login;
 using CED.Contracts.Authentication;
+using CED.Web.CustomerSide.Utilities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -140,24 +143,49 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Logout()
     {
         HttpContext.Response.Cookies.Delete("access_token");
-        // HttpContext.Response.Cookies.Delete("name");
-        // HttpContext.Response.Cookies.Delete("image");
-        // HttpContext.Response.Cookies.Delete("email");
         HttpContext.Session.Remove("name");
         HttpContext.Session.Remove("image");
         HttpContext.Session.Remove("email");
         await HttpContext.Session.CommitAsync();
 
-        return View("Login", new LoginRequest("", ""));
+        return RedirectToAction("Index", "Home");
     }
-
+    [HttpGet("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword()
+    {
+        return View();
+    }
     [HttpPost("ForgotPassword")]
-    public async Task<IActionResult> ForgotPassword(string email)
+    public async Task<IActionResult> ForgotPassword( string email)
     {
         var query = new ForgotPasswordCommand(email);
 
         var loginResult = await _mediator.Send(query);
 
-        return RedirectToAction("Index", "Home");
+        return View("SuccessPage", "If you have registered with us, we have sent an email to your registered email.");
     }
+    [HttpGet]
+    [Route("ChangePassword/{id}")]
+    public async Task<IActionResult> ChangePassword(string id)
+    {
+        return View("ChangePassword",id);
+    }
+    [HttpPost("ChangePassword1")]
+    public async Task<IActionResult> ChangePassword1(string id, string password)
+    {
+        var query = new ChangePasswordWhenForgotCommand(new Guid(id), password);
+
+        var loginResult = await _mediator.Send(query);
+
+        if (loginResult)
+        {
+            return RedirectToAction("Index");
+        }
+        return RedirectToAction("FailPage","Home");
+    }
+    
+    
+
+   
+    
 }

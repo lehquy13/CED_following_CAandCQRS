@@ -32,9 +32,9 @@ public class HomeController : Controller
     {
         return View();
     }
-    public IActionResult SuccessPage()
+    public IActionResult SuccessPage(string? message)
     {
-        return View();
+        return View(message?? "We have received your request.");
     } 
     public IActionResult FailPage()
     {

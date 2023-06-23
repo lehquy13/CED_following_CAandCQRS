@@ -76,7 +76,6 @@ public class UserController : Controller
         {
             try
             {
-              
                 var query = new CreateUpdateUserCommand(userDto,"");
 
 
