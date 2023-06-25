@@ -1,4 +1,5 @@
-﻿using CED.Domain.Shared.ClassInformationConsts;
+﻿using System.Linq.Dynamic.Core;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,24 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
         }
     }
 
-    
+    public async Task<List<TutorFull>> GetAllsWithFullInformation()
+    {
+        try
+        {
+            var user = await Context.Set<User>()
+                .Where(x => x.IsDeleted == false)
+                .Join(
+                    Context.Set<Tutor>(),
+                    u => u.Id,
+                    tu => tu.Id,
+                    (u,tu) => 
+                    new TutorFull(u,tu)
+                ).ToListAsync();
+            return user;
+        }
+        catch(Exception ex) { 
+            throw new Exception(ex.Message);
+        }
+    }
 }
 

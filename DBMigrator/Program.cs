@@ -29,9 +29,6 @@ internal static class Program
 
             var seeder = new DataSeeder();
             
-            Console.WriteLine("Adding subjects...");
-            context.Subjects.AddRange(seeder.Subjects);
-            
             Console.WriteLine("Hash password for users...");
             foreach (var u in seeder.Users)
             {
@@ -39,10 +36,30 @@ internal static class Program
             }
             Console.WriteLine("Done hashing password. Adding users...");
             context.Users.AddRange(seeder.Users);
-            
+            context.SaveChanges();
+
             Console.WriteLine("Adding tutors...");
             context.Tutors.AddRange(seeder.Tutors);
+            //foreach (var u in seeder.Tutors)
+            //{
+            //    Console.WriteLine(u.Id + " " + u.University);
+
+            //    context.Tutors.Add(u);
+
+            //}
             context.SaveChanges();
+
+            Console.WriteLine("Adding subjects...");
+            context.Subjects.AddRange(seeder.Subjects);
+            Console.WriteLine("Adding tutor major...");
+            
+            context.TutorMajors.AddRange(seeder.TutorMajors);
+            context.SaveChanges();
+
+            Console.WriteLine("Adding Subscribers...");
+            context.Subscribers.AddRange(seeder.Subscribers);
+            context.SaveChanges();
+
             Console.WriteLine("Added subjects, users, tutors!");
 
             Console.WriteLine("Adding class informations...");

@@ -4,7 +4,7 @@
 @model CED.Contracts.ClassInformations.Dtos.CreateClassInformationByCustomer
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Get started ";
 
 
     List<SubjectDto> subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-lg-4 mb-4">
                         <h6>Learner Name</h6>
-                        <input class="form-control" asp-for="LearnerName" type="text" placeholder="ex: 012312****"/>
+                        <input class="form-control" asp-for="LearnerName" type="text" placeholder="ex: Jonathan Wick"/>
                         <span asp-validation-for="LearnerName" class="text-danger"></span>
 
                     </div>

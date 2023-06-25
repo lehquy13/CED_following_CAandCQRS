@@ -1,6 +1,6 @@
 ﻿using Abp.Domain.Entities;
 
-namespace CED.Domain.Subscriber;
+namespace CED.Domain.Subscribers;
 public class Subscriber : Entity<Guid>
 {
     public Guid TutorId { get; set; }

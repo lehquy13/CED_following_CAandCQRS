@@ -1,23 +1,29 @@
 ﻿using System.Diagnostics;
+using CED.Application.Services.Users.Queries.CustomerQueries;
 using Microsoft.AspNetCore.Mvc;
 using CED.Web.CustomerSide.Models;
+using MediatR;
 
 namespace CED.Web.CustomerSide.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ISender _sender;
 
     
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ISender sender)
     {
         _logger = logger;
+        _sender = sender;
     }
     
     [HttpGet]
     [Route("")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var query = new PopularTutorsQuery();
+        var result = await _sender.Send(query);
+        return View(result);
     }
 
     public IActionResult Privacy()

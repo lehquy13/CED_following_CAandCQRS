@@ -1,6 +1,6 @@
 using CED.Domain.Interfaces.Logger;
 using CED.Domain.Repository;
-using CED.Domain.Subscriber;
+using CED.Domain.Subscribers;
 using CED.Domain.Users;
 using MediatR;
 

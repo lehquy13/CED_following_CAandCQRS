@@ -1,7 +1,7 @@
 ﻿using CED.Domain.ClassInformations;
 using CED.Domain.Review;
 using CED.Domain.Subjects;
-using CED.Domain.Subscriber;
+using CED.Domain.Subscribers;
 using CED.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -120,7 +120,9 @@ public class CEDDBContextFactory : IDesignTimeDbContextFactory<CEDDBContext>
     public CEDDBContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<CEDDBContext>();
-        optionsBuilder.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=CED_DDD;Trusted_Connection=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer(
+            "workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart; TrustServerCertificate=True"
+            );
 
         return new CEDDBContext(optionsBuilder.Options);
     }

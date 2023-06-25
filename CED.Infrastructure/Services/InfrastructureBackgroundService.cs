@@ -2,12 +2,12 @@ using CED.Domain.ClassInformations;
 using CED.Domain.Interfaces.Services;
 using CED.Domain.Repository;
 using CED.Domain.Subjects;
-using CED.Domain.Subscriber;
 using CED.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Text;
+using CED.Domain.Subscribers;
 
 namespace CED.Infrastructure.Services;
 /// <summary>

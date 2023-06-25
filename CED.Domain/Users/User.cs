@@ -62,6 +62,10 @@ public class User : FullAuditedAggregateRoot<Guid>
         tutor.Id = Id;
         return tutor;
     }
+    public string GetFullNAme()
+    {
+        return this.FirstName + " " + this.LastName;
+    }
   
 }
 
