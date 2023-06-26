@@ -218,7 +218,7 @@
             <div class="member">
               <img src="@i.Image" class="img-fluid" alt="">
               <div class="member-content">
-                <h4>@i.FirstName @i.LastName</h4>
+                <h4><a asp-controller="TutorInformation" asp-action="Detail" asp-route-id="@i.Id">@i.FirstName @i.LastName</a></h4>
                 <span>@i.University</span>
                 <p>
                   @i.Description

@@ -40,7 +40,11 @@ public class HomeController : Controller
     }
     public IActionResult SuccessPage(string? message)
     {
-        return View(message?? "We have received your request.");
+        return View(  "SuccessPage",
+        
+            message?? "We have received your request."
+        
+        );
     } 
     public IActionResult FailPage()
     {

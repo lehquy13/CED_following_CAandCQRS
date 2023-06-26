@@ -15,7 +15,7 @@ public class CreateUpdateClassInformationDto : FullAuditedEntityDto<Guid>
     public string Description { get; set; } = string.Empty;
 
     [Required]
-    public Status Status { get; set; } = Status.OnConfirming;
+    public Status Status { get; set; } = Status.OnVerifying;
 
     [Required]
     public LearningMode LearningMode { get; set; } = LearningMode.Offline;

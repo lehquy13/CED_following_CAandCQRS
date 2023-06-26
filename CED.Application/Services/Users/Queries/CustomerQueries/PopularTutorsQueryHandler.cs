@@ -35,12 +35,14 @@ public class PopularTutorsQueryHandler : IRequestHandler<PopularTutorsQuery,List
 
         var classesInMonth = _classInformationRepository
             .GetAll()
-            .Where(x => x.CreationTime >= thisMonth && x.Status == Status.Available)
+            .Where(x => x.CreationTime >= thisMonth && x.Status == Status.Confirmed)
             .GroupBy(x => x.TutorId)
             .Select(x => x.Key)
             .ToList();
 
-        var tutors = (await _tutorRepository.GetAllsWithFullInformation())
+        var tutorfull = await _tutorRepository.GetAllsWithFullInformation();
+        var tutors1 = 
+                tutorfull
             .GroupJoin(
                 classesInMonth,
                 tutor => tutor.Id,
@@ -51,7 +53,8 @@ public class PopularTutorsQueryHandler : IRequestHandler<PopularTutorsQuery,List
                     count = classesInMonth.Count()
                 }
                 
-            )
+            );
+            var tutors = tutors1
             .OrderByDescending(x=>x.count)
             .Select(x => x.user)
             .Take(6).ToList();

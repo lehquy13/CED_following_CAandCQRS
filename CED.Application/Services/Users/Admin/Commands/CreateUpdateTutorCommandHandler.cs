@@ -74,7 +74,8 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
                 
                 
                 tutor.VerifyTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
-                tutorAsUser.UpdateUserInformation(_mapper.Map<User>(command.TutorDto));
+                tutorAsUser.UpdateUserInformationExceptImage(_mapper.Map<User>(command.TutorDto));
+                
                 _logger.LogDebug("ready for updating!");
                 _tutorRepository.Update(tutor);
                 _userRepository.Update(tutorAsUser);

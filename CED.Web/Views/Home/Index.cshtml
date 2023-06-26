@@ -257,7 +257,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var classInfo in Model.ClassTotalValueModel.Models.Where(x => x.Status == Status.OnConfirming))
+                                    @foreach (var classInfo in Model.ClassTotalValueModel.Models.Where(x => x.Status == Status.OnVerifying))
                                     {
                                         @if (i > 4)
                                         {

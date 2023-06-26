@@ -1,3 +1,4 @@
+@using CED.Domain.Shared.ClassInformationConsts
 @model ClassInformationDetailViewModel
 
 @{
@@ -24,7 +25,16 @@
                         <b>Subject: </b> @Model.ClassInformationDto.SubjectName
                     </h4>
                     <form asp-controller="ClassInformation" asp-action="RequestGettingClass" class="col-lg-3">
-                        <button class="btn btn-success" type="submit">Register this class (<b>Charge</b>: @Model.ClassInformationDto.ChargeFee $)</button>
+                        @if (Context.Session.GetString("role") == UserRole.Learner.ToString())
+                        {
+                            <button class="btn btn-success" disabled type="submit">Request for this class (<b>Charge</b>: @Model.ClassInformationDto.ChargeFee $)</button>
+
+                        }
+                        else
+                        {
+                            <button class="btn btn-success" type="submit">Request for this class (<b>Charge</b>: @Model.ClassInformationDto.ChargeFee $)</button>
+
+                        }
                         <input value="@Model.ClassInformationDto.Id" hidden="" name="ClassId"/>
                     </form>
 

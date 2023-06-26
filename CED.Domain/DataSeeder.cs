@@ -7,7 +7,7 @@ using CED.Domain.Users;
 namespace CED.Domain;
 
 /// <summary>
-/// TODO: Under maintenance
+/// TODO: insert the request getting class record 
 /// </summary>
 public class DataSeeder
 {
@@ -27,8 +27,8 @@ public class DataSeeder
     private void SeedData()
     {
         //handle subject object
-        var programming = new Subject { Id = Guid.NewGuid(), Name = "Programing", Description = "Basic subject" };
-        var java = new Subject { Id = Guid.NewGuid(), Name = "Java programing", Description = "Li" };
+        var programming = new Subject { Id = Guid.NewGuid(), Name = "Programming", Description = "Basic subject" };
+        var java = new Subject { Id = Guid.NewGuid(), Name = "Java programming", Description = "Li" };
         var informatics = new Subject { Id = Guid.NewGuid(), Name = "Informatics", Description = "Alonso" };
         var otherSubject = new Subject { Id = Guid.NewGuid(), Name = "Other", Description = "Other subject" };
         var korean = new Subject { Id = Guid.NewGuid(), Name = "Korean", Description = "25 Bucket List Adventures" };
@@ -66,11 +66,11 @@ public class DataSeeder
             new Subject { Id = Guid.NewGuid(), Name = "Physical Education", Description = "Norman" },
             english,
 
-            new Subject { Id = Guid.NewGuid(), Name = "C# programing", Description = "Barzdukas" },
+            new Subject { Id = Guid.NewGuid(), Name = "C# programming", Description = "Barzdukas" },
             programming,
             java ,
-            new Subject { Id = Guid.NewGuid(), Name = "Python programing", Description = "Justice" },
-            new Subject { Id = Guid.NewGuid(), Name = "Web programing", Description = "Norman" },
+            new Subject { Id = Guid.NewGuid(), Name = "Python programming", Description = "Justice" },
+            new Subject { Id = Guid.NewGuid(), Name = "Web programming", Description = "Norman" },
             new Subject { Id = Guid.NewGuid(), Name = "HTML,CSS & Javascript", Description = "Olivetto" },
 
             guitar, dance,

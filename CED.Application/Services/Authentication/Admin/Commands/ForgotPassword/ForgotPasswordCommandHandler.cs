@@ -25,7 +25,7 @@ public class ForgotPasswordCommandHandler
         var user = await _userRepository.GetUserByEmail(command.Email);
         if (user == null )
         {
-            return new AuthenticationResult(null, null, false,
+            return new AuthenticationResult(null, "", false,
                 "Email doesn't exist.");
         }
 

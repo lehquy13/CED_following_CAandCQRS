@@ -19,20 +19,14 @@ public class RequestGettingClassMinimalDto : EntityDto<Guid>
 {
     public Guid TutorId { get; set; }
     public string TutorName { get; set; } = string.Empty;
-    public string PhoneNumber { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
+    public string TutorPhoneNumber { get; set; } = string.Empty;
+    public string TutorEmail { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public RequestStatus RequestStatus { get; set; } = RequestStatus.Verifying;
 }
-public class RequestGettingClassFullDto : EntityDto<Guid>
+public class RequestGettingClassExtendDto : RequestGettingClassDto
 {
-    public Guid TutorId { get; set; }
-    public TutorDto Tutor { get; set; } = null!;
-    public Guid ClassInformationId { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public string SubjectName { get; set; } = string.Empty;
-
-    public string Description { get; set; } = string.Empty;
-
-    public RequestStatus RequestStatus { get; set; } = RequestStatus.Verifying;
+    public Guid LearnerName { get; set; }
+    public Guid ContactNumber { get; set; }
+    
 }

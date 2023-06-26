@@ -307,14 +307,18 @@
                             <input hidden name="Id" value="@requestGettingClassMinimalDto.Id"/>
                             #
                         </th>
-                        <td>@requestGettingClassMinimalDto.TutorName</td>
-                        <td>@requestGettingClassMinimalDto.PhoneNumber</td>
-                        <td>@requestGettingClassMinimalDto.Email</td>
+                        <td><a asp-controller="Tutor" asp-action="Detail"
+                               asp-route-id="@requestGettingClassMinimalDto.TutorId">
+                            @requestGettingClassMinimalDto.TutorName
+                        </a>
+                            </td>
+                        <td>@requestGettingClassMinimalDto.TutorPhoneNumber</td>
+                        <td>@requestGettingClassMinimalDto.TutorEmail</td>
                         <td>@requestGettingClassMinimalDto.RequestStatus</td>
                        
                         <td>
                             <button type="button" class="btn btn-primary"
-                                        onclick="ChooseTutor('@requestGettingClassMinimalDto.TutorId','@requestGettingClassMinimalDto.TutorName', '@requestGettingClassMinimalDto.PhoneNumber');">
+                                        onclick="ChooseTutor('@requestGettingClassMinimalDto.TutorId','@requestGettingClassMinimalDto.TutorName', '@requestGettingClassMinimalDto.TutorPhoneNumber');">
                                 Accept
                             </button>
                         </td>

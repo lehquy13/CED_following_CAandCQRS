@@ -64,21 +64,27 @@ public class
             classDto.TutorReviewDto = _mapper.Map<TutorReviewDto>(review);
         }
         //handle tutor info
-        if (classInformation.TutorId is not null)
+        if (classInformation.TutorId is not null  )
         {
             var tutor = tutors.SingleOrDefault(x => x.Id == (Guid)classInformation.TutorId);
-            classDto.TutorName = tutor.FirstName +" " + tutor.LastName;
-            classDto.TutorEmail = tutor.Email;
-            classDto.TutorPhoneNumber = tutor.PhoneNumber;
-            classDto.TutorDtoId = tutor.Id;
+            if (tutor is not null)
+            {
+                classDto.TutorName = tutor.FirstName +" " + tutor.LastName;
+                classDto.TutorEmail = tutor.Email;
+                classDto.TutorPhoneNumber = tutor.PhoneNumber;
+                classDto.TutorDtoId = tutor.Id;
+            } 
+           
         }
 
         if (classInformation.LearnerId is not null)
         {
             var learner = tutors.SingleOrDefault(x => x.Id == (Guid)classInformation.LearnerId);
-            classDto.LearnerName = learner.FirstName +" " + learner.LastName;
 
+            if (learner is not null)
+                classDto.LearnerName = learner.FirstName + " " + learner.LastName;
         }
+    
 
         //handle class's review
 

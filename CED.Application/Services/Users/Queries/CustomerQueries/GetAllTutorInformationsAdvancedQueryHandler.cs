@@ -10,7 +10,9 @@ using Mapster;
 using MapsterMapper;
 
 namespace CED.Application.Services.Users.Queries.CustomerQueries;
-
+/// <summary>
+/// Todo: Upgrade this query
+/// </summary>
 public class
     GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<GetAllTutorInformationsAdvancedQuery, TutorDto>
 {
@@ -41,7 +43,6 @@ public class
             var subjects = await _subjectRepository.GetAllList();
             var tutors = _tutorRepository.GetAll().AsEnumerable();
             var tutorAsUser = _userepository.GetTutors().AsEnumerable();
-            var tutorsMajors = _tutorMajorRepository.GetAll();
 
 
             if (query.Academic != AcademicLevel.Optional)
@@ -63,26 +64,28 @@ public class
             {
                 tutorAsUser = tutorAsUser.Where(user => user.BirthYear == query.BirthYear);
             }
+            tutors = tutors.ToList();
+
+            var tutorsMajors = await _tutorMajorRepository.GetAllList();
 
             if (!string.IsNullOrEmpty(query.SubjectName))
             {
                 var newsubjects = subjects.Where(s => s.Name.ToLower().Contains(query.SubjectName.ToLower()));
                
-                tutorsMajors = tutorsMajors.Where(x =>  newsubjects.Select(ns => ns.Id).Contains(x.SubjectId));
+                tutorsMajors = tutorsMajors.Where(x =>  newsubjects.Select(ns => ns.Id).Contains(x.SubjectId)).ToList();
                 tutors = tutors.Where(x =>  tutorsMajors.Select(tM => tM.TutorId).Contains(x.Id));
                 
             }
 
-            var enumerable1 = tutors as Domain.Users.Tutor[] ?? tutors.ToArray();
-            var mergeList = enumerable1.GroupJoin(
+            var mergeList = tutors.Join(
                 tutorAsUser,
                 tutor => tutor.Id,
                 user => user.Id,
-                (tutor, user) => (user.First(),tutor).Adapt<TutorDto>()
+                (tutor, user) => (user,tutor).Adapt<TutorDto>()
             );
        
-            var enumerable = tutors as Domain.Users.Tutor[] ?? enumerable1.ToArray();
-            var totalPages = enumerable.Count();
+           
+            var totalPages = tutors.Count();
             
 
             var result = _mapper.Map<List<TutorDto>>(

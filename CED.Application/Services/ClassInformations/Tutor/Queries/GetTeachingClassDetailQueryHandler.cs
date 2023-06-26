@@ -1,6 +1,4 @@
-﻿using System.Linq.Dynamic.Core;
-using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Contracts;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;

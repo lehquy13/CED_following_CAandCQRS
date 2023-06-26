@@ -35,7 +35,7 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
      
 
         var classInforsPie = _classInformationRepository.GetAll()
-            .Where(x => x.CreationTime >= startDay)
+            .Where(x => x.LastModificationTime >= startDay)
             .GroupBy(x => x.Status)
             .Select((x) => new { key = x.Key.ToString(), count = x.Count()})
             .ToList();

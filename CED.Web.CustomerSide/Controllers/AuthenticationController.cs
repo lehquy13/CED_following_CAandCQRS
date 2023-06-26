@@ -153,6 +153,7 @@ public class AuthenticationController : Controller
     [HttpGet("ForgotPassword")]
     public async Task<IActionResult> ForgotPassword()
     {
+        await Task.CompletedTask;
         return View();
     }
     [HttpPost("ForgotPassword")]
@@ -168,6 +169,7 @@ public class AuthenticationController : Controller
     [Route("ChangePassword/{id}")]
     public async Task<IActionResult> ChangePassword(string id)
     {
+        await Task.CompletedTask;
         return View("ChangePassword",id);
     }
     [HttpPost("ChangePassword1")]

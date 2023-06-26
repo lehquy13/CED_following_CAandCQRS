@@ -69,10 +69,19 @@
 
         <div class="col-md-12">
             <div class="form-check">
-                <input class="form-check-input" readonly type="checkbox" asp-for="IsVerified">
-                <label class="form-check-label" asp-for="IsVerified">
-                    Verified? If not, contact center for more informations.
-                </label>
+                <input class="form-check-input" disabled type="checkbox" asp-for="IsVerified">
+                @if (!Model.IsVerified)
+                {
+                    <label class="form-check-label" asp-for="IsVerified">
+                        You are not verified. Contact center for more informations.
+                    </label>
+                }
+                else
+                {
+                    <label class="form-check-label" asp-for="IsVerified">
+                        You are verified.
+                    </label>
+                }
         
             </div>
         

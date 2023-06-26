@@ -51,8 +51,12 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
                 throw new Exception("User with an email doesn't exist / User may be already a tutor.");
             }
 
+            var updateUser = _mapper.Map<User>(command.TutorDto);
+
+            user.UpdateUserInformationExceptImage(updateUser);
             user.Role = UserRole.Tutor;
             user.CreationTime = DateTime.Now;
+            
             
             _userRepository.Update(user);
 

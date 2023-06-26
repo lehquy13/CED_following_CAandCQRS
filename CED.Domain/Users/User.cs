@@ -53,6 +53,21 @@ public class User : FullAuditedAggregateRoot<Guid>
         Image = user.Image;
 
     }
+    public void UpdateUserInformationExceptImage(User user)
+    {
+        FirstName = user.FirstName;
+        LastName = user.LastName;
+        Gender = user.Gender;
+        BirthYear = user.BirthYear;
+        Address = user.Address;
+        Description = user.Description;
+
+        Role = user.Role;
+
+        Email = user.Email;
+        PhoneNumber = user.PhoneNumber;
+
+    }
     /// <summary>
     /// Update current user to be tutor
     /// </summary>

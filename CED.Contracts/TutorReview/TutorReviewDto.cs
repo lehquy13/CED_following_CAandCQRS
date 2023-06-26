@@ -14,9 +14,9 @@ public class TutorReviewDto : AuditedEntityDto<Guid>
 }
 public class TutorReviewRequestDto : AuditedEntityDto<Guid>
 {
-    public string LearnerEmail { get; set; }
-    public string TutorEmail { get; set; }
-    public string ClassId { get; set; }
+    public string LearnerEmail { get; set; } = string.Empty;
+    public string TutorEmail { get; set; }= string.Empty;
+    public string ClassId { get; set; }= string.Empty;
 
     public short Rate { get; set; } = 5;
     public string Description { get; set; } = "";

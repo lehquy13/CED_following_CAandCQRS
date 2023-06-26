@@ -53,7 +53,7 @@ public class TutorController : Controller
     public async Task<IActionResult> Edit(Guid Id)
     {
         PackStaticListToView();
-        var query = new GetObjectQuery<TutorDto>()
+        var query = new GetObjectQuery<TutorDto>
         {
             Guid = Id
         };

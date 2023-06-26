@@ -44,7 +44,10 @@ public class UserController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var query = new GetObjectQuery<PaginatedList<UserDto>>();
+        var query = new GetObjectQuery<PaginatedList<UserDto>>()
+        {
+            PageSize = 200
+        };
         var userDtos = await _mediator.Send(query);
 
         return View(userDtos);
@@ -198,7 +201,10 @@ public class UserController : Controller
     [HttpGet("Student")]
     public async Task<IActionResult> Student()
     {
-        var query = new GetObjectQuery<PaginatedList<LearnerDto>>();
+        var query = new GetObjectQuery<PaginatedList<LearnerDto>>
+        {
+            PageSize = 200
+        };
         var studentDtos = await _mediator.Send(query);
 
         return View(studentDtos);

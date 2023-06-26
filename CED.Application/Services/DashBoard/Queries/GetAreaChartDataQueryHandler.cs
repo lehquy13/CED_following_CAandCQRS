@@ -71,7 +71,7 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
             });
         var classesInWeek2 = dates.GroupJoin(
             _classInformationRepository.GetAll()
-                .Where(x => x.CreationTime >= startDay && x.Status == Status.OnConfirming)
+                .Where(x => x.CreationTime >= startDay && x.Status == Status.OnPurchasing)
                 .GroupBy(x => x.CreationTime.Day),
             d => d,
             c => c.Key,

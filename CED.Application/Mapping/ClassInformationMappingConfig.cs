@@ -64,9 +64,9 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.Description, src => src.Item1.Description)
             .Map(dest => dest.RequestStatus, src => src.Item1.RequestStatus)
             .Map(dest => dest.TutorId, src => src.Item2.Id)
-            .Map(dest => dest.TutorName, src => $"{src.Item2.FirstName} " + $"{src.Item2.FirstName}")
-            .Map(dest => dest.PhoneNumber, src => src.Item2.PhoneNumber)
-            .Map(dest => dest.Email, src => src.Item2.Email);
+            .Map(dest => dest.TutorName, src => $"{src.Item2.FirstName} " + $"{src.Item2.LastName}")
+            .Map(dest => dest.TutorPhoneNumber, src => src.Item2.PhoneNumber)
+            .Map(dest => dest.TutorEmail, src => src.Item2.Email);
 
 
         config.NewConfig<Subject, SubjectLookupDto>();
