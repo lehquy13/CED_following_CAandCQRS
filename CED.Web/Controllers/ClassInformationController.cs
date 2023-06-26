@@ -12,6 +12,7 @@ using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
+using FluentResults;
 
 namespace CED.Web.Controllers;
 
@@ -78,12 +79,12 @@ public class ClassInformationController : Controller
         var result = await _mediator.Send(query);
         ViewBag.Action = "Edit";
 
-        
+
         // var result = await _mediator.Send(new GetAllRequestGettingClassQuery()
         // {
         //     Guid = (Guid)Id
         // });
-        
+
         return View(result);
     }
 
@@ -237,19 +238,35 @@ public class ClassInformationController : Controller
         return Json(new { tutorId = tutorId });
     }
 
-    [HttpPost("ViewRequests")]
-    public async Task<IActionResult> ViewRequests(Guid? Id)
+    [HttpGet("EditRequest")]
+    public async Task<IActionResult> EditRequest(Guid id)
     {
-        if (Id == null || Id.Equals(Guid.Empty))
+        if (id.Equals(Guid.Empty))
         {
             return NotFound();
         }
 
-        var result = await _mediator.Send(new GetAllRequestGettingClassQuery()
-        {
-            Guid = (Guid)Id
-        });
+        var result = await _mediator
+            .Send(
+                new GetObjectQuery<Result<RequestGettingClassMinimalDto>>
+                {
+                    Guid = id
+                }
+            );
 
-        return Json(new { requests = result });
+        return Helper.RenderRazorViewToString(this,"_EditRequest", result.Value );
+    }
+    [HttpPost("CancelRequest")]
+    public async Task<IActionResult> CancelRequest(RequestGettingClassMinimalDto requestGettingClassMinimalDto)
+    {
+      
+
+        var result = await _mediator
+            .Send(
+                new CancelRequestGettingClassCommand(requestGettingClassMinimalDto)
+                
+            );
+
+        return RedirectToAction("Edit", new {id = requestGettingClassMinimalDto.ClassInformationId});
     }
 }

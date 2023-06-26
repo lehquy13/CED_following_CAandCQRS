@@ -11,8 +11,8 @@ using MapsterMapper;
 namespace CED.Application.Services.ClassInformations.Tutor.Queries;
 
 public class GetTeachingClassDetailQueryHandler 
-    : GetByIdQueryHandler<GetObjectQuery<Result<RequestGettingClassDto>>,
-        Result<RequestGettingClassDto>?>
+    : GetByIdQueryHandler<GetObjectQuery<Result<RequestGettingClassExtendDto>>,
+        Result<RequestGettingClassExtendDto>?>
 
 {
     private readonly IClassInformationRepository _classInformationRepository;
@@ -33,8 +33,8 @@ public class GetTeachingClassDetailQueryHandler
         _userRepository = userRepository;
     }
 
-    public override async Task<Result<RequestGettingClassDto>?> Handle(
-        GetObjectQuery<Result<RequestGettingClassDto>> query, CancellationToken cancellationToken)
+    public override async Task<Result<RequestGettingClassExtendDto>?> Handle(
+        GetObjectQuery<Result<RequestGettingClassExtendDto>> query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
@@ -45,14 +45,11 @@ public class GetTeachingClassDetailQueryHandler
                 
                 throw new Exception("This getting class request does not exist!");
             }
-
-           
-
            
             var classes = await _classInformationRepository.GetById(requests.ClassInformationId);
             var subjects = await _subjectRepository.GetById(classes?.SubjectId ?? Guid.Empty);
 
-            return (requests, classes, subjects?.Name ?? "null subject").Adapt<RequestGettingClassDto>();
+            return (requests, classes, subjects?.Name ?? "null subject").Adapt<RequestGettingClassExtendDto>();
             
         }
         catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿@model CED.Contracts.ClassInformations.Dtos.RequestGettingClassDto
+﻿@using CED.Domain.Shared.ClassInformationConsts
+@model CED.Contracts.ClassInformations.Dtos.RequestGettingClassExtendDto
 
 @{
     ViewData["Title"] = "Details";
@@ -33,7 +34,24 @@
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Description)
-       
+        </dd>
+        @if (Model.RequestStatus == RequestStatus.Success &&Model.LearnerName != "")
+        {
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.LearnerName)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.LearnerName)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.ContactNumber)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ContactNumber)
+            </dd>
+        }
+        
+        
     </dl>
 </div>
 

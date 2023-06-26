@@ -278,7 +278,7 @@ public class ProfileController : Controller
     [Route("{id}")]
     public async Task<IActionResult> TeachingClassDetail(Guid id)
     {
-        var query = new GetObjectQuery<Result<RequestGettingClassDto>>()
+        var query = new GetObjectQuery<Result<RequestGettingClassExtendDto>>
         {
             Guid = id
         };

@@ -52,6 +52,7 @@ public class CreateUpdateClassInformationCommandHandler
                 {
                     classInformation1.Status = Status.Confirmed;
                 }
+                classInformation.LastModificationTime = DateTime.Now;
                 var updatedEntity = _classInformationRepository.Update(classInformation1);
                 if (updatedEntity != null )
                 {
@@ -71,7 +72,7 @@ public class CreateUpdateClassInformationCommandHandler
                         }
                     }
                     
-                    
+
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 }
@@ -89,6 +90,8 @@ public class CreateUpdateClassInformationCommandHandler
                         classInformation.LearnerId = user.Id;
                     }
                 }
+
+                classInformation.LastModificationTime = DateTime.Now;
                 await _classInformationRepository.Insert(classInformation);
             }
 

@@ -30,4 +30,6 @@ public static class EnumProvider
 
     public static List<string> Status { get; } = Enum.GetNames(typeof(Status))
         .ToList();
+    public static List<string> FullRequestStatus { get; } = Enum.GetNames(typeof(RequestStatus))
+        .ToList();
 }

@@ -18,9 +18,9 @@ function callPostActionWithForm(formInput) {
             if (res.res === true) {
                 if(res.viewName === "Profile" )
                     $('#main').html(res.partialView);
-                //$('#main').click();
 
-                $('#successAlertButton').click();
+                $('#successAlert').removeClass("collapse");
+                $('#successAlert').removeClass("fade");
             } else if (res.res === "deleted") {
                 $('#verticalycentered').modal('hide');
                 
@@ -36,7 +36,9 @@ function callPostActionWithForm(formInput) {
                 }
                 
 
-                $('#failAlertButton').click();
+                //$('#failAlertButton').click();
+                $('#failAlert').removeClass("collapse");
+                $('#failAlert').removeClass("fade");
              
             }
         },
@@ -135,6 +137,21 @@ function ChooseTutor(id,name,phone){
     $('.modal-backdrop').remove();
     $('#tutorId').attr("value",id);
     $('#tutorInfor').attr("value",name + " - " +phone);
+    
+}
+function CancelRequest(url){
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {},
+        success: function (res) {
+            $('#largeModal .modal-title').html("Edit");
+            $('#largeModal .modal-body').html(res.partialView);
+
+            $('#modalTriggerButton').click();
+        }
+    })
     
 }
 function AddMajorSubject(id,name,des){

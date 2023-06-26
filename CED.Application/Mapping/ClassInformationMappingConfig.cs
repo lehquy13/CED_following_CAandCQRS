@@ -53,14 +53,27 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.Title, src => src.Item2.Title)
             .Map(dest => dest.SubjectName, src => src.Item3)
             .Map(dest => dest, src => src.Item1);
-        config.NewConfig<(RequestGettingClass, ClassInformation,Tutor,string), RequestGettingClassFullDto>()
+        config.NewConfig<(RequestGettingClass, ClassInformation,string), RequestGettingClassExtendDto>()
+            
+            .Map(dest => dest.ContactNumber, src => src.Item2.ContactNumber)
+            .Map(dest => dest.LearnerName, src => src.Item2.LearnerName)
+            .Map(dest => dest.Title, src => src.Item2.Title)
+            .Map(dest => dest.TutorId, src => src.Item2.TutorId)
+            //.Map(dest => dest.Tutor, src => src.Item3)
+            .Map(dest => dest.SubjectName, src => src.Item3)
+            .Map(dest => dest, src => src.Item1);
+        config.NewConfig<(RequestGettingClass, ClassInformation,Tutor,string), RequestGettingClassExtendDto>()
+            
+            .Map(dest => dest.ContactNumber, src => src.Item2.ContactNumber)
+            .Map(dest => dest.LearnerName, src => src.Item2.LearnerName)
             .Map(dest => dest.Title, src => src.Item2.Title)
             .Map(dest => dest.TutorId, src => src.Item3.Id)
-            .Map(dest => dest.Tutor, src => src.Item3)
+            //.Map(dest => dest.Tutor, src => src.Item3)
             .Map(dest => dest.SubjectName, src => src.Item4)
             .Map(dest => dest, src => src.Item1);
         config.NewConfig<(RequestGettingClass, User), RequestGettingClassMinimalDto>()
             .Map(dest => dest.Id, src => src.Item1.Id)
+            .Map(dest => dest.ClassInformationId, src => src.Item1.ClassInformationId)
             .Map(dest => dest.Description, src => src.Item1.Description)
             .Map(dest => dest.RequestStatus, src => src.Item1.RequestStatus)
             .Map(dest => dest.TutorId, src => src.Item2.Id)

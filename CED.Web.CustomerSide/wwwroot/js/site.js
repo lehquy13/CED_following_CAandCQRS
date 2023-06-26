@@ -59,7 +59,8 @@ function callPostActionWithForm(formInput) {
                     $('#main').html(res.partialView);
                 //$('#main').click();
 
-                $('#successAlertButton').click();
+                $('#successAlert').removeClass("collapse");
+                $('#successAlert').removeClass("fade");
             } else if (res.res === "Delete") {
                 $('#verticalycentered').modal('hide');
                 location.reload();
@@ -74,8 +75,9 @@ function callPostActionWithForm(formInput) {
                 }
 
 
-                $('#failAlertButton').click();
-
+                //$('#failAlertButton').click();
+                $('#failAlert').removeClass("collapse");
+                $('#failAlert').removeClass("fade");
             }
         },
         error: function (err) {

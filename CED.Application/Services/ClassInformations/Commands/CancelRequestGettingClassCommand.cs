@@ -1,6 +1,10 @@
+using CED.Contracts.ClassInformations.Dtos;
+using MediatR;
+
 namespace CED.Application.Services.ClassInformations.Commands;
 
-public class CancelRequestGettingClassCommand
-{
+public record CancelRequestGettingClassCommand(
+    RequestGettingClassMinimalDto RequestGettingClassMinimalDto
+) : IRequest<bool>;
+
     
-}

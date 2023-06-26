@@ -8,11 +8,11 @@ using FluentResults;
 using Mapster;
 using MapsterMapper;
 
-namespace CED.Application.Services.ClassInformations.Tutor.Queries;
+namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetTeachingClassDetailQueryHandler 
-    : GetByIdQueryHandler<GetObjectQuery<Result<RequestGettingClassExtendDto>>,
-        Result<RequestGettingClassExtendDto>?>
+public class GetRequestGettingClassDetailQueryHandler 
+    : GetByIdQueryHandler<GetObjectQuery<Result<RequestGettingClassMinimalDto>>,
+        Result<RequestGettingClassMinimalDto>?>
 
 {
     private readonly IClassInformationRepository _classInformationRepository;
@@ -20,7 +20,7 @@ public class GetTeachingClassDetailQueryHandler
     private readonly ISubjectRepository _subjectRepository;
     private readonly IUserRepository _userRepository;
 
-    public GetTeachingClassDetailQueryHandler(
+    public GetRequestGettingClassDetailQueryHandler(
         IClassInformationRepository classInformationRepository,
         IRepository<RequestGettingClass> requestGettingClassRepositoryepository,
         ISubjectRepository subjectRepository,
@@ -33,8 +33,8 @@ public class GetTeachingClassDetailQueryHandler
         _userRepository = userRepository;
     }
 
-    public override async Task<Result<RequestGettingClassExtendDto>?> Handle(
-        GetObjectQuery<Result<RequestGettingClassExtendDto>> query, CancellationToken cancellationToken)
+    public override async Task<Result<RequestGettingClassMinimalDto>?> Handle(
+        GetObjectQuery<Result<RequestGettingClassMinimalDto>> query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
@@ -42,14 +42,13 @@ public class GetTeachingClassDetailQueryHandler
             var requests = await _requestGettingClassRepositoryepository.GetById(query.Guid);
             if (requests is null)
             {
-                
                 throw new Exception("This getting class request does not exist!");
             }
            
             var classes = await _classInformationRepository.GetById(requests.ClassInformationId);
-            var subjects = await _subjectRepository.GetById(classes?.SubjectId ?? Guid.Empty);
+            var user = await _userRepository.GetById(requests.TutorId);
 
-            return (requests, classes, subjects?.Name ?? "null subject").Adapt<RequestGettingClassExtendDto>();
+            return (requests, user).Adapt<RequestGettingClassMinimalDto>();
             
         }
         catch (Exception ex)

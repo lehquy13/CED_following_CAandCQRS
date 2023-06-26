@@ -40,14 +40,14 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
         }
 
         var newMajorUpdate = command.SubjectIds.DistinctBy(x => x).ToList();
-        var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id));
+        var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id)).ToList();
 
         // check the subject changes
         foreach (var major in currentMajor)
         {
             if (!newMajorUpdate.Contains(major.SubjectId))
             {
-                await _tutorMajorRepository.DeleteById(major.Id);
+                _tutorMajorRepository.Delete(major);
                 _logger.LogDebug("Remove subject {0} from tutor's major", major.SubjectId);
             }
             else

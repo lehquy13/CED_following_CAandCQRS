@@ -290,11 +290,10 @@
                 <thead>
                 <tr>
                     <!-- a avatar comlumn will be added -->
-                    <th scope="col">Index</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Tutor Name</th>
                     <th scope="col">Phone Number</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Status</th>
                     <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
                 </tr>
                 </thead>
@@ -303,10 +302,11 @@
                 @foreach (var requestGettingClassMinimalDto in Model.RequestGettingClassDtos)
                 {
                     <tr>
-                        <th scope="row">
-                            <input hidden name="Id" value="@requestGettingClassMinimalDto.Id"/>
-                            #
-                        </th>
+                        
+                        <input hidden name="Id" value="@requestGettingClassMinimalDto.Id"/>
+                          
+                        <td>@requestGettingClassMinimalDto.RequestStatus</td>
+                        
                         <td><a asp-controller="Tutor" asp-action="Detail"
                                asp-route-id="@requestGettingClassMinimalDto.TutorId">
                             @requestGettingClassMinimalDto.TutorName
@@ -314,12 +314,16 @@
                             </td>
                         <td>@requestGettingClassMinimalDto.TutorPhoneNumber</td>
                         <td>@requestGettingClassMinimalDto.TutorEmail</td>
-                        <td>@requestGettingClassMinimalDto.RequestStatus</td>
                        
                         <td>
                             <button type="button" class="btn btn-primary"
-                                        onclick="ChooseTutor('@requestGettingClassMinimalDto.TutorId','@requestGettingClassMinimalDto.TutorName', '@requestGettingClassMinimalDto.TutorPhoneNumber');">
+                                    onclick="ChooseTutor('@requestGettingClassMinimalDto.TutorId','@requestGettingClassMinimalDto.TutorName', '@requestGettingClassMinimalDto.TutorPhoneNumber');">
                                 Accept
+                            </button>
+                            <button type="button" class="btn btn-danger"
+                                    onclick="CancelRequest('@Url.Action("EditRequest","ClassInformation",new {id = requestGettingClassMinimalDto.Id})')"
+                                    >
+                                Cancel
                             </button>
                         </td>
                     </tr>
