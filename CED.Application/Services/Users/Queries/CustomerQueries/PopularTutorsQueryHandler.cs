@@ -1,4 +1,3 @@
-using System.Linq.Dynamic.Core;
 using CED.Contracts.Users;
 using CED.Domain.ClassInformations;
 using CED.Domain.Shared.ClassInformationConsts;

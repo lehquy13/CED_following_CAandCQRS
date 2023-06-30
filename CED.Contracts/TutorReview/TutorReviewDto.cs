@@ -1,18 +1,18 @@
-using Abp.Application.Services.Dto;
+using CED.Contracts.Common.Models;
 
 namespace CED.Contracts.TutorReview;
 
-public class TutorReviewDto : AuditedEntityDto<Guid>
+public class TutorReviewDto : FullAuditedAggregateRootDto<Guid>
 {
     public Guid TutorId { get; set; }
     public Guid LearnerId { get; set; }
-    public string LearnerName { get; set; }
+    public string LearnerName { get; set; }=string.Empty;
     public Guid ClassInformationId { get; set; }
 
     public short Rate { get; set; } = 5;
-    public string Description { get; set; } = "";
+    public string Description { get; set; } =string.Empty;
 }
-public class TutorReviewRequestDto : AuditedEntityDto<Guid>
+public class TutorReviewRequestDto : FullAuditedAggregateRootDto<Guid>
 {
     public string LearnerEmail { get; set; } = string.Empty;
     public string TutorEmail { get; set; }= string.Empty;

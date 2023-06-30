@@ -1,9 +1,6 @@
-﻿using Castle.MicroKernel.ModelBuilder.Descriptors;
-using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Contracts.Subjects;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Users;
 using CED.Domain.Repository;
-using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using MapsterMapper;

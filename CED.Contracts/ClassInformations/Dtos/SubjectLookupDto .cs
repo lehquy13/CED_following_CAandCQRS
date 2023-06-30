@@ -1,4 +1,4 @@
-﻿using Abp.Application.Services.Dto;
+﻿using CED.Contracts.Common.Models;
 
 namespace CED.Contracts.ClassInformations.Dtos;
 

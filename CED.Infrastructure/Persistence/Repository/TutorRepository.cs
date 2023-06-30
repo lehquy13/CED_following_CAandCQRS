@@ -1,6 +1,4 @@
-﻿using System.Linq.Dynamic.Core;
-using CED.Domain.Shared.ClassInformationConsts;
-using CED.Domain.Users;
+﻿using CED.Domain.Users;
 using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 

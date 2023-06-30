@@ -1,4 +1,4 @@
-﻿using Abp.Domain.Entities;
+﻿using CED.Domain.Common.Models;
 
 namespace CED.Domain.Repository;
 

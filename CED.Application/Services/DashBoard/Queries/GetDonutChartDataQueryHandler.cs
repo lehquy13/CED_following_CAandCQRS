@@ -1,4 +1,4 @@
-﻿using Castle.Core.Internal;
+﻿using System.Collections;
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Charts;
 using CED.Domain.ClassInformations;
@@ -44,14 +44,14 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
         List<int> resultInts = classInforsPie
             .Select(x => x.count)
             .ToList();
-        if (resultInts.IsNullOrEmpty())
+        if (resultInts.Count <=0)
         {
             resultInts.Add(1);
         }
         List<string> resultStrings = classInforsPie
             .Select(x => x.key)
             .ToList();
-        if (resultStrings.IsNullOrEmpty())
+        if (resultStrings.Count <= 0)
         {
             resultStrings.Add("None");
         }

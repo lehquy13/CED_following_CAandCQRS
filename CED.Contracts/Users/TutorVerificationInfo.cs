@@ -1,8 +1,8 @@
-using Abp.Application.Services.Dto;
+using CED.Contracts.Common.Models;
 
 namespace CED.Contracts.Users;
 
-public class TutorVerificationInfoDto : EntityDto<Guid>
+public class TutorVerificationInfoDto : FullAuditedAggregateRootDto<Guid>
 {
     public Guid TutorId { get; set; }
     public string Image { get; set; } = "doc_contract.png";

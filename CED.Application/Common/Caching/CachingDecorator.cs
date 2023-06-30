@@ -10,8 +10,7 @@ public class CachingBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>, new()
 {
     private readonly IAppCache _cache;
-    private readonly ILogger _logger;
-    //private readonly CacheSettings _settings;
+    private readonly ILogger<TResponse> _logger;
     public CachingBehavior(IAppCache cache, ILogger<TResponse> logger)
     {
         _cache = cache;
@@ -24,6 +23,7 @@ public class CachingBehavior<TRequest, TResponse>
     {
         var defaultRequestKey = GenerateCacheKey(new TRequest());
         string key = GenerateCacheKey(request);
+        _logger.LogInformation($"Generated key: {key}");
         if (defaultRequestKey.Equals(key))
         {
             return _cache.GetOrAddAsync(key, async entry =>

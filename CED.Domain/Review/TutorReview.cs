@@ -1,4 +1,4 @@
-using Abp.Domain.Entities.Auditing;
+using CED.Domain.Common.Models;
 
 namespace CED.Domain.Review;
 

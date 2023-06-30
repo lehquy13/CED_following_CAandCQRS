@@ -1,10 +1,9 @@
-﻿using Abp.Application.Services.Dto;
-using CED.Contracts.Users;
+﻿using CED.Contracts.Common.Models;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations.Dtos;
 
-public class RequestGettingClassDto : EntityDto<Guid>
+public class RequestGettingClassDto : FullAuditedAggregateRootDto<Guid>
 {
     public Guid TutorId { get; set; }
     public Guid ClassInformationId { get; set; }

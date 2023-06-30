@@ -1,4 +1,4 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using CED.Domain.Common.Models;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Domain.Users;

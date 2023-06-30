@@ -1,5 +1,4 @@
-﻿using System.Linq.Dynamic.Core;
-using CED.Application.Services.Abstractions.CommandHandlers;
+﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.Interfaces.Services;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;

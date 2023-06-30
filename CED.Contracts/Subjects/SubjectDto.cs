@@ -1,8 +1,8 @@
-﻿using Abp.Application.Services.Dto;
+﻿using CED.Contracts.Common.Models;
 
 namespace CED.Contracts.Subjects;
 
-public class SubjectDto : FullAuditedEntityDto<Guid>
+public class SubjectDto : FullAuditedAggregateRootDto<Guid>
 {
 
     public string Name { get; set; }

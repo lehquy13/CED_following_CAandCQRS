@@ -1,10 +1,10 @@
-﻿using Abp.Application.Services.Dto;
+﻿using CED.Contracts.Common.Models;
 using CED.Contracts.TutorReview;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations.Dtos;
 
-public class ClassInformationDto : FullAuditedEntityDto<Guid>
+public class ClassInformationDto : FullAuditedAggregateRootDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

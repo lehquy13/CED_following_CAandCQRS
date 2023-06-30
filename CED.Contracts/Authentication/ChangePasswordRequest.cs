@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace CED.Contracts.Authentication;

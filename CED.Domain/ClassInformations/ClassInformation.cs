@@ -1,5 +1,4 @@
-﻿using Abp.Domain.Entities.Auditing;
-using Castle.Components.DictionaryAdapter;
+﻿using CED.Domain.Common.Models;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Domain.ClassInformations;

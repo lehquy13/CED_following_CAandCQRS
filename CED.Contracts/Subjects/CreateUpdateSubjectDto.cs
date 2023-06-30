@@ -1,9 +1,9 @@
-﻿using Abp.Application.Services.Dto;
+﻿using CED.Contracts.Common.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace CED.Contracts.Subjects;
 
-public class CreateUpdateSubjectDto : FullAuditedEntityDto<Guid>
+public class CreateUpdateSubjectDto : FullAuditedAggregateRootDto<Guid>
 {
     [Required]
     [StringLength(128)]

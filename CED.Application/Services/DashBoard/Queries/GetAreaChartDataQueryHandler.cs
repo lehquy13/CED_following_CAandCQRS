@@ -1,5 +1,4 @@
-﻿using Castle.Core.Internal;
-using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Charts;
 using CED.Domain.ClassInformations;
 using CED.Domain.Shared.ClassInformationConsts;
@@ -85,21 +84,21 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
         List<float> resultInts = classesInWeek
             .Select(x => x.sum ?? 0)
             .ToList();
-        if (resultInts.IsNullOrEmpty())
+        if (resultInts.Count <= 0)
         {
             resultInts.Add(1);
         }
         List<float> resultInts1 = classesInWeek1
             .Select(x => x.sum ?? 0)
             .ToList();
-        if (resultInts1.IsNullOrEmpty())
+        if (resultInts1.Count <= 0)
         {
             resultInts.Add(1);
         }
         List<float> resultInts2 = classesInWeek2
             .Select(x => x.sum ?? 0)
             .ToList();
-        if (resultInts2.IsNullOrEmpty())
+        if (resultInts2.Count <= 0)
         {
             resultInts.Add(1);
         }
@@ -107,7 +106,7 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
         List<string> resultStrings = classesInWeek
             .Select(x => x.dates.ToString())
             .ToList();
-        if (resultStrings.IsNullOrEmpty())
+        if (resultStrings.Count <= 0)
         {
             resultStrings.Add("None");
         }

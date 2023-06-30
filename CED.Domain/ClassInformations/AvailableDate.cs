@@ -1,8 +1,8 @@
-﻿using Abp.Domain.Entities.Auditing;
-using System;
+﻿using CED.Domain.Common.Models;
+
 namespace CED.Domain.ClassInformations;
 
-public class AvailableDate : AuditedAggregateRoot<Guid>
+public class AvailableDate : AuditedEntity<Guid>
 {
     public DayOfWeek DayOfWeek { get; set; }
     public int BeginTime { get; set; }

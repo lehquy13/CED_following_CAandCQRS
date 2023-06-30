@@ -1,10 +1,10 @@
-﻿using Abp.Application.Services.Dto;
+﻿using CED.Contracts.Common.Models;
 using CED.Contracts.Subjects;
 using CED.Contracts.TutorReview;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
-public class TutorDto : FullAuditedEntityDto<Guid>
+public class TutorDto : FullAuditedAggregateRootDto<Guid>
 {
     //Admin information
     public string FirstName { get; set; } = string.Empty;
@@ -37,7 +37,7 @@ public class TutorDto : FullAuditedEntityDto<Guid>
 
 }
 
-public class TutorMainInfoDto : FullAuditedEntityDto<Guid>
+public class TutorMainInfoDto : FullAuditedAggregateRootDto<Guid>
 {
     //is tutor related informtions
     public UserRole Role { get; set; } = UserRole.Tutor;

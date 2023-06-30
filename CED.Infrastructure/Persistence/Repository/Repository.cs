@@ -1,14 +1,13 @@
-﻿using Abp.Domain.Entities;
-using Abp.Domain.Entities.Auditing;
-using CED.Domain.Repository;
+﻿using CED.Domain.Repository;
 using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace CED.Infrastructure.Persistence.Repository;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<Guid>
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.Common.Models.Entity<Guid>
 {
     protected readonly CEDDBContext Context;
+
     public Repository(CEDDBContext cEdDbContext)
     {
         Context = cEdDbContext;
@@ -20,18 +19,19 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<G
         {
             Context.Set<TEntity>().Remove(entity);
             Context.SaveChanges();
-
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
     }
+
     public async Task<bool> DeleteById(Guid id)
     {
         try
         {
-            var deleteRecord = await this.GetById(id);
+            var deleteRecord = await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
             if (deleteRecord == null) return false;
             Context.Set<TEntity>().Remove(deleteRecord);
 
@@ -45,7 +45,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<G
 
     public void Dispose()
     {
-       // throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 
     public async Task<List<TEntity>> GetAllList()
@@ -59,6 +59,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<G
             throw new Exception(ex.Message);
         }
     }
+
     public IQueryable<TEntity> GetAll()
     {
         try
@@ -82,7 +83,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<G
             throw new Exception(ex.Message);
         }
     }
-     
+
     public async Task Insert(TEntity entity)
     {
         try
@@ -101,8 +102,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<G
     {
         try
         {
-            
-            var updateEntity =  Context.Set<TEntity>().Update(entity);
+            var updateEntity = Context.Set<TEntity>().Update(entity);
             Context.SaveChanges();
             return updateEntity.Entity;
         }
@@ -111,6 +111,4 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<G
             throw new Exception(ex.Message);
         }
     }
-
-
 }

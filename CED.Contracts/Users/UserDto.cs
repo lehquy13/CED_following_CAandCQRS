@@ -1,9 +1,8 @@
-﻿using Abp.Application.Services.Dto;
-using CED.Contracts.Subjects;
+﻿using CED.Contracts.Common.Models;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
-public class UserDto : FullAuditedEntityDto<Guid>
+public class UserDto : FullAuditedAggregateRootDto<Guid>
 {
     //User information
     public string FirstName { get; set; } = string.Empty;

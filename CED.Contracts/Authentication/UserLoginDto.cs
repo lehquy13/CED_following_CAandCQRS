@@ -1,5 +1,4 @@
-﻿using Abp.Application.Services.Dto;
-using CED.Domain.Shared.ClassInformationConsts;
+﻿using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Authentication;
 

@@ -56,12 +56,9 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            if ( email != null)
+            if (email != null)
             {
-                var user = await Context.Set<User>()
-                    .FirstOrDefaultAsync(o => o.Email.Equals(email));
-    
-                return user != null;
+                return await Context.Set<User>().AnyAsync(o => o.Email.Equals(email));
             }
 
             return false;
@@ -77,10 +74,6 @@ public class UserRepository : Repository<User>, IUserRepository
         try
         {
             var user = await Context.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
-            if (user == null)
-            {
-                return null;
-            }
 
             return user;
         }
