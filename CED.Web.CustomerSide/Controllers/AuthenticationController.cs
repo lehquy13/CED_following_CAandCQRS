@@ -116,10 +116,9 @@ public class AuthenticationController : Controller
         {
             HttpOnly = true,
             SameSite = SameSiteMode.Strict,
-            Secure = true,
+            //Secure = true,
             IsEssential = true,
             Expires = DateTime.UtcNow.AddHours(16),
-            //Domain = "yourdomain.com",
         };
         if (loginResult.User != null)
         {

@@ -107,7 +107,7 @@ public class TutorController : Controller
             userDto,
             true
         );
-        
+
     }
 
     [HttpGet("Create")]
@@ -206,5 +206,16 @@ public class TutorController : Controller
         var subjectDtos = await _mediator.Send(query);
         return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
     }
-   
+    [HttpPost("RemoveTutorVerification")]
+    public async Task<IActionResult> RemoveTutorVerification(string id)
+    {
+        var query = new RemoveTutorVerificationCommand(new Guid(id));
+        var result = await _mediator.Send(query);
+        return Json(new
+        {
+            res = result
+        });
+        
+    }
+
 }

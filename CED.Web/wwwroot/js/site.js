@@ -156,14 +156,60 @@ function CancelRequest(url){
 }
 function AddMajorSubject(id,name,des){
   
-    $('#tutorMajorCard .list-group').append(`<input name="SubjectId" value="${id}" hidden="hidden"/>\n` +
-        `    <a class="list-group-item list-group-item-action" href="/Subject/Detail?id=${id}" >\n` +
-        `        <div class="d-flex w-100 justify-content-between">\n` +
-        `            <h5 class="mb-1">`+name+`</h5>\n` +
-        `        </div>\n` +
-        `        <p class="mb-1">`+des+`</p>\n` +
-        `    </a>`);
+    //$('#tutorMajorCard .list-group').append(`<input name="SubjectId" id="${id}-input" value="${id}" hidden="hidden"/>\n` +
+    //    `    <a class="list-group-item list-group-item-action" id="${id}-atag" href="/Subject/Detail?id=${id}" >\n` +
+    //    `        <div class="d-flex w-100 justify-content-between">\n` +
+    //    `            <h5 class="mb-1">`+name+`</h5>\n` +
+    //    `        </div>\n` +
+    //    `        <p class="mb-1">`+des+`</p>\n` +
+    //    `    </a>`);
+    $('#tutorMajorCard .list-group').append(` <div class=" list-group-item list-group-item-action" id="${id}-item">
+                                    <div class="row">
+                                        <input name="SubjectId" value="@s.Id"   hidden="hidden" />
+                                        <a href="/Subject/Detail?id=${id}" class="col-11">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="mb-1">`+ name +`</h5>
+                                            </div>
+                                            <p class="mb-1">`+ des +`</p>
+                                        </a>
+                                        <button type="button"class="col-1 btn btn-danger" onclick="RemoveMajorSubject('${id}')">Remove</button>
+
+                                    </div>
+                                </div>`);
 
     
 }
 
+function RemoveMajorSubject(id) {
+  
+    $("#"+id + "-item").remove();
+
+}
+function RemoveTutorVerification(url,id) {
+
+
+    var formData = new FormData();
+    formData.append('id', id);
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+
+            if (res.res === true) {
+                $("#" + id + "-verification").remove();
+            }
+            console.log(res);
+
+        },
+        error: function (err) {
+            console.log(err);
+            //alert(err);
+        }
+    })
+    return false;
+    
+
+}
