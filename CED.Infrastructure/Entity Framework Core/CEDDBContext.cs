@@ -121,8 +121,11 @@ public class CEDDBContextFactory : IDesignTimeDbContextFactory<CEDDBContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<CEDDBContext>();
         optionsBuilder.UseSqlServer(
-            "workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart; TrustServerCertificate=True"
+            "Server=(localdb)\\MSSQLLocalDB; Database=ced_ddd; Trusted_Connection=True;MultipleActiveResultSets=true"
             );
+            //); optionsBuilder.UseSqlServer(
+            //"workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart; TrustServerCertificate=True"
+            //);
 
         return new CEDDBContext(optionsBuilder.Options);
     }

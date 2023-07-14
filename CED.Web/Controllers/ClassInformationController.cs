@@ -56,10 +56,13 @@ public class ClassInformationController : Controller
 
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? type)
     {
         //var query = new GetObjectQuery<List<ClassInformationDto>>();
-        var query = new GetAllClassInformationsQuery();
+        var query = new GetAllClassInformationsQuery()
+        {
+            Filter = type??""
+        };
         var classInformations = await _mediator.Send(query);
 
         return View(classInformations);

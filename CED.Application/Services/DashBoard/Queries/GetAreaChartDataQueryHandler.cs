@@ -20,8 +20,8 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
-
-     
+        
+        // Create a dateListRange
         List<int> dates = new List<int>();
 
         var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));

@@ -2,6 +2,7 @@
 using CED.Contracts;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Domain.ClassInformations;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using MapsterMapper;
@@ -34,6 +35,21 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
             var classInformations = _classInformationRepository.GetAll()
                 .OrderByDescending(x => x.CreationTime)
                 .Where(x => x.IsDeleted == false);
+            switch (query.Filter)
+            {
+                case "Today":
+                    classInformations = classInformations.Where(x =>  x.CreationTime >= DateTime.Today);
+                    break;
+
+                case "Verifying":
+                    classInformations = classInformations.Where(x =>  x.Status == Status.OnVerifying); 
+                    break;
+                case "Purchasing":
+                    classInformations = classInformations.Where(x => x.Status == Status.OnPurchasing);
+                    break;
+
+                    
+            }
             var subjects = await _subjectRepository.GetAllList();
             var tutors = _userRepository.GetTutors();
 

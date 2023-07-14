@@ -158,10 +158,32 @@
         </li><!-- End Tables Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/ClassInformation">
+            <a class="nav-link collapsed" >
                 <i class="bi bi-info-square"></i>
                 <span>Class Information</span>
             </a>
+             <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                            <li>
+                                <a asp-action="Index" asp-controller="ClassInformation">
+                                    <i class="bi bi-circle"></i><span>All</span>
+                                </a>
+                            </li>
+                             <li>
+                                 <a asp-action="Index" asp-controller="ClassInformation" asp-route-type="Verifying">
+                                     <i class="bi bi-circle"></i><span>Verifying</span>
+                                 </a>
+                             </li>
+                             <li>
+                                 <a asp-action="Index" asp-controller="ClassInformation" asp-route-type="Purchasing">
+                                     <i class="bi bi-circle"></i><span>Purchasing</span>
+                                 </a>
+                             </li>
+                            <li>
+                                <a asp-action="Index" asp-controller="ClassInformation" asp-route-type="Today">
+                                    <i class="bi bi-circle"></i><span>Today</span>
+                                </a>
+                            </li>
+                        </ul>
         </li><!-- End Subject Nav -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="/Subject">
