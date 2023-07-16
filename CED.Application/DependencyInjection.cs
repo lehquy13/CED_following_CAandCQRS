@@ -13,6 +13,7 @@ using CED.Contracts;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
+using MediatR.NotificationPublishers;
 
 namespace CED.Application
 {
@@ -21,7 +22,12 @@ namespace CED.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddApplicationMappings();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+            services.AddMediatR(
+                cfg => {
+                    cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+                    cfg.NotificationPublisher = new TaskWhenAllPublisher();
+
+                });;
             services.AddLazyCache();
 
 

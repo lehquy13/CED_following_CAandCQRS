@@ -15,10 +15,10 @@ public interface IRepository<TEntity> : IDisposable where TEntity : Entity<Guid>
     /// </summary>
     public IQueryable<TEntity> GetAll();
 
-    public Task<TEntity?> GetById(Guid id);
+    public Task<TEntity> GetById(Guid id);
 
     //Insert
-    public Task Insert(TEntity entity);
+    public Task<TEntity> Insert(TEntity entity);
 
     //Update
     public TEntity? Update(TEntity entity);

@@ -1,11 +1,14 @@
 ﻿using CED.Application.Common.Errors.ClassInformations;
 using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Application.Services.ClassInformations.Commands;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Shared.NotificationConsts;
 using CED.Domain.Users;
 using FluentResults;
 using MapsterMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
@@ -16,16 +19,19 @@ public class RequestGettingClassCommandHandler : NewCreateUpdateCommandHandler<R
     private readonly ITutorRepository _tutorRepository;
     private readonly IRepository<RequestGettingClass> _requestGettingClassRepository;
     private readonly IClassInformationRepository _classInformationRepository;
+    private readonly IPublisher _publisher;
 
     public RequestGettingClassCommandHandler(IUserRepository userRepository, ITutorRepository tutorRepository,
         IClassInformationRepository classInformationRepository, ILogger<RequestGettingClassCommandHandler> logger,
         IRepository<RequestGettingClass> requestGettingClassRepository,
-        IMapper mapper) : base(logger,mapper)
+        
+        IMapper mapper, IPublisher publisher) : base(logger,mapper)
     {
         _userRepository = userRepository;
         _classInformationRepository = classInformationRepository;
         _tutorRepository = tutorRepository;
         _requestGettingClassRepository = requestGettingClassRepository;
+        _publisher = publisher;
     }
 
     public override async Task<Result<bool>> Handle(RequestGettingClassCommand command, CancellationToken cancellationToken)
@@ -70,8 +76,9 @@ public class RequestGettingClassCommandHandler : NewCreateUpdateCommandHandler<R
                 TutorId = tutor.Id
             };
 
-            await _requestGettingClassRepository.Insert(request);
-            
+            var entity = await _requestGettingClassRepository.Insert(request);
+            var message = "New request: " + classInfor.Title + " at " + DateTime.Now.ToLongDateString();
+            await _publisher.Publish(new NewObjectCreatedEvent(entity.ClassInformationId, message, NotificationEnum.RequestGettingClass), cancellationToken);
             return true;
         }
         catch (Exception e)

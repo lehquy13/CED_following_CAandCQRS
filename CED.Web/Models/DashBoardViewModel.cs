@@ -1,4 +1,5 @@
 using CED.Contracts.ClassInformations.Dtos;
+using CED.Contracts.Notifications;
 
 namespace CED.Web.Models;
 
@@ -16,7 +17,7 @@ public class DashBoardViewModel
     public AreaChartViewModel AreaChartViewModel { get; set; } = new AreaChartViewModel();
     
     public List<CED.Contracts.Subjects.SubjectDto> SubjectDtos { get; set; } = new();
-    
+    public List<NotificationDto> NotificationDtos { get; set; } = new();
 }
 
 public class PieChartViewModel

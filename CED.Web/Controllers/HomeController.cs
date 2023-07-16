@@ -15,6 +15,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using CED.Contracts.Notifications;
 
 namespace CED.Web.Controllers;
 
@@ -43,14 +44,14 @@ public class HomeController : Controller
         _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
 
         var date = GetByTime(DateTime.Now, ByTime.Month);
-        var resultClassInformationDtos1 = classDtos.Where(x => x.CreationTime >= date).ToList();
-        var resultTutorDtos1 = tutorDtos.Where(x => x.CreationTime >= date).ToList();
-        var resultStudentDtos1 = studentDtos.Where(x => x.CreationTime >= date).ToList();
+        var thisMonthClassInformationDtoCount = classDtos.Where(x => x.CreationTime >= date).Count();
+        var thisMonthTutorDtoCount = tutorDtos.Where(x => x.CreationTime >= date).Count();
+        var thisMonthStudentDtoCount = studentDtos.Where(x => x.CreationTime >= date).Count();
 
         date = GetByTime(date, ByTime.Month);
-        var resultClassInformationDtos2 = classDtos.Where(x => x.CreationTime >= date).ToList();
-        var resultTutorDtos2 = tutorDtos.Where(x => x.CreationTime >= date).ToList();
-        var resultStudentDtos2 = studentDtos.Where(x => x.CreationTime >= date).ToList();
+        var lastMonthClassInformationDtoCount = classDtos.Where(x => x.CreationTime >= date).Count();
+        var lastMonthresultTutorDtoCount = tutorDtos.Where(x => x.CreationTime >= date).Count();
+        var lastMonthStudentDtoCount = studentDtos.Where(x => x.CreationTime >= date).Count();
 
 
         _logger.LogDebug("On getting lineChartData, donutChartData...");
@@ -60,46 +61,54 @@ public class HomeController : Controller
             "string",
             lineChartData.dates
         );
-        _logger.LogDebug("Got lineChartData, donutChartData! Serializing and return.");
+        _logger.LogDebug("Got lineChartData, donutChartData!");
 
-        var check = JsonConvert.SerializeObject(lineChartData.LineDatas);
-        var check2 = JsonConvert.SerializeObject(donutChartData.names);
-        var check1 = JsonConvert.SerializeObject(donutChartData.values);
-        var check3 = JsonConvert.SerializeObject(datesWeekData);
+        var chartWeekData = JsonConvert.SerializeObject(lineChartData.LineDatas);
+        var pieWeekDataNames = JsonConvert.SerializeObject(donutChartData.names);
+        var pieWeekDataValues = JsonConvert.SerializeObject(donutChartData.values);
+        var dateWeekData = JsonConvert.SerializeObject(datesWeekData);
 
         var areaListData = await AreaChartDataCalculate(ByTime.Week);
+
+        _logger.LogDebug("On getting recent activities...");
+        List<NotificationDto> notificationDtos = await _sender.Send(new GetNotificationQuery());
+       
+        _logger.LogInformation("Got recent activities! Serializing and return.");
         return View(
             new DashBoardViewModel
             {
                 StudentTotalValueModel = new TotalValueModel<LearnerDto>()
                 {
                     Models = studentDtos,
-                    IsIncrease = resultStudentDtos1.Count > resultStudentDtos2.Count,
-                    IncreasePercentage = Math.Abs(resultStudentDtos1.Count - resultStudentDtos2.Count) * 1.0 /
-                                         resultStudentDtos2.Count * 100,
+                    IsIncrease = thisMonthStudentDtoCount > lastMonthStudentDtoCount,
+                    IncreasePercentage = Math.Abs(thisMonthStudentDtoCount - lastMonthStudentDtoCount) * 1.0 /
+                                         lastMonthStudentDtoCount * 100,
                     Time = ByTime.Month
                 },
                 ClassTotalValueModel = new TotalValueModel<ClassInformationDto>()
                 {
                     Models = classDtos,
-                    IsIncrease = resultClassInformationDtos1.Count > resultClassInformationDtos2.Count,
+                    IsIncrease = thisMonthClassInformationDtoCount > lastMonthClassInformationDtoCount,
                     IncreasePercentage =
-                        Math.Abs(resultClassInformationDtos1.Count - resultClassInformationDtos2.Count) * 1.0 /
-                        resultClassInformationDtos2.Count * 100,
+                        Math.Abs(thisMonthClassInformationDtoCount - lastMonthClassInformationDtoCount) * 1.0 /
+                        lastMonthClassInformationDtoCount * 100,
                     Time = ByTime.Month
                 },
                 TutorTotalValueModel = new TotalValueModel<TutorDto>()
                 {
                     Models = tutorDtos,
-                    IsIncrease = resultTutorDtos1.Count > resultTutorDtos2.Count,
-                    IncreasePercentage = Math.Abs(resultTutorDtos1.Count - resultTutorDtos2.Count) * 1.0 /
-                                         resultTutorDtos2.Count * 100,
+                    IsIncrease = thisMonthTutorDtoCount > lastMonthresultTutorDtoCount,
+                    IncreasePercentage = Math.Abs(thisMonthTutorDtoCount - lastMonthresultTutorDtoCount) * 1.0 /
+                                         lastMonthresultTutorDtoCount * 100,
                     Time = ByTime.Month
                 },
-                ChartWeekData = check,
-                PieWeekData1 = check1,
-                PieWeekData2 = check2,
-                DatesWeekData = check3,
+
+                ChartWeekData = chartWeekData,
+                // Chart
+                PieWeekData1 = pieWeekDataValues,
+                PieWeekData2 = pieWeekDataNames,
+                DatesWeekData = dateWeekData,
+                //Incomes Chart
                 AreaChartViewModel = new AreaChartViewModel()
                 {
                     dates = areaListData.ElementAt(0),
@@ -107,7 +116,8 @@ public class HomeController : Controller
                     refundedSeries = areaListData.ElementAt(2),
                     incomingSeries = areaListData.ElementAt(3),
                     ByTime =  ByTime.Week
-                }
+                },
+                NotificationDtos = notificationDtos
             }
         );
     }

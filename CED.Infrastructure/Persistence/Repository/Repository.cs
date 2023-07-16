@@ -84,13 +84,15 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
         }
     }
 
-    public async Task Insert(TEntity entity)
+    public async Task<TEntity> Insert(TEntity entity)
     {
         try
         {
-            await Context.Set<TEntity>().AddAsync(entity);
+            var createdEntity = await Context.Set<TEntity>().AddAsync(entity);
 
             await Context.SaveChangesAsync();
+
+            return createdEntity.Entity;
         }
         catch (Exception ex)
         {

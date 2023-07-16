@@ -3,9 +3,11 @@ using CED.Application.Services.ClassInformations.Queries;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Shared.NotificationConsts;
 using CED.Domain.Users;
 using LazyCache;
 using MapsterMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -18,6 +20,7 @@ public class CreateUpdateClassInformationCommandHandler
     private readonly IUserRepository _userRepository;
     private readonly IAppCache _cache;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPublisher _publisher;
     private readonly IRepository<RequestGettingClass> _requestGettingClassRepositoryepository;
 
 
@@ -26,6 +29,7 @@ public class CreateUpdateClassInformationCommandHandler
         IRepository<RequestGettingClass> requestGettingClassRepositoryepository,
         IUnitOfWork unitOfWork,
         IAppCache cache,
+        IPublisher publisher,
         ILogger<CreateUpdateClassInformationCommandHandler> logger, IMapper mapper, IUserRepository userRepository)
         : base(logger, mapper)
     {
@@ -33,6 +37,7 @@ public class CreateUpdateClassInformationCommandHandler
         _unitOfWork = unitOfWork;
         _requestGettingClassRepositoryepository = requestGettingClassRepositoryepository;
         _cache = cache;
+        _publisher = publisher;
         _userRepository = userRepository;
     }
 
@@ -54,8 +59,10 @@ public class CreateUpdateClassInformationCommandHandler
                 }
                 classInformation.LastModificationTime = DateTime.Now;
                 var updatedEntity = _classInformationRepository.Update(classInformation1);
+                
                 if (updatedEntity != null )
                 {
+                    //Update existed class
                     var requestGettingClasses = _requestGettingClassRepositoryepository.GetAll()
                         .Where(x => x.ClassInformationId.Equals(updatedEntity.Id))
                         .ToList();
@@ -79,11 +86,11 @@ public class CreateUpdateClassInformationCommandHandler
             }
             else
             {
+                //Create new Class
                 classInformation = _mapper.Map<ClassInformation>(command.ClassInformationDto);
-                //classInformation = _mapper.From(command.ClassInformationDto).Adapt<ClassInformation>();
+                
                 if (!string.IsNullOrWhiteSpace(command.email))
                 {
-                 
                     var user = await _userRepository.GetUserByEmail(command.email);
                     if (user != null)
                     {
@@ -92,7 +99,10 @@ public class CreateUpdateClassInformationCommandHandler
                 }
 
                 classInformation.LastModificationTime = DateTime.Now;
-                await _classInformationRepository.Insert(classInformation);
+                classInformation.CreationTime = DateTime.Now;
+                var entity = await _classInformationRepository.Insert(classInformation);
+                var message ="New class: " + entity.Title +" at "+ entity.CreationTime.ToLongDateString();
+                await _publisher.Publish(new NewObjectCreatedEvent(entity.Id, message, NotificationEnum.ClassInformation), cancellationToken);
             }
 
             var defaultRequest = new GetAllClassInformationsQuery();

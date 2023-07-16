@@ -4,12 +4,14 @@ using MapsterMapper;
 using MediatR;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Commands;
+using CED.Application.Services.Users.Admin.Commands;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
+using CED.Contracts.TutorReview;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 using FluentResults;
@@ -229,6 +231,25 @@ public class ClassInformationController : Controller
 
         return RedirectToAction("Error", "Home");
     }
+    [HttpGet("ViewReview")]
+    public async Task<IActionResult> ViewReview(Guid? id)
+    {
+        if (id == null || id.Equals(Guid.Empty))
+        {
+            return NotFound();
+        }
+
+        var query = new GetObjectQuery<TutorReviewDto>() { Guid = (Guid)id };
+        var result = await _mediator.Send(query);
+
+        if (result is not null)
+        {
+            TempData["ClassId"] = id.ToString();
+            return Helper.RenderRazorViewToString(this, "_TutorReview", result);
+        }
+
+        return Helper.RenderRazorViewToString(this, "", result, false);
+    }
 
     [HttpPost("Choose")]
     public IActionResult Choose(Guid? tutorId)
@@ -239,6 +260,24 @@ public class ClassInformationController : Controller
         }
 
         return Json(new { tutorId = tutorId });
+    }
+    [HttpPost("RemoveReview")]
+    public async Task<IActionResult> RemoveReview(Guid id)
+    {
+        if (id == null || id.Equals(Guid.Empty))
+        {
+            return NotFound();
+        }
+
+        var result = await _mediator.Send(new RemoveTutorReviewCommand(id));
+        if (TempData["ClassId"] != null )
+        {
+            Guid guid = (Guid)(TempData["ClassId"]??"");
+            return RedirectToAction("Edit", new {id = guid});
+
+        }
+
+        return NotFound();
     }
 
     [HttpGet("EditRequest")]

@@ -1,10 +1,13 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Application.Services.ClassInformations.Commands;
 using CED.Domain.Interfaces.Services;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Shared.NotificationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using MapsterMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Admin.Commands;
@@ -15,9 +18,10 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
     private readonly IUserRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
     private readonly ICloudinaryFile _cloudinaryFile;
+    private readonly IPublisher _publisher;
 
 
-    public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, IUserRepository userRepository,
+    public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, IUserRepository userRepository, IPublisher publisher,
         IRepository<TutorMajor> tutorMajorRepository,
         ICloudinaryFile cloudinaryFile,
 
@@ -26,7 +30,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
         _tutorRepository = tutorRepository;
         _userRepository = userRepository;
         _cloudinaryFile = cloudinaryFile;
-
+        _publisher = publisher;
         _tutorMajorRepository = tutorMajorRepository;
     }
 
@@ -40,13 +44,13 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
             //Check if the subject existed
             if (tutor is not null && tutorAsUser is not null && tutorAsUser.Role == UserRole.Tutor)
             {
-                var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id));
+                var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id)).ToList();
                 // check the subject changes
                 foreach (var major in currentMajor)
                 {
                     if (!newMajorUpdate.Contains(major.SubjectId))
                     {
-                        await _tutorMajorRepository.DeleteById(major.Id);
+                        _tutorMajorRepository.Delete(major);
                         _logger.LogDebug("Remove subject {0} from tutor's major", major.SubjectId);
                     }
                     else
@@ -85,8 +89,8 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
 
             _logger.LogDebug("ready for creating!");
             tutorAsUser = _mapper.Map<User>(command.TutorDto);
-            await _userRepository.Insert(tutorAsUser);
-
+            var entity = await _userRepository.Insert(tutorAsUser);
+           
             tutor = _mapper.Map<Domain.Users.Tutor>(command.TutorDto);
             await _tutorRepository.Insert(tutor);
 
@@ -100,6 +104,8 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
                     SubjectId = newMu
                 });
             }
+            var message = "New tutor: " + entity.FirstName + " " + entity.LastName + " at " + entity.CreationTime.ToLongDateString();
+            await _publisher.Publish(new NewObjectCreatedEvent(entity.Id, message, NotificationEnum.Tutor), cancellationToken);
             return true;
 
         }

@@ -1,4 +1,5 @@
 ﻿using CED.Domain.ClassInformations;
+using CED.Domain.Notifications;
 using CED.Domain.Review;
 using CED.Domain.Subjects;
 using CED.Domain.Subscribers;
@@ -25,6 +26,7 @@ public class CEDDBContext : DbContext
     
     public DbSet<RequestGettingClass> RequestGettingClasses { get; set; } = null!;
     public DbSet<Subscriber> Subscribers { get; set; } = null!;
+    public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<City> Cities { get; set; } = null!;
     public DbSet<District> Districts { get; set; } = null!;
     public DbSet<Ward> Wards { get; set; } = null!;
@@ -112,6 +114,12 @@ public class CEDDBContext : DbContext
             re.ToTable("Subscriber");
             re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
         }); 
+        modelBuilder.Entity<Notification>(re =>
+        {
+            re.ToTable("Notification");
+            re.Property(x => x.Message).IsRequired();
+        }); 
+
     }
 }
 //using to support addmigration
