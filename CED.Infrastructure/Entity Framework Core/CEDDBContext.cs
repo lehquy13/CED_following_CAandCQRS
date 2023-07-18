@@ -15,15 +15,15 @@ public class CEDDBContext : DbContext
     public DbSet<ClassInformation> ClassInformations { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Tutor> Tutors { get; set; } = null!;
-    
+
     public DbSet<TutorVerificationInfo> TutorVerificationInfos { get; set; } = null!;
-    
+
     public DbSet<TutorReview> TutorReviews { get; set; } = null!;
-    
+
     //public DbSet<Learner> Users { get; set; } = null!;
-    
+
     public DbSet<TutorMajor> TutorMajors { get; set; } = null!;
-    
+
     public DbSet<RequestGettingClass> RequestGettingClasses { get; set; } = null!;
     public DbSet<Subscriber> Subscribers { get; set; } = null!;
     public DbSet<Notification> Notifications { get; set; } = null!;
@@ -66,12 +66,12 @@ public class CEDDBContext : DbContext
             re.Property(x => x.Password).IsRequired().HasMaxLength(128);
             re.Property(x => x.Role).IsRequired();
             re.Property(x => x.Gender).IsRequired();
-        }); 
+        });
         modelBuilder.Entity<Tutor>(re =>
         {
             re.ToTable("Tutor");
             re.HasOne<User>().WithOne().HasForeignKey<Tutor>(x => x.Id).IsRequired();
-        }); 
+        });
         modelBuilder.Entity<TutorMajor>(re =>
         {
             re.ToTable("TutorMajor");
@@ -83,7 +83,7 @@ public class CEDDBContext : DbContext
         {
             re.ToTable("TutorVerificationInfo");
             re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
-        }); 
+        });
         modelBuilder.Entity<ClassInformation>(re =>
         {
             re.ToTable("ClassInformation");
@@ -101,24 +101,24 @@ public class CEDDBContext : DbContext
             re.ToTable("RequestGettingClass");
             re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
             re.HasOne<ClassInformation>().WithMany().HasForeignKey(x => x.ClassInformationId);
-        }); 
+        });
         modelBuilder.Entity<TutorReview>(re =>
         {
             re.ToTable("TutorReview");
             re.HasOne<ClassInformation>().WithOne().HasForeignKey<TutorReview>(x => x.ClassInformationId).IsRequired();
 
             //re.HasOne<User>().WithMany().HasForeignKey(x => x.LearnerId).IsRequired().OnDelete(DeleteBehavior.NoAction);
-        }); 
+        });
         modelBuilder.Entity<Subscriber>(re =>
         {
             re.ToTable("Subscriber");
             re.HasOne<Tutor>().WithMany().HasForeignKey(x => x.TutorId).IsRequired();
-        }); 
+        });
         modelBuilder.Entity<Notification>(re =>
         {
             re.ToTable("Notification");
             re.Property(x => x.Message).IsRequired();
-        }); 
+        });
 
     }
 }
@@ -128,12 +128,12 @@ public class CEDDBContextFactory : IDesignTimeDbContextFactory<CEDDBContext>
     public CEDDBContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<CEDDBContext>();
+        //optionsBuilder.UseSqlServer(
+        //    "Server=(localdb)\\MSSQLLocalDB; Database=ced_ddd; Trusted_Connection=True;MultipleActiveResultSets=true"
+        //    );
         optionsBuilder.UseSqlServer(
-            "Server=(localdb)\\MSSQLLocalDB; Database=ced_ddd; Trusted_Connection=True;MultipleActiveResultSets=true"
-            );
-            //); optionsBuilder.UseSqlServer(
-            //"workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart; TrustServerCertificate=True"
-            //);
+       "workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;TrustServerCertificate=True;initial catalog=edusmart"
+       );
 
         return new CEDDBContext(optionsBuilder.Options);
     }

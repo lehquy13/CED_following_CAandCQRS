@@ -29,16 +29,19 @@
 
                 }
                   </div>
+                @if (Model.TutorVerificationInfoDtos.Count <= 0)
+                {
+                    <div class="pt-2">
 
-                <div class="pt-2">
+                        <input type="file" id="file" name="files" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Profile", null)','file'); return false;"/>
+                        @* style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','files'); return false;"/> *@
+                        @* <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image"> *@
+                        @*     <i class="bi bi-upload"></i> *@
+                        @* </a> *@
 
-                    <input type="file" id="file" name="files" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Profile", null)','file'); return false;"/>
-                    @* style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','files'); return false;"/> *@
-                    @* <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image"> *@
-                    @*     <i class="bi bi-upload"></i> *@
-                    @* </a> *@
+                    </div>
 
-                </div>
+                }
             </div>
                 
             </div>
