@@ -24,7 +24,6 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
     public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, IUserRepository userRepository, IPublisher publisher,
         IRepository<TutorMajor> tutorMajorRepository,
         ICloudinaryFile cloudinaryFile,
-
         ILogger<CreateUpdateTutorCommandHandler> logger, IMapper mapper) : base(logger,mapper)
     {
         _tutorRepository = tutorRepository;

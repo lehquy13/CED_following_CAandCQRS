@@ -57,7 +57,7 @@ public class InfrastructureBackgroundService : BackgroundService
             //Get today class
             _logger.LogInformation("Getting today class");
             var todayClass = classRepository.GetAll()
-                //.Where(x => x.CreationTime >= DateTime.Now.Subtract(TimeSpan.FromDays(1))).ToList()
+                .Where(x => x.CreationTime >= DateTime.Today)
                 .GroupBy(x => x.SubjectId)
                 .Select(x => new
                 {
@@ -106,8 +106,8 @@ public class InfrastructureBackgroundService : BackgroundService
                     subMajor => subMajor,
                     todayC => todayC.subjectId,
                     (subMajor, todayC) => todayC.classInfo
-                );
-                
+                ).ToList();
+                if( realTodayClasses.Count <= 0) continue;
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append("<div class=\"section\">\r\n    <div class=\"card\">\r\n        <div class=\"card-body\">");
                 foreach (var classInformations in realTodayClasses)

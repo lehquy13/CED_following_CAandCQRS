@@ -33,7 +33,7 @@ public class ChangePasswordWhenForgotCommandHandler : IRequestHandler<ChangePass
         //Check if the user existed
         if (await _userRepository.GetById(command.Id) is not User user  )
         {
-            _logger.LogError("Can not change password. User doesn't exist.", command);
+            _logger.LogError("Can not change password. User doesn't exist");
             return false;
         }
         

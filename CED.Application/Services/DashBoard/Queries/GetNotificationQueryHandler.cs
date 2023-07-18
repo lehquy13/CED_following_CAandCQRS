@@ -24,7 +24,7 @@ public class GetNotificationQueryHandler : GetByIdQueryHandler<GetNotificationQu
         await Task.CompletedTask;
 
         // Create a dateListRange
-        var notiList = _notificationRepository.GetAll().OrderByDescending(x => x.CreationTime >= DateTime.Today).ToList();
+        var notiList = _notificationRepository.GetAll().Where(x => x.CreationTime >= DateTime.Today).ToList();
         var notiDtoList = _mapper.Map<List<NotificationDto>>(notiList);
         return notiDtoList;
     }
