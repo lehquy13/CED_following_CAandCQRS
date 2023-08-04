@@ -27,7 +27,7 @@ namespace CED.Infrastructure.Migrations
                 defaultValue: (short)0);
 
             migrationBuilder.CreateTable(
-                name: "TutorVerificationInfo",
+                name: "TutorVerificationInfos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -57,7 +57,7 @@ namespace CED.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_TutorVerificationInfo_TutorId",
-                table: "TutorVerificationInfo",
+                table: "TutorVerificationInfos",
                 column: "TutorId");
 
             migrationBuilder.AddForeignKey(
@@ -89,7 +89,7 @@ namespace CED.Infrastructure.Migrations
                 table: "RequestGettingClass");
 
             migrationBuilder.DropTable(
-                name: "TutorVerificationInfo");
+                name: "TutorVerificationInfos");
 
             migrationBuilder.DropIndex(
                 name: "IX_RequestGettingClass_ClassInformationId",

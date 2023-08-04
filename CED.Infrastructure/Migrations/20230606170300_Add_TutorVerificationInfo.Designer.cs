@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CED.Infrastructure.Migrations
 {
-    [DbContext(typeof(CEDDBContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20230606170300_Add_TutorVerificationInfo")]
     partial class Add_TutorVerificationInfo
     {

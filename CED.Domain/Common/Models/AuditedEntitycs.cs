@@ -14,7 +14,8 @@ public abstract class AuditedEntity<TId> : Entity<TId>
     }
 
     protected AuditedEntity()
-        : base()
     {
+        LastModificationTime = DateTime.Now;
+        CreationTime = DateTime.Now;
     }
 }

@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CED.Domain.Shared\CED.Domain.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClassInformations\Interfaces\" />
+    <ProjectReference Include="..\CED.Domain\CED.Domain.csproj" />
   </ItemGroup>
 
 </Project>

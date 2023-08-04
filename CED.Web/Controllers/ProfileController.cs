@@ -49,7 +49,7 @@ namespace CED.Web.Controllers
 
             var query = new GetObjectQuery<UserDto>()
             {
-                Guid = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
+                ObjectId = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
             };
 
             var loginResult = await _mediator.Send(query);

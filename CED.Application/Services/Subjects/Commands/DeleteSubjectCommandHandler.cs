@@ -2,8 +2,11 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts;
 using CED.Contracts.Subjects;
+using CED.Domain.Repository;
 using CED.Domain.Subjects;
+using FluentResults;
 using LazyCache;
+using MediatR;
 using Newtonsoft.Json;
 
 namespace CED.Application.Services.Subjects.Commands;
@@ -13,26 +16,30 @@ public class DeleteSubjectCommandHandler
 {
 
     private readonly ISubjectRepository _subjectRepository;
-    private readonly IAppCache _cache;
 
-    public DeleteSubjectCommandHandler(ISubjectRepository subjectRepository, IAppCache appCache) : base()
+    public DeleteSubjectCommandHandler(ISubjectRepository subjectRepository, IAppCache cache, IUnitOfWork unitOfWork,
+        IPublisher publisher) : base(unitOfWork, cache, publisher)
     {
         _subjectRepository = subjectRepository;
-        _cache = appCache;
     }
-    public override async Task<bool> Handle(DeleteSubjectCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(DeleteSubjectCommand command, CancellationToken cancellationToken)
     {
         //Check if the subject existed
-        Subject? subject = await _subjectRepository.GetById(command.id);
+        Subject? subject = await _subjectRepository.GetById(command.SubjectId);
         if (subject is null)
         {
-            throw new Exception("Subject has already existed");
+            return Result.Fail("Subject does not exist");
         }
 
         _subjectRepository.Delete(subject);
         var defaultRequest = new GetObjectQuery<PaginatedList<SubjectDto>>();
+        
+        if(await _unitOfWork.SaveChangesAsync() <= 0)
+        {
+            return Result.Fail("Delete failed");
+        }
+        
         _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
-
         return true;
     }
 }

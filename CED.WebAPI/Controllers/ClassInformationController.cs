@@ -1,6 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
 using CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts.ClassInformations;
@@ -47,7 +48,7 @@ public class ClassInformationController : ControllerBase
     
     // GET api/<ClassInformationController>/5
     [HttpGet]
-    [Route("GetClassInformation/{id}")]
+    [Route("GetClassInformation/{ObjectId}")]
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
         var query = new GetObjectQuery<ClassInformationDto>();

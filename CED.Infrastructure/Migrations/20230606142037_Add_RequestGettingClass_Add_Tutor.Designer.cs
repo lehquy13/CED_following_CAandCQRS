@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CED.Infrastructure.Migrations
 {
-    [DbContext(typeof(CEDDBContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20230606142037_Add_RequestGettingClass_Add_Tutor")]
     partial class Add_RequestGettingClass_Add_Tutor
     {

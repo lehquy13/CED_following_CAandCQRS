@@ -1,5 +1,5 @@
-﻿using CED.Contracts.ClassInformations;
-using CED.Contracts.ClassInformations.Dtos;
+﻿using CED.Contracts.ClassInformations.Dtos;
+using CED.Contracts.TutorReview;
 using CED.Domain.ClassInformations;
 using CED.Domain.Review;
 using CED.Domain.Subjects;
@@ -12,42 +12,28 @@ public class ClassInformationMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-
+        //Config for Request getting class
         config.NewConfig<RequestGettingClass, RequestGettingClassMinimalDto>();
+        config.NewConfig<RequestGettingClassMinimalDto, RequestGettingClass>();
+        //Config for Tutor review
+        config.NewConfig<TutorReview, TutorReviewDto >();
+        
+        //Config for Class Information
         config.NewConfig<ClassInformationDto, ClassInformation>()        
-            .Map(dest => dest.TutorId, src => src.TutorDtoId)
+            .Map(dest => dest.TutorId, src => src.TutorId)
             .Map(dest => dest, src => src);
-        config.NewConfig<ClassInformation,ClassInformationDto >()        
-            .Map(dest => dest.TutorDtoId, src => src.TutorId)
+        config.NewConfig<ClassInformation, ClassInformationDto >()        
+            .Map(dest => dest.TutorId, src => src.TutorId)
+            .Map(dest => dest, src => src);
+        config.NewConfig<ClassInformation, ClassInformationForDetailDto>()
+            .Map(dest => dest.TutorId, src => src.TutorId)
+            .Map(dest => dest.TutorName, src => src.Tutor!.GetFullNAme() ?? "", srcCond => srcCond.Tutor != null)
+            .Map(dest => dest.LearnerName, src => src.Learner!.GetFullNAme() ?? "", srcCond => srcCond.Learner != null)
             .Map(dest => dest, src => src);
 
-        
-        config.NewConfig<(ClassInformation, Subject, User,List<RequestGettingClassMinimalDto>,TutorReview), ClassInformationDto>()
-            .Map(dest => dest.RequestGettingClassDtos, src => src.Item4)
-            .Map(dest => dest.SubjectName, src => src.Item2.Name)
-            .Map(dest => dest.SubjectId, src => src.Item2.Id)
-            .Map(dest => dest.TutorDtoId, src => src.Item3.Id)
-            .Map(dest => dest.TutorPhoneNumber, src => src.Item3.PhoneNumber)
-            .Map(dest => dest.TutorEmail, src => src.Item3.Email)
-            .Map(dest => dest.TutorName, src => $"{src.Item3.FirstName} {src.Item3.LastName}")
-            .Map(dest => dest, src => src.Item1)
-            .Map(dest => dest.TutorReviewDto, src => src.Item5)
-            ;
-        config.NewConfig<(ClassInformation, Subject), ClassInformationDto>() // in case the class doesnt have tutor
-            .Map(dest => dest.SubjectName, src => src.Item2.Name)
-            .Map(dest => dest.SubjectId, src => src.Item2.Id)
-            .Map(dest => dest, src => src.Item1);
-        
-        config.NewConfig<(ClassInformation, Subject,List<RequestGettingClassMinimalDto>), ClassInformationDto>() // in case the class doesnt have tutor
-            .Map(dest => dest.SubjectName, src => src.Item2.Name)
-            .Map(dest => dest.SubjectId, src => src.Item2.Id)
-            //.Map(dest => dest.TutorReviewDto, src => src.Item4)
 
-            .Map(dest => dest, src => src.Item1)
-            
-            .Map(dest => dest.RequestGettingClassDtos, src => src.Item3)
-            
-            ;
+        //Config for TutorReview
+        config.NewConfig<TutorReviewDto, TutorReview>();
 
         config.NewConfig<(RequestGettingClass, ClassInformation,string), RequestGettingClassDto>()
             .Map(dest => dest.Title, src => src.Item2.Title)

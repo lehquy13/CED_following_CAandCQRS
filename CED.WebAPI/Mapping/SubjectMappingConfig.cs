@@ -13,7 +13,7 @@ public class SubjectMappingConfig : IRegister
         config.NewConfig<Guid, GetSubjectQuery>()
             .Map(dest => dest.Id, src => src);
         config.NewConfig<Guid, DeleteSubjectCommand>()
-            .Map(dest => dest.id, src => src);
+            .Map(dest => dest.SubjectId, src => src);
         
         config.NewConfig<CreateUpdateSubjectDto, CreateUpdateSubjectCommand>()
             .Map(dest => dest.SubjectDto, src => src);

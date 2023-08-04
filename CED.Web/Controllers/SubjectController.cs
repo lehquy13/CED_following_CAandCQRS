@@ -39,7 +39,7 @@ public class SubjectController : Controller
         return View(subjectDtos);
     }
     [HttpGet]
-    [Route("{id}")]
+    [Route("{ObjectId}")]
     public async Task<IActionResult> Index(int i)
     {
         var query = new GetObjectQuery<PaginatedList<SubjectDto>>()
@@ -59,7 +59,7 @@ public class SubjectController : Controller
        
         var query = new GetObjectQuery<SubjectDto>()
         {
-            Guid = Id
+            ObjectId = Id
         };
         var result = await _mediator.Send(query);
 
@@ -127,7 +127,7 @@ public class SubjectController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<SubjectDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<SubjectDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result == null)
@@ -169,7 +169,7 @@ public class SubjectController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<SubjectDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<SubjectDto>() { ObjectId = (Guid)id };
 
         var result = await _mediator.Send(query);
 

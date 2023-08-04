@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CED.Infrastructure.Migrations
 {
-    [DbContext(typeof(CEDDBContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20230417111831_Upgrade_User_Entity")]
     partial class Upgrade_User_Entity
     {

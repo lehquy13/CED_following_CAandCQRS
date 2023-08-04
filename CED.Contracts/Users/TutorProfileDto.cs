@@ -4,6 +4,6 @@ namespace CED.Contracts.Users;
 
 public class TutorProfileDto
 {
-    public PaginatedList<RequestGettingClassDto> RequestGettingClassDtos = new();
+    public PaginatedList<RequestGettingClassForListDto> RequestGettingClassForListDtos = new();
     public TutorMainInfoDto TutorMainInfoDto = new();
 }

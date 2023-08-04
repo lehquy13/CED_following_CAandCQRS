@@ -4,7 +4,10 @@ using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using FluentResults;
+using LazyCache;
 using MapsterMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Tutor.ChangeInfo;
@@ -13,7 +16,6 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
 {
     private readonly ITutorRepository _tutorRepository;
     private readonly ICloudinaryFile _cloudinaryFile;
-
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
     private readonly IRepository<TutorVerificationInfo> _tutorVerificationInfoRepository;
 
@@ -21,7 +23,8 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
         IRepository<TutorMajor> tutorMajorRepository,
         ICloudinaryFile cloudinaryFile,
         IRepository<TutorVerificationInfo> tutorVerificationInfoRepository,
-        ILogger<TutorInfoChangingCommandHandler> logger, IMapper mapper) : base(logger, mapper)
+        ILogger<TutorInfoChangingCommandHandler> logger, IMapper mapper, IUnitOfWork unitOfWork, IAppCache cache,
+        IPublisher publisher) : base(logger, mapper, unitOfWork, cache, publisher)
     {
         _tutorRepository = tutorRepository;
         _cloudinaryFile = cloudinaryFile;
@@ -29,37 +32,29 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
         _tutorVerificationInfoRepository = tutorVerificationInfoRepository;
     }
 
-    public override async Task<bool> Handle(TutorInfoChangingCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(TutorInfoChangingCommand command,
+        CancellationToken cancellationToken)
     {
         //Check if the user existed
         var tutor = await _tutorRepository.GetById(command.TutorDto.Id);
         if (tutor is null)
         {
-            throw new Exception("User doesn't exist");
+            return Result.Fail<bool>("Tutor not found");
         }
 
         var newMajorUpdate = command.SubjectIds.DistinctBy(x => x).ToList();
-        var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id)).ToList();
+        var currentMajor = tutor.Subjects;
 
         // check the subject changes
         foreach (var major in currentMajor)
         {
-            if (!newMajorUpdate.Contains(major.SubjectId))
+            if (!newMajorUpdate.Contains(major.Id))
             {
-                _tutorMajorRepository.Delete(major);
-                _logger.LogDebug("Remove subject {0} from tutor's major", major.SubjectId);
+                currentMajor.Remove(major);
             }
             else
             {
-                var removeResult = newMajorUpdate.Remove(major.SubjectId);
-                if (removeResult)
-                {
-                    _logger.LogDebug("Remove subject {0} from newMajorUpdateList", major.SubjectId);
-                }
-                else
-                {
-                    _logger.LogError("fail to remove the subject {0} from newMajorUpdateList", major.SubjectId);
-                }
+                newMajorUpdate.Remove(major.Id);
             }
         }
 
@@ -75,18 +70,11 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
         //Handle filepath !!! Upgrade
         if (command.FilePaths.Count > 0)
         {
-            var verifications = _tutorVerificationInfoRepository
-                .GetAll().Where(x => x.TutorId.Equals(tutor.Id)).ToList();
-            foreach (var i in verifications)
-            {
-                _tutorVerificationInfoRepository.Delete(i);
-            }
-
-
-            //verifications = new List<TutorVerificationInfo>();
+            //TODO: Check if the verifications are removed or not
+            tutor.TutorVerificationInfos = new List<TutorVerificationInfo>();
             foreach (var i in command.FilePaths)
             {
-                await _tutorVerificationInfoRepository.Insert(new TutorVerificationInfo
+                tutor.TutorVerificationInfos.Add(new TutorVerificationInfo
                 {
                     Image = _cloudinaryFile.UploadImage(i),
                     TutorId = tutor.Id
@@ -94,17 +82,9 @@ public class TutorInfoChangingCommandHandler : CreateUpdateCommandHandler<TutorI
             }
         }
 
-
-        //if (tutor.Role != UserRole.Tutor) return false;
-        var mappedTutor = _mapper.Map<Domain.Users.Tutor>(command.TutorDto);
-        // check
-        tutor.UpdateTutorInformation(mappedTutor);
-
-        var afterUpdatedUser = _tutorRepository.Update(tutor);
-
-        if (afterUpdatedUser is null)
+        if (await _unitOfWork.SaveChangesAsync() <= 0)
         {
-            return false;
+            return Result.Fail("Update failed");
         }
 
         return true;

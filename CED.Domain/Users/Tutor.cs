@@ -1,9 +1,10 @@
-using CED.Domain.Common.Models;
+using CED.Domain.ClassInformations;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Subjects;
 
 namespace CED.Domain.Users;
 
-public class Tutor : Entity<Guid>
+public class Tutor : User
 {
     //is tutor related informtions
     public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
@@ -11,14 +12,15 @@ public class Tutor : Entity<Guid>
     public bool IsVerified { get; set; } = false;
     public short Rate { get; set; } = 5;
 
-    
+    public ICollection<Subject> Subjects { get; set; } = null!;
+    public ICollection<TutorVerificationInfo> TutorVerificationInfos { get; set; } = null!;
+    public ICollection<RequestGettingClass> RequestGettingClasses { get; set; } = null!;
     /// <summary>
     /// Update tutor's information and change the state into being verified
     /// </summary>
     /// <param name="tutor"></param>
     public void UpdateTutorInformation(Tutor tutor)
     {
-        //ase.UpdateUserInformation(tutor);
         AcademicLevel = tutor.AcademicLevel;
         University = tutor.University;
 

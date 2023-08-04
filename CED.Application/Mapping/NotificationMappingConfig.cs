@@ -11,7 +11,7 @@ public class NotificationMappingConfig : IRegister
         //config.NewConfig<LearnerDto, TutorDto>();
 
         config.NewConfig<Notification,NotificationDto>()
-            .Map(des => des.DetailPath, src => $"/{src.NotificationType.ToString()}/Detail?id={src.ObjectId}")
+            .Map(des => des.DetailPath, src => $"/{src.NotificationType.ToString()}/Detail?ObjectId={src.ObjectId}")
             .Map(des => des, src => src);
     }
 }

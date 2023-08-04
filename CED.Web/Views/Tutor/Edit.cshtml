@@ -104,7 +104,7 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
             </div>
-            @* <div class="col-md-6" hidden> *@
+            @* <div class="col-md-6" hObjectIdden> *@
             @*     <label asp-for="Password" class="form-label">Password</label> *@
             @*     <input type="password" asp-for="Password" class="form-control"> *@
             @* </div> *@
@@ -182,7 +182,7 @@
                             {
                                 <div class=" list-group-item list-group-item-action" id="@s.Id-item">
                                     <div class="row">
-                                        <input name="SubjectId" value="@s.Id"   hidden="hidden" />
+                                        <input name="SubjectId" value="@s.Id"   hidden="hObjectIdden" />
                                         <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class=" col-11">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h5 class="mb-1">@s.Name</h5>
@@ -217,13 +217,13 @@
 
                                     @foreach (var i in Model.TutorVerificationInfoDtos)
                                     {
-                                        //<img src="@i.Image" style="max-width: 400px; max-height: 400px;" alt="Profile" id="avatar">
-                                        //<input id="image" asp-for="@i.Image" hidden type="text" />
+                                        //<img src="@i.Image" style="max-width: 400px; max-height: 400px;" alt="Profile" ObjectId="avatar">
+                                        //<input ObjectId="image" asp-for="@i.Image" hidden type="text" />
                                         <div style="position:relative;" id="@i.Id-verification">
                                             <button type="button" style="right:0px;    position: absolute;" class="btn btn-danger" onclick="RemoveTutorVerification('@Url.Action("RemoveTutorVerification","Tutor")','@i.Id')">
                                                 <span>&times;</span>
                                             </button>
-                                            <img src="@i.Image" style="max-width: 400px; max-height: 400px;" alt="Profile" id="avatar">
+                                            <img src="@i.Image" style="max-wObjectIdth: 400px; max-height: 400px;" alt="Profile" id="avatar">
                                             <input id="image" asp-for="@i.Image" hidden type="text" />
                                         </div>
                                     }
@@ -245,7 +245,7 @@
             }
 
 
-            <!-- ----------------------------------- hidden info -->
+            <!-- ----------------------------------- hObjectIdden info -->
 
             <div class="form-group" hidden>
                 <label asp-for="DeleterUserId" class="control-label"></label>
@@ -267,7 +267,7 @@
                 <input asp-for="LastModifierUserId" class="form-control" />
                 <span asp-validation-for="LastModifierUserId" class="text-danger"></span>
             </div>
-            <div class="form-group" hidden="hidden">
+            <div class="form-group" hidden="hObjectIdden">
                 <label asp-for="CreationTime" class="control-label"></label>
                 <input asp-for="CreationTime" class="form-control" />
                 <span asp-validation-for="CreationTime" class="text-danger"></span>

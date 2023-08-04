@@ -1,4 +1,5 @@
 ﻿using CED.Contracts;
+using FluentResults;
 using MapsterMapper;
 using MediatR;
 
@@ -6,8 +7,8 @@ using MediatR;
 namespace CED.Application.Services.Abstractions.QueryHandlers;
 
 public abstract class GetAllQueryHandler<TQuery, TDto>
-    : IRequestHandler<TQuery, PaginatedList<TDto>>
-    where TDto : class where TQuery : IRequest<PaginatedList<TDto>>
+    : IRequestHandler<TQuery, Result<PaginatedList<TDto>>>
+    where TDto : class where TQuery : IRequest<Result<PaginatedList<TDto>>>
 {
     protected readonly IMapper _mapper;
 
@@ -16,7 +17,21 @@ public abstract class GetAllQueryHandler<TQuery, TDto>
         _mapper = mapper;
     }
 
-    public abstract Task<PaginatedList<TDto>> Handle(TQuery query, CancellationToken cancellationToken);
+    public abstract Task<Result<PaginatedList<TDto>>> Handle(TQuery query, CancellationToken cancellationToken);
+
+}
+public abstract class GetAllListQueryHandler<TQuery, TDto>
+    : IRequestHandler<TQuery, Result<List<TDto>>>
+    where TDto : class where TQuery : IRequest<Result<List<TDto>>>
+{
+    protected readonly IMapper _mapper;
+
+    public GetAllListQueryHandler(IMapper mapper)
+    {
+        _mapper = mapper;
+    }
+
+    public abstract Task<Result<List<TDto>>> Handle(TQuery query, CancellationToken cancellationToken);
 
 }
 

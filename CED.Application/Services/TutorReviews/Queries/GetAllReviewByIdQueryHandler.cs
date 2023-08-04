@@ -5,59 +5,34 @@ using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Review;
 using CED.Domain.Users;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.TutorReviews.Queries;
 
 public class GetAllReviewByIdQueryHandler : GetAllQueryHandler<GetAllReviewByIdQuery, TutorReviewDto>
 {
-    private readonly IUserRepository _userRepository;
+    private readonly ITutorRepository _tutorRepository;
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly IRepository<TutorReview> _tutorReviewRepository;
 
-    public GetAllReviewByIdQueryHandler(IUserRepository userRepository,IRepository<TutorReview> tutorReviewRepository, IMapper mapper, IClassInformationRepository classInformationRepository):base(mapper)
+    public GetAllReviewByIdQueryHandler(ITutorRepository tutorRepository,IRepository<TutorReview> tutorReviewRepository, IMapper mapper, IClassInformationRepository classInformationRepository):base(mapper)
     {
-        _userRepository = userRepository;
+        _tutorRepository = tutorRepository;
         _tutorReviewRepository = tutorReviewRepository;
         _classInformationRepository = classInformationRepository;
     }
-    public override async Task<PaginatedList<TutorReviewDto>> Handle(GetAllReviewByIdQuery query, CancellationToken cancellationToken)
+
+    public override async Task<Result<PaginatedList<TutorReviewDto>>> Handle(GetAllReviewByIdQuery query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
         {
-            var teachingClasses =
-                _classInformationRepository.GetAll().Where(x => x.TutorId.Equals(query.Guid)).ToList();
-            var reviews =  _tutorReviewRepository.GetAll().Join(
-                    teachingClasses,
-                    rev => rev.ClassInformationId,
-                    cl => cl.Id,
-                    (rev,cl) => new
-                    {
-                        review = rev,
-                        tutorId = cl.TutorId,
-                        learnerID = cl.LearnerId
-                    }).ToList();
-            
-            var results  = reviews.Join(
-                await _userRepository.GetAllList(),
-                rev => rev.learnerID,
-                user => user.Id,
-                (rev, learner) => new TutorReviewDto()
-                {
-                    LearnerName = learner.FirstName + learner.LastName,
-                    LearnerId = learner.Id,
-                    TutorId = rev.tutorId??Guid.Empty,
-                    Description = rev.review.Description,
-                    Rate = rev.review.Rate
-                }
-            );
-           
+            var resultsFromDb = await _tutorRepository.GetReviewsOfTutor(query.ObjectId);
+            var resultDtos = _mapper.Map<List<TutorReviewDto>>(resultsFromDb);
             
             //testing mapping paginatedlist 
-            return PaginatedList<TutorReviewDto>.CreateAsync(
-                    results,query.PageIndex,query.PageSize,reviews.Count
-                );
+            return PaginatedList<TutorReviewDto>.CreateAsync(resultDtos,query.PageIndex,query.PageSize,resultDtos.Count);
         }
         catch (Exception ex)
         {

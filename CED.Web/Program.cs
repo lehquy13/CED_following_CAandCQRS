@@ -40,11 +40,11 @@ var app = builder.Build();
     
     app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Authentication}/{action=Index}/{id?}");
+        pattern: "{controller=Authentication}/{action=Index}/{ObjectId?}");
 
     //app.MapControllerRoute(
     //    name: "auth",
-    //    pattern: "{controller=Authentication}/{action=Index}/{id?}");
+    //    pattern: "{controller=Authentication}/{action=Index}/{ObjectId?}");
 
     app.Run();
 

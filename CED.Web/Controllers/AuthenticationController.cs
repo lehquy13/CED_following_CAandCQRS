@@ -1,6 +1,6 @@
 ﻿using CED.Application.Services.Authentication.Admin.Queries.Login;
 using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Admin.Queries.ValidateToken;
+using CED.Application.Services.Authentication.ValidateToken;
 using CED.Contracts.Authentication;
 using MapsterMapper;
 using MediatR;
@@ -67,7 +67,7 @@ public class AuthenticationController : Controller
         {
             HttpOnly = true,
             SameSite = SameSiteMode.Strict,
-            Secure = true,
+            //Secure = true,
             IsEssential = true,
             Expires = DateTime.UtcNow.AddDays(1),
             //Domain = "yourdomain.com",

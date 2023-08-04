@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
 using CED.Application.Services.DashBoard.Queries;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts;

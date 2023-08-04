@@ -6,19 +6,18 @@ namespace CED.Infrastructure.Persistence.Repository;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.Common.Models.Entity<Guid>
 {
-    protected readonly CEDDBContext Context;
+    protected readonly AppDbContext _appDbContext;
 
-    public Repository(CEDDBContext cEdDbContext)
+    public Repository(AppDbContext cEdDbAppDbContext)
     {
-        Context = cEdDbContext;
+        _appDbContext = cEdDbAppDbContext;
     }
 
     public void Delete(TEntity entity)
     {
         try
         {
-            Context.Set<TEntity>().Remove(entity);
-            Context.SaveChanges();
+            _appDbContext.Set<TEntity>().Remove(entity);
         }
         catch (Exception ex)
         {
@@ -26,16 +25,39 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
         }
     }
 
+    /// <summary>
+    /// Auto save changes but it is a deprecated method
+    /// Remember to use non tracking record
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public async Task<bool> DeleteById(Guid id)
     {
         try
         {
-            var deleteRecord = await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-
+            var deleteRecord = await _appDbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             if (deleteRecord == null) return false;
-            Context.Set<TEntity>().Remove(deleteRecord);
-
+            _appDbContext.Set<TEntity>().Remove(deleteRecord);
+            await _appDbContext.SaveChangesAsync();
             return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task SaveAll()
+    {
+        await _appDbContext.SaveChangesAsync();
+    }
+
+    public async Task<TEntity?> ExistenceCheck(Guid id)
+    {
+        try
+        {
+            return await _appDbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
         catch (Exception ex)
         {
@@ -45,14 +67,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
 
     public void Dispose()
     {
-        // throw new NotImplementedException();
+        _appDbContext.Dispose();
     }
 
-    public async Task<List<TEntity>> GetAllList()
+    public virtual async Task<List<TEntity>> GetAllList()
     {
         try
         {
-            return await Context.Set<TEntity>().ToListAsync();
+            return await _appDbContext.Set<TEntity>().ToListAsync();
         }
         catch (Exception ex)
         {
@@ -64,7 +86,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
     {
         try
         {
-            return Context.Set<TEntity>().AsQueryable<TEntity>();
+            return _appDbContext.Set<TEntity>().AsQueryable<TEntity>();
         }
         catch (Exception ex)
         {
@@ -72,11 +94,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
         }
     }
 
-    public async Task<TEntity?> GetById(Guid id)
+    public virtual async Task<TEntity?> GetById(Guid id)
     {
         try
         {
-            return await Context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
         }
         catch (Exception ex)
         {
@@ -88,10 +110,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
     {
         try
         {
-            var createdEntity = await Context.Set<TEntity>().AddAsync(entity);
-
-            await Context.SaveChangesAsync();
-
+            var createdEntity = await _appDbContext.Set<TEntity>().AddAsync(entity);
             return createdEntity.Entity;
         }
         catch (Exception ex)
@@ -100,12 +119,18 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
         }
     }
 
+    /// <summary>
+    /// Deprecated method
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public TEntity Update(TEntity entity)
     {
         try
         {
-            var updateEntity = Context.Set<TEntity>().Update(entity);
-            Context.SaveChanges();
+            var updateEntity = _appDbContext.Set<TEntity>().Update(entity);
+            _appDbContext.SaveChanges();
             return updateEntity.Entity;
         }
         catch (Exception ex)

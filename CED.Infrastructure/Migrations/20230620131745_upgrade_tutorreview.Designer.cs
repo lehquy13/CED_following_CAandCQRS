@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CED.Infrastructure.Migrations
 {
-    [DbContext(typeof(CEDDBContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20230620131745_upgrade_tutorreview")]
     partial class upgrade_tutorreview
     {

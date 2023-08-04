@@ -38,7 +38,7 @@ namespace CED.Infrastructure
             var emailSettingNames = new EmailSettingNames();
             configuration.Bind(EmailSettingNames._SectionName, emailSettingNames);
             services.AddSingleton(Options.Create(emailSettingNames));
-            services.AddDbContext<CEDDBContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")
                 )
@@ -48,7 +48,6 @@ namespace CED.Infrastructure
             
             //Configure DI for Infrastructure services
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));

@@ -2,6 +2,7 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.ClassInformations.Queries.GetClassInformation;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.Users;
@@ -46,7 +47,7 @@ public class TutorInformationController : ControllerBase
     
     // GET api/<ClassInformationController>/5
     [HttpGet]
-    [Route("GetClassInformation/{id}")]
+    [Route("GetClassInformation/{ObjectId}")]
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
         var query = _mapper.Map<GetClassInformationQuery>(id);

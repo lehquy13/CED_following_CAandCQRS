@@ -7,7 +7,7 @@ namespace CED.Infrastructure.Persistence.Repository;
 
 public class UserRepository : Repository<User>, IUserRepository
 {
-    public UserRepository(CEDDBContext cEDDBContext) : base(cEDDBContext)
+    public UserRepository(AppDbContext cEDDBContext) : base(cEDDBContext)
     {
     }
 
@@ -29,7 +29,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var users = Context.Set<User>().AsEnumerable().Where(o => o is { Role: UserRole.Tutor, IsDeleted: false })
+            var users = _appDbContext.Set<User>().AsEnumerable().Where(o => o is { Role: UserRole.Tutor, IsDeleted: false })
                 .ToList();
             return users;
         }
@@ -43,7 +43,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var users = Context.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner).ToList();
+            var users = _appDbContext.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner && o.IsDeleted == false).ToList();
             return users;
         }
         catch (Exception ex)
@@ -58,7 +58,7 @@ public class UserRepository : Repository<User>, IUserRepository
         {
             if (email != null)
             {
-                return await Context.Set<User>().AnyAsync(o => o.Email.Equals(email));
+                return await _appDbContext.Set<User>().AnyAsync(o => o.Email.Equals(email));
             }
 
             return false;
@@ -73,7 +73,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var user = await Context.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
+            var user = await _appDbContext.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
 
             return user;
         }

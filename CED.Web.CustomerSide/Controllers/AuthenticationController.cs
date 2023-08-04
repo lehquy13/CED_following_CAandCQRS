@@ -1,10 +1,10 @@
 ﻿using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 using CED.Application.Services.Authentication.Admin.Commands.Register;
-using CED.Application.Services.Authentication.Admin.Queries.ValidateToken;
 using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.Customer.Commands.ChangePassword;
 using CED.Application.Services.Authentication.Customer.Commands.Register;
 using CED.Application.Services.Authentication.Customer.Queries.Login;
+using CED.Application.Services.Authentication.ValidateToken;
 using CED.Contracts.Authentication;
 using CED.Web.CustomerSide.Utilities;
 using MapsterMapper;
@@ -165,7 +165,7 @@ public class AuthenticationController : Controller
         return View("SuccessPage", "If you have registered with us, we have sent an email to your registered email.");
     }
     [HttpGet]
-    [Route("ChangePassword/{id}")]
+    [Route("ChangePassword/{ObjectId}")]
     public async Task<IActionResult> ChangePassword(string id)
     {
         await Task.CompletedTask;

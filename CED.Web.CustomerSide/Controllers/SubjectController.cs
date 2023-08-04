@@ -35,7 +35,7 @@ public class SubjectController : Controller
         
         if (tutorGuid != null)
         {
-            query.Guid = new Guid(tutorGuid);
+            query.ObjectId = new Guid(tutorGuid);
         }
         var subjectDtos = await _mediator.Send(query);
         return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
@@ -49,7 +49,7 @@ public class SubjectController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<SubjectDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<SubjectDto>() { ObjectId = (Guid)id };
 
         var result = await _mediator.Send(query);
 

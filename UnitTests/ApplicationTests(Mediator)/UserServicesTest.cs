@@ -1,5 +1,4 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.Users.Commands;
 using CED.Application.Services.Users.Queries;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Queries.Handlers;
@@ -109,7 +108,7 @@ namespace UnitTests.ApplicationTests_Mediator_
 
 
             //Getbyid
-            #region Mock a user by id
+            #region Mock a user by ObjectId
             _mockUserRepo
               .Setup(x => x.GetById(_sampleId))
               .ReturnsAsync(_user);
@@ -130,7 +129,7 @@ namespace UnitTests.ApplicationTests_Mediator_
             #endregion
 
 
-            #region Mock a tutor info by id
+            #region Mock a tutor info by ObjectId
             // _mockUserRepo
             //   .Setup(x => x.GetById(_sampleId3))
             //   .ReturnsAsync(_tutor);
@@ -139,7 +138,7 @@ namespace UnitTests.ApplicationTests_Mediator_
               .Returns(_tutorDto);
             #endregion
 
-            #region Mock a student info by id
+            #region Mock a student info by ObjectId
             _mockUserRepo
               .Setup(x => x.GetById(_sampleId2))
               .ReturnsAsync(_student);
@@ -241,7 +240,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         // [Test]
         // public async Task GetUserById()
         // {
-        //     var query = new GetObjectQuery<UserDto>() { Guid = _sampleId };
+        //     var query = new GetObjectQuery<UserDto>() { ObjectId = _sampleId };
         //     var handler = new GetUserByIdQueryHandler(_mockTutorRepo.Object,_mockSubjectRepo.Object,_mockTutorMajorRepo.Object, _mockMapper.Object);
         //     var result = await handler.Handle(query, CancellationToken.None);
         //
@@ -250,7 +249,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         // [Test]
         // public async Task GetTutorById()
         // {
-        //     var query = new GetObjectQuery<TutorDto>() { Guid = _sampleId3 };
+        //     var query = new GetObjectQuery<TutorDto>() { ObjectId = _sampleId3 };
         //     var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockSubjectRepo.Object,_mockTutorMajorRepo.Object,_mockMapper.Object);
         //     var result = await handler.Handle(query, CancellationToken.None);
         //
@@ -259,7 +258,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         [Test]
         public async Task GetStudentById()
         {
-            var query = new GetObjectQuery<LearnerDto>() { Guid = _sampleId2 };
+            var query = new GetObjectQuery<LearnerDto>() { ObjectId = _sampleId2 };
             var handler = new GetStudentByIdQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -306,7 +305,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         //[Test]
         //public async Task GetUserById()
         //{
-        //    var query = new GetUserQuery { id = _sampleId };
+        //    var query = new GetUserQuery { ObjectId = _sampleId };
         //    var handler = new GetUserQueryHandler(_mockUserRepo.Object, _mockMapper.Object);
         //    var result = await handler.Handle(query, CancellationToken.None);
 
@@ -338,7 +337,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         //[Test]
         //public async Task DeleteUser()
         //{
-        //    var command = new DeleteUserCommand { id = _sampleId };
+        //    var command = new DeleteUserCommand { ObjectId = _sampleId };
         //    var handler = new DeleteUserCommandHandler(_mockUserRepo.Object);
         //    var result = await handler.Handle(command, CancellationToken.None);
 

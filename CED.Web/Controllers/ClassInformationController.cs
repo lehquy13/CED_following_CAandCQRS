@@ -4,6 +4,7 @@ using MapsterMapper;
 using MediatR;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Commands;
+using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
 using CED.Application.Services.Users.Admin.Commands;
 using Microsoft.AspNetCore.Authorization;
 using CED.Web.Utilities;
@@ -79,15 +80,15 @@ public class ClassInformationController : Controller
 
         var query = new GetObjectQuery<ClassInformationDto>()
         {
-            Guid = Id
+            ObjectId = Id
         };
         var result = await _mediator.Send(query);
         ViewBag.Action = "Edit";
 
 
-        // var result = await _mediator.Send(new GetAllRequestGettingClassQuery()
+        // var result = await _mediator.Send(new GetAllRequestOfClassQuery()
         // {
-        //     Guid = (Guid)Id
+        //     ObjectId = (ObjectId)Id
         // });
 
         return View(result);
@@ -153,7 +154,7 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<ClassInformationDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<ClassInformationDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result == null)
@@ -192,7 +193,7 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<ClassInformationDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<ClassInformationDto>() { ObjectId = (Guid)id };
 
         var result = await _mediator.Send(query);
 
@@ -221,7 +222,7 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<TutorDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)
@@ -239,7 +240,7 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorReviewDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<TutorReviewDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)
@@ -292,7 +293,7 @@ public class ClassInformationController : Controller
             .Send(
                 new GetObjectQuery<Result<RequestGettingClassMinimalDto>>
                 {
-                    Guid = id
+                    ObjectId = id
                 }
             );
 

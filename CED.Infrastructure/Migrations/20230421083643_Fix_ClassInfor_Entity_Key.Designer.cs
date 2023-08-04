@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CED.Infrastructure.Migrations
 {
-    [DbContext(typeof(CEDDBContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20230421083643_Fix_ClassInfor_Entity_Key")]
     partial class Fix_ClassInfor_Entity_Key
     {

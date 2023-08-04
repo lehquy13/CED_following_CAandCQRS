@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Abstractions.CommandHandlers;
+﻿using CED.Application.Common.Errors.Users;
+using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.TutorReviews.Queries;
@@ -11,6 +12,7 @@ using CED.Domain.Repository;
 using CED.Domain.Review;
 using CED.Domain.Shared.NotificationConsts;
 using CED.Domain.Users;
+using FluentResults;
 using LazyCache;
 using MapsterMapper;
 using MediatR;
@@ -24,22 +26,18 @@ public class CreateReviewCommandHandler : CreateUpdateCommandHandler<CreateRevie
     private readonly IRepository<TutorReview> _tutorReviewRepository;
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly ITutorRepository _tutorRepository;
-    private readonly IAppCache _cache;
-    private readonly IPublisher _publisher;
 
     public CreateReviewCommandHandler(IRepository<TutorReview> tutorReviewRepository, IAppCache cache,
-        ILogger<CreateReviewCommandHandler> logger, IMapper mapper, ITutorRepository tutorRepository, IClassInformationRepository classInformationRepository,
-        IPublisher publisher
-        ) : base(logger, mapper)
+        ILogger<CreateReviewCommandHandler> logger, IMapper mapper, ITutorRepository tutorRepository,
+        IClassInformationRepository classInformationRepository,
+        IPublisher publisher, IUnitOfWork unitOfWork) : base(logger, mapper, unitOfWork,cache, publisher)
     {
         _tutorReviewRepository = tutorReviewRepository;
-        _cache = cache;
-        _publisher = publisher;
         _tutorRepository = tutorRepository;
         _classInformationRepository = classInformationRepository;
     }
 
-    public override async Task<bool> Handle(CreateReviewCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(CreateReviewCommand command, CancellationToken cancellationToken)
     {
         try
         {
@@ -47,41 +45,36 @@ public class CreateReviewCommandHandler : CreateUpdateCommandHandler<CreateRevie
             var tutor = await _tutorRepository.GetUserByEmail(command.TutorEmail);
             if (tutor is  null)
             {
-                return false;
+                return Result.Fail(new NonExistUserError());
             }
-            //Check if the subject existed
+            //Check if the review existed
             if (review is not null)
             {
+                review = _mapper.Map<TutorReview>(command.ReviewDto);
                 review.LastModificationTime = DateTime.Now;
-                review.Description = command.ReviewDto.Description;
-                review.Rate = command.ReviewDto.Rate;
-                _tutorReviewRepository.Update(review);
             }
             else
             {
-            
-               
                 command.ReviewDto.TutorId = tutor.Id;
-
                 review = _mapper.Map<TutorReview>(command.ReviewDto);
-                review.CreationTime = DateTime.Now;
-                var entity = await _tutorReviewRepository.Insert(review);
-                var message = "New tutor review for " + command.TutorEmail + " at " + entity.CreationTime.ToLongDateString();
-                await _publisher.Publish(new NewObjectCreatedEvent(entity.Id, message, NotificationEnum.ReviewClass), cancellationToken);
+                await _tutorReviewRepository.Insert(review);
             }
-            var teachingClasses =
-                _classInformationRepository.GetAll().Where(x => x.TutorId.Equals(tutor.Id)).ToList();
-            var reviews =  (await _tutorReviewRepository.GetAllList()).Join(
-                teachingClasses,
-                rev => rev.ClassInformationId,
-                cl => cl.Id,
-                (rev,cl) => new
-                {
-                    review = rev
-                }).Select(x => x.review.Rate)
-                .ToList();
-            tutor.Rate = (short)reviews.Average(x => x);
-            _tutorRepository.Update(tutor);
+
+            if (await _unitOfWork.SaveChangesAsync() > 0)
+            {
+                var message = "New tutor review for " + command.TutorEmail + " at " + review.CreationTime.ToLongDateString();
+                await _publisher.Publish(new NewObjectCreatedEvent(review.Id, message, NotificationEnum.ReviewClass), cancellationToken);
+            }
+            
+            //Update tutor's rate
+            var reviews = await _tutorRepository.GetReviewsOfTutor(tutor.Id);
+           
+            tutor.Rate = (short)reviews.Average(x => x.Rate);
+            
+            if (await _unitOfWork.SaveChangesAsync() <= 0)
+            {
+                return Result.Fail("Fail to update tutor's rate");
+            }
             
             var defaultRequest = new GetObjectQuery<TutorDto>();
             _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));

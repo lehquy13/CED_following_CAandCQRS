@@ -6,7 +6,7 @@ namespace CED.Infrastructure.Entity_Framework_Core.DataSeed;
 
 public static class DbInitializer
 {
-    public static void Initialize(CEDDBContext context)
+    public static void Initialize(AppDbContext context)
     {
         context.Database.EnsureCreated();
         

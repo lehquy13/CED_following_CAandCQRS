@@ -1,5 +1,4 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.Users.Commands;
 using CED.Contracts.Users;
 using MapsterMapper;
 using MediatR;
@@ -59,7 +58,7 @@ public class UserController : Controller
         PackStaticListToView();
         var query = new GetObjectQuery<UserDto>()
         {
-            Guid = Id
+            ObjectId = Id
         };
         var result = await _mediator.Send(query);
 
@@ -143,7 +142,7 @@ public class UserController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<UserDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<UserDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result == null)
@@ -185,7 +184,7 @@ public class UserController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<UserDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<UserDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)

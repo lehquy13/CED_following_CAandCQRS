@@ -1,6 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
 using CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Student.Queries;
@@ -71,7 +72,7 @@ public class ClassInformationController : Controller
 
     // GET api/<ClassInformationController>/5
     [HttpGet]
-    [Route("{id}")]
+    [Route("{ObjectId}")]
     public async Task<IActionResult> Detail(Guid id)
     {
         if (id.Equals( Guid.Empty))
@@ -80,7 +81,7 @@ public class ClassInformationController : Controller
         }
         var query = new GetObjectQuery<ClassInformationDto>()
         {
-            Guid = id
+            ObjectId = id
         };
         var classInformation = await _mediator.Send(query);
         var query1 = new GetAllClassInformationsQuery()
@@ -130,7 +131,7 @@ public class ClassInformationController : Controller
         CreateClassInformationByCustomer createUpdateClassInformationDto)
     {
         var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
-        command.email = HttpContext.Session.GetString("email") ?? "";
+        command.Email = HttpContext.Session.GetString("email") ?? "";
         var result = await _mediator.Send(command);
 
         return RedirectToAction("SuccessPage","Home"); //implement

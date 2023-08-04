@@ -10,9 +10,8 @@ using MapsterMapper;
 
 namespace CED.Application.Services.ClassInformations.Queries;
 
-public class GetRequestGettingClassDetailQueryHandler 
-    : GetByIdQueryHandler<GetObjectQuery<Result<RequestGettingClassMinimalDto>>,
-        Result<RequestGettingClassMinimalDto>?>
+// Note: check this query handler later bc of it may violate DDD
+public class GetRequestGettingClassDetailQueryHandler : GetByIdQueryHandler<GetObjectQuery<RequestGettingClassMinimalDto>, RequestGettingClassMinimalDto>
 
 {
     private readonly IClassInformationRepository _classInformationRepository;
@@ -33,23 +32,25 @@ public class GetRequestGettingClassDetailQueryHandler
         _userRepository = userRepository;
     }
 
-    public override async Task<Result<RequestGettingClassMinimalDto>?> Handle(
-        GetObjectQuery<Result<RequestGettingClassMinimalDto>> query, CancellationToken cancellationToken)
+    public override async Task<Result<RequestGettingClassMinimalDto>> Handle(GetObjectQuery<RequestGettingClassMinimalDto> query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
         {
-            var requests = await _requestGettingClassRepositoryepository.GetById(query.Guid);
+            var requests = await _requestGettingClassRepositoryepository.GetById(query.ObjectId);
             if (requests is null)
             {
-                throw new Exception("This getting class request does not exist!");
+                return Result.Fail("This getting class request does not exist!");
             }
            
             var classes = await _classInformationRepository.GetById(requests.ClassInformationId);
-            var user = await _userRepository.GetById(requests.TutorId);
+            if (classes is null)
+            {
+                return Result.Fail("This class does not exist!");
+            }
 
-            return (requests, user).Adapt<RequestGettingClassMinimalDto>();
-            
+            var result = _mapper.Map<RequestGettingClassMinimalDto>(requests);
+            return result;
         }
         catch (Exception ex)
         {

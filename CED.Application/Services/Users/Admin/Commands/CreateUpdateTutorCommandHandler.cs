@@ -6,6 +6,8 @@ using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Shared.NotificationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using FluentResults;
+using LazyCache;
 using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -15,58 +17,51 @@ namespace CED.Application.Services.Users.Admin.Commands;
 public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<CreateUpdateTutorCommand>
 {
     private readonly ITutorRepository _tutorRepository;
-    private readonly IUserRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
     private readonly ICloudinaryFile _cloudinaryFile;
-    private readonly IPublisher _publisher;
 
 
-    public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, IUserRepository userRepository, IPublisher publisher,
+    public CreateUpdateTutorCommandHandler(ITutorRepository tutorRepository, 
+        IPublisher publisher,
         IRepository<TutorMajor> tutorMajorRepository,
         ICloudinaryFile cloudinaryFile,
-        ILogger<CreateUpdateTutorCommandHandler> logger, IMapper mapper) : base(logger,mapper)
+        ILogger<CreateUpdateTutorCommandHandler> logger, IMapper mapper, IUnitOfWork unitOfWork, IAppCache cache) : base(logger,mapper, unitOfWork, cache,publisher)
     {
         _tutorRepository = tutorRepository;
-        _userRepository = userRepository;
         _cloudinaryFile = cloudinaryFile;
-        _publisher = publisher;
         _tutorMajorRepository = tutorMajorRepository;
     }
 
-    public override async Task<bool> Handle(CreateUpdateTutorCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(CreateUpdateTutorCommand command, CancellationToken cancellationToken)
     {
         try
         {
+            
             var tutor = await _tutorRepository.GetUserByEmail(command.TutorDto.Email);
-            var tutorAsUser = await _userRepository.GetUserByEmail(command.TutorDto.Email);
-            var newMajorUpdate = command.SubjectIds.DistinctBy(x => x).ToList();
+            
+            //Collect major ids
+            var newMajorUpdateList = command.SubjectIds.DistinctBy(x => x).ToList();
             //Check if the subject existed
-            if (tutor is not null && tutorAsUser is not null && tutorAsUser.Role == UserRole.Tutor)
+            if (tutor is not null)
             {
-                var currentMajor = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(command.TutorDto.Id)).ToList();
+                var currentMajor = tutor.Subjects;
                 // check the subject changes
                 foreach (var major in currentMajor)
                 {
-                    if (!newMajorUpdate.Contains(major.SubjectId))
+                    if (!newMajorUpdateList.Contains(major.Id))
                     {
-                        _tutorMajorRepository.Delete(major);
-                        _logger.LogDebug("Remove subject {0} from tutor's major", major.SubjectId);
+                        currentMajor.Remove(major);
+                        _logger.LogDebug("Remove subject {0} from tutor's major", major.Name);
                     }
                     else
                     {
-                        var removeResult = newMajorUpdate.Remove(major.SubjectId);
-                        if (removeResult)
-                        {
-                            _logger.LogDebug("Remove subject {0} from newMajorUpdateList", major.SubjectId);
-                        }
-                        else
-                        {
-                            _logger.LogError("fail to remove the subject {0} from newMajorUpdateList", major.SubjectId);
-                        }
+                        //remove the subject from newMajorUpdate
+                        var removeResult = newMajorUpdateList.Remove(major.Id);
                     }
                 }
-
-                foreach (var newMu in newMajorUpdate)
+                
+                //Add the left subjects
+                foreach (var newMu in newMajorUpdateList)
                 {
                     await _tutorMajorRepository.Insert(new TutorMajor()
                     {
@@ -74,43 +69,43 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
                         SubjectId = newMu
                     });
                 }
+
                 
                 
                 tutor.VerifyTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
-                tutorAsUser.UpdateUserInformationExceptImage(_mapper.Map<User>(command.TutorDto));
                 
-                _logger.LogDebug("ready for updating!");
-                _tutorRepository.Update(tutor);
-                _userRepository.Update(tutorAsUser);
-
+                if (await _unitOfWork.SaveChangesAsync() <= 0)
+                {
+                    return Result.Fail($"Fail to update of tutor {tutor.Email}" );
+                }
                 return true;
             }
-
+            
+            //Create new tutor
             _logger.LogDebug("ready for creating!");
-            tutorAsUser = _mapper.Map<User>(command.TutorDto);
-            var entity = await _userRepository.Insert(tutorAsUser);
-           
-            tutor = _mapper.Map<Domain.Users.Tutor>(command.TutorDto);
-            await _tutorRepository.Insert(tutor);
-
-            // add new subjects
-
-            foreach (var newMu in newMajorUpdate)
+            var entityToCreate = await _tutorRepository.Insert(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
+            
+            // add new majors to tutor
+            foreach (var newMu in newMajorUpdateList)
             {
                 await _tutorMajorRepository.Insert(new TutorMajor()
                 {
-                    TutorId = tutor.Id,
+                    TutorId = entityToCreate.Id,
                     SubjectId = newMu
                 });
             }
-            var message = "New tutor: " + entity.FirstName + " " + entity.LastName + " at " + entity.CreationTime.ToLongDateString();
-            await _publisher.Publish(new NewObjectCreatedEvent(entity.Id, message, NotificationEnum.Tutor), cancellationToken);
+            if (await _unitOfWork.SaveChangesAsync() <= 0)
+            {
+                return Result.Fail($"Fail to create of tutor {entityToCreate.Email}" );
+            }
+            var message = "New tutor: " + entityToCreate.FirstName + " " + entityToCreate.LastName + " at " + entityToCreate.CreationTime.ToLongDateString();
+            await _publisher.Publish(new NewObjectCreatedEvent(entityToCreate.Id, message, NotificationEnum.Tutor), cancellationToken);
             return true;
 
         }
         catch (Exception ex)
         {
-            throw new Exception("Error happens when user is adding or updating." + ex.Message);
+            return Result.Fail("Error happens when tutor is adding or updating.");
         }
         
     }

@@ -1,4 +1,4 @@
-﻿@model CED.Contracts.ClassInformations.Dtos.ClassInformationDto
+﻿@model CED.Contracts.ClassInformations.Dtos.ClassInformationForDetailDto
 @using CED.Contracts.Subjects
 @using CED.Domain.Shared
 @{
@@ -16,7 +16,7 @@
                 <h6>Contact</h6>
                 @* <input class="form-control" asp-for="ContactNumber" type="text" placeholder="ex: 012312****"/> *@
                 <p class="form-control">@Model.ContactNumber</p>
-                @* <span asp-validation-for="ContactNumber" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="ContactNumber" class="text-danger"></span> *@
 
             </div>
 
@@ -24,14 +24,14 @@
                 <h6>Subjects</h6>
 
                 <select asp-for="SubjectId" class="form-select">
-                    <option >@Model.SubjectName </option>
+                    <option >@Model.Subject.Name </option>
 
                     @* @foreach (var i in subjects) *@
                     @* { *@
                     @*     <option value="@i.Id">@i.Name </option> *@
                     @* } *@
                 </select>
-                @* <span asp-validation-for="SubjectId" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="SubjectId" class="text-danger"></span> *@
             </div>
 
             <div class="col-lg-12 mb-4">
@@ -39,7 +39,7 @@
                 <h6>Title</h6>
                 @* <input type="text" asp-for="Title" class="form-control" placeholder="ex: Find English tutor at HCMC..."/> *@
                 <p class="form-control">@Model.Title</p>
-                @* <span asp-validation-for="Title" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="Title" class="text-danger"></span> *@
 
             </div>
 
@@ -48,13 +48,13 @@
                 <h6>Total students</h6>
                 @* <input class="form-control" asp-for="NumberOfStudent" type="number" value="1"/> *@
                 <p class="form-control">@Model.NumberOfLearner</p>
-                @* <span asp-validation-for="NumberOfStudent" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="NumberOfStudent" class="text-danger"></span> *@
             </div>
 
             <div class="col-lg-3 mb-4">
                 <h6>Session/Week</h6>
                 @* <input type="number" asp-for="SessionPerWeek" class="form-control" value="2"/> *@
-                @* <span asp-validation-for="SessionPerWeek" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="SessionPerWeek" class="text-danger"></span> *@
                 <p class="form-control">@Model.SessionPerWeek</p>
 
             </div>
@@ -62,7 +62,7 @@
             <div class="col-lg-3 mb-4">
                 <h6>Minutes/Session</h6>
                 @* <input class="form-control" asp-for="MinutePerSession" type="number" value="90"/> *@
-                @* <span asp-validation-for="MinutePerSession" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="MinutePerSession" class="text-danger"></span> *@
                 <p class="form-control">@Model.MinutePerSession</p>
 
             </div>
@@ -74,14 +74,14 @@
                     <option class="form-control">@Model.LearnerGender</option>
 
                 </select>
-                @* <span asp-validation-for="StudentGender" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="StudentGender" class="text-danger"></span> *@
 
             </div>
 
             <div class="col-lg-12 mb-4">
                 <h6>Address</h6>
                 @* <input class="form-control" asp-for="Address" type="text" placeholder="ex: 123 maint st, HCMC..."/> *@
-                @* <span asp-validation-for="Address" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="Address" class="text-danger"></span> *@
                 <p class="form-control">@Model.Address</p>
                 
 
@@ -89,7 +89,7 @@
             <div class="col-lg-12 mb-4">
                 <h6>Description / Notes</h6>
                 @* <input class="form-control" asp-for="Description" type="text" placeholder="ex: ..."/> *@
-                @* <span asp-validation-for="Description" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="Description" class="text-danger"></span> *@
                 <p class="form-control">@Model.Description</p>
 
             </div>
@@ -99,7 +99,7 @@
 
                 <h6>Fee ($)</h6>
                 @* <p type="number" asp-for="Fee" class="form-control" placeholder="ex: 300"></p> *@
-                @* <span asp-validation-for="Fee" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="Fee" class="text-danger"></span> *@
                 <p class="form-control">@Model.Fee</p>
 
 
@@ -114,7 +114,7 @@
                     @*     <option class="form-control" value="@i">@i</option> *@
                     @* } *@
                 </select>
-                @* <span asp-validation-for="GenderRequirement" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="GenderRequirement" class="text-danger"></span> *@
 
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
@@ -136,7 +136,7 @@
             <div class="col-lg-12 mb-4">
                 <h6>Tutor information</h6>
                 @* <input class="form-control" asp-for="Description" type="text" placeholder="ex: ..."/> *@
-                @* <span asp-validation-for="Description" class="text-danger"></span> *@
+                @* <span asp-valObjectIdation-for="Description" class="text-danger"></span> *@
                 <p class="form-control">Name: @Model.TutorName</p>
                 <p class="form-control">Email: @Model.TutorEmail</p>
                 <p class="form-control">Phone: @Model.TutorPhoneNumber</p>

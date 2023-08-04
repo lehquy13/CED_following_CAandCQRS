@@ -1,10 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Contracts;
 using CED.Contracts.TutorReview;
 using CED.Domain.ClassInformations;
-using CED.Domain.Repository;
-using CED.Domain.Review;
-using CED.Domain.Users;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.TutorReviews.Queries;
@@ -12,23 +9,25 @@ namespace CED.Application.Services.TutorReviews.Queries;
 public class GetReviewByClassIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<TutorReviewDto>, TutorReviewDto>
 {
   
-    private readonly IRepository<TutorReview> _tutorReviewRepository;
+    private readonly IClassInformationRepository _classInformationRepository;
 
-    public GetReviewByClassIdQueryHandler(IRepository<TutorReview> tutorReviewRepository, IMapper mapper):base(mapper)
+    public GetReviewByClassIdQueryHandler(IClassInformationRepository classInformationRepository, IMapper mapper):base(mapper)
     {
-        _tutorReviewRepository = tutorReviewRepository;
+        _classInformationRepository = classInformationRepository;
     }
-    public override async Task<TutorReviewDto?> Handle(GetObjectQuery<TutorReviewDto> query, CancellationToken cancellationToken)
+    public override async Task<Result<TutorReviewDto>> Handle(GetObjectQuery<TutorReviewDto> query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
         {
-
-            var review = _tutorReviewRepository.GetAll().FirstOrDefault(x => x.ClassInformationId == query.Guid); 
-            //testing mapping paginatedlist
+            if (query.ObjectId == Guid.Empty)
+            {
+                return Result.Fail("Review not found");
+            }
+            var review = await _classInformationRepository.GetReviewByClassId(query.ObjectId);
             if (review is null)
             {
-                return null;
+                return Result.Fail("Review not found");
             }
             return _mapper.Map<TutorReviewDto>(review);
         }

@@ -1,4 +1,5 @@
 ﻿using CED.Contracts.Users;
+using FluentResults;
 using MediatR;
 
 namespace CED.Application.Services.Users.Tutor.Registers;
@@ -9,5 +10,5 @@ public record TutorRegistrationCommand
     List<string>? SubjectIds,
     List<string>? FilePaths
 
-    ) : IRequest<bool>;
+    ) : IRequest<Result<bool>>;
 

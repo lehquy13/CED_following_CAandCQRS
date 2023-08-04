@@ -1,12 +1,16 @@
-﻿using CED.Application.Services.Abstractions.CommandHandlers;
+﻿using CED.Application.Common.Errors.Users;
+using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Contracts.Users;
 using CED.Domain.Interfaces.Services;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using FluentResults;
+using LazyCache;
 using Mapster;
 using MapsterMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Tutor.Registers;
@@ -18,7 +22,6 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
     private readonly IRepository<TutorMajor> _tutorMajorInfoRepository;
     private readonly IUserRepository _userRepository;
     private readonly ICloudinaryFile _cloudinaryFile;
-    private readonly IUnitOfWork _unitOfWork;
 
     public TutorRegisterCommandHandler(IUserRepository userRepository,
         IRepository<TutorVerificationInfo> tutorVerificationInfoRepository,
@@ -27,59 +30,41 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
         ITutorRepository tutorRepository,
         IUnitOfWork unitOfWork,
         ILogger<TutorRegisterCommandHandler> logger,
-        IMapper mapper) : base(logger, mapper)
+        IMapper mapper, IAppCache cache, IPublisher publisher) : base(logger, mapper,unitOfWork,cache,publisher)
     {
         _userRepository = userRepository;
         _tutorRepository = tutorRepository;
-        _unitOfWork = unitOfWork;
         _tutorMajorInfoRepository = tutorMajorInfoRepository;
         _cloudinaryFile = cloudinaryFile;
         _tutorVerificationInfoRepository = tutorVerificationInfoRepository;
     }
 
-    public override async Task<bool> Handle(TutorRegistrationCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(TutorRegistrationCommand command, CancellationToken cancellationToken)
     {
         try
         {
             //Check if the user existed
-            _logger.LogDebug("Getting user info");
-            var tutor = (command.TutorDto).Adapt<Domain.Users.Tutor>();
-
-            var user = await _userRepository.GetUserByEmail(email: command.TutorDto.Email);
+            //TODO: Check if the logic goes well
+            
+            var user = await _userRepository.ExistenceCheck(command.TutorDto.Id);
+            
             if (user is null)
             {
-                throw new Exception("User with an email doesn't exist / User may be already a tutor.");
+                return Result.Fail(new NonExistUserError());
             }
+            var tutor =  _mapper.Map<Domain.Users.Tutor>(command.TutorDto);
 
-            var updateUser = _mapper.Map<User>(command.TutorDto);
+            //user.UpdateUserInformationExceptImage(updateUser);
+            tutor.Role = UserRole.Tutor;
+            //user.CreationTime = DateTime.Now;
 
-            user.UpdateUserInformationExceptImage(updateUser);
-            user.Role = UserRole.Tutor;
-            user.CreationTime = DateTime.Now;
-            
-            
-            _userRepository.Update(user);
-
-
-            _logger.LogDebug("Creating new tutor profile...");
-            //tutor.Id = user.Id;
             //Set to false bc tutor will need to be verified by user
             tutor.IsVerified = false;
-            await _tutorRepository.Insert(tutor);
-
-            //await _unitOfWork.SaveChangesAsync(cancellationToken);
+            
             //Handle filepath !!! Upgrade
+            //alternative flows: get the verification by id then push into verification list of tutor
             if (command.FilePaths is { Count: > 0 })
             {
-                var verifications = _tutorVerificationInfoRepository
-                    .GetAll().Where(x => x.TutorId.Equals(tutor.Id)).ToList();
-                foreach (var i in verifications)
-                {
-                    _tutorVerificationInfoRepository.Delete(i);
-                }
-
-
-                //verifications = new List<TutorVerificationInfo>();
                 foreach (var i in command.FilePaths)
                 {
                     await _tutorVerificationInfoRepository.Insert(new TutorVerificationInfo
@@ -93,7 +78,6 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
             //Handle major
             if (command.SubjectIds is { Count: > 0 })
             {
-                //verifications = new List<TutorVerificationInfo>();
                 foreach (var i in command.SubjectIds)
                 {
                     await _tutorMajorInfoRepository.Insert(new TutorMajor()
@@ -103,14 +87,19 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
                     });
                 }
             }
+            
+            await _tutorRepository.Insert(tutor); //TODO: this will be fail
 
+            if (await _unitOfWork.SaveChangesAsync() <= 0)
+            {
+                return Result.Fail("Fail to register new tutor");
+            }
             _logger.LogDebug("Done.");
             return true;
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
-            return false;
+            return Result.Fail("Error while registering tutor. Details error: " + e.Message);
         }
     }
 }

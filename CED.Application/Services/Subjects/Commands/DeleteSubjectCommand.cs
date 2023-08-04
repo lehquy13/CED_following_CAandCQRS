@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using FluentResults;
+using MediatR;
 
 namespace CED.Application.Services.Subjects.Commands;
 
 public record DeleteSubjectCommand(
-   Guid id
-): IRequest<bool>;
+   Guid SubjectId
+): IRequest<Result<bool>>;
 

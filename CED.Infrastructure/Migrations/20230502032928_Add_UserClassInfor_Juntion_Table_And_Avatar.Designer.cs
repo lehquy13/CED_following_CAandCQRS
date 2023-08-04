@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CED.Infrastructure.Migrations
 {
-    [DbContext(typeof(CEDDBContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20230502032928_Add_UserClassInfor_Juntion_Table_And_Avatar")]
     partial class Add_UserClassInfor_Juntion_Table_And_Avatar
     {

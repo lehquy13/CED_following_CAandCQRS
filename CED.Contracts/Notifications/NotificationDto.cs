@@ -1,4 +1,5 @@
 ﻿using CED.Contracts.Common.Models;
+using CED.Contracts.Models;
 using CED.Domain.Shared.NotificationConsts;
 
 namespace CED.Contracts.Notifications;

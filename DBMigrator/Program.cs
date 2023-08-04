@@ -13,7 +13,7 @@ internal static class Program
     public static void Main(string[] args)
     {
         var mapper = new Mapper();
-        var factory = new CEDDBContextFactory();
+        var factory = new AppDbContextFactory();
         var context = factory.CreateDbContext(args);
         Console.WriteLine( "Checking database is created or not..." );
         context.Database.EnsureCreated();

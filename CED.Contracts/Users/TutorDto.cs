@@ -1,4 +1,5 @@
 ﻿using CED.Contracts.Common.Models;
+using CED.Contracts.Models;
 using CED.Contracts.Subjects;
 using CED.Contracts.TutorReview;
 using CED.Domain.Shared.ClassInformationConsts;

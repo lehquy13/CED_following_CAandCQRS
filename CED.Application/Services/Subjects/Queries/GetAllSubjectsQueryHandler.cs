@@ -3,6 +3,7 @@ using CED.Contracts;
 using CED.Contracts.Subjects;
 using CED.Domain.Repository;
 using CED.Domain.Subjects;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.Subjects.Queries;
@@ -17,21 +18,24 @@ public class GetAllSubjectsQueryHandler : GetAllQueryHandler<GetObjectQuery<Pagi
         _subjectRepository = subjectRepository;
         _tutorMajorRepository = tutorMajorRepository;
     }
-    public override async Task<PaginatedList<SubjectDto>> Handle(GetObjectQuery<PaginatedList<SubjectDto>> query, CancellationToken cancellationToken)
+    public override async Task<Result<PaginatedList<SubjectDto>>> Handle(GetObjectQuery<PaginatedList<SubjectDto>> query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
         {
-            var subjects =  _subjectRepository.GetAll();
-            var totalSubjects = subjects.Count();
-            if (query.Guid != Guid.Empty)
+            List<Subject> subjects;
+            //if ObjectId is not empty, get all the subjects which is tutor's major
+            if (query.ObjectId != Guid.Empty)
             {
-                var tutorMajors = _tutorMajorRepository.GetAll().Where(x => x.TutorId == query.Guid)
-                    .Select(x => x.SubjectId);
-                subjects = subjects.Where(x => !tutorMajors.Contains(x.Id));
+                 subjects = await _subjectRepository.GetTutorMajors(query.ObjectId);
             }
-            
-            //testing mapping paginatedlist 
+            else
+            {
+                 subjects =  await _subjectRepository.GetAllList();
+            }
+
+            var totalSubjects = subjects.Count;
+           
             return PaginatedList<SubjectDto>.CreateAsync(_mapper.Map<List<SubjectDto>>(subjects.ToList()),query.PageIndex,query.PageSize,totalSubjects);
         }
         catch (Exception ex)

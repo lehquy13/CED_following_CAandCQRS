@@ -1,5 +1,6 @@
 ﻿using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Common.Models;
+using CED.Contracts.Models;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.Users;
@@ -27,7 +28,7 @@ public class LearnerDto : FullAuditedAggregateRootDto<Guid>
     //is tutor related informtions
     public UserRole Role { get; set; } = UserRole.Learner;
     
-    public PaginatedList<ClassInformationDto> LearningClassInformations { get; set; } = new();
+    public PaginatedList<ClassInformationForListDto> LearningClassInformations { get; set; } = new();
 
 }
 

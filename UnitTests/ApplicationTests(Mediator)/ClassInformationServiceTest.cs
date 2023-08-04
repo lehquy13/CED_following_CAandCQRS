@@ -6,6 +6,7 @@ using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
 using CED.Domain.ClassInformations;
+using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
@@ -16,10 +17,12 @@ namespace UnitTests.ApplicationTests_Mediator_
 {
     public class ClassInformationServiceTest
     {
+        //repository
         private readonly Mock<IClassInformationRepository> _mockClassInformationRepo = new();
         private readonly Mock<ISubjectRepository> _mockSubjectRepo = new();
         private readonly Mock<IUserRepository> _mockUserRepo = new();
         private readonly Mock<ITutorRepository> _mockTutorRepo = new();
+        private readonly Mock<IRepository<RequestGettingClass>> _mockRquestGettingClassRepository = new();
         private readonly Mock<IMapper> _mockMapper = new();
 
         private readonly Guid _sampleId = Guid.NewGuid();
@@ -165,10 +168,11 @@ namespace UnitTests.ApplicationTests_Mediator_
                 .ReturnsAsync(true);
         }
 
+       
         // [Test]
         // public async Task GetClassInformationById()
         // {
-        //     var query = new GetObjectQuery<ClassInformationDto>() { Guid = _sampleId };
+        //     var query = new GetObjectQuery<ClassInformationDto>() { ObjectId = _sampleId };
         //     var handler = new GetClassInformationQueryHandler(_mockClassInformationRepo.Object,_mockSubjectRepo.Object,_mockUserRepo.Object, _mockMapper.Object);
         //     var result = await handler.Handle(query, CancellationToken.None);
         //

@@ -17,7 +17,7 @@ public class GetStudentByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<Lea
     {
         try
         {
-            User? user = await _userRepository.GetById(query.Guid);
+            User? user = await _userRepository.GetById(query.ObjectId);
             if (user is null) { return null; }
             LearnerDto result = _mapper.Map<LearnerDto>(user);
             return await Task.FromResult(result);

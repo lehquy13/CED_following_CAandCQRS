@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using CED.Application.Common.Errors.Users;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts;
 using CED.Contracts.Subjects;
 using CED.Contracts.TutorReview;
@@ -8,6 +9,7 @@ using CED.Domain.Repository;
 using CED.Domain.Review;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using FluentResults;
 using Mapster;
 using MapsterMapper;
 
@@ -40,41 +42,20 @@ public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<Tutor
         _classInformationRepository = classInformationRepository;
     }
 
-    public override async Task<TutorDto?> Handle(GetObjectQuery<TutorDto> query, CancellationToken cancellationToken)
+    public override async Task<Result<TutorDto>> Handle(GetObjectQuery<TutorDto> query, CancellationToken cancellationToken)
     {
         try
         {
-            User? user = await _userRepository.GetById(query.Guid);
-            Domain.Users.Tutor? tutor = await _tutorRepository.GetById(query.Guid);
-            if (user is null || tutor is null)
+            var tutor = await _tutorRepository.GetById(query.ObjectId);
+            if ( tutor is null)
             {
-                return null;
+                return Result.Fail(new NonExistTutorError());
             }
 
-            TutorDto result = (user, tutor).Adapt<TutorDto>();
+            TutorDto result = _mapper.Map<TutorDto>(tutor);
 
-            var tutorMajors = _tutorMajorRepository.GetAll().Where(x => x.TutorId.Equals(user.Id)).ToList();
-
-            var tutorVerifications = _tutorVerificationInfoRepository.GetAll()
-                .Where(x => x.TutorId.Equals(user.Id)).ToList();
-
-
-            foreach (var i in tutorMajors.Select(x => x.SubjectId))
-            {
-                var s = await _subjectRepository.GetById(i);
-                if (s is not null)
-                {
-                    result.Majors.Add(_mapper.Map<SubjectDto>(s));
-                }
-            }
-
-            foreach (var i in tutorVerifications)
-            {
-                result.TutorVerificationInfoDtos.Add(_mapper.Map<TutorVerificationInfoDto>(i));
-            }
-            
             var teachingClasses =
-                _classInformationRepository.GetAll().Where(x => x.TutorId.Equals(query.Guid)).ToList();
+                _classInformationRepository.GetAll().Where(x => x.TutorId.Equals(query.ObjectId)).ToList();
             var reviews =  (await _tutorReviewRepository.GetAllList()).Join(
                 teachingClasses,
                 rev => rev.ClassInformationId,
@@ -83,7 +64,9 @@ public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<Tutor
                 {
                     review = rev,
                     tutorId = cl.TutorId,
-                    learnerID = cl.LearnerId
+                    learnerID = cl.LearnerId,
+                    
+                    
                 }).ToList();
             result.TutorReviewDtos  = PaginatedList<TutorReviewDto>.CreateAsync(
                 reviews.Join(
@@ -96,7 +79,10 @@ public class GetTutorByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<Tutor
                         LearnerId = learner.Id,
                         TutorId = rev.tutorId??Guid.Empty,
                         Description = rev.review.Description,
-                        Rate = rev.review.Rate
+                        Rate = rev.review.Rate,
+                      
+                        CreationTime = rev.review.CreationTime,
+                        LastModificationTime = rev.review.LastModificationTime,
                     }
                 )
                 ,query.PageIndex,query.PageSize,reviews.Count

@@ -1,10 +1,12 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Shared.NotificationConsts;
 using CED.Domain.Users;
+using FluentResults;
 using LazyCache;
 using MapsterMapper;
 using MediatR;
@@ -18,30 +20,20 @@ public class CreateUpdateClassInformationCommandHandler
 {
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly IUserRepository _userRepository;
-    private readonly IAppCache _cache;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IPublisher _publisher;
-    private readonly IRepository<RequestGettingClass> _requestGettingClassRepositoryepository;
-
 
     public CreateUpdateClassInformationCommandHandler(
         IClassInformationRepository classInformationRepository,
-        IRepository<RequestGettingClass> requestGettingClassRepositoryepository,
         IUnitOfWork unitOfWork,
         IAppCache cache,
         IPublisher publisher,
         ILogger<CreateUpdateClassInformationCommandHandler> logger, IMapper mapper, IUserRepository userRepository)
-        : base(logger, mapper)
+        : base(logger, mapper, unitOfWork,cache,publisher)
     {
         _classInformationRepository = classInformationRepository;
-        _unitOfWork = unitOfWork;
-        _requestGettingClassRepositoryepository = requestGettingClassRepositoryepository;
-        _cache = cache;
-        _publisher = publisher;
         _userRepository = userRepository;
     }
 
-    public override async Task<bool> Handle(CreateUpdateClassInformationCommand command,
+    public override async Task<Result<bool>> Handle(CreateUpdateClassInformationCommand command,
         CancellationToken cancellationToken)
     {
         try
@@ -51,60 +43,65 @@ public class CreateUpdateClassInformationCommandHandler
             //Check if the class existed
             if (classInformation is not null)
             {
-                var classInformation1 = _mapper.Map<ClassInformation>(command.ClassInformationDto);
-                classInformation1.LastModificationTime = DateTime.Now;
-                if (classInformation1.TutorId != null)
-                {
-                    classInformation1.Status = Status.Confirmed;
-                }
-                classInformation.LastModificationTime = DateTime.Now;
-                var updatedEntity = _classInformationRepository.Update(classInformation1);
-                
-                if (updatedEntity != null )
-                {
-                    //Update existed class
-                    var requestGettingClasses = _requestGettingClassRepositoryepository.GetAll()
-                        .Where(x => x.ClassInformationId.Equals(updatedEntity.Id))
-                        .ToList();
-
-                    foreach (var iClass in requestGettingClasses)
-                    {
-                        if (iClass.TutorId.Equals(updatedEntity.TutorId))
-                        {
-                            iClass.RequestStatus = RequestStatus.Success;
-                        }
-                        else
-                        {
-                            iClass.RequestStatus = RequestStatus.Canceled;
-                        }
-                    }
-                    
-
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                }
-            }
-            else
-            {
-                //Create new Class
                 classInformation = _mapper.Map<ClassInformation>(command.ClassInformationDto);
-                
-                if (!string.IsNullOrWhiteSpace(command.email))
+
+                //update last modification time
+                classInformation.LastModificationTime = DateTime.Now;
+                if (classInformation.TutorId != null)
                 {
-                    var user = await _userRepository.GetUserByEmail(command.email);
-                    if (user != null)
-                    {
-                        classInformation.LearnerId = user.Id;
-                    }
+                    classInformation.Status = Status.Confirmed;
                 }
 
-                classInformation.LastModificationTime = DateTime.Now;
-                classInformation.CreationTime = DateTime.Now;
-                var entity = await _classInformationRepository.Insert(classInformation);
-                var message ="New class: " + entity.Title +" at "+ entity.CreationTime.ToLongDateString();
-                await _publisher.Publish(new NewObjectCreatedEvent(entity.Id, message, NotificationEnum.ClassInformation), cancellationToken);
+                //Update existed class
+                var requestGettingClassesFromDb =
+                    (await _classInformationRepository
+                        .GetRequestGettingClassesByClassId(classInformation
+                            .Id)) // get all request getting classes by class ObjectId
+                    .Where(x => x.TutorId != classInformation.TutorId); // get all other request in order to cancel them
+                // Cancel them 
+                foreach (var iClass in requestGettingClassesFromDb)
+                {
+                    iClass.RequestStatus = RequestStatus.Canceled;
+                }
+
+                if (await _unitOfWork.SaveChangesAsync() > 0)
+                {
+                    return true;
+                }
+
+                return Result.Fail<bool>("Update class and it's requests failed.");
             }
 
+            //Create new Class
+            classInformation = _mapper.Map<ClassInformation>(command.ClassInformationDto);
+
+            if (!string.IsNullOrWhiteSpace(command.Email))
+            {
+                //Class was created by a system user
+                var user = await _userRepository.GetUserByEmail(command.Email);
+                if (user != null)
+                {
+                    classInformation.LearnerId = user.Id;
+                }
+            }
+
+            //update last modification time
+            classInformation.LastModificationTime = DateTime.Now;
+            //update creation time bc it is new record
+            classInformation.CreationTime = DateTime.Now;
+
+            //Handle publish event to notification service
+            var entity = await _classInformationRepository.Insert(classInformation);
+            if (!(await _unitOfWork.SaveChangesAsync() > 0))
+            {
+                return Result.Fail("Fail to save changes while creating new class.");
+            }
+            var message = "New class: " + entity.Title + " at " + entity.CreationTime.ToLongDateString();
+            await _publisher.Publish(
+                new NewObjectCreatedEvent(entity.Id, message, NotificationEnum.ClassInformation),
+                cancellationToken);
+
+            // Clear cache
             var defaultRequest = new GetAllClassInformationsQuery();
             _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
             return true;

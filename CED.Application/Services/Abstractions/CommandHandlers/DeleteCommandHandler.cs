@@ -1,13 +1,24 @@
-﻿using MediatR;
+﻿using CED.Domain.Repository;
+using FluentResults;
+using LazyCache;
+using MediatR;
 
 namespace CED.Application.Services.Abstractions.CommandHandlers;
 
 public abstract class DeleteCommandHandler<TCommand>
-    : IRequestHandler<TCommand, bool>
-    where TCommand : IRequest<bool>
+    : IRequestHandler<TCommand, Result<bool>>
+    where TCommand : IRequest<Result<bool>>
 {
-    public DeleteCommandHandler() { }
+    protected readonly IUnitOfWork _unitOfWork;
+    protected readonly IAppCache _cache;
+    protected readonly IPublisher _publisher;
+    public DeleteCommandHandler(IUnitOfWork unitOfWork, IAppCache cache, IPublisher publisher)
+    {
+        _unitOfWork = unitOfWork;
+        _cache = cache;
+        _publisher = publisher;
+    }
 
-    public abstract Task<bool> Handle(TCommand command, CancellationToken cancellationToken);
+    public abstract Task<Result<bool>> Handle(TCommand command, CancellationToken cancellationToken);
 }
 

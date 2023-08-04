@@ -1,5 +1,6 @@
 ﻿using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
+using CED.Application.Services.ClassInformations.Queries.GetClassInformation;
 using CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
@@ -15,7 +16,7 @@ public class ClassInformationMappingConfig : IRegister
         config.NewConfig<Guid, GetClassInformationQuery>()
            .Map(dest => dest.Id, src => src);
         config.NewConfig<Guid, DeleteClassInformationCommand>()
-            .Map(dest => dest.id, src => src);
+            .Map(dest => dest.Guid, src => src);
         
         config.NewConfig<CreateUpdateClassInformationDto, CreateUpdateClassInformationCommand>()
             .Map(dest => dest.ClassInformationDto, src => src);

@@ -25,10 +25,6 @@ public class UserMappingConfig : IRegister
             .Map(des => des.Email, src => src.Email)
             .Map(des => des.PhoneNumber, src => src.PhoneNumber)
             .Map(des => des.Role, src => src.Role)
-            // .Map(des => des.AcademicLevel, src => src.AcademicLevel)
-            // .Map(des => des.University, src => src.University )
-            // .Map(des => des.IsVerified, src => src.IsVerified)
-            //.Map(des => des.WardId, src => src.WardId)
             .Ignore(des => des.Password)
             ;
 
@@ -66,24 +62,8 @@ public class UserMappingConfig : IRegister
             .Map(des => des.University, src => src.Item2.University)
             .Map(des => des.IsVerified, src => src.Item2.IsVerified)
             .Map(des => des.Rate, src => src.Item2.Rate)
-            .Map(des => des, src => src.Item1)
-            ;
-        // config.NewConfig< (User,Tutor), TutorDto>()
-        //     .Map(des => des.FirstName, src => src.Item1.FirstName)
-        //     .Map(des => des.LastName, src => src.Item1.LastName)
-        //     .Map(des => des.Gender, src => src.Item1.Gender)
-        //     .Map(des => des.BirthYear, src => src.Item1.BirthYear)
-        //     .Map(des => des.Address, src => src.Item1.Address)
-        //     .Map(des => des.Description, src => src.Item1.Description)
-        //     .Map(des => des.Email, src => src.Item1.Email)
-        //     .Map(des => des.PhoneNumber, src => src.Item1.PhoneNumber)
-        //     .Map(des => des.Role, src => src.Item1.Role)
-        //     .Map(des => des.AcademicLevel, src => src.Item2.AcademicLevel)
-        //     .Map(des => des.University, src => src.Item2.University)
-        //     .Map(des => des.IsVerified, src => src.Item2.IsVerified)
-        //     .Map(des => des.Rate, src => src.Item2.Rate);
-        
-        
+            .Map(des => des, src => src.Item1);
+
         config.NewConfig<User, UserDto>();
         config.NewConfig<User, LearnerDto>();
 
@@ -91,15 +71,14 @@ public class UserMappingConfig : IRegister
         config.NewConfig<(User, ClassInformation), LearnerDto>()
             .Map(des => des.LearningClassInformations, src => src.Item2)
             .Map(des => des, src => src.Item1);
-
+        
+        //These configs are mainly used for mapping from tutor profile 
         config.NewConfig<TutorVerificationInfo, TutorVerificationInfoDto>();
-
-        config.NewConfig<(Tutor, PaginatedList<RequestGettingClassDto>, List<SubjectDto>,List<TutorVerificationInfo>), TutorProfileDto>()
-            
-            
-            .Map(des => des.RequestGettingClassDtos, src => src.Item2)
-            .Map(des => des.TutorMainInfoDto, src => src.Item1)
-            .Map(des => des.TutorMainInfoDto.Majors , src => src.Item3)
-            .Map(des => des.TutorMainInfoDto.TutorVerificationInfoDtos, src => src.Item4);
+        config.NewConfig<RequestGettingClass, RequestGettingClassForListDto>();
+        config.NewConfig<Tutor, TutorProfileDto>()
+            .Map(des => des.RequestGettingClassForListDtos, src => src.RequestGettingClasses)
+            .Map(des => des.TutorMainInfoDto.Majors , src => src.Subjects)
+            .Map(des => des.TutorMainInfoDto.TutorVerificationInfoDtos, src => src.TutorVerificationInfos)
+            .Map(des => des.TutorMainInfoDto, src => src);
     }
 }

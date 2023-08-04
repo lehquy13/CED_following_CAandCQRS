@@ -1,5 +1,6 @@
 ﻿using CED.Contracts.Common.Models;
 using System.ComponentModel.DataAnnotations;
+using CED.Contracts.Models;
 
 namespace CED.Contracts.Subjects;
 

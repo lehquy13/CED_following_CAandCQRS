@@ -1,7 +1,11 @@
 ﻿using CED.Application.Services.Abstractions.CommandHandlers;
+using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
+using FluentResults;
+using LazyCache;
 using MapsterMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.Users.Admin.Commands;
@@ -9,11 +13,14 @@ namespace CED.Application.Services.Users.Admin.Commands;
 public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<ConfirmTutorInfoCommand>
 {
     private readonly ITutorRepository _userRepository;
-    public ConfirmTutorInfoCommandHandler(ITutorRepository userRepository,ILogger<ConfirmTutorInfoCommandHandler> logger, IMapper mapper) : base(logger,mapper)
+
+    public ConfirmTutorInfoCommandHandler(ITutorRepository userRepository,
+        ILogger<ConfirmTutorInfoCommandHandler> logger, IMapper mapper, IUnitOfWork unitOfWork, IPublisher publisher,
+        IAppCache cache) : base(logger,mapper, unitOfWork, cache, publisher)
     {
         _userRepository = userRepository;
     }
-    public override async Task<bool> Handle(ConfirmTutorInfoCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(ConfirmTutorInfoCommand command, CancellationToken cancellationToken)
     {
         //Check if the user existed
         var user = await _userRepository.GetUserByEmail(command.TutorDto.Email);

@@ -5,44 +5,44 @@ namespace CED.Infrastructure.Persistence.Repository;
 
 public class AddressRepository : IAddressRepository
 {
-    private readonly CEDDBContext _ceddbContext; 
-    public AddressRepository(CEDDBContext cEDDBContext)
+    private readonly AppDbContext _appDbContext; 
+    public AddressRepository(AppDbContext cEDDBContext)
     {
-        _ceddbContext = cEDDBContext;
+        _appDbContext = cEDDBContext;
     }
     
 
     public List<City> GetCities()
     {
-        return _ceddbContext.Cities.ToList();
+        return _appDbContext.Cities.ToList();
     }
 
     public City? GetCity(string id)
     {
-        return _ceddbContext.Cities.FirstOrDefault(e => e.Id == id);
+        return _appDbContext.Cities.FirstOrDefault(e => e.Id == id);
     }
 
     public List<District> GetDistricts()
     {
-        return _ceddbContext.Districts.ToList();
+        return _appDbContext.Districts.ToList();
 
     }
 
     public District? GetDistrict(string id)
     {
-        return _ceddbContext.Districts.FirstOrDefault(e => e.Id == id);
+        return _appDbContext.Districts.FirstOrDefault(e => e.Id == id);
 
     }
 
     public List<Ward> GetWards()
     {
-        return _ceddbContext.Wards.ToList();
+        return _appDbContext.Wards.ToList();
 
     }
 
     public Ward? GetWard(string id)
     {
-        return _ceddbContext.Wards.FirstOrDefault(e => e.Id == id);
+        return _appDbContext.Wards.FirstOrDefault(e => e.Id == id);
 
     }
 }

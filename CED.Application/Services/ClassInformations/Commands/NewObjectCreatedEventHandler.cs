@@ -9,32 +9,36 @@ internal class NewObjectCreatedEventHandler : INotificationHandler<NewObjectCrea
 {
     private readonly IRepository<Notification> _notificationRepository;
     private readonly IAppLogger<NewObjectCreatedEventHandler> _logger;
-
-    public NewObjectCreatedEventHandler(IRepository<Notification> notificationRepository, IAppLogger<NewObjectCreatedEventHandler> logger)
+    private readonly IUnitOfWork _unitOfWork;
+    public NewObjectCreatedEventHandler(IRepository<Notification> notificationRepository, IAppLogger<NewObjectCreatedEventHandler> logger, IUnitOfWork unitOfWork)
     {
         _notificationRepository = notificationRepository;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(NewObjectCreatedEvent notification, CancellationToken cancellationToken)
     {
         _logger.LogDebug("Creating new notification...");
 
-        var entity = await _notificationRepository.Insert(new Notification()
+        var entityToCreate = new Notification()
         {
             Message = notification.Message,
             ObjectId = notification.ObjectId,
             NotificationType = notification.NotificationEnum,
             CreationTime = DateTime.Now,
             LastModificationTime = DateTime.Now,
-        });
-        if(entity != null)
+        };
+        
+        await _notificationRepository.Insert(entityToCreate);
+        
+        if( await _unitOfWork.SaveChangesAsync(cancellationToken) > 0)
         {
-            _logger.LogDebug("Created new notification...");
+            _logger.LogDebug("Created new notification");
         }
         else
         {
-            _logger.LogError("Error when creating notification");
+            _logger.LogError("Fail to add new notification");
         }
     }
 }

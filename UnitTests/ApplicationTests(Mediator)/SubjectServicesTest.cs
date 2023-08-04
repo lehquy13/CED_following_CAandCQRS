@@ -79,7 +79,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         [Test]
         public async Task GetSubjectById()
         {
-            var query = new GetObjectQuery<SubjectDto>() { Guid = _sampleId };
+            var query = new GetObjectQuery<SubjectDto>() { ObjectId = _sampleId };
             var handler = new GetSubjectQueryHandler(_mockSubjectRepo.Object, _mockMapper.Object);
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -110,7 +110,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         public async Task DeleteSubject()
         {
             var command = new DeleteSubjectCommand ( _sampleId );
-            var handler = new DeleteSubjectCommandHandler(_mockSubjectRepo.Object,_mockAppCache.Object);
+            var handler = new DeleteSubjectCommandHandler(_mockSubjectRepo.Object,_mockAppCache.Object, TODO, TODO);
             var result = await handler.Handle(command, CancellationToken.None);
 
             Assert.True(result);

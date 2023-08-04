@@ -1,5 +1,8 @@
 ﻿using CED.Domain.Common.Models;
+using CED.Domain.Review;
 using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Subjects;
+using CED.Domain.Users;
 
 namespace CED.Domain.ClassInformations;
 
@@ -21,13 +24,13 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
     //Student related information
     //public string StudentName { get; set; } = String.Empty;
     //public string StudentPhoneNumber { get; set; } = String.Empty;
+    
     public string LearnerName { get; set; } = string.Empty;
-
     public Gender LearnerGender { get; set; } = Gender.Male;
     public int NumberOfLearner { get; set; } = 1;
-    
     public string ContactNumber { get; set; } = string.Empty;
     public Guid? LearnerId { get; set; }
+    public User? Learner { get; set; }
 
 
     // Time related information
@@ -39,6 +42,11 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
 
     //Subject related information
     public Guid SubjectId { get; set; }
+    public Subject Subject { get; set; }
     public Guid? TutorId { get; set; }
+    public Tutor? Tutor { get; set; }
 
+    //Request of class
+    public List<RequestGettingClass> RequestGettingClasses { get; set; } = new();
+    public TutorReview TutorReviews { get; set; } = new();
 }

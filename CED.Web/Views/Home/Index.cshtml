@@ -18,7 +18,7 @@
 <section class="section dashboard">
     <div class="row">
 
-        <!-- Left side columns -->
+        <!-- Left sObjectIde columns -->
         <div class="col-lg-8">
             <div class="row">
                 <!-- Class Card -->
@@ -182,7 +182,7 @@
                                 document.addEventListener("DOMContentLoaded", () => {
                                     window.reportsChartStore = new ApexCharts(document.querySelector("#reportsChart"), {
                                         series: @Html.Raw(Model.ChartWeekData),
-                                        id: 'reportsChart1',
+                                        ObjectId: 'reportsChart1',
                                         chart: {
                                             height: 350,
                                             type: 'area',
@@ -208,7 +208,7 @@
                                         },
                                         stroke: {
                                             curve: 'smooth',
-                                            width: 2
+                                            wObjectIdth: 2
                                         },
                                         xaxis: @Html.Raw(@Model.DatesWeekData),
                                         tooltip: {
@@ -257,7 +257,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var classInfo in Model.ClassTotalValueModel.Models.Where(x => x.Status == Status.OnVerifying))
+                                    @foreach (var classInfo in Model.ClassTotalValueModel.Models.Where(x => x.CreationTime >= DateTime.Today))
                                     {
                                         @if (i > 4)
                                         {
@@ -342,7 +342,7 @@
                                         <th scope="col">Is Verified</th>
                                         <th scope="col">University</th>
                                         <th scope="col">Phone Number</th>
-                                        <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                                        <th data-sortable="false" scope="col" style="wObjectIdth:30%;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -377,8 +377,8 @@
                 </div><!-- End Top Selling -->
 
             </div>
-        </div><!-- End Left side columns -->
-        <!-- Right side columns -->
+        </div><!-- End Left sObjectIde columns -->
+        <!-- Right sObjectIde columns -->
         <div class="col-lg-4">
 
             <!-- Recent Activity -->
@@ -450,7 +450,7 @@
                             <div class="activite-label">4 weeks</div>
                             <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
                             <div class="activity-content">
-                                Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
+                                Dicta dolorem harum nulla eius. Ut quObjectIdem quObjectIdem sit quas
                             </div>
                         </div><!-- End activity item-->
 *@
@@ -599,7 +599,7 @@
             @* *@
             @*       <div class="post-item clearfix"> *@
             @*         <img src="assets/img/news-2.jpg" alt=""> *@
-            @*         <h4><a href="#">Quidem autem et impedit</a></h4> *@
+            @*         <h4><a href="#">QuObjectIdem autem et impedit</a></h4> *@
             @*         <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p> *@
             @*       </div> *@
             @* *@
@@ -618,15 +618,15 @@
             @*       <div class="post-item clearfix"> *@
             @*         <img src="assets/img/news-5.jpg" alt=""> *@
             @*         <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4> *@
-            @*         <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p> *@
+            @*         <p>Odit ut eveniet modi reiciendis. Atque cupObjectIditate libero beatae dignissimos eius...</p> *@
             @*       </div> *@
             @* *@
-            @*     </div><!-- End sidebar recent posts--> *@
+            @*     </div><!-- End sObjectIdebar recent posts--> *@
             @* *@
             @*   </div> *@
             @* </div><!-- End News & Updates --> *@
 
-        </div><!-- End Right side columns -->
+        </div><!-- End Right sObjectIde columns -->
 
     </div>
 </section>

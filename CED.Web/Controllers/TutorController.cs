@@ -1,5 +1,4 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.Users.Commands;
 using CED.Contracts.Users;
 using MapsterMapper;
 using MediatR;
@@ -55,7 +54,7 @@ public class TutorController : Controller
         PackStaticListToView();
         var query = new GetObjectQuery<TutorDto>
         {
-            Guid = Id
+            ObjectId = Id
         };
         var result = await _mediator.Send(query);
 
@@ -143,7 +142,7 @@ public class TutorController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<TutorDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result == null)
@@ -184,7 +183,7 @@ public class TutorController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorDto>() { Guid = (Guid)id };
+        var query = new GetObjectQuery<TutorDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
         if (result is not null)
@@ -201,7 +200,7 @@ public class TutorController : Controller
     {
         var query = new GetObjectQuery<PaginatedList<SubjectDto>>()
         {
-            Guid = new Guid(id)
+            ObjectId = new Guid(id)
         };
         var subjectDtos = await _mediator.Send(query);
         return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);

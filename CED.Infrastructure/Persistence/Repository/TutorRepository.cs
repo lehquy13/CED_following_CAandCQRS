@@ -1,4 +1,6 @@
-﻿using CED.Domain.Users;
+﻿using CED.Domain.Review;
+using CED.Domain.Shared.ClassInformationConsts;
+using CED.Domain.Users;
 using CED.Infrastructure.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,23 +8,32 @@ namespace CED.Infrastructure.Persistence.Repository;
 
 public class TutorRepository : Repository<Tutor>, ITutorRepository
 {
-    public TutorRepository(CEDDBContext cEDDBContext) : base(cEDDBContext)
+    public TutorRepository(AppDbContext appDbContext) : base(appDbContext)
     {
     }
 
+    public override Task<Tutor?> GetById(Guid id)
+    {
+        try
+        {
+            return _appDbContext.Tutors
+                .Where( o => o.Id == id && o.IsDeleted == false)
+                .Include(x => x.Subjects)
+                .Include(x => x.TutorVerificationInfos)
+                .Include(x => x.RequestGettingClasses)
+                .FirstOrDefaultAsync();
+        }
+        catch(Exception ex) { 
+            throw new Exception(ex.Message);
+        }
+    }
 
-   
 
     public async Task<Tutor?> GetUserByEmail(string email)
     {
         try
         {
-            var user = await Context.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
-            
-            if (user == null) { return null; }
-            var tutor = await Context.Set<Tutor>().FirstOrDefaultAsync(o => o.Id.Equals(user.Id));
-
-            return tutor;
+            return await _appDbContext.Set<Tutor>().FirstOrDefaultAsync(o => o.Email == email);
         }
         catch(Exception ex) { 
             throw new Exception(ex.Message);
@@ -33,10 +44,10 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
     {
         try
         {
-            var user = await Context.Set<User>()
+            var user = await _appDbContext.Set<User>()
                 .Where(x => x.IsDeleted == false)
                 .Join(
-                    Context.Set<Tutor>(),
+                    _appDbContext.Set<Tutor>(),
                     u => u.Id,
                     tu => tu.Id,
                     (u,tu) => 
@@ -47,6 +58,18 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
         catch(Exception ex) { 
             throw new Exception(ex.Message);
         }
+    }
+
+   
+    public async Task<List<TutorReview>> GetReviewsOfTutor(Guid tutorId)
+    {
+        var result = await _appDbContext.ClassInformations
+            .Where(x => x.TutorId == tutorId && x.Status == Status.Confirmed && x.IsDeleted == false)
+            .Include(x => x.TutorReviews)
+            .Select(x => x.TutorReviews)
+            .OrderByDescending(x => x.CreationTime)
+            .ToListAsync();
+        return result;
     }
 }
 

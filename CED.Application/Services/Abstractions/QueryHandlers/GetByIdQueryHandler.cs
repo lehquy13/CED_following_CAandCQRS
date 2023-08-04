@@ -6,8 +6,8 @@ using MediatR;
 namespace CED.Application.Services.Abstractions.QueryHandlers;
 
 public abstract class GetByIdQueryHandler<TQuery, TDto>
-    : IRequestHandler<TQuery, TDto?>
-    where TQuery : IRequest<TDto?>
+    : IRequestHandler<TQuery, Result<TDto>>
+    where TQuery : IRequest<Result<TDto>>
 {
     protected readonly IMapper _mapper;
 
@@ -16,7 +16,7 @@ public abstract class GetByIdQueryHandler<TQuery, TDto>
         _mapper = mapper;
     }
 
-    public abstract Task<TDto?> Handle(TQuery request, CancellationToken cancellationToken);
+    public abstract Task<Result<TDto>> Handle(TQuery request, CancellationToken cancellationToken);
 
 }
 

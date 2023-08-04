@@ -1,8 +1,11 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 using CED.Application.Services.ClassInformations.Tutor.Queries;
+using CED.Application.Services.ClassInformations.Tutor.Queries.GetAllRequestGettingClassOfTutor;
+using CED.Application.Services.ClassInformations.Tutor.Queries.GetTeachingClassDetailQuery;
 using CED.Application.Services.Users.Admin.Commands;
 using CED.Application.Services.Users.Queries;
+using CED.Application.Services.Users.Queries.GetTutorProfile;
 using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
 using CED.Contracts;
@@ -60,7 +63,7 @@ public class ProfileController : Controller
 
             var query = new GetObjectQuery<LearnerDto>()
             {
-                Guid = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
+                ObjectId = new Guid(identity.Claims.FirstOrDefault()?.Value ?? "")
             };
 
             var loginResult = await _mediator.Send(query);
@@ -80,7 +83,7 @@ public class ProfileController : Controller
 
                     var query1 = new GetTutorProfileQuery()
                     {
-                        Guid = loginResult.Id
+                        ObjectId = loginResult.Id
                     };
                     var loginResult1 = await _mediator.Send(query1);
 
@@ -164,13 +167,13 @@ public class ProfileController : Controller
                 {
                     HttpContext.Response.Cookies.Append("name", userDto.FirstName + userDto.LastName);
                     HttpContext.Response.Cookies.Append("image", userDto.Image);
-                    var query1 = new GetTeachingClassInformationsOfTutorQuery()
+                    var query1 = new GetAllRequestGettingClassOfTutorQuery()
                     {
-                        Guid = userDto.Id
+                        ObjectId = userDto.Id
                     };
                     var loginResult1 = await _mediator.Send(query1);
 
-                    viewModelResult.RequestGettingClassDtos = loginResult1;
+                    viewModelResult.RequestGettingClassDtos = loginResult1.Value;
                 }
               
                 
@@ -275,12 +278,13 @@ public class ProfileController : Controller
         return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordRequest, true);
     }
     [HttpGet]
-    [Route("{id}")]
-    public async Task<IActionResult> TeachingClassDetail(Guid id)
+    [Route("{ObjectId}")]
+    public async Task<IActionResult> TeachingClassDetail(Guid requestId , Guid classId)
     {
-        var query = new GetObjectQuery<Result<RequestGettingClassExtendDto>>
+        var query = new GetTeachingClassDetailQuery
         {
-            Guid = id
+            ObjectId = requestId,
+            ClassInformationId = classId
         };
         var classInformation = await _mediator.Send(query);
         if (classInformation.IsSuccess)
@@ -300,7 +304,7 @@ public class ProfileController : Controller
     {
         var query = new GetObjectQuery<ClassInformationDto>()
         {
-            Guid = id
+            ObjectId = id
         };
         var classInformation = await _mediator.Send(query);
         if (classInformation != null)

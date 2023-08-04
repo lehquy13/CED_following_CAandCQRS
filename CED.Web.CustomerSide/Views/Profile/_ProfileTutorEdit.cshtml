@@ -23,7 +23,7 @@
                 
                 @foreach (var i in Model.TutorVerificationInfoDtos)
                 {
-                    <img src="@i.Image"style="max-width: 120px;" alt="Profile" id="avatar">
+                    <img src="@i.Image"style="max-wObjectIdth: 120px;" alt="Profile" id="avatar">
                     <input id="image" asp-for="@i.Image" hidden type="text"/>
                     
 
@@ -34,7 +34,7 @@
                     <div class="pt-2">
 
                         <input type="file" id="file" name="files" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Profile", null)','file'); return false;"/>
-                        @* style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','files'); return false;"/> *@
+                        @* style="visibility: hObjectIdden; wObjectIdth: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','files'); return false;"/> *@
                         @* <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image"> *@
                         @*     <i class="bi bi-upload"></i> *@
                         @* </a> *@
@@ -105,7 +105,7 @@
                 <div class="list-group">
                     @foreach (var s in Model.Majors)
                     {
-                        <input name="SubjectId" value="@s.Id" hidden="hidden"/>
+                        <input name="SubjectId" value="@s.Id" hidden="hObjectIdden"/>
                         <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">@s.Name</h5>

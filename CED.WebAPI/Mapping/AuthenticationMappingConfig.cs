@@ -1,6 +1,6 @@
-﻿using CED.Application.Services.Authentication.Admin.Queries.ValidateToken;
-using CED.Application.Services.Authentication.Customer.Commands.Register;
+﻿using CED.Application.Services.Authentication.Customer.Commands.Register;
 using CED.Application.Services.Authentication.Customer.Queries.Login;
+using CED.Application.Services.Authentication.ValidateToken;
 using CED.Contracts.Authentication;
 using Mapster;
 

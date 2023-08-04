@@ -43,7 +43,7 @@ var app = builder.Build();
         var services = scope.ServiceProvider;
         try
         {
-            var context = services.GetRequiredService<CEDDBContext>();
+            var context = services.GetRequiredService<AppDbContext>();
             DbInitializer.Initialize(context);
         }
         catch (Exception ex)

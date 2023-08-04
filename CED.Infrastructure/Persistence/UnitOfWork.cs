@@ -7,8 +7,8 @@ namespace CED.Infrastructure.Persistence;
 internal sealed class UnitOfWork : IUnitOfWork
 {
     private readonly ILogger<UnitOfWork> _logger;
-    private readonly CEDDBContext _ceddbContext;
-    public UnitOfWork(ILogger<UnitOfWork> logger,CEDDBContext ceddbContext )
+    private readonly AppDbContext _ceddbContext;
+    public UnitOfWork(ILogger<UnitOfWork> logger,AppDbContext ceddbContext )
     {
         _logger = logger;
         _ceddbContext = ceddbContext;

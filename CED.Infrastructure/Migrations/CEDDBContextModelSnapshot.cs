@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CED.Infrastructure.Migrations
 {
-    [DbContext(typeof(CEDDBContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class CEDDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -366,7 +366,7 @@ namespace CED.Infrastructure.Migrations
                     b.ToTable("Tutor", (string)null);
                 });
 
-            modelBuilder.Entity("CED.Domain.Users.TutorVerificationInfo", b =>
+            modelBuilder.Entity("CED.Domain.Users.TutorVerificationInfos", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -383,7 +383,7 @@ namespace CED.Infrastructure.Migrations
 
                     b.HasIndex("TutorId");
 
-                    b.ToTable("TutorVerificationInfo", (string)null);
+                    b.ToTable("TutorVerificationInfos", (string)null);
                 });
 
             modelBuilder.Entity("CED.Domain.Users.User", b =>
@@ -573,7 +573,7 @@ namespace CED.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CED.Domain.Users.TutorVerificationInfo", b =>
+            modelBuilder.Entity("CED.Domain.Users.TutorVerificationInfos", b =>
                 {
                     b.HasOne("CED.Domain.Users.Tutor", null)
                         .WithMany()

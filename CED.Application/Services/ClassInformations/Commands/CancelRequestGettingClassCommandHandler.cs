@@ -1,31 +1,45 @@
+using CED.Application.Services.Abstractions.CommandHandlers;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
+using FluentResults;
+using LazyCache;
 using MapsterMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace CED.Application.Services.ClassInformations.Commands;
 
-public class CancelRequestGettingClassCommandHandler : IRequestHandler<CancelRequestGettingClassCommand, bool>
+public class CancelRequestGettingClassCommandHandler : CreateUpdateCommandHandler<CancelRequestGettingClassCommand>
 {
-    private readonly IMapper _mapper ;
-    private readonly IRepository<RequestGettingClass> _requestGettingClassRepositoryepository;
+    private readonly IRepository<RequestGettingClass> _requestGettingClassRepository;
 
     public CancelRequestGettingClassCommandHandler(
-        IRepository<RequestGettingClass> requestGettingClassRepositoryepository,
-        IMapper mapper)
+        ILogger<CancelRequestGettingClassCommandHandler> logger,
+        IUnitOfWork unitOfWork,
+        IPublisher publisher,
+        IAppCache cache,
+        IMapper mapper,
+        IRepository<RequestGettingClass> requestGettingClassRepository
+    ) : base(logger, mapper,unitOfWork, cache,publisher)
     {
-        _requestGettingClassRepositoryepository = requestGettingClassRepositoryepository;
-        _mapper = mapper;
+        _requestGettingClassRepository = requestGettingClassRepository;
     }
 
-    public async Task<bool> Handle(CancelRequestGettingClassCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(CancelRequestGettingClassCommand command,
+        CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
-        var request = _mapper.Map<RequestGettingClass>(command.RequestGettingClassMinimalDto);
-        var update = _requestGettingClassRepositoryepository.Update(request);
-        if (update != null) return true;
+        var requestGettingClassFromDb = await _requestGettingClassRepository.GetById(command.RequestGettingClassMinimalDto.Id);
+        if (requestGettingClassFromDb is not null)
+        {
+            requestGettingClassFromDb = _mapper.Map<RequestGettingClass>(command.RequestGettingClassMinimalDto);
+        }
+
+        if (await _unitOfWork.SaveChangesAsync(cancellationToken) > 0)
+        {
+            return true;
+        }
+        
         return false;
     }
 }
-
-    
