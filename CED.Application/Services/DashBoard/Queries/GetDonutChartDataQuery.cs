@@ -1,9 +1,9 @@
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Charts;
-using MediatR;
 
 namespace CED.Application.Services.DashBoard.Queries;
 
-public record GetDonutChartDataQuery
-(
-    string ByTime = ""
-): IRequest<DonutChartData>;
+public class GetDonutChartDataQuery : GetObjectQuery<DonutChartData>
+{
+    public string ByTime { get; set; } = "";
+}

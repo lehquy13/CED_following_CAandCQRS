@@ -51,7 +51,7 @@ public class ClassInformationController : ControllerBase
     [Route("GetClassInformation/{ObjectId}")]
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
-        var query = new GetObjectQuery<ClassInformationDto>();
+        var query = new GetObjectQuery<ClassInformationForDetailDto>();
         var classInformation = await _mediator.Send(query);
 
         return Ok(classInformation);

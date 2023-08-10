@@ -69,7 +69,7 @@ public class CreateUpdateUserCommandHandler : CreateUpdateCommandHandler<CreateU
         catch (Exception ex)
         {
             //throw new Exception("Error happens when user is adding or updating." + ex.Message);
-            return Result.Fail("Error happens when user is adding or updating.");
+            return Result.Fail("Error happens when user is adding or updating" + ex.Message);
 
         }
     }

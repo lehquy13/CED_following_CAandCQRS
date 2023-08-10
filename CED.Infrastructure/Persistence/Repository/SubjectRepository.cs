@@ -26,10 +26,9 @@ public class SubjectRepository : Repository<Subject>, ISubjectRepository
     {
         try
         {
-            return await _appDbContext.Set<TutorMajor>()
-                .Where(x => x.TutorId == tutorId)
-                .Include(x => x.Subject)
-                .Select(x => x.Subject)
+            return await _appDbContext.Tutors.Where(x => x.Id == tutorId)
+                .Include(x => x.Subjects)
+                .SelectMany(x => x.Subjects)
                 .ToListAsync();
         }
         catch (Exception ex)

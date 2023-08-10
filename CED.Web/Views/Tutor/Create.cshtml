@@ -1,5 +1,5 @@
 ﻿@using CED.Domain.Shared
-@model CED.Contracts.Users.TutorDto
+@model CED.Contracts.Users.Tutors.TutorForDetailDto
 
 @{
     ViewData["Title"] = "Create";
@@ -106,7 +106,7 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
             </div>
-            @* <div class="col-md-6" hObjectIdden> *@
+            @* <div class="col-md-6" hObjectidden> *@
             @*     <label asp-for="Password" class="form-label">Password</label> *@
             @*     <input type="password" asp-for="Password" class="form-control"> *@
             @*     <!--<input type="password" asp-for="Password" value="1q2w3E*" class="form-control">--> *@
@@ -189,7 +189,7 @@
                         <div class="list-group">
                             @foreach (var s in Model.Majors)
                             {
-                                <input name="SubjectId" value="@s.Id" hidden="hObjectIdden" />
+                                <input name="Subjectid" value="@s.Id" hidden="hObjectidden" />
                                 <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">@s.Name</h5>
@@ -210,7 +210,7 @@
 
 
 
-            <!-- ----------------------------------- hObjectIdden info -->
+            <!-- ----------------------------------- hObjectidden info -->
 
             <div class="form-group" hidden>
                 <label asp-for="DeleterUserId" class="control-label"></label>

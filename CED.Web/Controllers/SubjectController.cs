@@ -36,7 +36,7 @@ public class SubjectController : Controller
         var query = new GetObjectQuery<PaginatedList<SubjectDto>>();
         var subjectDtos = await _mediator.Send(query);
 
-        return View(subjectDtos);
+        return View(subjectDtos.Value);
     }
     [HttpGet]
     [Route("{ObjectId}")]
@@ -50,27 +50,27 @@ public class SubjectController : Controller
         };
         var subjectDtos = await _mediator.Send(query);
 
-        return View(subjectDtos);
+        return View(subjectDtos.Value);
     }
 
     [HttpGet("Edit")]
-    public async Task<IActionResult> Edit(Guid Id)
+    public async Task<IActionResult> Edit(Guid id)
     {
        
         var query = new GetObjectQuery<SubjectDto>()
         {
-            ObjectId = Id
+            ObjectId = id
         };
         var result = await _mediator.Send(query);
 
-        return View(result);
+        return View(result.Value);
     }
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, SubjectDto subjectDto)
+    public async Task<IActionResult> Edit(Guid id, SubjectDto subjectDto)
     {
-        if (Id != subjectDto.Id)
+        if (id != subjectDto.Id)
         {
             return NotFound();
         }
@@ -84,7 +84,7 @@ public class SubjectController : Controller
                 };
                 var result = await _mediator.Send(query);
                 ViewBag.Updated = true;
-                if (result)
+                if (result.IsSuccess)
                 {
                     return Helper.RenderRazorViewToString(this,"Edit",subjectDto);
                 }
@@ -130,7 +130,7 @@ public class SubjectController : Controller
         var query = new GetObjectQuery<SubjectDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result == null)
+        if (result.IsFailed)
         {
             return NotFound();
         }
@@ -153,7 +153,7 @@ public class SubjectController : Controller
         var query = new DeleteSubjectCommand((Guid)id);
         var result = await _mediator.Send(query);
 
-        if (result is true)
+        if (result.IsSuccess)
         {
             return Json(new { res = "deleted" }) ;
 
@@ -173,9 +173,9 @@ public class SubjectController : Controller
 
         var result = await _mediator.Send(query);
 
-        if (result is not null)
+        if (result.IsSuccess)
         {
-            return View(result);
+            return View(result.Value);
 
         }
         return RedirectToAction("Error", "Home");

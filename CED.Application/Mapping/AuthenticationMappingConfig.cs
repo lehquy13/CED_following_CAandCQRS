@@ -1,6 +1,4 @@
-﻿using CED.Application.Services.Authentication.Commands.ChangePassword;
-using CED.Application.Services.Authentication.Commands.Register;
-using CED.Application.Services.Authentication.Queries.Login;
+﻿using CED.Application.Services.Authentication.Commands.Register;
 using CED.Contracts.Authentication;
 using CED.Contracts.Users;
 using CED.Domain.Users;

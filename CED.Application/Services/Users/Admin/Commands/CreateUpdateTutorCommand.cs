@@ -1,4 +1,4 @@
-﻿using CED.Contracts.Users;
+﻿using CED.Contracts.Users.Tutors;
 using FluentResults;
 using MediatR;
 
@@ -6,6 +6,6 @@ namespace CED.Application.Services.Users.Admin.Commands;
 
 public record CreateUpdateTutorCommand
 (
-    TutorDto TutorDto,
+    TutorForDetailDto TutorForDetailDto,
     List<Guid> SubjectIds
 ) : IRequest<Result<bool>>;

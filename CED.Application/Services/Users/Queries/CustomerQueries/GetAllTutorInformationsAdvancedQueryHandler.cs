@@ -1,11 +1,12 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts;
 using CED.Contracts.Subjects;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using FluentResults;
 using Mapster;
 using MapsterMapper;
 
@@ -14,7 +15,7 @@ namespace CED.Application.Services.Users.Queries.CustomerQueries;
 /// Todo: Upgrade this query
 /// </summary>
 public class
-    GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<GetAllTutorInformationsAdvancedQuery, TutorDto>
+    GetAllTutorInformationsAdvancedQueryHandler : GetAllQueryHandler<GetAllTutorInformationsAdvancedQuery, TutorForListDto>
 {
     private readonly ISubjectRepository _subjectRepository;
     private readonly ITutorRepository _tutorRepository;
@@ -34,16 +35,14 @@ public class
         _userepository = userepository;
     }
 
-    public override async Task<PaginatedList<TutorDto>> Handle(GetAllTutorInformationsAdvancedQuery query,
+    public override async Task<Result<PaginatedList<TutorForListDto>>> Handle(GetAllTutorInformationsAdvancedQuery query,
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try
         {
             var subjects = await _subjectRepository.GetAllList();
-            var tutors = _tutorRepository.GetAll().AsEnumerable();
-            var tutorAsUser = _userepository.GetTutors().AsEnumerable();
-
+            var tutors =  _tutorRepository.GetAll();
 
             if (query.Academic != AcademicLevel.Optional)
             {
@@ -52,51 +51,33 @@ public class
 
             if (!string.IsNullOrEmpty(query.Address))
             {
-                tutorAsUser = tutorAsUser.Where(user => user.Address.Contains(query.Address));
+                tutors = tutors.Where(user => user.Address.Contains(query.Address));
             }
 
             if (query.Gender != Gender.None)
             {
-                tutorAsUser = tutorAsUser.Where(user => user.Gender == query.Gender);
+                tutors = tutors.Where(user => user.Gender == query.Gender);
             }
 
             if (query.BirthYear != 0)
             {
-                tutorAsUser = tutorAsUser.Where(user => user.BirthYear == query.BirthYear);
+                tutors = tutors.Where(user => user.BirthYear == query.BirthYear);
             }
-            tutors = tutors.ToList();
-
-            var tutorsMajors = await _tutorMajorRepository.GetAllList();
-
             if (!string.IsNullOrEmpty(query.SubjectName))
             {
-                var newsubjects = subjects.Where(s => s.Name.ToLower().Contains(query.SubjectName.ToLower()));
                
-                tutorsMajors = tutorsMajors.Where(x =>  newsubjects.Select(ns => ns.Id).Contains(x.SubjectId)).ToList();
-                tutors = tutors.Where(x =>  tutorsMajors.Select(tM => tM.TutorId).Contains(x.Id));
+                tutors = tutors.Where(x => x.Subjects.Any(y => y.Name.Contains(query.SubjectName)));
                 
             }
-
-            var mergeList = tutors.Join(
-                tutorAsUser,
-                tutor => tutor.Id,
-                user => user.Id,
-                (tutor, user) => (user,tutor).Adapt<TutorDto>()
-            );
-       
+            var tutorFromDb = tutors.ToList();
+            var mergeList = _mapper.Map<List<TutorForListDto>>(tutorFromDb);
            
-            var totalPages = tutors.Count();
-            
+            var totalPages = tutorFromDb.Count;
 
-            var result = _mapper.Map<List<TutorDto>>(
-                mergeList.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize)
-                    .ToList()
-            );
+            var result =
+                PaginatedList<TutorForListDto>.CreateAsync(mergeList, query.PageIndex, query.PageSize, totalPages);
 
-            var result1 =
-                PaginatedList<TutorDto>.CreateAsync(result, query.PageIndex, query.PageSize, totalPages);
-
-            return result1;
+            return result;
         }
         catch (Exception ex)
         {

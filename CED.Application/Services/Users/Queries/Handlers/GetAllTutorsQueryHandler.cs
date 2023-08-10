@@ -1,6 +1,6 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Subjects;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.Repository;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
@@ -10,7 +10,7 @@ namespace CED.Application.Services.Users.Queries.Handlers;
 /// <summary>
 /// Deprecated! Use GetAllTutorInformationsAdvancedQuery instead!
 /// </summary>
-public class GetAllTutorsQueryHandler //: GetAllQueryHandler<GetObjectQuery<List<TutorDto>>, TutorDto>
+public class GetAllTutorsQueryHandler //: GetAllQueryHandler<GetObjectQuery<List<TutorForDetailDto>>, TutorForDetailDto>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRepository<TutorMajor> _tutorMajorRepository;
@@ -28,7 +28,7 @@ public class GetAllTutorsQueryHandler //: GetAllQueryHandler<GetObjectQuery<List
 
     }
 
-    public  async Task<List<TutorDto>> Handle(GetObjectQuery<List<TutorDto>> query,
+    public  async Task<List<TutorForDetailDto>> Handle(GetObjectQuery<List<TutorForDetailDto>> query,
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;

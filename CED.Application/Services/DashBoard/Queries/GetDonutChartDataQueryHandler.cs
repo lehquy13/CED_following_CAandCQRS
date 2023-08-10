@@ -3,6 +3,7 @@ using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Charts;
 using CED.Domain.ClassInformations;
 using CED.Domain.Shared.ClassInformationConsts;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.DashBoard.Queries;
@@ -15,7 +16,7 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
         _classInformationRepository = classInformationRepository;
     }
 
-    public override async Task<DonutChartData?> Handle(GetDonutChartDataQuery query,
+    public override async Task<Result<DonutChartData>> Handle(GetDonutChartDataQuery query,
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
@@ -32,10 +33,8 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
                 break;
         }
 
-     
-
         var classInforsPie = _classInformationRepository.GetAll()
-            .Where(x => x.LastModificationTime >= startDay)
+            .Where(x => x.IsDeleted == false && x.LastModificationTime >= startDay)
             .GroupBy(x => x.Status)
             .Select((x) => new { key = x.Key.ToString(), count = x.Count()})
             .ToList();
@@ -55,7 +54,6 @@ public class GetDonutChartDataQueryHandler : GetByIdQueryHandler<GetDonutChartDa
         {
             resultStrings.Add("None");
         }
-
 
         return new DonutChartData(resultInts, resultStrings);
     }

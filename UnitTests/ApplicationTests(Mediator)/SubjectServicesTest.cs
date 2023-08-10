@@ -7,6 +7,7 @@ using CED.Domain.Repository;
 using CED.Domain.Subjects;
 using LazyCache;
 using MapsterMapper;
+using MediatR;
 using Moq;
 
 namespace UnitTests.ApplicationTests_Mediator_
@@ -17,6 +18,8 @@ namespace UnitTests.ApplicationTests_Mediator_
         private readonly Mock<IRepository<TutorMajor>> _mockTutorMajorRepo = new();
         private readonly Mock<IMapper> _mockMapper = new();
         private readonly Mock<IAppCache> _mockAppCache = new();
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork = new();
+        private readonly Mock<IPublisher> _publisherMock = new();
 
         private readonly Guid _sampleId = Guid.NewGuid();
         private readonly Guid _sampleId2 = Guid.NewGuid();
@@ -110,10 +113,11 @@ namespace UnitTests.ApplicationTests_Mediator_
         public async Task DeleteSubject()
         {
             var command = new DeleteSubjectCommand ( _sampleId );
-            var handler = new DeleteSubjectCommandHandler(_mockSubjectRepo.Object,_mockAppCache.Object, TODO, TODO);
+            var handler = new DeleteSubjectCommandHandler(_mockSubjectRepo.Object, _mockAppCache.Object,
+                _mockUnitOfWork.Object, _publisherMock.Object);
             var result = await handler.Handle(command, CancellationToken.None);
 
-            Assert.True(result);
+            Assert.True(result.IsSuccess);
         }
     }
 }

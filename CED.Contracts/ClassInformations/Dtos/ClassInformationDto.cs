@@ -1,5 +1,6 @@
 ﻿using CED.Contracts.Models;
 using CED.Contracts.Subjects;
+using CED.Contracts.TutorReview;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations.Dtos;
@@ -42,8 +43,9 @@ public class ClassInformationDto : FullAuditedAggregateRootDto<Guid>
     public Guid SubjectId { get; set; }
     public SubjectDto Subject { get; set; }
     public Guid? TutorId { get; set; }
+    public TutorReviewDto? TutorReviewDto { get; set; }
 
     //Request of class
-    public List<RequestGettingClassDto> RequestGettingClasses { get; set; } = new List<RequestGettingClassDto>();
+    public List<RequestGettingClassDto> RequestGettingClasses { get; set; } = new();
 }
 

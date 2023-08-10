@@ -67,7 +67,9 @@ public class ClassInformationController : Controller
             ViewBag.SubjectSearch = subjectName;
         }
 
-        return View(classInformations);
+        if (classInformations.IsSuccess)
+            return View(classInformations.Value);
+        return RedirectToAction("Error", "Home");
     }
 
     // GET api/<ClassInformationController>/5
@@ -75,11 +77,12 @@ public class ClassInformationController : Controller
     [Route("{ObjectId}")]
     public async Task<IActionResult> Detail(Guid id)
     {
-        if (id.Equals( Guid.Empty))
+        if (id.Equals(Guid.Empty))
         {
             return NotFound();
         }
-        var query = new GetObjectQuery<ClassInformationDto>()
+
+        var query = new GetObjectQuery<ClassInformationForDetailDto>()
         {
             ObjectId = id
         };
@@ -88,16 +91,16 @@ public class ClassInformationController : Controller
         {
             PageSize = _pageSize,
             PageIndex = 1,
-            SubjectName = classInformation.SubjectName
+            SubjectName = classInformation.Value.Subject.Name
         };
         var classInformations = await _mediator.Send(query1);
-        
+
         return View(
             new ClassInformationDetailViewModel()
-        {
-            ClassInformationDto = classInformation,
-            RelatedClasses = classInformations
-        });
+            {
+                ClassInformationDto = classInformation.Value,
+                RelatedClasses = classInformations.Value
+            });
     }
 
     [HttpGet("Create")]
@@ -113,7 +116,7 @@ public class ClassInformationController : Controller
                 Email = email
             };
             var result = await _mediator.Send(query);
-            if (result != null)
+            if (result.IsSuccess)
                 return View(_mapper.Map<CreateClassInformationByCustomer>(result));
         }
         //await PackStudentAndTuTorList();
@@ -134,7 +137,7 @@ public class ClassInformationController : Controller
         command.Email = HttpContext.Session.GetString("email") ?? "";
         var result = await _mediator.Send(command);
 
-        return RedirectToAction("SuccessPage","Home"); //implement
+        return RedirectToAction("SuccessPage", "Home"); //implement
     }
 
 
@@ -152,7 +155,6 @@ public class ClassInformationController : Controller
         return Ok(result);
     }
 
- 
 
     [HttpPost]
     [Route("RequestGettingClass")]
@@ -164,9 +166,9 @@ public class ClassInformationController : Controller
         {
             string? returnUrl = Url.Action("RequestGettingClass");
             HttpContext.Session.SetString("Value", requestGettingClassRequest.ClassId.ToString());
-            return RedirectToAction("Index", "Authentication",new{returnUrl = returnUrl});
+            return RedirectToAction("Index", "Authentication", new { returnUrl = returnUrl });
         }
-      
+
 
         requestGettingClassRequest.Email = email;
         var command = _mapper.Map<RequestGettingClassCommand>(requestGettingClassRequest);
@@ -176,11 +178,7 @@ public class ClassInformationController : Controller
             ViewBag.RequestedMessage = result.Reasons.FirstOrDefault()?.Message ?? "";
             return RedirectToAction("FailPage", "Home");
         }
+
         return RedirectToAction("SuccessRequestPage", "Home");
-
-
-
     }
-
-    
 }

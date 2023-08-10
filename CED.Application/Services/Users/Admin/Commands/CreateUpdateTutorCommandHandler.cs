@@ -37,7 +37,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
         try
         {
             
-            var tutor = await _tutorRepository.GetUserByEmail(command.TutorDto.Email);
+            var tutor = await _tutorRepository.GetUserByEmail(command.TutorForDetailDto.Email);
             
             //Collect major ids
             var newMajorUpdateList = command.SubjectIds.DistinctBy(x => x).ToList();
@@ -72,7 +72,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
 
                 
                 
-                tutor.VerifyTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
+                tutor.VerifyTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorForDetailDto));
                 
                 if (await _unitOfWork.SaveChangesAsync() <= 0)
                 {
@@ -83,7 +83,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
             
             //Create new tutor
             _logger.LogDebug("ready for creating!");
-            var entityToCreate = await _tutorRepository.Insert(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
+            var entityToCreate = await _tutorRepository.Insert(_mapper.Map<Domain.Users.Tutor>(command.TutorForDetailDto));
             
             // add new majors to tutor
             foreach (var newMu in newMajorUpdateList)
@@ -105,7 +105,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
         }
         catch (Exception ex)
         {
-            return Result.Fail("Error happens when tutor is adding or updating.");
+            return Result.Fail("Error happens when tutor is adding or updating: " + ex.Message);
         }
         
     }

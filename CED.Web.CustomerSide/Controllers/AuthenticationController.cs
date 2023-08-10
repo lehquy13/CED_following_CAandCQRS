@@ -1,4 +1,5 @@
 ﻿using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
+using CED.Application.Services.Authentication.Admin.Commands.ForgotPassword;
 using CED.Application.Services.Authentication.Admin.Commands.Register;
 using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.Customer.Commands.ChangePassword;

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.ClassInformations.Queries;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
 using CED.Application.Services.DashBoard.Queries;
 using CED.Application.Services.Users.Queries.CustomerQueries;
@@ -16,7 +14,8 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
-using CED.Contracts.Notifications;
+using CED.Contracts.Users.Tutors;
+using System.Diagnostics;
 
 namespace CED.Web.Controllers;
 
@@ -45,62 +44,62 @@ public class HomeController : Controller
         _logger.LogDebug("Got classDtos, tutorDtos, studentDtos!");
 
         var date = GetByTime(DateTime.Now, ByTime.Month);
-        var thisMonthClassInformationDtoCount = classDtos.Where(x => x.CreationTime >= date).Count();
-        var thisMonthTutorDtoCount = tutorDtos.Where(x => x.CreationTime >= date).Count();
-        var thisMonthStudentDtoCount = studentDtos.Where(x => x.CreationTime >= date).Count();
+        var thisMonthClassInformationDtoCount = classDtos.Value.Count(x => x.CreationTime >= date);
+        var thisMonthTutorDtoCount = tutorDtos.Value.Count(x => x.CreationTime >= date);
+        var thisMonthStudentDtoCount = studentDtos.Value.Count(x => x.CreationTime >= date);
 
         date = GetByTime(date, ByTime.Month);
-        var lastMonthClassInformationDtoCount = classDtos.Where(x => x.CreationTime >= date).Count();
-        var lastMonthresultTutorDtoCount = tutorDtos.Where(x => x.CreationTime >= date).Count();
-        var lastMonthStudentDtoCount = studentDtos.Where(x => x.CreationTime >= date).Count();
+        var lastMonthClassInformationDtoCount = classDtos.Value.Count(x => x.CreationTime >= date);
+        var lastMonthResultTutorDtoCount = tutorDtos.Value  .Count(x => x.CreationTime >= date);
+        var lastMonthStudentDtoCount = studentDtos.Value.Count(x => x.CreationTime >= date);
 
 
         _logger.LogDebug("On getting lineChartData, donutChartData...");
-        LineChartData lineChartData = await _sender.Send(new GetLineChartDataQuery(""));
-        DonutChartData donutChartData = await _sender.Send(new GetDonutChartDataQuery(""));
+        var lineChartData = await _sender.Send(new GetLineChartDataQuery());
+        var donutChartData = await _sender.Send(new GetDonutChartDataQuery());
         var datesWeekData = new ChartDataType(
             "string",
-            lineChartData.dates
+            lineChartData.Value.dates
         );
         _logger.LogDebug("Got lineChartData, donutChartData!");
 
-        var chartWeekData = JsonConvert.SerializeObject(lineChartData.LineDatas);
-        var pieWeekDataNames = JsonConvert.SerializeObject(donutChartData.names);
-        var pieWeekDataValues = JsonConvert.SerializeObject(donutChartData.values);
+        var chartWeekData = JsonConvert.SerializeObject(lineChartData.Value.LineDatas);
+        var pieWeekDataNames = JsonConvert.SerializeObject(donutChartData.Value.names);
+        var pieWeekDataValues = JsonConvert.SerializeObject(donutChartData.Value.values);
         var dateWeekData = JsonConvert.SerializeObject(datesWeekData);
 
         var areaListData = await AreaChartDataCalculate(ByTime.Week);
 
         _logger.LogDebug("On getting recent activities...");
-        List<NotificationDto> notificationDtos = await _sender.Send(new GetNotificationQuery());
+        var notificationDtos = await _sender.Send(new GetNotificationQuery());
        
-        _logger.LogInformation("Got recent activities! Serializing and return.");
+        _logger.LogInformation("Got recent activities! Serializing and return");
         return View(
             new DashBoardViewModel
             {
                 StudentTotalValueModel = new TotalValueModel<LearnerDto>()
                 {
-                    Models = studentDtos,
+                    Models = studentDtos.Value,
                     IsIncrease = thisMonthStudentDtoCount > lastMonthStudentDtoCount,
                     IncreasePercentage = Math.Abs(thisMonthStudentDtoCount - lastMonthStudentDtoCount) * 1.0 /
                                          lastMonthStudentDtoCount * 100,
                     Time = ByTime.Month
                 },
-                ClassTotalValueModel = new TotalValueModel<ClassInformationDto>()
+                ClassTotalValueModel = new TotalValueModel<ClassInformationForListDto>()
                 {
-                    Models = classDtos,
+                    Models = classDtos.Value,
                     IsIncrease = thisMonthClassInformationDtoCount > lastMonthClassInformationDtoCount,
                     IncreasePercentage =
                         Math.Abs(thisMonthClassInformationDtoCount - lastMonthClassInformationDtoCount) * 1.0 /
                         lastMonthClassInformationDtoCount * 100,
                     Time = ByTime.Month
                 },
-                TutorTotalValueModel = new TotalValueModel<TutorDto>()
+                TutorTotalValueModel = new TotalValueModel<TutorForListDto>()
                 {
-                    Models = tutorDtos,
-                    IsIncrease = thisMonthTutorDtoCount > lastMonthresultTutorDtoCount,
-                    IncreasePercentage = Math.Abs(thisMonthTutorDtoCount - lastMonthresultTutorDtoCount) * 1.0 /
-                                         lastMonthresultTutorDtoCount * 100,
+                    Models = tutorDtos.Value,
+                    IsIncrease = thisMonthTutorDtoCount > lastMonthResultTutorDtoCount,
+                    IncreasePercentage = Math.Abs(thisMonthTutorDtoCount - lastMonthResultTutorDtoCount) * 1.0 /
+                                         lastMonthResultTutorDtoCount * 100,
                     Time = ByTime.Month
                 },
 
@@ -118,7 +117,7 @@ public class HomeController : Controller
                     incomingSeries = areaListData.ElementAt(3),
                     ByTime =  ByTime.Week
                 },
-                NotificationDtos = notificationDtos
+                NotificationDtos = notificationDtos.Value
             }
         );
     }
@@ -128,12 +127,15 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerLineChart(string? byTime)
     {
         _logger.LogDebug("On getting lineChartData...");
-        LineChartData lineChartData = await _sender.Send(new GetLineChartDataQuery(byTime ?? ""));
+        var lineChartData = await _sender.Send(new GetLineChartDataQuery
+        {
+            ByTime = byTime?? ""
+        });
         var datesWeekData = new ChartDataType(
             "string",
-            lineChartData.dates
+            lineChartData.Value.dates
         );
-        var check = JsonConvert.SerializeObject(lineChartData.LineDatas);
+        var check = JsonConvert.SerializeObject(lineChartData.Value.LineDatas);
         var check1 = JsonConvert.SerializeObject(datesWeekData);
 
         return Json(new
@@ -148,11 +150,14 @@ public class HomeController : Controller
     public async Task<IActionResult> FitlerPieChart(string? byTime)
     {
         _logger.LogDebug("FitlerPieChart's running! On getting DonutChartData...");
-        DonutChartData donutChartData = await _sender.Send(new GetDonutChartDataQuery(byTime ?? ""));
+        var donutChartData = await _sender.Send(new GetDonutChartDataQuery
+        {
+            ByTime = byTime?? ""
+        });
         _logger.LogDebug("Got donutChartData! Serializing and return.");
 
-        var check2 = JsonConvert.SerializeObject(donutChartData.names);
-        var check1 = JsonConvert.SerializeObject(donutChartData.values);
+        var check2 = JsonConvert.SerializeObject(donutChartData.Value.names);
+        var check1 = JsonConvert.SerializeObject(donutChartData.Value.values);
 
         return Helper.RenderRazorViewToString(this, "_PieChart",
             new PieChartViewModel()
@@ -166,13 +171,16 @@ public class HomeController : Controller
     private async Task<List<string>> AreaChartDataCalculate(string? byTime)
     {
         _logger.LogDebug("FitlerPieChart's running! On getting DonutChartData...");
-        AreaChartData areaChartData = await _sender.Send(new GetAreaChartDataQuery(byTime ?? ""));
-        _logger.LogDebug("Got donutChartData! Serializing and return.");
+        var areaChartData = await _sender.Send(new GetAreaChartDataQuery
+        {
+            ByTime = byTime ?? ""
+        });
+        _logger.LogDebug("Got donutChartData! Serializing and return");
         
-        var check1 = JsonConvert.SerializeObject(areaChartData.dates);
-        var check2 = JsonConvert.SerializeObject(areaChartData.totalRevuenues.data);
-        var check3 = JsonConvert.SerializeObject(areaChartData.cenceleds.data);
-        var check4 = JsonConvert.SerializeObject(areaChartData.incoming.data);
+        var check1 = JsonConvert.SerializeObject(areaChartData.Value.Dates);
+        var check2 = JsonConvert.SerializeObject(areaChartData.Value.TotalRevuenues.data);
+        var check3 = JsonConvert.SerializeObject(areaChartData.Value.Cenceleds.data);
+        var check4 = JsonConvert.SerializeObject(areaChartData.Value.Incoming.data);
 
         return new List<string>
         {
@@ -205,11 +213,11 @@ public class HomeController : Controller
         _logger.LogDebug("Got classDtos!");
 
         var date = GetByTime(DateTime.Now, byTime);
-        var result1 = classDtos.Where(x => x.CreationTime >= date).ToList();
+        var result1 = classDtos.Value.Where(x => x.CreationTime >= date).ToList();
         var date2 = GetByTime(date, byTime);
-        var result2 = classDtos.Where(x => x.CreationTime >= date2 && x.CreationTime <= date).ToList();
+        var result2 = classDtos.Value.Where(x => x.CreationTime >= date2 && x.CreationTime <= date).ToList();
 
-        return Helper.RenderRazorViewToString(this, "_TotalClasses", new TotalValueModel<ClassInformationDto>()
+        return Helper.RenderRazorViewToString(this, "_TotalClasses", new TotalValueModel<ClassInformationForListDto>()
         {
             Models = result1,
             IsIncrease = result1.Count > result2.Count,
@@ -226,12 +234,12 @@ public class HomeController : Controller
         var tutorDtos = await _sender.Send(new GetAllTutorInformationsAdvancedQuery());
         _logger.LogDebug("Got tutorDtos!");
         var date = GetByTime(DateTime.Now, byTime);
-        var result1 = tutorDtos.Where(x => x.CreationTime >= date).ToList();
+        var result1 = tutorDtos.Value.Where(x => x.CreationTime >= date).ToList();
         var date2 = GetByTime(date, byTime);
 
-        var result2 = tutorDtos.Where(x => x.CreationTime >= date2 && x.CreationTime <= date).ToList();
+        var result2 = tutorDtos.Value.Where(x => x.CreationTime >= date2 && x.CreationTime <= date).ToList();
 
-        return Helper.RenderRazorViewToString(this, "_TotalTutors", new TotalValueModel<TutorDto>()
+        return Helper.RenderRazorViewToString(this, "_TotalTutors", new TotalValueModel<TutorForListDto>()
         {
             Models = result1,
             IsIncrease = result1.Count > result2.Count,
@@ -249,9 +257,9 @@ public class HomeController : Controller
         _logger.LogDebug("Got studentDtos!");
 
         var date = GetByTime(DateTime.Now, byTime);
-        var result1 = studentDtos.Where(x => x.CreationTime >= date).ToList();
+        var result1 = studentDtos.Value.Where(x => x.CreationTime >= date).ToList();
         var date2 = GetByTime(date, byTime);
-        var result2 = studentDtos.Where(x => x.CreationTime >= date2 && x.CreationTime <= date).ToList();
+        var result2 = studentDtos.Value.Where(x => x.CreationTime >= date2 && x.CreationTime <= date).ToList();
 
 
         return Helper.RenderRazorViewToString(this, "_TotalStudents", new TotalValueModel<LearnerDto>()

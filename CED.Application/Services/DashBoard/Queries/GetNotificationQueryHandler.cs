@@ -2,6 +2,7 @@
 using CED.Contracts.Notifications;
 using CED.Domain.Notifications;
 using CED.Domain.Repository;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.DashBoard.Queries;
@@ -18,7 +19,7 @@ public class GetNotificationQueryHandler : GetByIdQueryHandler<GetNotificationQu
         _notificationRepository = notificationRepository;
     }
 
-    public override async Task<List<NotificationDto>?> Handle(GetNotificationQuery query,
+    public override async Task<Result<List<NotificationDto>>> Handle(GetNotificationQuery query,
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;

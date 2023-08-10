@@ -1,10 +1,9 @@
-using CED.Contracts.Charts;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Notifications;
-using MediatR;
 
 namespace CED.Application.Services.DashBoard.Queries;
 
-public record GetNotificationQuery
-(
-   
-): IRequest<List<NotificationDto>>;
+public class GetNotificationQuery : GetObjectQuery<List<NotificationDto>>
+{
+    
+}

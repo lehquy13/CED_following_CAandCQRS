@@ -28,7 +28,7 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
         _userRepository = userRepository;
     }
 
-    public override async Task<Result<PaginatedList<ClassInformationForListDto>>> Handle(Queries.GetAllClassInformationsQuery.GetAllClassInformationsQuery query,
+    public override async Task<Result<PaginatedList<ClassInformationForListDto>>> Handle(GetAllClassInformationsQuery query,
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
@@ -53,7 +53,6 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
                     break;
             }
 
-            var tutors = _userRepository.GetTutors();
 
             //Filter by SubjectName if it is not null
             if (!string.IsNullOrWhiteSpace(query.SubjectName))

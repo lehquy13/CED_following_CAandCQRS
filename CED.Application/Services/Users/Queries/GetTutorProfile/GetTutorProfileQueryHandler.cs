@@ -1,6 +1,6 @@
 ﻿using CED.Application.Common.Errors.Users;
 using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.Users;
 using FluentResults;
 using MapsterMapper;

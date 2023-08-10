@@ -22,7 +22,7 @@ public class GetAllStudentsQueryHandler : GetAllQueryHandler<GetObjectQuery<Pagi
         await Task.CompletedTask;
         try
         {
-            var users = _userRepository.GetStudents();
+            var users = await _userRepository.GetStudents();
             var result = _mapper.Map<List<LearnerDto>>(users.Skip((query.PageIndex - 1) * query.PageSize).Take(query.PageSize).ToList());
             
             return PaginatedList<LearnerDto>.CreateAsync(result, query.PageIndex, query.PageSize, users.Count);

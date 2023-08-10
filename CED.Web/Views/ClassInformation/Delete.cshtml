@@ -1,4 +1,4 @@
-﻿@model CED.Contracts.ClassInformations.Dtos.ClassInformationDto
+﻿@model CED.Contracts.ClassInformations.Dtos.ClassInformationForDetailDto
 
 
 @{
@@ -10,10 +10,10 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-4" hidden>
-            @Html.DisplayNameFor(model => model.SubjectName)
+            @Html.DisplayNameFor(model => model.Subject.Name)
         </dt>
         <dd class="col-sm-8" hidden>
-            @Html.DisplayFor(model => model.SubjectName)
+            @Html.DisplayFor(model => model.Subject.Name)
         </dd>
         <dt class="col-sm-4" hidden>
             @Html.DisplayNameFor(model => model.GenderRequirement)

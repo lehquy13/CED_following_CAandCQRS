@@ -12,6 +12,11 @@ public class TutorReviewDto : FullAuditedAggregateRootDto<Guid>
 
     public short Rate { get; set; } = 5;
     public string Description { get; set; } =string.Empty;
+
+    public TutorReviewDto()
+    {
+        
+    }
 }
 public class TutorReviewRequestDto : FullAuditedAggregateRootDto<Guid>
 {

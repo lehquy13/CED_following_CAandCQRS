@@ -1,4 +1,4 @@
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.ClassInformations;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CED.Application.Services.Users.Queries.CustomerQueries;
 
-public class PopularTutorsQueryHandler : IRequestHandler<PopularTutorsQuery, List<TutorDto>>
+public class PopularTutorsQueryHandler : IRequestHandler<PopularTutorsQuery, List<TutorForDetailDto>>
 {
     private readonly ITutorRepository _tutorRepository;
     private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ public class PopularTutorsQueryHandler : IRequestHandler<PopularTutorsQuery, Lis
         _classInformationRepository = classInformationRepository;
     }
 
-    public async Task<List<TutorDto>> Handle(PopularTutorsQuery request, CancellationToken cancellationToken)
+    public async Task<List<TutorForDetailDto>> Handle(PopularTutorsQuery request, CancellationToken cancellationToken)
     {
         var thisMonth = new DateTime(
             DateTime.Now.Year,
@@ -59,6 +59,6 @@ public class PopularTutorsQueryHandler : IRequestHandler<PopularTutorsQuery, Lis
             .OrderByDescending(x => x.count)
             .Select(x => x.user)
             .Take(6).ToList();
-        return _mapper.Map<List<TutorDto>>(tutors);
+        return _mapper.Map<List<TutorForDetailDto>>(tutors);
     }
 }

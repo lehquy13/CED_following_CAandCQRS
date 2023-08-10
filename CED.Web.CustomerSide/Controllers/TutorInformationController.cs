@@ -7,7 +7,7 @@ using CED.Contracts;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
 using CED.Contracts.TutorReview;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.CustomerSide.Utilities;
 using MapsterMapper;
@@ -24,16 +24,13 @@ public class TutorInformationController : Controller
 {
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
-    private readonly IAddressService _addressService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly int _pageSize = 12;
 
-    public TutorInformationController(ISender mediator, IWebHostEnvironment webHostEnvironment, IMapper mapper,
-        IAddressService addressService)
+    public TutorInformationController(ISender mediator, IWebHostEnvironment webHostEnvironment, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;
-        _addressService = addressService;
         _webHostEnvironment = webHostEnvironment;
     }
 
@@ -91,8 +88,9 @@ public class TutorInformationController : Controller
         };
         var tutorDtos = await _mediator.Send(query);
 
-
-        return View(tutorDtos);
+        if (tutorDtos.IsSuccess)
+            return View(tutorDtos.Value);
+        return RedirectToAction("Error", "Home");
     }
 
     // GET api/<TutorInformationController>/5
@@ -100,13 +98,13 @@ public class TutorInformationController : Controller
     [Route("{ObjectId}")]
     public async Task<IActionResult> Detail(Guid id)
     {
-        var query = new GetObjectQuery<TutorDto>()
+        var query = new GetObjectQuery<TutorForDetailDto>()
         {
             ObjectId = id
         };
         var tutorDto = await _mediator.Send(query);
 
-        return View(tutorDto);
+        return View(tutorDto.Value);
     }
 
     [Authorize]
@@ -123,17 +121,17 @@ public class TutorInformationController : Controller
             };
             var result = await _mediator.Send(query);
             if (result != null)
-                return View(_mapper.Map<TutorDto>(result));
+                return View(_mapper.Map<TutorForDetailDto>(result));
         }
 
-        return View(new TutorDto());
+        return View(new TutorForDetailDto());
     }
 
     // POST <TutorInformationController>
     [Authorize]
     [HttpPost]
     [Route("TutorRegistration")]
-    public async Task<IActionResult> TutorRegistration(TutorDto tutorDto, List<string>? SubjectId,
+    public async Task<IActionResult> TutorRegistration(TutorForDetailDto tutorForDetailDto, List<string>? SubjectId,
         List<string>? filePaths)
     {
         if (filePaths != null)
@@ -144,12 +142,12 @@ public class TutorInformationController : Controller
             }
         }
 
-        var command = new TutorRegistrationCommand(tutorDto, SubjectId, filePaths);
+        var command = new TutorRegistrationCommand(tutorForDetailDto, SubjectId, filePaths);
 
         var result = await _mediator.Send(command);
 
         Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
-        if (result)
+        if (result.IsSuccess)
         {
             HttpContext.Session.SetString("role", UserRole.Tutor.ToString());
             return RedirectToAction("SuccessPage", "Home"); //implement
@@ -163,7 +161,6 @@ public class TutorInformationController : Controller
     [Route("ReviewTutor")]
     public async Task<IActionResult> ReviewTutor(TutorReviewRequestDto tutorDto)
     {
-
         var command = new CreateReviewCommand
         {
             ReviewDto = new TutorReviewDto()
@@ -172,11 +169,9 @@ public class TutorInformationController : Controller
                 Description = tutorDto.Description,
                 Id = tutorDto.Id,
                 ClassInformationId = new Guid(tutorDto.ClassId)
-                
             },
             LearnerEmail = HttpContext.Session.GetString("email") ?? "",
             TutorEmail = tutorDto.TutorEmail,
-
         };
 
         var result = await _mediator.Send(command);

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using CED.Application.Services.Authentication.Admin.Commands.ForgotPassword;
 using CED.Contracts.Authentication;
 using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Interfaces.Services;

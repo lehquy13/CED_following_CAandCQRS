@@ -1,4 +1,4 @@
-﻿@model List<CED.Contracts.ClassInformations.Dtos.ClassInformationDto>
+﻿@model List<CED.Contracts.ClassInformations.Dtos.ClassInformationForListDto>
 @{
     int i = 0;
 }
@@ -22,7 +22,7 @@
                 <th scope="col">Academic Level</th>
                 <th scope="col">Gender Requirement</th>
                 <th scope="col">Learning mode</th>
-                <th data-sortable="false" scope="col" style="wObjectIdth:30%;">Actions</th>
+                <th data-sortable="false" scope="col" style="wObjectidth:30%;">Actions</th>
 
             </tr>
             </thead>
@@ -33,7 +33,7 @@
                 i++;
                 <tr>
                     <th scope="row">
-                        <input hidden name="Id" value="@user.Id"/>
+                        <input hidden name="id" value="@user.Id"/>
                         @i
                     </th>
                     <td>@user.Title</td>

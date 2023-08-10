@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Microsoft SQL Server LocalDB (JetBrains)" uuid="d2fa2fe3-1087-4235-b861-412f1e4880e4">
-      <driver-ref>sqlserver.localdb.jb</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
-      <jdbc-url>workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="ced_ddd" uuid="398addf5-ba9c-4cdb-b5e5-69ab2641ef25">
       <driver-ref>sqlserver.localdb.jb</driver-ref>
       <synchronize>true</synchronize>

@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Authentication.Admin.Queries.Login;
+﻿using CED.Application.Services.Authentication.Admin.Commands.ForgotPassword;
+using CED.Application.Services.Authentication.Admin.Queries.Login;
 using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.ValidateToken;
 using CED.Contracts.Authentication;

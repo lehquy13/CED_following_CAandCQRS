@@ -55,11 +55,13 @@ namespace CED.Infrastructure
 
             // Dependency Injection for repository
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITutorRepository, TutorRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<IClassInformationRepository, ClassInformationRepository>();
+            services.AddScoped<IRequestGettingClassRepository, RequestGettingClassRepository>();
 
             // set configuration settings to cloudinarySettings and turn it into Singleton
             var cloudinary = new CloudinarySetting();

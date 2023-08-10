@@ -18,7 +18,7 @@
 <section class="section dashboard">
     <div class="row">
 
-        <!-- Left sObjectIde columns -->
+        <!-- Left sObjectide columns -->
         <div class="col-lg-8">
             <div class="row">
                 <!-- Class Card -->
@@ -182,7 +182,7 @@
                                 document.addEventListener("DOMContentLoaded", () => {
                                     window.reportsChartStore = new ApexCharts(document.querySelector("#reportsChart"), {
                                         series: @Html.Raw(Model.ChartWeekData),
-                                        ObjectId: 'reportsChart1',
+                                        Objectid: 'reportsChart1',
                                         chart: {
                                             height: 350,
                                             type: 'area',
@@ -208,7 +208,7 @@
                                         },
                                         stroke: {
                                             curve: 'smooth',
-                                            wObjectIdth: 2
+                                            wObjectidth: 2
                                         },
                                         xaxis: @Html.Raw(@Model.DatesWeekData),
                                         tooltip: {
@@ -342,7 +342,7 @@
                                         <th scope="col">Is Verified</th>
                                         <th scope="col">University</th>
                                         <th scope="col">Phone Number</th>
-                                        <th data-sortable="false" scope="col" style="wObjectIdth:30%;">Actions</th>
+                                        <th data-sortable="false" scope="col" style="wObjectidth:30%;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -352,7 +352,7 @@
                                         y++;
                                         <tr>
                                             <th scope="row">
-                                                <input hidden name="Id" value="@user.Id" />
+                                                <input hidden name="id" value="@user.Id" />
                                                 @y
                                             </th>
                                             <td>@user.FirstName @user.LastName</td>
@@ -377,8 +377,8 @@
                 </div><!-- End Top Selling -->
 
             </div>
-        </div><!-- End Left sObjectIde columns -->
-        <!-- Right sObjectIde columns -->
+        </div><!-- End Left sObjectide columns -->
+        <!-- Right sObjectide columns -->
         <div class="col-lg-4">
 
             <!-- Recent Activity -->
@@ -450,7 +450,7 @@
                             <div class="activite-label">4 weeks</div>
                             <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
                             <div class="activity-content">
-                                Dicta dolorem harum nulla eius. Ut quObjectIdem quObjectIdem sit quas
+                                Dicta dolorem harum nulla eius. Ut quObjectidem quObjectidem sit quas
                             </div>
                         </div><!-- End activity item-->
 *@
@@ -599,13 +599,13 @@
             @* *@
             @*       <div class="post-item clearfix"> *@
             @*         <img src="assets/img/news-2.jpg" alt=""> *@
-            @*         <h4><a href="#">QuObjectIdem autem et impedit</a></h4> *@
+            @*         <h4><a href="#">QuObjectidem autem et impedit</a></h4> *@
             @*         <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p> *@
             @*       </div> *@
             @* *@
             @*       <div class="post-item clearfix"> *@
             @*         <img src="assets/img/news-3.jpg" alt=""> *@
-            @*         <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4> *@
+            @*         <h4><a href="#">id quia et et ut maxime similique occaecati ut</a></h4> *@
             @*         <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p> *@
             @*       </div> *@
             @* *@
@@ -618,15 +618,15 @@
             @*       <div class="post-item clearfix"> *@
             @*         <img src="assets/img/news-5.jpg" alt=""> *@
             @*         <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4> *@
-            @*         <p>Odit ut eveniet modi reiciendis. Atque cupObjectIditate libero beatae dignissimos eius...</p> *@
+            @*         <p>Odit ut eveniet modi reiciendis. Atque cupObjectiditate libero beatae dignissimos eius...</p> *@
             @*       </div> *@
             @* *@
-            @*     </div><!-- End sObjectIdebar recent posts--> *@
+            @*     </div><!-- End sObjectidebar recent posts--> *@
             @* *@
             @*   </div> *@
             @* </div><!-- End News & Updates --> *@
 
-        </div><!-- End Right sObjectIde columns -->
+        </div><!-- End Right sObjectide columns -->
 
     </div>
 </section>

@@ -1,11 +1,10 @@
-using CED.Application.Services.ClassInformations.Queries.GetClassInformation;
 using FluentValidation;
 
 namespace CED.Application.Services.ClassInformations.Queries.GetAllRequestGettingClass;
 
-public class GetAllRequestGettingClassQueryValidator : AbstractValidator<GetAllRequestOfClassQuery>
+public class GetAllRequestOfClassQueryValidator : AbstractValidator<GetAllRequestOfClassQuery>
 {
-    public GetAllRequestGettingClassQueryValidator()
+    public GetAllRequestOfClassQueryValidator()
     {
         RuleFor(x => x.ClassId).NotEmpty();
     }

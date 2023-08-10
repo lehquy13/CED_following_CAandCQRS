@@ -1,6 +1,7 @@
 ﻿using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 using FluentValidation;
-namespace CED.Application.Services.Authentication.Commands.ChangePassword;
+
+namespace CED.Application.Services.Authentication.Customer.Commands.ChangePassword;
 
 public class CustomerChangePasswordCommandCommandValidator : AbstractValidator<ChangePasswordCommand>
 {

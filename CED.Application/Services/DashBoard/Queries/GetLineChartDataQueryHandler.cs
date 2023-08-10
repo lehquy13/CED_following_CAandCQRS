@@ -5,6 +5,7 @@ using CED.Contracts.Subjects;
 using CED.Domain.ClassInformations;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.DashBoard.Queries;
@@ -21,7 +22,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
         _tutorRepository = tutorRepository;
     }
 
-    public override async Task<LineChartData?> Handle(GetLineChartDataQuery query, CancellationToken cancellationToken)
+    public override async Task<Result<LineChartData>> Handle(GetLineChartDataQuery query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         List<int> dates = new List<int>();
@@ -52,45 +53,47 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
 
                 break;
         }
-        
 
-        var classesInWeek =dates.GroupJoin( 
-                _classInformationRepository.GetAll()
-                    .Where(x => x.CreationTime >= startDay)
-                    .GroupBy(x => x.CreationTime.Day),
+        var allClasses = _classInformationRepository.GetAll().Where(x => x.CreationTime >= startDay)
+            .GroupBy(x => x.CreationTime.Day).ToList();
+        var allLearner =  _userRepository.GetAll()
+            .Where(x => x.CreationTime >= startDay)
+            .GroupBy(x => x.CreationTime.Day).ToList();
+        var allTutor = _tutorRepository.GetAll()
+            .Where(x => x.CreationTime >= startDay)
+            .GroupBy(x => x.CreationTime.Day).ToList();
+
+        var classesInWeek = dates.Join( 
+                allClasses,
                 d => d,
-                c => c.Key,
+                c => c.Key, 
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.FirstOrDefault()?.Count() ?? 0
+                    classInfo = c.Count() 
                 })
             .Select(x => x.classInfo)
             .ToList();
-        var studentsInWeek = dates.GroupJoin(
-                _userRepository.GetStudents()
-                    .Where(x => x.CreationTime >= startDay)
-                    .GroupBy(x => x.CreationTime.Day),
+        var studentsInWeek = dates.Join(
+                allLearner,
                 d => d,
                 c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.FirstOrDefault()?.Count() ?? 0
+                    classInfo = c.Count()
                 })
             .Select(x => x.classInfo)
             .ToList();
 
-        var tutorsInWeek = dates.GroupJoin(
-                _tutorRepository.GetTutors()
-                    .Where(x => x.CreationTime >= startDay)
-                    .GroupBy(x => x.CreationTime.Day),
+        var tutorsInWeek = dates.Join(
+               allTutor,
                 d => d,
                 c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.FirstOrDefault()?.Count() ?? 0
+                    classInfo = c.Count()
                 })
             .Select(x => x.classInfo)
             .ToList();

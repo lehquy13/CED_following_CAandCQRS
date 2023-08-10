@@ -23,15 +23,15 @@ public class ConfirmTutorInfoCommandHandler : CreateUpdateCommandHandler<Confirm
     public override async Task<Result<bool>> Handle(ConfirmTutorInfoCommand command, CancellationToken cancellationToken)
     {
         //Check if the user existed
-        var user = await _userRepository.GetUserByEmail(command.TutorDto.Email);
+        var user = await _userRepository.GetUserByEmail(command.TutorForDetailDto.Email);
         if (user is null)
         {
             throw new Exception("Tutor with an email doesn't exist");
         }
         //if (user.Role != UserRole.Tutor) return false;
 
-        command.TutorDto.IsVerified = true;
-        user.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorDto));
+        command.TutorForDetailDto.IsVerified = true;
+        user.UpdateTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorForDetailDto));
 
         var afterUpdatedUser = _userRepository.Update(user);
 

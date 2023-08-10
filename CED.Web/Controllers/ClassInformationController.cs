@@ -16,6 +16,7 @@ using CED.Contracts.TutorReview;
 using CED.Contracts.Users;
 using CED.Domain.Shared;
 using FluentResults;
+using CED.Contracts.Users.Tutors;
 
 namespace CED.Web.Controllers;
 
@@ -67,20 +68,21 @@ public class ClassInformationController : Controller
             Filter = type??""
         };
         var classInformations = await _mediator.Send(query);
-
-        return View(classInformations);
+        if(classInformations.IsSuccess)
+            return View(classInformations.Value);
+        return View(new List<ClassInformationForListDto>());
     }
 
     [HttpGet("Edit")]
-    public async Task<IActionResult> Edit(Guid Id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         await PackStaticListToView();
 
         await PackStudentAndTuTorList();
 
-        var query = new GetObjectQuery<ClassInformationDto>()
+        var query = new GetObjectQuery<ClassInformationForDetailDto>
         {
-            ObjectId = Id
+            ObjectId = id
         };
         var result = await _mediator.Send(query);
         ViewBag.Action = "Edit";
@@ -90,13 +92,14 @@ public class ClassInformationController : Controller
         // {
         //     ObjectId = (ObjectId)Id
         // });
-
-        return View(result);
+        if(result.IsSuccess)
+            return View(result.Value);
+        return RedirectToAction("Error", "Home");
     }
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, ClassInformationDto classDto)
+    public async Task<IActionResult> Edit(Guid Id, ClassInformationForDetailDto classDto)
     {
         if (Id != classDto.Id)
         {
@@ -115,7 +118,7 @@ public class ClassInformationController : Controller
 
         var result = await _mediator.Send(query);
 
-        if (result is false)
+        if (result.IsFailed)
         {
             return View(classDto);
         }
@@ -132,12 +135,12 @@ public class ClassInformationController : Controller
         await PackStaticListToView();
         //await PackStudentAndTuTorList();
 
-        return View(new ClassInformationDto());
+        return View(new ClassInformationForDetailDto());
     }
 
     [HttpPost("Create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ClassInformationDto classDto)
+    public async Task<IActionResult> Create(ClassInformationForDetailDto classDto)
     {
         classDto.LastModificationTime = DateTime.UtcNow;
         var query = new CreateUpdateClassInformationCommand() { ClassInformationDto = classDto };
@@ -154,10 +157,10 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<ClassInformationDto>() { ObjectId = (Guid)id };
+        var query = new GetObjectQuery<ClassInformationForDetailDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result == null)
+        if (result.IsFailed)
         {
             return NotFound();
         }
@@ -177,7 +180,7 @@ public class ClassInformationController : Controller
         var query = new DeleteClassInformationCommand((Guid)id);
         var result = await _mediator.Send(query);
 
-        if (result is true)
+        if (result.IsSuccess)
         {
             return RedirectToAction("Index");
         }
@@ -193,13 +196,13 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<ClassInformationDto>() { ObjectId = (Guid)id };
+        var query = new GetObjectQuery<ClassInformationForDetailDto> { ObjectId = (Guid)id };
 
         var result = await _mediator.Send(query);
 
-        if (result is not null)
+        if (result.IsSuccess)
         {
-            return View(result);
+            return View(result.Value);
         }
 
         return RedirectToAction("Error", "Home");
@@ -211,7 +214,7 @@ public class ClassInformationController : Controller
     {
         var query = new GetAllTutorInformationsAdvancedQuery();
         var userDtos = await _mediator.Send(query);
-        return Helper.RenderRazorViewToString(this, "PickTutor", userDtos);
+        return Helper.RenderRazorViewToString(this, "PickTutor", userDtos.Value);
     }
 
     [HttpGet("ViewTutor")]
@@ -222,12 +225,12 @@ public class ClassInformationController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorDto>() { ObjectId = (Guid)id };
+        var query = new GetObjectQuery<TutorForDetailDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result is not null)
+        if (result.IsSuccess)
         {
-            return Helper.RenderRazorViewToString(this, "ViewTutor", result);
+            return Helper.RenderRazorViewToString(this, "ViewTutor", result.Value);
         }
 
         return RedirectToAction("Error", "Home");
@@ -243,7 +246,7 @@ public class ClassInformationController : Controller
         var query = new GetObjectQuery<TutorReviewDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result is not null)
+        if (result.IsSuccess)
         {
             TempData["ClassId"] = id.ToString();
             return Helper.RenderRazorViewToString(this, "_TutorReview", result);
@@ -265,17 +268,16 @@ public class ClassInformationController : Controller
     [HttpPost("RemoveReview")]
     public async Task<IActionResult> RemoveReview(Guid id)
     {
-        if (id == null || id.Equals(Guid.Empty))
+        if (id.Equals(Guid.Empty))
         {
             return NotFound();
         }
 
         var result = await _mediator.Send(new RemoveTutorReviewCommand(id));
-        if (TempData["ClassId"] != null )
+        if (TempData["ClassId"] != null && result.IsSuccess )
         {
             Guid guid = (Guid)(TempData["ClassId"]??"");
             return RedirectToAction("Edit", new {id = guid});
-
         }
 
         return NotFound();
@@ -302,8 +304,6 @@ public class ClassInformationController : Controller
     [HttpPost("CancelRequest")]
     public async Task<IActionResult> CancelRequest(RequestGettingClassMinimalDto requestGettingClassMinimalDto)
     {
-      
-
         var result = await _mediator
             .Send(
                 new CancelRequestGettingClassCommand(requestGettingClassMinimalDto)

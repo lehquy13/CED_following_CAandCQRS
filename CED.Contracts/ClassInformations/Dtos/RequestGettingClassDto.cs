@@ -1,5 +1,6 @@
 ﻿using CED.Contracts.Common.Models;
 using CED.Contracts.Models;
+using CED.Domain.ClassInformations;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 
@@ -21,6 +22,7 @@ public class RequestGettingClassForListDto : FullAuditedAggregateRootDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public Guid ClassInformationId { get; set; }
+    public ClassInformationDto ClassInformationDto { get; set; }
     public string SubjectName { get; set; } = string.Empty;
     public RequestStatus RequestStatus { get; set; } = RequestStatus.Verifying;
 }

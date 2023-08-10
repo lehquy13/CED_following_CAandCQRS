@@ -1,5 +1,5 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 
 namespace CED.Application.Services.Users.Queries.GetTutorProfile;
 

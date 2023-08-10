@@ -25,12 +25,11 @@ public class UserRepository : Repository<User>, IUserRepository
     //     }
     // }
 
-    public List<User> GetTutors()
+    public async Task<List<User>> GetTutors()
     {
         try
         {
-            var users = _appDbContext.Set<User>().AsEnumerable().Where(o => o is { Role: UserRole.Tutor, IsDeleted: false })
-                .ToList();
+            var users = await _appDbContext.Set<User>().Where(x => x.IsDeleted == false && x.Role == UserRole.Tutor).ToListAsync();
             return users;
         }
         catch (Exception ex)
@@ -39,11 +38,11 @@ public class UserRepository : Repository<User>, IUserRepository
         }
     }
 
-    public List<User> GetStudents()
+    public async Task< List<User>> GetStudents()
     {
         try
         {
-            var users = _appDbContext.Set<User>().AsEnumerable().Where(o => o.Role == UserRole.Learner && o.IsDeleted == false).ToList();
+            var users = await _appDbContext.Set<User>().Where(o => o.Role == UserRole.Learner && o.IsDeleted == false).ToListAsync();
             return users;
         }
         catch (Exception ex)

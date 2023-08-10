@@ -1,14 +1,15 @@
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Notifications;
+using CED.Contracts.Users.Tutors;
 
 namespace CED.Web.Models;
 
 public class DashBoardViewModel
 {
-    public TotalValueModel<CED.Contracts.Users.TutorDto> TutorTotalValueModel{ get; set; } = new();
-    public TotalValueModel<CED.Contracts.Users.LearnerDto> StudentTotalValueModel{ get; set; } = new();
+    public TotalValueModel<TutorForListDto> TutorTotalValueModel{ get; set; } = new();
+    public TotalValueModel<Contracts.Users.LearnerDto> StudentTotalValueModel{ get; set; } = new();
 
-    public TotalValueModel<ClassInformationDto> ClassTotalValueModel{ get; set; } = new();
+    public TotalValueModel<ClassInformationForListDto> ClassTotalValueModel{ get; set; } = new();
 
     public object? ChartWeekData { get; set; }
     public object? PieWeekData1 { get; set; }

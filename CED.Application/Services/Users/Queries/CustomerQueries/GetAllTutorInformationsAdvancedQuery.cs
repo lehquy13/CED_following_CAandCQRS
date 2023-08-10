@@ -1,12 +1,12 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Application.Services.Users.Queries.CustomerQueries;
 
-public class GetAllTutorInformationsAdvancedQuery : GetObjectQuery<PaginatedList<TutorDto>>
+public class GetAllTutorInformationsAdvancedQuery : GetObjectQuery<PaginatedList<TutorForListDto>>
 {
     public string SubjectName { get; set; } = string.Empty;
     public string TutorName { get; set; } = string.Empty;

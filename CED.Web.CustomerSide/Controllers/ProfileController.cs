@@ -13,6 +13,7 @@ using CED.Contracts.Authentication;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
 using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.Shared;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.CustomerSide.Models;
@@ -75,20 +76,20 @@ public class ProfileController : Controller
 
                 var viewModelResult = new ProfileViewModel
                 {
-                    UserDto = loginResult,
+                    UserDto = loginResult.Value,
                     ChangePasswordRequest = changePasswordRequest
                 };
-                if (loginResult.Role == UserRole.Tutor)
+                if (loginResult.Value.Role == UserRole.Tutor)
                 {
 
                     var query1 = new GetTutorProfileQuery()
                     {
-                        ObjectId = loginResult.Id
+                        ObjectId = loginResult.Value.Id
                     };
                     var loginResult1 = await _mediator.Send(query1);
 
-                    viewModelResult.RequestGettingClassDtos = loginResult1.RequestGettingClassDtos;
-                    viewModelResult.TutorDto = loginResult1.TutorMainInfoDto;
+                    viewModelResult.RequestGettingClassDtos = loginResult1.Value.RequestGettingClassForListDtos;
+                    viewModelResult.TutorDto = loginResult1.Value.TutorMainInfoDto;
                 }
 
                 return View(viewModelResult);
@@ -98,7 +99,7 @@ public class ProfileController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
+            _logger.LogError("{0}",e.Message);
             return View("Error");
 
         }
@@ -153,9 +154,9 @@ public class ProfileController : Controller
                 }
 
                
-                bool result = await _mediator.Send(new LearnerInfoChangingCommand(userDto,filePath));
+                var result = await _mediator.Send(new LearnerInfoChangingCommand(userDto,filePath));
 
-                ViewBag.Updated = result;
+                ViewBag.Updated = result.IsSuccess;
                 Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
                 var viewModelResult = new ProfileViewModel
                 {
@@ -163,7 +164,7 @@ public class ProfileController : Controller
                     ChangePasswordRequest = _mapper.Map<ChangePasswordRequest>(userDto),
                     IsPartialLoad = true
                 };
-                if (result)
+                if (result.IsSuccess)
                 {
                     HttpContext.Response.Cookies.Append("name", userDto.FirstName + userDto.LastName);
                     HttpContext.Response.Cookies.Append("image", userDto.Image);
@@ -205,7 +206,7 @@ public class ProfileController : Controller
         {
             try
             {
-                bool result;
+               
                 var filePath = new List<string>();
                 if (files != null)
                 {
@@ -216,23 +217,16 @@ public class ProfileController : Controller
                     }
                 }
 
-                if (userDto.Role == UserRole.Tutor)
-                {
-                    result = await _mediator.Send(new TutorInfoChangingCommand(userDto,subjectId,filePath));
-                }
-                else
+                if (userDto.Role != UserRole.Tutor)
                 {
                     throw new Exception("User has not registered as Tutor.");
-
                 }
+                var result = await _mediator.Send(new TutorInfoChangingCommand(userDto,subjectId,filePath));
 
-                ViewBag.Updated = result;
+                ViewBag.Updated = result.IsSuccess;
                 Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
                
                 return Helper.RenderRazorViewToString(this, "_ProfileTutorEdit", userDto);
-
-              
-                
             }
             catch (Exception ex)
             {
@@ -302,12 +296,12 @@ public class ProfileController : Controller
     [Route("GetLearningClass")]
     public async Task<IActionResult> GetLearningClass(Guid id)
     {
-        var query = new GetObjectQuery<ClassInformationDto>()
+        var query = new GetObjectQuery<ClassInformationForDetailDto>()
         {
             ObjectId = id
         };
         var classInformation = await _mediator.Send(query);
-        if (classInformation != null)
+        if (classInformation.IsSuccess)
         {
             return Helper.RenderRazorViewToString(this, "_LearningClassDetail", classInformation);
         }

@@ -1,5 +1,4 @@
-﻿using CED.Application.Services.Authentication.Commands.ChangePassword;
-using CED.Contracts.Authentication;
+﻿using CED.Contracts.Authentication;
 using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Users;
 using MapsterMapper;

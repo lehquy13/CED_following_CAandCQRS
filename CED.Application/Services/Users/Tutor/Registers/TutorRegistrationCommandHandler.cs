@@ -46,13 +46,13 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
             //Check if the user existed
             //TODO: Check if the logic goes well
             
-            var user = await _userRepository.ExistenceCheck(command.TutorDto.Id);
+            var user = await _userRepository.ExistenceCheck(command.TutorForDetailDto.Id);
             
             if (user is null)
             {
                 return Result.Fail(new NonExistUserError());
             }
-            var tutor =  _mapper.Map<Domain.Users.Tutor>(command.TutorDto);
+            var tutor =  _mapper.Map<Domain.Users.Tutor>(command.TutorForDetailDto);
 
             //user.UpdateUserInformationExceptImage(updateUser);
             tutor.Role = UserRole.Tutor;

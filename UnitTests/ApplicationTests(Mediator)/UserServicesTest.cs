@@ -1,14 +1,14 @@
 using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.Users.Queries;
-using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Queries.Handlers;
 using CED.Contracts;
 using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
-using CED.Domain.Subjects;
 using CED.Domain.Users;
+using LazyCache;
 using MapsterMapper;
+using MediatR;
 using Moq;
 
 namespace UnitTests.ApplicationTests_Mediator_
@@ -16,10 +16,11 @@ namespace UnitTests.ApplicationTests_Mediator_
     public class UserServicesTest
     {
         private readonly Mock<IUserRepository> _mockUserRepo = new();
-        private readonly Mock<ITutorRepository> _mockTutorRepo = new();
-        private readonly Mock<ISubjectRepository> _mockSubjectRepo = new();
-        private readonly Mock<IRepository<TutorMajor>> _mockTutorMajorRepo = new();
+        
         private readonly Mock<IMapper> _mockMapper = new();
+        private readonly Mock<IAppCache> _mockAppCache = new();
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork = new();
+        private readonly Mock<IPublisher> _publisherMock = new();
 
         private readonly Guid _sampleId = Guid.NewGuid();
         private readonly Guid _sampleId2 = Guid.NewGuid();
@@ -34,8 +35,8 @@ namespace UnitTests.ApplicationTests_Mediator_
 
 
         private Tutor? _tutor;
-        private TutorDto? _tutorDto;
-        private List<TutorDto>? _tutorDtos;
+        private TutorForDetailDto? _tutorDto;
+        private List<TutorForDetailDto>? _tutorDtos;
         private List<Tutor>? _tutorUsers;
 
         private User? _student;
@@ -94,7 +95,7 @@ namespace UnitTests.ApplicationTests_Mediator_
                 Id = _sampleId3,
                 
             };
-            _tutorDto = new TutorDto
+            _tutorDto = new TutorForDetailDto
             {
                 Id = _sampleId3,
                 Description = "Description Sample 3",
@@ -102,7 +103,7 @@ namespace UnitTests.ApplicationTests_Mediator_
                 FirstName = "User's First Name Sample 3",
                 Role = UserRole.Tutor
             };
-            _tutorDtos = new List<TutorDto>{
+            _tutorDtos = new List<TutorForDetailDto>{
                 _tutorDto
             };
 
@@ -134,7 +135,7 @@ namespace UnitTests.ApplicationTests_Mediator_
             //   .Setup(x => x.GetById(_sampleId3))
             //   .ReturnsAsync(_tutor);
             _mockMapper
-              .Setup(x => x.Map<TutorDto>(_tutor))
+              .Setup(x => x.Map<TutorForDetailDto>(_tutor))
               .Returns(_tutorDto);
             #endregion
 
@@ -193,7 +194,7 @@ namespace UnitTests.ApplicationTests_Mediator_
             //    .Setup(x => x.GetTutors())
             //    .Returns(_tutorUsers);
             _mockMapper
-                .Setup(x => x.Map<List<TutorDto>>(_tutorUsers))
+                .Setup(x => x.Map<List<TutorForDetailDto>>(_tutorUsers))
                 .Returns(_tutorDtos);
             #endregion
 
@@ -204,7 +205,7 @@ namespace UnitTests.ApplicationTests_Mediator_
             };
             _mockUserRepo
                .Setup(x => x.GetStudents())
-               .Returns(_studentUsers);
+               .ReturnsAsync(_studentUsers);
             _mockMapper
                 .Setup(x => x.Map<List<LearnerDto>>(_studentUsers))
                 .Returns(_studentDtos);
@@ -249,7 +250,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         // [Test]
         // public async Task GetTutorById()
         // {
-        //     var query = new GetObjectQuery<TutorDto>() { ObjectId = _sampleId3 };
+        //     var query = new GetObjectQuery<TutorForDetailDto>() { ObjectId = _sampleId3 };
         //     var handler = new GetTutorByIdQueryHandler(_mockUserRepo.Object, _mockSubjectRepo.Object,_mockTutorMajorRepo.Object,_mockMapper.Object);
         //     var result = await handler.Handle(query, CancellationToken.None);
         //
@@ -263,7 +264,7 @@ namespace UnitTests.ApplicationTests_Mediator_
             var result = await handler.Handle(query, CancellationToken.None);
 
             Assert.IsNotNull(result);
-            Assert.That(result.Role == UserRole.Learner, Is.True);
+            Assert.That(result.Value.Role == UserRole.Learner, Is.True);
         }
         // [Test]
         // public async Task GetAllTutors()
@@ -327,7 +328,7 @@ namespace UnitTests.ApplicationTests_Mediator_
         //[Test]
         //public async Task CreateUser()
         //{
-        //    var command = new CreateUpdateUserCommand { UserDto = userDto };
+        //    var command = new CreateUpdateUserCommand { UserDto = userForDetailDto };
         //    var handler = new CreateUserCommandHandler(_mockUserRepo.Object, _mockMapper.Object);
         //    var result = await handler.Handle(command, CancellationToken.None);
 

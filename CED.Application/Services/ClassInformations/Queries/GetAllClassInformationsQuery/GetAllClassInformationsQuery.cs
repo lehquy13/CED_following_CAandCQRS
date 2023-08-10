@@ -8,12 +8,12 @@ namespace CED.Application.Services.ClassInformations.Queries.GetAllClassInformat
 public class GetAllClassInformationsQuery : GetObjectQuery<PaginatedList<ClassInformationForListDto>>
 {
     public string SubjectName { get; set; } = string.Empty;
-    public Status? Status { get; set; }
-
-    public string Filter = string.Empty;
-    public GetAllClassInformationsQuery()
-    {
-        PageIndex = 1;
-    }
+      public Status? Status { get; set; }
+  
+      public string Filter = string.Empty;
+      public GetAllClassInformationsQuery()
+      {
+          PageIndex = 1;
+      }
     
 }

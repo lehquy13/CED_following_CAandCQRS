@@ -1,11 +1,8 @@
-﻿using CED.Contracts.Common.Models;
-using CED.Contracts.Models;
-using CED.Contracts.Subjects;
-using CED.Contracts.TutorReview;
+﻿using CED.Contracts.Models;
 using CED.Domain.Shared.ClassInformationConsts;
 
-namespace CED.Contracts.Users;
-public class TutorDto : FullAuditedAggregateRootDto<Guid>
+namespace CED.Contracts.Users.Tutors;
+public class TutorForListDto : FullAuditedAggregateRootDto<Guid>
 {
     //Admin information
     public string FirstName { get; set; } = string.Empty;
@@ -30,23 +27,5 @@ public class TutorDto : FullAuditedAggregateRootDto<Guid>
     public string University { get; set; } = string.Empty;
     public bool IsVerified { get; set; } = false;
     public short Rate { get; set; } = 5;
-    public List<SubjectDto> Majors { get; set; } = new();
-    public List<TutorVerificationInfoDto> TutorVerificationInfoDtos { get; set; } = new();
-    public PaginatedList<TutorReviewDto> TutorReviewDtos { get; set; } = new();
-    
-    
-
-}
-
-public class TutorMainInfoDto : FullAuditedAggregateRootDto<Guid>
-{
-    //is tutor related informtions
-    public UserRole Role { get; set; } = UserRole.Tutor;
-    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Student;
-    public string University { get; set; } = string.Empty;
-    public bool IsVerified { get; set; } = false;
-    public short Rate { get; set; } = 5;
-    public List<SubjectDto> Majors { get; set; } = new();
-    public List<TutorVerificationInfoDto> TutorVerificationInfoDtos { get; set; } = new();
 
 }

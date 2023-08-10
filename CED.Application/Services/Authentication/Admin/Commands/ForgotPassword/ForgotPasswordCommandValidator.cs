@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CED.Application.Services.Authentication.Admin.Commands.ForgotPassword;
+using FluentValidation;
 namespace CED.Application.Services.Authentication.Commands.Register;
 
 public class ForgotPasswordCommandValidator : AbstractValidator<ForgotPasswordCommand>

@@ -1,8 +1,6 @@
-﻿@using Newtonsoft.Json;
-@using CED.Contracts.ClassInformations;
-@using CED.Contracts.Subjects
+﻿@using CED.Contracts.Subjects
 @using CED.Domain.Shared.ClassInformationConsts
-@model CED.Contracts.ClassInformations.Dtos.ClassInformationDto
+@model CED.Contracts.ClassInformations.Dtos.ClassInformationForDetailDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -49,7 +47,7 @@
 
                     @foreach (var i in subjects)
                     {
-                        @if (i.Name != Model.SubjectName.ToString())
+                        @if (i.Name != Model.Subject.Name)
                         {
                             <option selected value="@i.Id">
                                 @i.Name
@@ -187,7 +185,7 @@
 
         
             <!-- ----------------------------------- -->
-            <!-- ----------------------------------- hObjectIdden info -->
+            <!-- ----------------------------------- hObjectidden info -->
 
             <div class="form-group" hidden>
                 <label asp-for="Status" class="control-label"></label>

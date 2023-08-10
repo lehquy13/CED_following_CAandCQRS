@@ -36,8 +36,6 @@ namespace CED.Web.Controllers
             ViewData["Roles"] = EnumProvider.Roles;
             ViewData["Genders"] = EnumProvider.Genders;
             ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
-
-            //ViewData["Addresses"] = _addressService.GetAddresses();
         }
 
         [HttpGet("")]
@@ -54,12 +52,12 @@ namespace CED.Web.Controllers
 
             var loginResult = await _mediator.Send(query);
 
-            if (loginResult is not null)
+            if (loginResult.IsSuccess)
             {
                 var changePasswordRequest = _mapper.Map<ChangePasswordRequest>(loginResult);
                 return View(new ProfileViewModel
                 {
-                    UserDto = loginResult,
+                    UserDto = loginResult.Value,
                     ChangePasswordRequest = changePasswordRequest
                 });
             }
@@ -102,7 +100,7 @@ namespace CED.Web.Controllers
                     ViewBag.Updated = result;
                     Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
 
-                    if (result == true)
+                    if (result.IsSuccess)
                     {
                         HttpContext.Response.Cookies.Append("name", query.UserDto.FirstName + query.UserDto.LastName);
                         HttpContext.Response.Cookies.Append("image", query.UserDto.Image);

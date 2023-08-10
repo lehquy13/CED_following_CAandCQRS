@@ -1,4 +1,4 @@
-﻿using CED.Contracts.Users;
+﻿using CED.Contracts.Users.Tutors;
 using FluentResults;
 using MediatR;
 

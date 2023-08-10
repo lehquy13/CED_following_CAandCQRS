@@ -5,7 +5,7 @@ namespace CED.Web.CustomerSide.Models;
 
 public class ClassInformationDetailViewModel
 {
-    public ClassInformationDto ClassInformationDto { get; set; } = new();
-    public PaginatedList<ClassInformationDto> RelatedClasses { get; set; } = PaginatedList<ClassInformationDto>.CreateAsync(new List<ClassInformationDto>(){},0,0);
+    public ClassInformationForDetailDto ClassInformationDto { get; set; } = new();
+    public PaginatedList<ClassInformationForListDto> RelatedClasses { get; set; } = PaginatedList<ClassInformationForListDto>.CreateAsync(new List<ClassInformationForListDto>(){},0,0);
     
 }

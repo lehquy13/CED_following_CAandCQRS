@@ -41,9 +41,9 @@ public class SubjectController : ControllerBase
     public async Task<IActionResult> GetSubject(Guid id)
     {
         var query = _mapper.Map<GetSubjectQuery>(id);
-        SubjectDto subject = await _mediator.Send(query);
+        var subject = await _mediator.Send(query);
 
-        return Ok(subject);
+        return Ok(subject.Value);
     }
 }
 

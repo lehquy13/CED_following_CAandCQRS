@@ -1,16 +1,11 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Users;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CED.Application.Services.Users.Admin.Commands;
-using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts;
-using CED.Contracts.Subjects;
 using CED.Domain.Shared;
-using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.Utilities;
-using Microsoft.EntityFrameworkCore;
 
 namespace CED.Web.Controllers;
 
@@ -20,14 +15,14 @@ public class UserController : Controller
     private readonly ILogger<UserController> _logger;
 
     private readonly ISender _mediator;
-    private readonly IMapper _mapper;
+    //private readonly IMapper _mapper;
 
 
-    public UserController(ILogger<UserController> logger, ISender sender, IMapper mapper)
+    public UserController(ILogger<UserController> logger, ISender sender)
     {
         _logger = logger;
         _mediator = sender;
-        _mapper = mapper;
+       // _mapper = mapper;
     }
 
     private void PackStaticListToView()
@@ -48,28 +43,30 @@ public class UserController : Controller
             PageSize = 200
         };
         var userDtos = await _mediator.Send(query);
-
-        return View(userDtos);
+        if(userDtos.IsSuccess)
+            return View(userDtos.Value);
+        return RedirectToAction("Error", "Home");
     }
 
     [HttpGet("Edit")]
-    public async Task<IActionResult> Edit(Guid Id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         PackStaticListToView();
         var query = new GetObjectQuery<UserDto>()
         {
-            ObjectId = Id
+            ObjectId = id
         };
         var result = await _mediator.Send(query);
-
-        return View(result);
+        if(result.IsSuccess)
+            return View(result.Value);
+        return RedirectToAction("Error", "Home");
     }
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, UserDto userDto)
+    public async Task<IActionResult> Edit(Guid id, UserDto userDto)
     {
-        if (Id != userDto.Id)
+        if (id != userDto.Id)
         {
             return NotFound();
         }
@@ -83,10 +80,10 @@ public class UserController : Controller
 
                 var result = await _mediator.Send(query);
 
-                if (!result)
+                if (result.IsFailed)
                 {
                     _logger.LogError("Create user failed!");
-                    throw new DbUpdateException("Create fail!");
+                    return RedirectToAction("Error", "Home");
                 }
 
                 PackStaticListToView();
@@ -126,12 +123,17 @@ public class UserController : Controller
 
 
         var result = await _mediator.Send(command);
-        if (result)
+        if (result.IsFailed)
+        {
+            foreach (var v in result.Errors)
+            {
+                _logger.LogError("Create user failed! {VMessage}", v.Message);
+            }
+            return RedirectToAction("Error", "Home");
+        }
         {
             return RedirectToAction("Index");
         }
-
-        return View("Create", userDto);
     }
 
     [HttpGet("Delete")]
@@ -145,9 +147,13 @@ public class UserController : Controller
         var query = new GetObjectQuery<UserDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result == null)
+        if (result.IsFailed)
         {
-            return NotFound();
+            foreach (var v in result.Errors)
+            {
+                _logger.LogError("Delete user failed! {VMessage}", v.Message);
+            }
+            return RedirectToAction("Error", "Home");
         }
 
         return Json(new
@@ -168,7 +174,7 @@ public class UserController : Controller
         var query = new DeleteUserCommand((Guid)id);
         var result = await _mediator.Send(query);
 
-        if (result)
+        if (result.IsSuccess)
         {
             return RedirectToAction("Index");
         }
@@ -187,9 +193,9 @@ public class UserController : Controller
         var query = new GetObjectQuery<UserDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result is not null)
+        if (result.IsSuccess)
         {
-            return View(result);
+            return View(result.Value);
         }
 
         return RedirectToAction("Error", "Home");
@@ -205,8 +211,9 @@ public class UserController : Controller
             PageSize = 200
         };
         var studentDtos = await _mediator.Send(query);
-
-        return View(studentDtos);
+        if(studentDtos.IsSuccess)
+            return View(studentDtos.Value);
+        return RedirectToAction("Error", "Home");
     }
 
   

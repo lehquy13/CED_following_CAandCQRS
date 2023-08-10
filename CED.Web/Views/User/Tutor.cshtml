@@ -1,5 +1,4 @@
-﻿@using CED.Contracts.Users
-@model List<TutorDto>
+﻿@model List<CED.Contracts.Users.Tutors.TutorForDetailDto>
 @{
     int i = 0;
 }
@@ -26,7 +25,7 @@
                     <th scope="col">Academic Level</th>
                     <th scope="col">University</th>
                     <th scope="col">Phone Number</th>
-                    <th data-sortable="false" scope="col" style="wObjectIdth:30%;">Actions</th>
+                    <th data-sortable="false" scope="col" style="wObjectidth:30%;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,7 +35,7 @@
                     i++;
                     <tr>
                         <th scope="row">
-                            <input hidden name="Id" value="@user.Id" />
+                            <input hidden name="id" value="@user.Id" />
                             @i
                         </th>
                         <td>@user.FirstName @user.LastName</td>

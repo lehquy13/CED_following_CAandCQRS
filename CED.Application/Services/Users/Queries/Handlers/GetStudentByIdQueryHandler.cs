@@ -1,6 +1,8 @@
-﻿using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using CED.Application.Common.Errors.Users;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Contracts.Users;
 using CED.Domain.Users;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.Users.Queries.Handlers;
@@ -13,14 +15,14 @@ public class GetStudentByIdQueryHandler : GetByIdQueryHandler<GetObjectQuery<Lea
     {
         _userRepository = userRepository;
     }
-    public override async Task<LearnerDto?> Handle(GetObjectQuery<LearnerDto> query, CancellationToken cancellationToken)
+    public override async Task<Result<LearnerDto>> Handle(GetObjectQuery<LearnerDto> query, CancellationToken cancellationToken)
     {
         try
         {
             User? user = await _userRepository.GetById(query.ObjectId);
-            if (user is null) { return null; }
+            if (user is null) { return Result.Fail(new NonExistUserError()); }
             LearnerDto result = _mapper.Map<LearnerDto>(user);
-            return await Task.FromResult(result);
+            return result;
         }
         catch (Exception ex)
         {

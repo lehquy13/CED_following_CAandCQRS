@@ -5,7 +5,7 @@ using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.TutorReviews.Queries;
 using CED.Contracts;
 using CED.Contracts.TutorReview;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.ClassInformations;
 using CED.Domain.Common.Models;
 using CED.Domain.Repository;
@@ -76,7 +76,7 @@ public class CreateReviewCommandHandler : CreateUpdateCommandHandler<CreateRevie
                 return Result.Fail("Fail to update tutor's rate");
             }
             
-            var defaultRequest = new GetObjectQuery<TutorDto>();
+            var defaultRequest = new GetObjectQuery<TutorForDetailDto>();
             _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
             return true;
         }

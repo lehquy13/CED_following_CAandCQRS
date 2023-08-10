@@ -1,4 +1,5 @@
-﻿using CED.Contracts.ClassInformations.Dtos;
+﻿using CED.Contracts;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.TutorReview;
 using CED.Domain.ClassInformations;
 using CED.Domain.Review;
@@ -16,7 +17,8 @@ public class ClassInformationMappingConfig : IRegister
         config.NewConfig<RequestGettingClass, RequestGettingClassMinimalDto>();
         config.NewConfig<RequestGettingClassMinimalDto, RequestGettingClass>();
         //Config for Tutor review
-        config.NewConfig<TutorReview, TutorReviewDto >();
+        config.NewConfig<TutorReview, TutorReviewDto>();
+       
         
         //Config for Class Information
         config.NewConfig<ClassInformationDto, ClassInformation>()        

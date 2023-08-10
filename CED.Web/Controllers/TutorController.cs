@@ -1,5 +1,4 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Contracts.Users;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,7 @@ using CED.Contracts.Subjects;
 using CED.Domain.Shared;
 using CED.Web.Utilities;
 using Microsoft.EntityFrameworkCore;
+using CED.Contracts.Users.Tutors;
 
 namespace CED.Web.Controllers;
 
@@ -44,28 +44,30 @@ public class TutorController : Controller
     {
         var query = new GetAllTutorInformationsAdvancedQuery();
         var userDtos = await _mediator.Send(query);
-
-        return View(userDtos);
+        if(userDtos.IsSuccess)
+            return View(userDtos.Value);
+        return RedirectToAction("Error", "Home");
     }
 
     [HttpGet("Edit")]
-    public async Task<IActionResult> Edit(Guid Id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         PackStaticListToView();
-        var query = new GetObjectQuery<TutorDto>
+        var query = new GetObjectQuery<TutorForDetailDto>
         {
-            ObjectId = Id
+            ObjectId = id
         };
         var result = await _mediator.Send(query);
-
-        return View(result);
+        if(result.IsSuccess)
+            return View(result.Value);
+        return RedirectToAction("Error", "Home");
     }
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, TutorDto userDto, List<Guid> subjectId)
+    public async Task<IActionResult> Edit(Guid id, TutorForDetailDto userForDetailDto, List<Guid> subjectId)
     {
-        if (Id != userDto.Id)
+        if (id != userForDetailDto.Id)
         {
             return NotFound();
         }
@@ -74,13 +76,16 @@ public class TutorController : Controller
         {
             try
             {
-                var query = new CreateUpdateTutorCommand(userDto, subjectId);
+                var query = new CreateUpdateTutorCommand(userForDetailDto, subjectId);
                 var result = await _mediator.Send(query);
 
-                if (!result)
+                if (result.IsFailed)
                 {
                     _logger.LogError("Create user failed!");
-                    throw new DbUpdateException("Create fail!");
+                    foreach (var v in result.Errors)
+                    {
+                        _logger.LogError("{0}", v.Message);
+                    }
                 }
 
                 PackStaticListToView();
@@ -88,7 +93,7 @@ public class TutorController : Controller
                 return Helper.RenderRazorViewToString(
                     this,
                     "Edit",
-                    userDto
+                    userForDetailDto
                 );
             }
             catch (Exception ex)
@@ -103,7 +108,7 @@ public class TutorController : Controller
         return Helper.RenderRazorViewToString(
             this,
             "Edit",
-            userDto,
+            userForDetailDto,
             true
         );
 
@@ -113,25 +118,29 @@ public class TutorController : Controller
     public IActionResult Create()
     {
         PackStaticListToView();
-        return View(new TutorDto());
+        return View(new TutorForDetailDto());
     }
 
 
     [HttpPost("Create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(TutorDto userDto, List<Guid> subjectId) // cant use userdto
+    public async Task<IActionResult> Create(TutorForDetailDto userForDetailDto, List<Guid> subjectId) // cant use userdto
     {
-        userDto.LastModificationTime = DateTime.UtcNow;
-        var command = new CreateUpdateTutorCommand(userDto, subjectId);
+        userForDetailDto.LastModificationTime = DateTime.UtcNow;
+        var command = new CreateUpdateTutorCommand(userForDetailDto, subjectId);
 
 
         var result = await _mediator.Send(command);
-        if (result)
+        if (result.IsFailed)
         {
-            return RedirectToAction("Index");
+            foreach (var v in result.Errors)
+            {
+                _logger.LogError("{0}", v.Message);
+            }
+            return RedirectToAction("Error", "Home");
         }
 
-        return View("Create", userDto);
+        return View("Create", userForDetailDto);
     }
 
     [HttpGet("Delete")]
@@ -142,17 +151,17 @@ public class TutorController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorDto>() { ObjectId = (Guid)id };
+        var query = new GetObjectQuery<TutorForDetailDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result == null)
+        if (result.IsFailed)
         {
             return NotFound();
         }
 
         return Json(new
         {
-            html = Helper.RenderRazorViewToString(this, "Delete", result)
+            html = Helper.RenderRazorViewToString(this, "Delete", result.Value)
         });
     }
 
@@ -167,7 +176,7 @@ public class TutorController : Controller
         var query = new DeleteUserCommand((Guid)id);
         var result = await _mediator.Send(query);
 
-        if (result)
+        if (result.IsFailed)
         {
             return RedirectToAction("Index");
         }
@@ -183,12 +192,12 @@ public class TutorController : Controller
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorDto>() { ObjectId = (Guid)id };
+        var query = new GetObjectQuery<TutorForDetailDto>() { ObjectId = (Guid)id };
         var result = await _mediator.Send(query);
 
-        if (result is not null)
+        if (result.IsSuccess)
         {
-            return View(result);
+            return View(result.Value);
         }
 
         return RedirectToAction("Error", "Home");

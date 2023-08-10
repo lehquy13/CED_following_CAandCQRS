@@ -1,9 +1,9 @@
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using MediatR;
 
 namespace CED.Application.Services.Users.Queries.CustomerQueries;
 
-public class PopularTutorsQuery : IRequest<List<TutorDto>>
+public class PopularTutorsQuery : IRequest<List<TutorForDetailDto>>
 {
     
 }

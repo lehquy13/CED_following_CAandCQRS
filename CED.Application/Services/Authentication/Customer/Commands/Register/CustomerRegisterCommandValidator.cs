@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CED.Application.Services.Authentication.Customer.Commands.Register;
 
-public class CustomerRegisterCommandValidator : AbstractValidator<RegisterCommand>
+public class CustomerRegisterCommandValidator : AbstractValidator<CustomerRegisterCommand>
 {
     public CustomerRegisterCommandValidator()
     {

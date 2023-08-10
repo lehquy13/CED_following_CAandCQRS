@@ -1,6 +1,6 @@
 using CED.Contracts.ClassInformations.Dtos;
 
-namespace CED.Contracts.Users;
+namespace CED.Contracts.Users.Tutors;
 
 public class TutorProfileDto
 {

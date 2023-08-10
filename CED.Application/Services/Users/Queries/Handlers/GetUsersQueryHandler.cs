@@ -2,6 +2,7 @@
 using CED.Contracts;
 using CED.Contracts.Users;
 using CED.Domain.Users;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.Users.Queries.Handlers;
@@ -13,7 +14,7 @@ public class GetUsersQueryHandler : GetAllQueryHandler<GetObjectQuery<PaginatedL
     {
         _userRepository = userRepository;
     }
-    public override async Task<PaginatedList<UserDto>> Handle(GetObjectQuery<PaginatedList<UserDto>> query, CancellationToken cancellationToken)
+    public override async Task<Result<PaginatedList<UserDto>>> Handle(GetObjectQuery<PaginatedList<UserDto>> query, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
         try

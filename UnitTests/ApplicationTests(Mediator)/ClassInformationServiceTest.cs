@@ -4,7 +4,7 @@ using CED.Application.Services.ClassInformations.Queries;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Subjects;
-using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
 using CED.Domain.ClassInformations;
 using CED.Domain.Repository;
 using CED.Domain.Shared.ClassInformationConsts;
@@ -44,8 +44,8 @@ namespace UnitTests.ApplicationTests_Mediator_
         //sample values for tutors
         
         private User? _tutor;
-        private TutorDto? _tutorDto;
-        private List<TutorDto>? _tutorDtos;
+        private TutorForDetailDto? _tutorDto;
+        private List<TutorForDetailDto>? _tutorDtos;
         private List<User>? _tutorUsers;
         [SetUp]
         public void Setup()
@@ -55,21 +55,22 @@ namespace UnitTests.ApplicationTests_Mediator_
 
             _classInformation = new ClassInformation
             {
-                Id = _sampleId, Description = "Description Sample", Title = "ClassInformation's Name Sample",
+                Id = _sampleId, Description = "Description Sample", Title = "ClassInformationDto's Name Sample",
                 SubjectId = _sampleId, TutorId = _sampleId
             };
             _classInformationDto = new ClassInformationDto
-                { Id = _sampleId, Description = "Description Sample", Title = "ClassInformation's Name Sample",SubjectId = _sampleId,TutorDtoId = _sampleId };
+                { Id = _sampleId, Description = "Description Sample", Title = "ClassInformationDto's Name Sample",
+                    SubjectId = _sampleId,TutorId = _sampleId };
 
             _classInformations = new List<ClassInformation>{ _classInformation,
                 new ClassInformation
                 {
-                    Id = _sampleId2, Description = "Description Sample 2", Title = "ClassInformation's Name Sample 2",
+                    Id = _sampleId2, Description = "Description Sample 2", Title = "ClassInformationDto's Name Sample 2",
                     SubjectId = _sampleId,TutorId = _sampleId
                 },
                 new ClassInformation
                 {
-                    Id = _sampleId3, Description = "Description Sample 3", Title = "ClassInformation's Name Sample 3",
+                    Id = _sampleId3, Description = "Description Sample 3", Title = "ClassInformationDto's Name Sample 3",
                     SubjectId = _sampleId, TutorId = _sampleId
                 }
 
@@ -78,13 +79,13 @@ namespace UnitTests.ApplicationTests_Mediator_
             _classInformationDtos = new List<ClassInformationDto>{ _classInformationDto,
                 new ClassInformationDto
                 {
-                    Id = _sampleId2, Description = "Description Sample 2", Title = "ClassInformation's Name Sample 2",
-                    SubjectId = _sampleId,TutorDtoId = _sampleId
+                    Id = _sampleId2, Description = "Description Sample 2", Title = "ClassInformationDto's Name Sample 2",
+                    SubjectId = _sampleId, TutorId = _sampleId
                 },
                 new ClassInformationDto
                 {
-                    Id = _sampleId3, Description = "Description Sample 3", Title = "ClassInformation's Name Sample 3",
-                    SubjectId = _sampleId, TutorDtoId = _sampleId
+                    Id = _sampleId3, Description = "Description Sample 3", Title = "ClassInformationDto's Name Sample 3",
+                    SubjectId = _sampleId, TutorId = _sampleId
                 }
 
             };
@@ -99,7 +100,7 @@ namespace UnitTests.ApplicationTests_Mediator_
                 FirstName = "User's First Name Sample 3",
                 Role = UserRole.Tutor
             };
-            _tutorDto = new TutorDto
+            _tutorDto = new TutorForDetailDto
             {
                 Id = _sampleId3,
                 Description = "Description Sample 3",
@@ -107,7 +108,7 @@ namespace UnitTests.ApplicationTests_Mediator_
                 FirstName = "User's First Name Sample 3",
                 Role = UserRole.Tutor
             };
-            _tutorDtos = new List<TutorDto>{
+            _tutorDtos = new List<TutorForDetailDto>{
                 _tutorDto
             };
 
@@ -142,7 +143,7 @@ namespace UnitTests.ApplicationTests_Mediator_
                 {
                     Id = _classInformation.Id, Description = _classInformation.Description,
                     Title = _classInformation.Title,
-                    TutorDtoId = _classInformation.TutorId
+                    TutorId = _classInformation.TutorId
                 });
             _mockMapper
                 .Setup(x => x.Map<ClassInformation>(_classInformationDto))

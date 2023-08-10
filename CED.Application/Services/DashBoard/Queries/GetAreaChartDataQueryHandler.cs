@@ -2,6 +2,7 @@
 using CED.Contracts.Charts;
 using CED.Domain.ClassInformations;
 using CED.Domain.Shared.ClassInformationConsts;
+using FluentResults;
 using MapsterMapper;
 
 namespace CED.Application.Services.DashBoard.Queries;
@@ -16,12 +17,12 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
         _classInformationRepository = classInformationRepository;
     }
 
-    public override async Task<AreaChartData?> Handle(GetAreaChartDataQuery query,
+    public override async Task<Result<AreaChartData>> Handle(GetAreaChartDataQuery query,
         CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
-        
-        // Create a dateListRange
+
+        // Create a dateListRange by the query.ByTime
         List<int> dates = new List<int>();
 
         var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
@@ -34,6 +35,7 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
                     dates.Add(startDay.Day);
                     startDay = startDay.AddDays(1);
                 }
+
                 break;
             case ByTime.Week:
                 for (int i = 0; i < 7; i++)
@@ -41,24 +43,26 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
                     dates.Add(startDay.Day);
                     startDay = startDay.AddDays(1);
                 }
+
                 break;
         }
+
         startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
 
-       
-        var classesInWeek = dates.GroupJoin(
-            _classInformationRepository.GetAll()
+        var allClasses = await _classInformationRepository.GetAllList();
+        var confirmedClasses = dates.Join(
+            allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.Confirmed)
-                .GroupBy(x => x.CreationTime.Day),
+                .GroupBy(x => x.CreationTime.Day), // Group by day of time range, then merge with dates
             d => d,
             c => c.Key,
             (d, c) => new
             {
                 dates = d,
-                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee)
+                sum = c.Sum(r => r.ChargeFee)
             });
-        var classesInWeek1 = dates.GroupJoin(
-            _classInformationRepository.GetAll()
+        var canceledClasses = dates.Join(
+            allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.Canceled)
                 .GroupBy(x => x.CreationTime.Day),
             d => d,
@@ -66,10 +70,10 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
             (d, c) => new
             {
                 dates = d,
-                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee)
+                sum = c.Sum(r => r.ChargeFee)
             });
-        var classesInWeek2 = dates.GroupJoin(
-            _classInformationRepository.GetAll()
+        var onPurchasingClasses = dates.Join(
+            allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.OnPurchasing)
                 .GroupBy(x => x.CreationTime.Day),
             d => d,
@@ -77,35 +81,37 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
             (d, c) => new
             {
                 dates = d,
-                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee)
+                sum = c.Sum(r => r.ChargeFee)
             });
-           
 
-        List<float> resultInts = classesInWeek
-            .Select(x => x.sum ?? 0)
+
+        List<float> resultInts = confirmedClasses
+            .Select(x => x.sum)
             .ToList();
         if (resultInts.Count <= 0)
         {
             resultInts.Add(1);
         }
-        List<float> resultInts1 = classesInWeek1
-            .Select(x => x.sum ?? 0)
+
+        List<float> resultInts1 = canceledClasses
+            .Select(x => x.sum)
             .ToList();
         if (resultInts1.Count <= 0)
         {
-            resultInts.Add(1);
+            resultInts1.Add(1);
         }
-        List<float> resultInts2 = classesInWeek2
-            .Select(x => x.sum ?? 0)
+
+        List<float> resultInts2 = onPurchasingClasses
+            .Select(x => x.sum)
             .ToList();
         if (resultInts2.Count <= 0)
         {
-            resultInts.Add(1);
+            resultInts2.Add(1);
         }
 
-        List<string> resultStrings = classesInWeek
-            .Select(x => x.dates.ToString())
-            .ToList();
+        var resultStrings = dates
+            .Select(x => x.ToString()).ToList();
+        
         if (resultStrings.Count <= 0)
         {
             resultStrings.Add("None");
@@ -114,9 +120,9 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
 
         return new AreaChartData
         (
-            new AreaData("Total Revenues",resultInts ),
-            new AreaData("Charged",resultInts2),
-            new AreaData( "Refunded",resultInts1),
+            new AreaData("Total Revenues", resultInts),
+            new AreaData("Charged", resultInts2),
+            new AreaData("Refunded", resultInts1),
             resultStrings
         );
     }

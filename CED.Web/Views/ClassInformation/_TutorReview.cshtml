@@ -1,12 +1,12 @@
 @model CED.Contracts.TutorReview.TutorReviewDto
 @{
 }
-<form asp-action="RemoveReview" asp-controller="ClassInformation" onclick="this.submit(); this.hObjectIde(); return false;">
+<form asp-action="RemoveReview" asp-controller="ClassInformation" onclick="this.submit(); this.hObjectide(); return false;">
     <div class="card">
     
         <div class="card-body">
             <h5 class="card-title">Review's detail</h5>
-            <input name="ObjectId" value="@Model.Id" class="form-control" readonly="" hidden/>
+            <input name="Objectid" value="@Model.Id" class="form-control" readonly="" hidden/>
             <div class="col-md-12">
                 @* <label asp-for="Description" class="form-label">Description</label> *@
                 <textarea asp-for="Description" class="form-control">

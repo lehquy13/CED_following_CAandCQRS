@@ -1,8 +1,8 @@
-﻿using CED.Application.Services.Users.Queries;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
 using CED.Contracts.Users;
-
+using CED.Contracts.Users.Tutors;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,16 +30,16 @@ namespace CED.WebAPI.Controllers
         [HttpGet("")]
         public async Task<IActionResult> Profile(Guid id)
         {
-            var query = new GetUserByIdQuery<UserDto>()
+            var query = new GetObjectQuery<UserDto>()
             {
-                Id = id
+                ObjectId = id
             };
 
             var loginResult = await _mediator.Send(query);
 
-            if (loginResult is not null)
+            if (loginResult.IsSuccess)
             {
-                return Ok(loginResult);
+                return Ok(loginResult.Value);
             }
 
             return NotFound();
@@ -58,9 +58,9 @@ namespace CED.WebAPI.Controllers
 
                     var result = await _mediator.Send(query);
 
-                    if (result)
+                    if (result.IsSuccess)
                     {
-                        return Ok(result);
+                        return Ok(result.Value);
                     }
 
                     return Conflict(result);
@@ -88,9 +88,9 @@ namespace CED.WebAPI.Controllers
 
                     var result = await _mediator.Send(query);
 
-                    if (result)
+                    if (result.IsSuccess)
                     {
-                        return Ok(result);
+                        return Ok(result.Value);
                     }
 
                     return Conflict(result);

@@ -53,9 +53,9 @@ public class SubjectController : Controller
 
         var result = await _mediator.Send(query);
 
-        if (result is not null)
+        if (result.IsSuccess)
         {
-            return View(result);
+            return View(result.Value);
 
         }
         return RedirectToAction("Error", "Home");

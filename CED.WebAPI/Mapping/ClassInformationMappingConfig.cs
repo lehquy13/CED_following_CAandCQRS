@@ -20,9 +20,7 @@ public class ClassInformationMappingConfig : IRegister
         
         config.NewConfig<CreateUpdateClassInformationDto, CreateUpdateClassInformationCommand>()
             .Map(dest => dest.ClassInformationDto, src => src);
-        config.NewConfig<RequestGettingClassRequest, RequestGettingClassCommand>()
-            .Map(dest => dest.ClassGuid, src => src.ClassId)
-            .Map(dest => dest.Email, src => src.Email);
+        
 
     }
 }
