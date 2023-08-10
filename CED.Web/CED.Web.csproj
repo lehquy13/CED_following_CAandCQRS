@@ -24,4 +24,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\temp" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.10" />
+  </ItemGroup>
 </Project>

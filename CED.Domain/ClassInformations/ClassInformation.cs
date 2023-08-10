@@ -42,7 +42,7 @@ public class ClassInformation : FullAuditedAggregateRoot<Guid>
 
     //Subject related information
     public Guid SubjectId { get; set; }
-    public Subject Subject { get; set; }
+    public Subject Subject { get; set; }= null!;
     public Guid? TutorId { get; set; }
     public Tutor? Tutor { get; set; }
 

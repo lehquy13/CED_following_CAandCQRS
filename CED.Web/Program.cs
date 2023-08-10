@@ -5,6 +5,7 @@ using CED.Web;
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddControllersWithViews();
+    builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
     builder.Services
          .AddInfrastructure(builder.Configuration)

@@ -9,7 +9,7 @@ namespace CED.Contracts.ClassInformations.Dtos;
 public class RequestGettingClassDto : FullAuditedAggregateRootDto<Guid>
 {
     public Guid TutorId { get; set; }
-    public Tutor Tutor { get; set; }
+    public Tutor Tutor { get; set; } = null!;
     public Guid ClassInformationId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string SubjectName { get; set; } = string.Empty;
@@ -22,7 +22,7 @@ public class RequestGettingClassForListDto : FullAuditedAggregateRootDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public Guid ClassInformationId { get; set; }
-    public ClassInformationDto ClassInformationDto { get; set; }
+    public ClassInformationDto ClassInformationDto { get; set; } = null!;
     public string SubjectName { get; set; } = string.Empty;
     public RequestStatus RequestStatus { get; set; } = RequestStatus.Verifying;
 }

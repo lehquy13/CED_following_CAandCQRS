@@ -41,7 +41,7 @@ public class ClassInformationDto : FullAuditedAggregateRootDto<Guid>
 
     //Subject related information
     public Guid SubjectId { get; set; }
-    public SubjectDto Subject { get; set; }
+    public SubjectDto Subject { get; set; } = null!;
     public Guid? TutorId { get; set; }
     public TutorReviewDto? TutorReviewDto { get; set; }
 
