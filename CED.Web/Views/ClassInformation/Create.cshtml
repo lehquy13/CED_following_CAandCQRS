@@ -4,11 +4,9 @@
 
 @{
     ViewData["Title"] = "Edit";
-    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
     List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
     List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
     List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
-    List<string> statuses = ViewData["Statuses"] as List<string> ?? new List<string>();
 
     List<SubjectDto>? subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
 
@@ -185,7 +183,7 @@
 
         
             <!-- ----------------------------------- -->
-            <!-- ----------------------------------- hObjectidden info -->
+            <!-- ----------------------------------- hidden info -->
 
             <div class="form-group" hidden>
                 <label asp-for="Status" class="control-label"></label>

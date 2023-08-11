@@ -39,7 +39,7 @@ public class SubjectController : Controller
         return View(subjectDtos.Value);
     }
     [HttpGet]
-    [Route("{ObjectId}")]
+    [Route("{id}")]
     public async Task<IActionResult> Index(int i)
     {
         var query = new GetObjectQuery<PaginatedList<SubjectDto>>()

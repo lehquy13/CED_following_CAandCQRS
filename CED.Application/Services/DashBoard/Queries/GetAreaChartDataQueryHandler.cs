@@ -50,7 +50,7 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
         startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
 
         var allClasses = await _classInformationRepository.GetAllList();
-        var confirmedClasses = dates.Join(
+        var confirmedClasses = dates.GroupJoin(
             allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.Confirmed)
                 .GroupBy(x => x.CreationTime.Day), // Group by day of time range, then merge with dates
@@ -59,9 +59,9 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
             (d, c) => new
             {
                 dates = d,
-                sum = c.Sum(r => r.ChargeFee)
+                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee) ?? 0
             });
-        var canceledClasses = dates.Join(
+        var canceledClasses = dates.GroupJoin(
             allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.Canceled)
                 .GroupBy(x => x.CreationTime.Day),
@@ -70,9 +70,9 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
             (d, c) => new
             {
                 dates = d,
-                sum = c.Sum(r => r.ChargeFee)
+                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee) ?? 0
             });
-        var onPurchasingClasses = dates.Join(
+        var onPurchasingClasses = dates.GroupJoin(
             allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.OnPurchasing)
                 .GroupBy(x => x.CreationTime.Day),
@@ -81,7 +81,7 @@ public class GetAreaChartDataQueryHandler : GetByIdQueryHandler<GetAreaChartData
             (d, c) => new
             {
                 dates = d,
-                sum = c.Sum(r => r.ChargeFee)
+                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee) ?? 0
             });
 
 

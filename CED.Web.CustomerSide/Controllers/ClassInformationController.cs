@@ -74,7 +74,7 @@ public class ClassInformationController : Controller
 
     // GET api/<ClassInformationController>/5
     [HttpGet]
-    [Route("{ObjectId}")]
+    [Route("{id}")]
     public async Task<IActionResult> Detail(Guid id)
     {
         if (id.Equals(Guid.Empty))

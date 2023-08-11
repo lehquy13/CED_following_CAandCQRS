@@ -166,7 +166,7 @@ public class AuthenticationController : Controller
         return View("SuccessPage", "If you have registered with us, we have sent an email to your registered email.");
     }
     [HttpGet]
-    [Route("ChangePassword/{ObjectId}")]
+    [Route("ChangePassword/{id}")]
     public async Task<IActionResult> ChangePassword(string id)
     {
         await Task.CompletedTask;

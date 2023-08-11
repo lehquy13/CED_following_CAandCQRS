@@ -13,11 +13,11 @@
     <div class="row mb-3">
         <label asp-for="Image" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
         <div class="col-md-8 col-lg-9">
-            <img src="@Model.Image"style="max-wObjectIdth: 120px;" alt="Profile" id="avatar">
+            <img src="@Model.Image"style="max-width: 120px;" alt="Profile" id="avatar">
             <input id="image" asp-for="Image" hidden type="text"/>
             <div class="pt-2">
 
-                <input type="file" id="formFile" name="formFile" style="visibility: hObjectIdden; wObjectIdth: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','avatar'); return false;"/>
+                <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','avatar'); return false;"/>
                 <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
                     <i class="bi bi-upload"></i>
                 </a>
@@ -133,38 +133,7 @@
     
    
 
-    @* <div class="row mb-3"> *@
-    @*     <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label> *@
-    @*     <div class="col-md-8 col-lg-9"> *@
-    @*         <input name="twitter" type="text" class="form-control" ObjectId="Twitter" value="https://twitter.com/#"> *@
-    @*     </div> *@
-    @* </div> *@
-    @* *@
-    @* <div class="row mb-3"> *@
-    @*     <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label> *@
-    @*     <div class="col-md-8 col-lg-9"> *@
-    @*         <input name="facebook" type="text" class="form-control" ObjectId="Facebook" value="https://facebook.com/#"> *@
-    @*     </div> *@
-    @* </div> *@
-    @* *@
-    @* <div class="row mb-3"> *@
-    @*     <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label> *@
-    @*     <div class="col-md-8 col-lg-9"> *@
-    @*         <input name="instagram" type="text" class="form-control" ObjectId="Instagram" value="https://instagram.com/#"> *@
-    @*     </div> *@
-    @* </div> *@
-    @* *@
-    @* <div class="row mb-3"> *@
-    @*     <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label> *@
-    @*     <div class="col-md-8 col-lg-9"> *@
-    @*         <input name="linkedin" type="text" class="form-control" ObjectId="Linkedin" value="https://linkedin.com/#"> *@
-    @*     </div> *@
-    @* </div> *@
-    <!-- hObjectIdden info-->
-    @* <div class="col-md-6" hObjectIdden> *@
-    @*     <label asp-for="Password" class="form-label">Password</label> *@
-    @*     <input type="password" asp-for="Password" class="form-control"> *@
-    @* </div> *@
+    
     <div class="form-group" hidden>
         <label asp-for="DeleterUserId" class="control-label"></label>
         <input asp-for="DeleterUserId" class="form-control"/>

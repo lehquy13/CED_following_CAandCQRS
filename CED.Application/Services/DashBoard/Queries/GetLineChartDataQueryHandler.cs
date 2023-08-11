@@ -3,6 +3,7 @@ using CED.Application.Services.Subjects.Queries;
 using CED.Contracts.Charts;
 using CED.Contracts.Subjects;
 using CED.Domain.ClassInformations;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Subjects;
 using CED.Domain.Users;
 using FluentResults;
@@ -15,7 +16,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
     private readonly IClassInformationRepository _classInformationRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUserRepository _tutorRepository;
-    public GetLineChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository, IUserRepository userRepository,IUserRepository tutorRepository) : base(mapper)
+    public GetLineChartDataQueryHandler(IMapper mapper, IClassInformationRepository classInformationRepository, IUserRepository userRepository, IUserRepository tutorRepository) : base(mapper)
     {
         _classInformationRepository = classInformationRepository;
         _userRepository = userRepository;
@@ -32,7 +33,7 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
         {
             case "month":
                 startDay = startDay.Subtract(TimeSpan.FromDays(29));
-                
+
                 for (int i = 0; i < 30; i++)
                 {
                     dates.Add(startDay.Day);
@@ -56,53 +57,65 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
 
         var allClasses = _classInformationRepository.GetAll().Where(x => x.CreationTime >= startDay)
             .GroupBy(x => x.CreationTime.Day).ToList();
-        var allLearner =  _userRepository.GetAll()
-            .Where(x => x.CreationTime >= startDay)
+        var allLearner = _userRepository.GetAll()
+            .Where(x => x.CreationTime >= startDay&& x.Role == UserRole.Learner)
             .GroupBy(x => x.CreationTime.Day).ToList();
         var allTutor = _tutorRepository.GetAll()
-            .Where(x => x.CreationTime >= startDay)
-            .GroupBy(x => x.CreationTime.Day).ToList();
+            .Where(x => x.CreationTime >= startDay && x.Role == UserRole.Tutor).GroupBy(x => x.CreationTime.Day).ToList();
 
-        var classesInWeek = dates.Join( 
+        var classesInWeek = dates.Join(
                 allClasses,
                 d => d,
-                c => c.Key, 
+                c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.Count() 
+                    classInfo = c.Count()
                 })
             .Select(x => x.classInfo)
             .ToList();
-        var studentsInWeek = dates.Join(
+
+        var classesInWeek1 =
+            (
+            from d in dates
+            join c in allClasses on d equals c.Key
+            into DateClassesGroup
+            from cl in DateClassesGroup.DefaultIfEmpty()
+            select new
+            {
+                classInfo = (cl != null) ? cl.Count() : 0
+            }.classInfo
+            ).ToList();
+
+        var studentsInWeek = dates.GroupJoin(
                 allLearner,
                 d => d,
                 c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.Count()
+                    classInfo = c.FirstOrDefault()?.Count() ?? 0
                 })
             .Select(x => x.classInfo)
             .ToList();
 
-        var tutorsInWeek = dates.Join(
+        var tutorsInWeek = dates.GroupJoin(
                allTutor,
                 d => d,
                 c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.Count()
+                    classInfo = c.FirstOrDefault()?.Count() ?? 0
                 })
             .Select(x => x.classInfo)
             .ToList();
 
-        var chartWeekData =  new List<LineData>()
+        var chartWeekData = new List<LineData>()
         {
             new LineData(
                 "Classes",
-                classesInWeek
+                classesInWeek1
             ),
             new LineData(
                 "Tutors",
@@ -113,10 +126,10 @@ public class GetLineChartDataQueryHandler : GetByIdQueryHandler<GetLineChartData
                 studentsInWeek
             )
         };
-      
-        
-        
-        return new LineChartData(chartWeekData, dates) ;
+
+
+
+        return new LineChartData(chartWeekData, dates);
     }
 }
 

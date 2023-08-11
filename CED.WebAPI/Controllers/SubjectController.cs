@@ -37,7 +37,7 @@ public class SubjectController : ControllerBase
     }
 
     [HttpGet]
-    [Route("GetSubject/{ObjectId}")]
+    [Route("GetSubject/{id}")]
     public async Task<IActionResult> GetSubject(Guid id)
     {
         var query = _mapper.Map<GetSubjectQuery>(id);

@@ -132,7 +132,8 @@ public class DataSeeder
         };
         //handle tutor object
 
-        var tutorUser = new User
+
+        var tutor = new Tutor //Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Meredith",
@@ -142,16 +143,12 @@ public class DataSeeder
             Email = "20520727@gm.uit.edu.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(12),
-        };
-        var tutor = new Tutor //Tutor
-        {
-            Id = tutorUser.Id,
             University = "University of Information Technology - VNUHCM",
             Rate = 5,
             AcademicLevel = AcademicLevel.Graduated,
             IsVerified = true,
         };
-        var tutorUser1 = new User
+        var tutor1 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Yan",
@@ -162,13 +159,9 @@ public class DataSeeder
             Email = "hoangle.q5@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(8),
-        };
-        var tutor1 = new Tutor
-        {
-            Id = tutorUser1.Id,
             University = "University of Economics HCMC (UEH)"
         };
-        var tutorUser2 = new User
+        var tutor2 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Nay",
@@ -180,15 +173,11 @@ public class DataSeeder
             Role = UserRole.Tutor,
 
             CreationTime = DateTime.Now - TimeSpan.FromDays(8),
-        };
-        var tutor2 = new Tutor
-        {
-            Id = tutorUser2.Id,
             University = "University of Economics HCMC (UEH)"
         };
 
 
-        var tutorUser3 = new User
+        var tutorUser3 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Grace",
@@ -200,8 +189,10 @@ public class DataSeeder
     ,
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "Harvard University",
+            AcademicLevel = AcademicLevel.Lecturer
         };
-        var tutorUser4 = new User
+        var tutorUser4 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Ethan",
@@ -213,8 +204,10 @@ public class DataSeeder
 
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "Stanford University",
+            AcademicLevel = AcademicLevel.Student
         };
-        var tutorUser5 = new User
+        var tutorUser5 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Sophia",
@@ -225,8 +218,10 @@ public class DataSeeder
             Email = "sophiadavis@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "Massachusetts Institute of Technology (MIT)",
+            AcademicLevel = AcademicLevel.Student
         };
-        var tutorUser6 = new User
+        var tutorUser6 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Noah",
@@ -237,8 +232,10 @@ public class DataSeeder
             Email = "noahwilson1@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "University of Oxford",
+            AcademicLevel = AcademicLevel.Graduated
         };
-        var tutorUser7 = new User
+        var tutorUser7 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Emma",
@@ -249,8 +246,10 @@ public class DataSeeder
             Email = "emmamartinez@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "California Institute of Technology (Caltech)",
+            AcademicLevel = AcademicLevel.Graduated
         };
-        var tutorUser8 = new User
+        var tutorUser8 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Lucas",
@@ -261,8 +260,10 @@ public class DataSeeder
             Email = "lucasthompson2@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "ETH Zurich - Swiss Federal Institute of Technology",
+            AcademicLevel = AcademicLevel.Student
         };
-        var tutorUser9 = new User
+        var tutorUser9 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Ava",
@@ -273,8 +274,10 @@ public class DataSeeder
             Email = "avajones@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "University of Cambridge",
+            AcademicLevel = AcademicLevel.Lecturer
         };
-        var tutorUser10 = new User
+        var tutorUser10 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Liam",
@@ -285,8 +288,10 @@ public class DataSeeder
             Email = "liambrown@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(3),
-        }; 
-        var tutorUser11 = new User
+            University = "Princeton University",
+            AcademicLevel = AcademicLevel.Optional
+        };
+        var tutorUser11 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Isabella",
@@ -297,8 +302,10 @@ public class DataSeeder
             Email = "isabellataylor2@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(3),
+            University = "California Institute of Technology (Caltech)",
+            AcademicLevel = AcademicLevel.Graduated
         };
-        var tutorUser12 = new User
+        var tutorUser12 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Oliver",
@@ -309,8 +316,10 @@ public class DataSeeder
             Email = "oliveranderson@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(32),
+            University = "ETH Zurich - Swiss Federal Institute of Technology",
+            AcademicLevel = AcademicLevel.Student
         };
-        var tutorUser13 = new User
+        var tutorUser13 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Mia",
@@ -321,8 +330,10 @@ public class DataSeeder
             Email = "miale@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(32),
+            University = "University of Cambridge",
+            AcademicLevel = AcademicLevel.Lecturer
         };
-        var tutorUser14 = new User
+        var tutorUser14 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Elijah",
@@ -331,9 +342,11 @@ public class DataSeeder
             Address = "Viet Nam",
             PhoneNumber = "0832109876",
             Email = "elijahclark@gmail.com",
-            Role = UserRole.Tutor
+            Role = UserRole.Tutor,
+            University = "Princeton University",
+            AcademicLevel = AcademicLevel.Optional
         };
-        var tutorUser15 = new User
+        var tutorUser15 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "William",
@@ -344,8 +357,10 @@ public class DataSeeder
             Email = "williamharrison@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(8),
+            University = "California Institute of Technology (Caltech)",
+            AcademicLevel = AcademicLevel.Graduated
         };
-        var tutorUser16 = new User
+        var tutorUser16 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Charlotte",
@@ -356,8 +371,10 @@ public class DataSeeder
             Email = "charlotteharris@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(9),
+            University = "ETH Zurich - Swiss Federal Institute of Technology",
+            AcademicLevel = AcademicLevel.Student
         };
-        var tutorUser17 = new User
+        var tutorUser17 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Luna",
@@ -366,9 +383,11 @@ public class DataSeeder
             Address = "Viet Nam",
             PhoneNumber = "0901234567",
             Email = "lunaclark@gmail.com",
-            Role = UserRole.Tutor
+            Role = UserRole.Tutor,
+            University = "University of Cambridge",
+            AcademicLevel = AcademicLevel.Lecturer
         };
-        var tutorUser18 = new User
+        var tutorUser18 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Henry",
@@ -379,8 +398,10 @@ public class DataSeeder
             Email = "henrymiller@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "Princeton University",
+            AcademicLevel = AcademicLevel.Optional
         };
-        var tutorUser19 = new User
+        var tutorUser19 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Amelia",
@@ -391,8 +412,10 @@ public class DataSeeder
             Email = "ameliagarcia@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "California Institute of Technology (Caltech)",
+            AcademicLevel = AcademicLevel.Graduated
         };
-        var tutorUser20 = new User
+        var tutorUser20 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "James",
@@ -401,9 +424,11 @@ public class DataSeeder
             Address = "Viet Nam",
             PhoneNumber = "0912345678",
             Email = "jamesadams@gmail.com",
-            Role = UserRole.Tutor
+            Role = UserRole.Tutor,
+            University = "ETH Zurich - Swiss Federal Institute of Technology",
+            AcademicLevel = AcademicLevel.Student
         };
-        var tutorUser21 = new User
+        var tutorUser21 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Harper",
@@ -414,8 +439,10 @@ public class DataSeeder
             Email = "harperturner@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now - TimeSpan.FromDays(1),
+            University = "University of Cambridge",
+            AcademicLevel = AcademicLevel.Lecturer
         };
-        var tutorUser22 = new User
+        var tutorUser22 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Victoria",
@@ -426,8 +453,10 @@ public class DataSeeder
             Email = "victoriasmith@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now,
+            University = "Princeton University",
+            AcademicLevel = AcademicLevel.Optional
         };
-        var tutorUser23 = new User
+        var tutorUser23 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Sebastian",
@@ -438,8 +467,10 @@ public class DataSeeder
             Email = "sebastiancarter@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now,
+            University = "California Institute of Technology (Caltech)",
+            AcademicLevel = AcademicLevel.Graduated
         };
-        var tutorUser24 = new User
+        var tutorUser24 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Avery",
@@ -450,8 +481,10 @@ public class DataSeeder
             Email = "averygonzalez@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now,
+            University = "ETH Zurich - Swiss Federal Institute of Technology",
+            AcademicLevel = AcademicLevel.Student
         };
-        var tutorUser25 = new User
+        var tutorUser25 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Abigail",
@@ -462,8 +495,10 @@ public class DataSeeder
             Email = "abigailyoung@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now,
+            University = "University of Cambridge",
+            AcademicLevel = AcademicLevel.Lecturer
         };
-        var tutorUser26 = new User
+        var tutorUser26 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Scarlett",
@@ -474,8 +509,10 @@ public class DataSeeder
             Email = "scarlettmoore@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now,
+            University = "Princeton University",
+            AcademicLevel = AcademicLevel.Optional
         };
-        var tutorUser27 = new User
+        var tutorUser27 = new Tutor
         {
             Id = Guid.NewGuid(),
             FirstName = "Jack",
@@ -486,6 +523,8 @@ public class DataSeeder
             Email = "jackrivera@gmail.com",
             Role = UserRole.Tutor,
             CreationTime = DateTime.Now,
+            University = "Princeton University",
+            AcademicLevel = AcademicLevel.Optional
         };
 
         Tutors = new List<Tutor>()
@@ -493,184 +532,6 @@ public class DataSeeder
             tutor,
             tutor1,
             tutor2,
-            new()
-            {
-                Id = tutorUser3.Id,
-                University = "Harvard University",
-                AcademicLevel = AcademicLevel.Lecturer
-            },
-            new()
-            {
-                Id = tutorUser4.Id,
-                University = "Stanford University",
-                AcademicLevel = AcademicLevel.Student
-            },
-            new()
-            {
-                Id = tutorUser5.Id,
-                University = "Massachusetts Institute of Technology (MIT)",
-                AcademicLevel = AcademicLevel.Student
-            },
-            new()
-            {
-                Id = tutorUser6.Id,
-                University = "University of Oxford",
-                AcademicLevel = AcademicLevel.Graduated
-            },
-            //-------------------------------
-            new()
-            {
-                Id = tutorUser7.Id,
-                University = "California Institute of Technology (Caltech)",
-                AcademicLevel = AcademicLevel.Graduated
-            },
-            new()
-            {
-                Id = tutorUser8.Id,
-                University = "ETH Zurich - Swiss Federal Institute of Technology",
-                AcademicLevel = AcademicLevel.Student
-            },
-            new()
-            {
-                Id = tutorUser9.Id,
-                University = "University of Cambridge",
-                AcademicLevel = AcademicLevel.Lecturer
-            },
-            new()
-            {
-                Id = tutorUser10.Id,
-                University = "Princeton University",
-                AcademicLevel = AcademicLevel.Optional
-            },
-            //----------------------------------
-            //-------------------------------
-            new()
-            {
-                Id = tutorUser11.Id,
-                University = "California Institute of Technology (Caltech)",
-                AcademicLevel = AcademicLevel.Graduated
-            },
-            new()
-            {
-                Id = tutorUser12.Id,
-                University = "ETH Zurich - Swiss Federal Institute of Technology",
-                AcademicLevel = AcademicLevel.Student
-            },
-            new()
-            {
-                Id = tutorUser13.Id,
-                University = "University of Cambridge",
-                AcademicLevel = AcademicLevel.Lecturer
-            },
-            new()
-            {
-                Id = tutorUser14.Id,
-                University = "Princeton University",
-                AcademicLevel = AcademicLevel.Optional
-            },
-            new()
-            {
-                Id = tutorUser15.Id,
-                University = "California Institute of Technology (Caltech)",
-                AcademicLevel = AcademicLevel.Graduated
-            },
-            new()
-            {
-                Id = tutorUser16.Id,
-                University = "ETH Zurich - Swiss Federal Institute of Technology",
-                AcademicLevel = AcademicLevel.Student
-            },
-            new()
-            {
-                Id = tutorUser17.Id,
-                University = "University of Cambridge",
-                AcademicLevel = AcademicLevel.Lecturer
-            },
-            new()
-            {
-                Id = tutorUser18.Id,
-                University = "Princeton University",
-                AcademicLevel = AcademicLevel.Optional
-            },
-            new()
-            {
-                Id = tutorUser19.Id,
-                University = "California Institute of Technology (Caltech)",
-                AcademicLevel = AcademicLevel.Graduated
-            },
-            new()
-            {
-                Id = tutorUser20.Id,
-                University = "ETH Zurich - Swiss Federal Institute of Technology",
-                AcademicLevel = AcademicLevel.Student
-            },
-            new()
-            {
-                Id = tutorUser21.Id,
-                University = "University of Cambridge",
-                AcademicLevel = AcademicLevel.Lecturer
-            },
-            new()
-            {
-                Id = tutorUser22.Id,
-                University = "Princeton University",
-                AcademicLevel = AcademicLevel.Optional
-            },
-            new()
-            {
-                Id = tutorUser23.Id,
-                University = "California Institute of Technology (Caltech)",
-                AcademicLevel = AcademicLevel.Graduated
-            },
-            new()
-            {
-                Id = tutorUser24.Id,
-                University = "ETH Zurich - Swiss Federal Institute of Technology",
-                AcademicLevel = AcademicLevel.Student
-            },
-            new()
-            {
-                Id = tutorUser25.Id,
-                University = "University of Cambridge",
-                AcademicLevel = AcademicLevel.Lecturer
-            },
-            new()
-            {
-                Id = tutorUser26.Id,
-                University = "Princeton University",
-                AcademicLevel = AcademicLevel.Optional
-            },
-            new()
-            {
-                Id = tutorUser27.Id,
-                University = "Princeton University",
-                AcademicLevel = AcademicLevel.Optional
-            },
-            //----------------------------------
-
-
-        };
-        //handle user object
-
-        Users = new List<User>()
-        {
-            //Admin
-            new User
-            {
-                FirstName = "Matt", LastName = "Le", Description = "Premium Admin", Email = "hoangle.q3@gmail.com",
-                Address = "Viet Nam",
-                PhoneNumber = "0965686172", Role = UserRole.Admin
-            },
-            new User
-            {
-                FirstName = "John", LastName = "Doe", Description = "Third admin", Email = "lehquy13@gmail.com",
-                Address = "Viet Nam",
-                PhoneNumber = "0123123120", Role = UserRole.Admin
-            },
-
-            tutorUser,
-            tutorUser1,
-            tutorUser2,
             tutorUser3,
             tutorUser4,
             tutorUser5,
@@ -696,6 +557,26 @@ public class DataSeeder
             tutorUser25,
             tutorUser26,
             tutorUser27,
+            //----------------------------------
+        };
+        //handle user object
+        Users = new List<User>()
+        {
+            //Admin
+            new User
+            {
+                FirstName = "Matt", LastName = "Le", Description = "Premium Admin", Email = "hoangle.q3@gmail.com",
+                Address = "Viet Nam",
+                PhoneNumber = "0965686172", Role = UserRole.Admin
+            },
+            new User
+            {
+                FirstName = "John", LastName = "Doe", Description = "Third admin", Email = "lehquy13@gmail.com",
+                Address = "Viet Nam",
+                PhoneNumber = "0123123120", Role = UserRole.Admin
+            },
+
+           
             //Standard user
 
             new User
@@ -839,7 +720,7 @@ public class DataSeeder
                 Address = "Bahamas", Email = "noahwilson2@example.com",
                 CreationTime = DateTime.Now - TimeSpan.FromDays(35)
             },
-           
+
             new User
             {
                 FirstName = "Jackson", LastName = "Martinez", Description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).", PhoneNumber = "0843210987",
@@ -858,7 +739,7 @@ public class DataSeeder
                 Address = "Cameroon", Email = "aidenbrown@example.com",
                 CreationTime = DateTime.Now - TimeSpan.FromDays(35)
             },
-            
+
             new User
             {
                 FirstName = "Emma", LastName = "Wilson", Description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).", PhoneNumber = "0698765432",
@@ -873,14 +754,14 @@ public class DataSeeder
                 Address = "Senegal", Email = "lucasthomas@example.com",
                 CreationTime = DateTime.Now - TimeSpan.FromDays(31)
             },
-           
+
             new User
             {
                 FirstName = "Ava", LastName = "Martinez", Description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).", PhoneNumber = "0843210987",
                 Address = "Somalia", Email = "avamartinez@example.com",
                 CreationTime = DateTime.Now - TimeSpan.FromDays(31)
             },
-            
+
             new User
             {
                 FirstName = "Liam", LastName = "Johnson", Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", PhoneNumber = "0765432109",
@@ -1176,7 +1057,7 @@ public class DataSeeder
             {
                 FirstName = "Emma", LastName = "Johnson", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", PhoneNumber = "0912345678",
                 Address = "Benin", Email = "emmajohnson@example.com",
-                
+
                 CreationTime = DateTime.Now - TimeSpan.FromDays(5)
             },
             //80
@@ -1372,7 +1253,6 @@ public class DataSeeder
             },
             //110
         };
-
 
         ClassInformations = new List<ClassInformation>()
         {
@@ -1595,7 +1475,7 @@ public class DataSeeder
                 LearningMode = LearningMode.Offline, LearnerGender = Gender.Female, Fee = 200, ChargeFee = 400,
                 IsDeleted = false, Status = Status.Available,
                 CreationTime = DateTime.Now - TimeSpan.FromDays(9),
-               
+
                 LearnerName = "Stranger User Name 1",
                 ContactNumber = "011111112223333"
             },
@@ -2340,7 +2220,6 @@ public class DataSeeder
                 TutorId = tutorUser5.Id,
             },
         };
-
 
     }
 }

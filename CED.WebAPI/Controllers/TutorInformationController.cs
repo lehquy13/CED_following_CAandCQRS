@@ -47,7 +47,7 @@ public class TutorInformationController : ControllerBase
     
     // GET api/<ClassInformationController>/5
     [HttpGet]
-    [Route("GetClassInformation/{ObjectId}")]
+    [Route("GetClassInformation/{id}")]
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
         var query = _mapper.Map<GetClassInformationQuery>(id);

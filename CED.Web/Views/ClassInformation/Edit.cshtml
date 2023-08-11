@@ -1,5 +1,4 @@
 ﻿@using CED.Contracts.Subjects
-@using CED.Contracts.Users
 
 @model CED.Contracts.ClassInformations.Dtos.ClassInformationForDetailDto
 
@@ -72,7 +71,7 @@
             
   <div class="col-md-4">
                          <label class="form-label">Learner</label>
-                         <input type="text" hidden="hObjectidden" id="studentId" asp-for="LearnerId" class="form-control" />
+                         <input type="text" hidden="hidden" id="studentId" asp-for="LearnerId" class="form-control" />
                          <input type="text" class="form-control" asp-for="LearnerName"   />
                          <span asp-validation-for="LearnerName" class="text-danger"></span>
                      </div>
@@ -156,7 +155,7 @@
             </div>
           <div class="col-md-3">
                          <label class="form-label">Tutor</label>
-                         <input type="text" hidden="hObjectidden" id="tutorId" asp-for="TutorId" class="form-control" />
+                         <input type="text" hidden="hidden" id="tutorId" asp-for="TutorId" class="form-control" />
                          <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly" />
                          <span asp-validation-for="TutorId" class="text-danger"></span>
                      </div>
@@ -178,7 +177,7 @@
                               <button type="button" class="col-4 btn btn-primary" onclick="OpenGetDialog('@Url.Action("ViewReview", "ClassInformation",new { id = @Model.Id })','Review tutor')">
                                   Review</button>
                              @* <button type="button" class="col-4  btn btn-outline-secondary" *@
-                             @*         onclick="OpenGetDialog('@Url.Action("ViewRequests", "ClassInformationDto", new { Objectid = @Model.id })','Tutor information')"> *@
+                             @*         onclick="OpenGetDialog('@Url.Action("ViewRequests", "ClassInformation", new { id = @Model.Id })','Tutor information')"> *@
                              @*     Requests *@
                              @* </button> *@
                          </div>
@@ -236,7 +235,7 @@
             </div>
 
           
-            <!-- ----------------------------------- hObjectidden info -->
+            <!-- ----------------------------------- hidden info -->
 
             <div class="form-group" hidden>
                 <label asp-for="DeleterUserId" class="control-label"></label>
@@ -295,7 +294,7 @@
                     <th scope="col">Tutor Name</th>
                     <th scope="col">Phone Number</th>
                     <th scope="col">Email</th>
-                    <th data-sortable="false" scope="col" style="wObjectidth:30%;">Actions</th>
+                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -304,7 +303,7 @@
                 {
                     <tr>
                         
-                        <input hidden name="id" value="@requestGettingClassMinimalDto.Id"/>
+                        <input hidden name="Id" value="@requestGettingClassMinimalDto.Id"/>
                           
                         <td>@requestGettingClassMinimalDto.RequestStatus</td>
                         

@@ -48,7 +48,7 @@ public class ClassInformationController : ControllerBase
     
     // GET api/<ClassInformationController>/5
     [HttpGet]
-    [Route("GetClassInformation/{ObjectId}")]
+    [Route("GetClassInformation/{id}")]
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
         var query = new GetObjectQuery<ClassInformationForDetailDto>();

@@ -272,7 +272,7 @@ public class ProfileController : Controller
         return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordRequest, true);
     }
     [HttpGet]
-    [Route("{ObjectId}")]
+    [Route("{id}")]
     public async Task<IActionResult> TeachingClassDetail(Guid requestId , Guid classId)
     {
         var query = new GetTeachingClassDetailQuery

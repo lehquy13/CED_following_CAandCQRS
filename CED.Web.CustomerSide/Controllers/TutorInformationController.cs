@@ -95,7 +95,7 @@ public class TutorInformationController : Controller
 
     // GET api/<TutorInformationController>/5
     [HttpGet]
-    [Route("{ObjectId}")]
+    [Route("{id}")]
     public async Task<IActionResult> Detail(Guid id)
     {
         var query = new GetObjectQuery<TutorForDetailDto>()
