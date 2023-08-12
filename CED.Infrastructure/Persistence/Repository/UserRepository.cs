@@ -72,7 +72,7 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         try
         {
-            var user = await _appDbContext.Set<User>().FirstOrDefaultAsync(o => o.Email == email);
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(o => o.Email == email);
 
             return user;
         }

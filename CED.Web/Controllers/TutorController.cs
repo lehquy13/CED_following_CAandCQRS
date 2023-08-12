@@ -84,8 +84,14 @@ public class TutorController : Controller
                     _logger.LogError("Create user failed!");
                     foreach (var v in result.Errors)
                     {
-                        _logger.LogError("{0}", v.Message);
+                        _logger.LogError("Error: " + v.Message);
                     }
+                    return Helper.RenderRazorViewToString(
+                        this,
+                        "Edit",
+                        userForDetailDto,
+                        true
+                    );
                 }
 
                 PackStaticListToView();
@@ -128,7 +134,10 @@ public class TutorController : Controller
     {
         userForDetailDto.LastModificationTime = DateTime.UtcNow;
         var command = new CreateUpdateTutorCommand(userForDetailDto, subjectId);
-
+        if (!ModelState.IsValid)
+        {
+            return View("Create", userForDetailDto);
+        }
 
         var result = await _mediator.Send(command);
         if (result.IsFailed)
@@ -139,19 +148,19 @@ public class TutorController : Controller
             }
             return RedirectToAction("Error", "Home");
         }
-
-        return View("Create", userForDetailDto);
+       
+            return RedirectToAction("Index");
     }
 
     [HttpGet("Delete")]
-    public async Task<IActionResult> Delete(Guid? id)
+    public async Task<IActionResult> Delete(Guid id)
     {
-        if (id == null)
+        if (id == Guid.Empty)
         {
             return NotFound();
         }
 
-        var query = new GetObjectQuery<TutorForDetailDto>() { ObjectId = (Guid)id };
+        var query = new GetObjectQuery<TutorForDetailDto>() { ObjectId = id };
         var result = await _mediator.Send(query);
 
         if (result.IsFailed)
@@ -159,10 +168,8 @@ public class TutorController : Controller
             return NotFound();
         }
 
-        return Json(new
-        {
-            html = Helper.RenderRazorViewToString(this, "Delete", result.Value)
-        });
+        return Helper.RenderRazorViewToString(this, "Delete", result.Value);
+
     }
 
     [HttpPost("DeleteConfirmed")]
@@ -176,7 +183,7 @@ public class TutorController : Controller
         var query = new DeleteUserCommand((Guid)id);
         var result = await _mediator.Send(query);
 
-        if (result.IsFailed)
+        if (result.IsSuccess)
         {
             return RedirectToAction("Index");
         }
@@ -212,7 +219,7 @@ public class TutorController : Controller
             ObjectId = new Guid(id)
         };
         var subjectDtos = await _mediator.Send(query);
-        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
+        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos.Value);
     }
     [HttpPost("RemoveTutorVerification")]
     public async Task<IActionResult> RemoveTutorVerification(string id)

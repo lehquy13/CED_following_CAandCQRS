@@ -47,7 +47,8 @@ public class ClassInformationController : Controller
         ViewData["Statuses"] = EnumProvider.Status;
 
 
-        ViewData["Subjects"] = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
+        var subjects = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
+        ViewData["Subjects"] = subjects.Value;
     }
 
     private async Task PackStudentAndTuTorList()
@@ -87,11 +88,6 @@ public class ClassInformationController : Controller
         var result = await _mediator.Send(query);
         ViewBag.Action = "Edit";
 
-
-        // var result = await _mediator.Send(new GetAllRequestOfClassQuery()
-        // {
-        //     ObjectId = (ObjectId)Id
-        // });
         if(result.IsSuccess)
             return View(result.Value);
         return RedirectToAction("Error", "Home");

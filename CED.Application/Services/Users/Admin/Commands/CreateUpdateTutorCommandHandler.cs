@@ -37,7 +37,7 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
         try
         {
             
-            var tutor = await _tutorRepository.GetUserByEmail(command.TutorForDetailDto.Email);
+            var tutor = await _tutorRepository.GetById(command.TutorForDetailDto.Id);
             
             //Collect major ids
             var newMajorUpdateList = command.SubjectIds.DistinctBy(x => x).ToList();
@@ -70,11 +70,11 @@ public class CreateUpdateTutorCommandHandler : CreateUpdateCommandHandler<Create
                     });
                 }
 
+
+                var tutorToUpdate = _mapper.Map<Domain.Users.Tutor>(command.TutorForDetailDto);
+                tutor.VerifyTutorInformation(tutorToUpdate);
                 
-                
-                tutor.VerifyTutorInformation(_mapper.Map<Domain.Users.Tutor>(command.TutorForDetailDto));
-                
-                if (await _unitOfWork.SaveChangesAsync() <= 0)
+                if (await _unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
                 {
                     return Result.Fail($"Fail to update of tutor {tutor.Email}" );
                 }

@@ -40,6 +40,7 @@ public class UserMappingConfig : IRegister
         //TODO: Check does this work well?
         config.NewConfig<Tutor, TutorForDetailDto>()
             .Map(des => des.TutorReviewDtos, src => src.RequestGettingClasses.Select(x => x.ClassInformation.TutorReviews))
+            .Map(des => des.Majors, src => src.Subjects)
             .Map(des => des, src => src);
         config.NewConfig<Tutor, TutorForListDto>();
            

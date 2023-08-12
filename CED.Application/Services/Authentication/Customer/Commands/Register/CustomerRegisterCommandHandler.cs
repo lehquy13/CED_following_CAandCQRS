@@ -1,5 +1,6 @@
 ﻿using CED.Contracts.Authentication;
 using CED.Domain.Interfaces.Authentication;
+using CED.Domain.Repository;
 using CED.Domain.Users;
 using MapsterMapper;
 using MediatR;
@@ -14,13 +15,15 @@ public class CustomerRegisterCommandHandler
 
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
     public CustomerRegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IValidator validator,
-        IUserRepository userRepository, IMapper mapper)
+        IUserRepository userRepository, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
         _validator = validator;
         _userRepository = userRepository;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
     public async Task<AuthenticationResult> Handle(CustomerRegisterCommand command, CancellationToken cancellationToken)
     {
@@ -43,13 +46,15 @@ public class CustomerRegisterCommandHandler
         };
 
         await _userRepository.Insert(user);
-
+        if(await _unitOfWork.SaveChangesAsync() <= 0)
+        {
+            return new AuthenticationResult(null, "",false,"Register failed");
+        }
         //Create jwt token
         var token = _jwtTokenGenerator.GenerateToken(
             user.Id,
             command.FirstName,
             command.LastName);
-
 
         return new AuthenticationResult(_mapper.Map<UserLoginDto>(user), token,true,"Register successfully");
     }

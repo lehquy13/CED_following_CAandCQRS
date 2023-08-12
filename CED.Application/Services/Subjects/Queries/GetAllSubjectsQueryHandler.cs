@@ -23,20 +23,18 @@ public class GetAllSubjectsQueryHandler : GetAllQueryHandler<GetObjectQuery<Pagi
         await Task.CompletedTask;
         try
         {
-            List<Subject> subjects;
+            List<Subject> subjects = await _subjectRepository.GetAllList();
             //if ObjectId is not empty, get all the subjects which is tutor's major
             if (query.ObjectId != Guid.Empty)
             {
-                 subjects = await _subjectRepository.GetTutorMajors(query.ObjectId);
-            }
-            else
-            {
-                 subjects =  await _subjectRepository.GetAllList();
+                var tutorMajors = await _subjectRepository.GetTutorMajors(query.ObjectId);
+                //remove tutor's major from all subjects
+                subjects = subjects.Except(tutorMajors).ToList();
             }
 
             var totalSubjects = subjects.Count;
            
-            return PaginatedList<SubjectDto>.CreateAsync(_mapper.Map<List<SubjectDto>>(subjects.ToList()),query.PageIndex,query.PageSize,totalSubjects);
+            return PaginatedList<SubjectDto>.CreateAsync(_mapper.Map<List<SubjectDto>>(subjects),query.PageIndex,query.PageSize,totalSubjects);
         }
         catch (Exception ex)
         {

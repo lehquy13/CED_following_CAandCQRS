@@ -44,7 +44,8 @@ public class ClassInformationController : Controller
         // ViewData["Statuses"] = EnumProvider.Status;
 
 
-        ViewData["Subjects"] = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
+        var subjectResult = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
+        ViewData["Subjects"] = subjectResult.Value;
     }
 
 
@@ -117,7 +118,7 @@ public class ClassInformationController : Controller
             };
             var result = await _mediator.Send(query);
             if (result.IsSuccess)
-                return View(_mapper.Map<CreateClassInformationByCustomer>(result));
+                return View(_mapper.Map<CreateClassInformationByCustomer>(result.Value));
         }
         //await PackStudentAndTuTorList();
 

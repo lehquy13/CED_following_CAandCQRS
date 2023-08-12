@@ -28,7 +28,7 @@ public class GetLearnerByMailQueryHandler : GetByIdQueryHandler<GetLearnerByMail
     {
         try
         {
-            User? user = await _userRepository.GetUserByEmail(query.Email);
+            var user = await _userRepository.GetUserByEmail(query.Email);
            
             if (user is null)
             {

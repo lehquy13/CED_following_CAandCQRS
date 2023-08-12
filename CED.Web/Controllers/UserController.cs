@@ -156,10 +156,7 @@ public class UserController : Controller
             return RedirectToAction("Error", "Home");
         }
 
-        return Json(new
-        {
-            html = Helper.RenderRazorViewToString(this, "Delete", result)
-        });
+        return Helper.RenderRazorViewToString(this, "Delete", result.Value);
         // return View(result);
     }
 

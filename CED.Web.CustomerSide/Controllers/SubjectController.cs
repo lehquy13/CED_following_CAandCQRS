@@ -38,7 +38,7 @@ public class SubjectController : Controller
             query.ObjectId = new Guid(tutorGuid);
         }
         var subjectDtos = await _mediator.Send(query);
-        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos);
+        return Helper.RenderRazorViewToString(this, "_Subjects", subjectDtos.Value);
     }
    
     [HttpGet("Detail")]

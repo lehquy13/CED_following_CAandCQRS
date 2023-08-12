@@ -29,6 +29,7 @@ public class Tutor : User
     }
     public void VerifyTutorInformation(Tutor tutor)
     {
+        UpdateUserInformation(tutor);
         UpdateTutorInformation(tutor);
         IsVerified = true;
     }

@@ -135,11 +135,9 @@ public class SubjectController : Controller
             return NotFound();
         }
 
-        return Json(new
-        {
-            html = Helper.RenderRazorViewToString(this, "Delete", result)
+        return Helper.RenderRazorViewToString(this, "Delete", result);
 
-        });
+
     }
 
     [HttpPost("DeleteConfirmed")]

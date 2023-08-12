@@ -1,4 +1,5 @@
 ﻿@using CED.Contracts.Subjects
+@using CED.Contracts
 
 @model CED.Contracts.ClassInformations.Dtos.ClassInformationForDetailDto
 
@@ -9,7 +10,7 @@
     List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
     List<string> statuses = ViewData["Statuses"] as List<string> ?? new List<string>();
 
-    List<SubjectDto>? subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
+    var subjects = (PaginatedList<SubjectDto>)(ViewData["Subjects"] ?? "");
 
 
 }

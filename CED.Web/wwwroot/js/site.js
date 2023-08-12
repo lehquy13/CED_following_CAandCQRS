@@ -14,32 +14,31 @@ function callPostActionWithForm(formInput) {
         contentType: false,
         processData: false,
         success: function (res) {
-    
+
             if (res.res === true) {
-                if(res.viewName === "Profile" )
+                if (res.viewName === "Profile")
                     $('#main').html(res.partialView);
 
                 $('#successAlert').removeClass("collapse");
                 $('#successAlert').removeClass("fade");
             } else if (res.res === "deleted") {
                 $('#verticalycentered').modal('hide');
-                
+
                 location.reload();
-            } else if(res.res === false) {
-                if(res.viewName === "_ProfileEdit"){
+            } else if (res.res === false) {
+                if (res.viewName === "_ProfileEdit") {
                     $('#profile-edit').html(res.partialView);
                     $('#profile-edit-button').click();
-                }
-                else if(res.viewName === "_ChangePassword"){
+                } else if (res.viewName === "_ChangePassword") {
                     $('#profile-change-password').html(res.partialView);
                     $('#profile-change-password-button').click();
                 }
-                
+
 
                 //$('#failAlertButton').click();
                 $('#failAlert').removeClass("collapse");
                 $('#failAlert').removeClass("fade");
-             
+
             }
         },
         error: function (err) {
@@ -112,7 +111,7 @@ function LoadImage(url, id) {
         success: function (res) {
 
             if (res.res === true) {
-                
+
                 $('#' + id).attr("src", res.image);
                 $('#image').attr("value", res.image);
 
@@ -129,17 +128,18 @@ function LoadImage(url, id) {
     return false;
 }
 
-function ChooseTutor(id,name,phone){
+function ChooseTutor(id, name, phone) {
     $('#largeModal').modal('hide');
-    
+
     $('#largeModal .modal-body').html("");
     $(document.body).removeClass('modal-open');
     $('.modal-backdrop').remove();
-    $('#tutorId').attr("value",id);
-    $('#tutorInfor').attr("value",name + " - " +phone);
-    
+    $('#tutorId').attr("value", id);
+    $('#tutorInfor').attr("value", name + " - " + phone);
+
 }
-function CancelRequest(url){
+
+function CancelRequest(url) {
 
     $.ajax({
         type: "GET",
@@ -152,42 +152,33 @@ function CancelRequest(url){
             $('#modalTriggerButton').click();
         }
     })
-    
+
 }
-function AddMajorSubject(id,name,des){
-  
-    //$('#tutorMajorCard .list-group').append(`<input name="SubjectId" id="${id}-input" value="${id}" hidden="hidden"/>\n` +
-    //    `    <a class="list-group-item list-group-item-action" id="${id}-atag" href="/Subject/Detail?id=${id}" >\n` +
-    //    `        <div class="d-flex w-100 justify-content-between">\n` +
-    //    `            <h5 class="mb-1">`+name+`</h5>\n` +
-    //    `        </div>\n` +
-    //    `        <p class="mb-1">`+des+`</p>\n` +
-    //    `    </a>`);
-    $('#tutorMajorCard .list-group').append(` <div class=" list-group-item list-group-item-action" id="${id}-item">
+
+function AddMajorSubject(id, name, des) {
+    $('#tutorMajorCard .list-group')
+        .append(` <div class=" list-group-item list-group-item-action" id="${id}-item">
                                     <div class="row">
-                                        <input name="SubjectId" value="@s.Id"   hidden="hidden" />
+                                        <input name="subjectId" value="${id}"  hidden="hidden" />
                                         <a href="/Subject/Detail?id=${id}" class="col-11">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">`+ name +`</h5>
+                                                <h5 class="mb-1">` + name + `</h5>
                                             </div>
-                                            <p class="mb-1">`+ des +`</p>
+                                            <p class="mb-1">` + des + `</p>
                                         </a>
-                                        <button type="button"class="col-1 btn btn-danger" onclick="RemoveMajorSubject('${id}')">Remove</button>
+                                        <button type="button" class="col-1 btn btn-danger" onclick="RemoveMajorSubject('${id}')">Remove</button>
 
                                     </div>
                                 </div>`);
 
-    
+
 }
 
 function RemoveMajorSubject(id) {
-  
-    $("#"+id + "-item").remove();
-
+    $("#" + id + "-item").remove();
 }
-function RemoveTutorVerification(url,id) {
 
-
+function RemoveTutorVerification(url, id) {
     var formData = new FormData();
     formData.append('id', id);
     $.ajax({
@@ -210,6 +201,6 @@ function RemoveTutorVerification(url,id) {
         }
     })
     return false;
-    
+
 
 }

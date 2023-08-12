@@ -30,7 +30,6 @@ public class User : FullAuditedAggregateRoot<Guid>
     // constructor
     public User()
     {
-        LastModificationTime = DateTime.Now;
     }
 
     /// <summary>
@@ -51,7 +50,8 @@ public class User : FullAuditedAggregateRoot<Guid>
         Email = user.Email;
         PhoneNumber = user.PhoneNumber;
         Image = user.Image;
-
+        
+        LastModificationTime = DateTime.Now;
     }
     public void UpdateUserInformationExceptImage(User user)
     {
@@ -66,6 +66,7 @@ public class User : FullAuditedAggregateRoot<Guid>
 
         Email = user.Email;
         PhoneNumber = user.PhoneNumber;
+        LastModificationTime = DateTime.Now;
 
     }
     /// <summary>
