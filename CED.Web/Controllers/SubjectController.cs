@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using CED.Contracts.Subjects;
 using MapsterMapper;
 using MediatR;
-using CED.Application.Services.Subjects.Queries;
 using CED.Application.Services.Subjects.Commands;
 using CED.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -11,8 +10,8 @@ using CED.Web.Utilities;
 
 namespace CED.Web.Controllers;
 
+[Authorize(Policy = "RequireAdministratorRole")]
 [Route("[controller]")]
-[Authorize]
 public class SubjectController : Controller
 {
     private readonly ILogger<SubjectController> _logger;

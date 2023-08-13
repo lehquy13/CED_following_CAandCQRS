@@ -29,7 +29,7 @@ public class CustomerLoginQueryHandler
     {
         //await Task.CompletedTask;
         //1. Check if user exist
-        if (await _userRepository.GetUserByEmail(query.Email) is not User user)
+        if (await _userRepository.GetUserByEmail(query.Email) is not { } user)
         {
             return new AuthenticationResult(null, "", false, "User has already existed");
             //throw new Exception("User with an email doesn't exist");

@@ -10,9 +10,10 @@ using CED.Domain.Shared;
 using CED.Web.Utilities;
 using Microsoft.EntityFrameworkCore;
 using CED.Contracts.Users.Tutors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CED.Web.Controllers;
-
+[Authorize(Policy = "RequireAdministratorRole")]
 [Route("[controller]")]
 public class TutorController : Controller
 {

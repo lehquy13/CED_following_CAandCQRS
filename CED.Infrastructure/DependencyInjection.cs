@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CED.Domain.Interfaces.Logger;
 using CED.Domain.Repository;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Logging;
 using CED.Infrastructure.Persistence;
@@ -92,7 +93,7 @@ namespace CED.Infrastructure
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(480);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
@@ -106,6 +107,7 @@ namespace CED.Infrastructure
                 })
                 .AddJwtBearer(options =>
                 {
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuer = true,
@@ -124,8 +126,7 @@ namespace CED.Infrastructure
                             try
                             {
                                 var token = context.HttpContext.Session.GetString("access_token");
-                                if(token != null)
-                                    context.Token = token;
+                                if(token != null) context.Token = token;
                             }
                             catch (Exception e)
                             {
@@ -136,7 +137,18 @@ namespace CED.Infrastructure
                     
                     };
                 });
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdministratorRole", policy =>
+                {
+                    policy.RequireRole(UserRole.Admin.ToString());
+                });
+                options.AddPolicy("RequireTutorRole", policy =>
+                {
+                    policy.RequireRole(UserRole.Tutor.ToString());
+                });
+ 
+            });
 
             return services;
         }

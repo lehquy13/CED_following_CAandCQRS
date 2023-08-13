@@ -35,7 +35,7 @@ public class LoginQueryHandler
         //2.1 HashPassword
         var hashPassword = _validator.HashPassword(query.Password);
         //2.2 check HashPassword
-        if (user.Password != hashPassword || user.Role != UserRole.Admin)
+        if (user.Password != hashPassword)// || user.Role != UserRole.Admin)
         {
             return new AuthenticationResult(null, "", false, "Wrong password");
 

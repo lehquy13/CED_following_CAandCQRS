@@ -1,13 +1,12 @@
 ﻿using CED.Application.Services.Authentication.Admin.Commands.ForgotPassword;
 using CED.Application.Services.Authentication.Admin.Queries.Login;
-using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.ValidateToken;
 using CED.Contracts.Authentication;
-using CED.Web.Utilities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 
 namespace CED.Web.Controllers;
@@ -18,23 +17,21 @@ public class AuthenticationController : Controller
 {
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
-    private readonly ILocalStorageService _localStorageService;
     private readonly ILogger<AuthenticationController> _logger;
 
-    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger, ILocalStorageService localStorageService)
+    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger)
     {
         _mediator = mediator;
         _mapper = mapper;
         _logger = logger;
-        _localStorageService = localStorageService;
     }
 
     [Route("")]
     public async Task<IActionResult> Index(string? returnUrl)
     {
         TempData["ReturnUrl"] = returnUrl;
-        string validateToken = HttpContext.Request.Cookies["access_token"] ?? "";
-        if (validateToken is "")
+        string? validateToken = Request.Headers[HeaderNames.Authorization];
+        if (validateToken is null)
         {
             return View("Login", new LoginRequest("", ""));
         }
@@ -42,7 +39,7 @@ public class AuthenticationController : Controller
 
         var loginResult = await _mediator.Send(query);
 
-        if (loginResult is true)
+        if (loginResult)
         {
             return RedirectToAction("Index", "Home");
         }
@@ -65,33 +62,15 @@ public class AuthenticationController : Controller
             return View("Login", new LoginRequest("", ""));
         }
         // Store the JWT token in a cookie
-
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Strict,
-            //Secure = true,
-            IsEssential = true,
-            Expires = DateTime.UtcNow.AddDays(1),
-            //Domain = "yourdomain.com",
-        };
-        // await _localStorageService.SetStorageItem("access_token", loginResult.Token);
-        // await _localStorageService.SetStorageItem("name", loginResult.User.FullName);
-        // await _localStorageService.SetStorageItem("image", loginResult.User.Image);
+      
         //store token into session
         HttpContext.Session.SetString("access_token", loginResult.Token);
         HttpContext.Session.SetString("name", loginResult.User.FullName);
         HttpContext.Session.SetString("image", loginResult.User.Image);
-        
-        // HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
-        // HttpContext.Response.Cookies.Append("name", loginResult.User.FullName);
-        // HttpContext.Response.Cookies.Append("image", loginResult.User.Image);
 
         var returnUrl = TempData["ReturnUrl"] as string;
         if (returnUrl is null)
             return RedirectToAction("Index", "Home");
-
-        _logger.Log(LogLevel.Debug, returnUrl);
 
         return Redirect(returnUrl);
     }
@@ -100,7 +79,7 @@ public class AuthenticationController : Controller
 
 
 
-    [Authorize]
+    [Authorize(Policy = "RequireAdministratorRole")]
     [HttpGet("Logout")]
     public IActionResult Logout()
     {

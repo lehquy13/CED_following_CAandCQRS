@@ -23,8 +23,6 @@ namespace CED.WebAPI.Filters
             context.Result = new ObjectResult(problemDetail);
            
             context.ExceptionHandled = true;
-
-
         }
     }
 }

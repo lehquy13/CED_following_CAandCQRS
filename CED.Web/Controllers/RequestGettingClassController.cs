@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CED.Web.Controllers;
 
@@ -6,6 +7,8 @@ namespace CED.Web.Controllers;
 /// A navigate controller
 /// </summary>
 [Route("[controller]")]
+[Authorize(Policy = "RequireAdministratorRole")]
+
 public class RequestGettingClassController : Controller
 {
     [Route("Detail")]

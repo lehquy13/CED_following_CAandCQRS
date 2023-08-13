@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CED.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "RequireAdministratorRole")]
     [Route("[controller]")]
     public class ProfileController : Controller
     {

@@ -16,10 +16,11 @@ using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using CED.Contracts.Users.Tutors;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
 
 namespace CED.Web.Controllers;
 
-[Authorize]
+[Authorize(Policy = "RequireAdministratorRole")]
 [Route("[controller]")]
 public class HomeController : Controller
 {
@@ -33,7 +34,7 @@ public class HomeController : Controller
         _mapper = mapper;
         _sender = sender;
     }
-
+    
     [Route("")]
     public async Task<IActionResult> Index()
     {
