@@ -88,8 +88,8 @@ namespace CED.Infrastructure
             services.AddSingleton(Options.Create(jwtSettings));
 
             //services.Configure<JwtSettings>(configuration.GetSection(JwtSettings._SectionName));
+            
             services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
@@ -102,20 +102,7 @@ namespace CED.Infrastructure
             services.AddAuthentication(scheme =>
                 {
                     scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    scheme.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(options =>
-                {
-                    options.Cookie.Name = "access_token";
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.Strict;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(90);
-
-                    options.LoginPath = "/Authentication";
-                    options.LogoutPath = "/Logout";
-                    options.AccessDeniedPath = "/";
+                    scheme.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(options =>
                 {
@@ -134,28 +121,19 @@ namespace CED.Infrastructure
                     {
                         OnMessageReceived = context =>
                         {
-                            context.Token = context.Request.Cookies["access_token"];
+                            try
+                            {
+                                var token = context.HttpContext.Session.GetString("access_token");
+                                if(token != null)
+                                    context.Token = token;
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                            }
                             return Task.CompletedTask;
                         },
-
-
-                        OnForbidden = context =>
-                        {
-                            //context.HttpContext.Response.Redirect("/");
-                            context.Response.Redirect("/Authentication");
-                            return Task.CompletedTask;
-                        },
-                        OnAuthenticationFailed = context =>
-                        {
-                            //context.HttpContext.Response.Redirect("/");
-                            context.Response.Cookies.Delete("access_token");
-                            context.Response.Cookies.Delete("name");
-                            context.Response.Cookies.Delete("image");
-                            context.Response.Cookies.Delete("email");
-                            context.Response.Redirect("/");
-
-                            return Task.CompletedTask;
-                        }
+                    
                     };
                 });
 

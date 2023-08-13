@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CED.Domain.Users;
 
 namespace CED.Infrastructure.Authentication;
 
@@ -19,21 +20,21 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         _jwtSettings = options.Value;
     }
 
-    public string GenerateToken(Guid userId, string firstName, string lastName)
+    public string GenerateToken(User user)
     {
         var signingCredential = new SigningCredentials(
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtSettings.Secrect)
-                ),
+            ),
             SecurityAlgorithms.HmacSha256
         );
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new Claim(JwtRegisteredClaimNames.GivenName, firstName),
-            new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.GetFullNAme()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            //new Claim(ClaimTypes.Role, "Role")
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var securityToken = new JwtSecurityToken(
@@ -64,29 +65,23 @@ public class JwtTokenGenerator : IJwtTokenGenerator
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidAudience = _jwtSettings.Audience,
                 ValidateLifetime = true,
-               // ClockSkew = TimeSpan.Zero // zero tolerance for the token lifetime expiration time
+                // ClockSkew = TimeSpan.Zero // zero tolerance for the token lifetime expiration time
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-
 
             if (jwtToken.ValidTo < DateTime.UtcNow)
             {
                 // token is expired, redirect to authentication page
                 return false;
             }
-            else
-            {
-                // token is still valid, navigate to home page
-                return true;
-            }
+            
+            // token is still valid, navigate to home page
+            return true;
         }
         catch
         {
             return false;
-
         }
-
     }
 }
-

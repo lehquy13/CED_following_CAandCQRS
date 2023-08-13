@@ -25,14 +25,12 @@ var app = builder.Build();
     }
 
     app.UseHttpsRedirection();
+    app.UseSession();
 
     app.UseAuthentication();
-
     app.UseRouting();
 
     app.UseAuthorization();
-
-    app.UseSession();
 
     app.UseExceptionHandler("/Home/Error");
 

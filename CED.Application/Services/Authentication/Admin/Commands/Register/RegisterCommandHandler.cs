@@ -42,14 +42,11 @@ public class RegisterCommandHandler
             Password = _validator.HashPassword(command.Password)
         };
 
-        await _userRepository.Insert(user);
+        var entity = await _userRepository.Insert(user);
 
         //Create jwt token
-        var token = _jwtTokenGenerator.GenerateToken(
-            user.Id,
-            command.FirstName,
-            command.LastName);
-
+        var token = _jwtTokenGenerator.GenerateToken(entity);
+         
 
         return new AuthenticationResult(_mapper.Map<UserLoginDto>(user), token, true, "Register successfully");
     }

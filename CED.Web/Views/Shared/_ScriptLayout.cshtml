@@ -1,5 +1,8 @@
-﻿@{
-    string name = Context.Request.Cookies["name"] as string ?? "user";
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    string image = HttpContextAccessor.HttpContext?.Session.GetString("image") ?? "default_avatar1.png";
+    string name = HttpContextAccessor.HttpContext?.Session.GetString("name") ?? "unknown";
 }
 
 <!DOCTYPE html>

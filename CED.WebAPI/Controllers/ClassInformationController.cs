@@ -42,7 +42,10 @@ public class ClassInformationController : ControllerBase
             SubjectName = subjectName
         };
         var classInformation = await _mediator.Send(query);
-
+        if (classInformation.IsFailed)
+        {
+            return BadRequest("Get classes failed");
+        }
         return Ok(classInformation);
     }
     
@@ -53,16 +56,19 @@ public class ClassInformationController : ControllerBase
     {
         var query = new GetObjectQuery<ClassInformationForDetailDto>();
         var classInformation = await _mediator.Send(query);
-
+        if(classInformation.IsFailed)
+        {
+            return BadRequest("Get class's information with id: "+ id +" failed");
+        }
         return Ok(classInformation);
     }
 
     // POST api/<ClassInformationController>
     [HttpPost]
     [Route("CreateClassInformation")]
-    public async Task<IActionResult> CreateClassInformation(CreateUpdateClassInformationDto createUpdateClassInformationDto)
+    public async Task<IActionResult> CreateClassInformation(CreateClassInformationByCustomer createUpdateClassInformationDto)
     {
-        var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
+        var command = _mapper.Map<CreateClassInformationByCustomer>(createUpdateClassInformationDto);
 
         var result = await _mediator.Send(command);
 

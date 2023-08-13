@@ -33,4 +33,7 @@
       <_ContentIncludedByDefault Remove="wwwroot\assets\vendor\simple-datatables\style.css" />
     </ItemGroup>
 
+
+
+
 </Project>

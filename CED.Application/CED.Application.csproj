@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Services\Authentication\Admin" />
-    <Folder Include="Services\Users\Commands\" />
     <Folder Include="Services\Users\Student\Queries\" />
     <Folder Include="Services\Users\Tutor" />
   </ItemGroup>

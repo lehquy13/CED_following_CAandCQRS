@@ -3,6 +3,7 @@ using CED.Application.Services.Authentication.Admin.Queries.Login;
 using CED.Application.Services.Authentication.Commands.Register;
 using CED.Application.Services.Authentication.ValidateToken;
 using CED.Contracts.Authentication;
+using CED.Web.Utilities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,14 +18,15 @@ public class AuthenticationController : Controller
 {
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
-
+    private readonly ILocalStorageService _localStorageService;
     private readonly ILogger<AuthenticationController> _logger;
 
-    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger)
+    public AuthenticationController(ISender mediator, IMapper mapper, ILogger<AuthenticationController> logger, ILocalStorageService localStorageService)
     {
         _mediator = mediator;
         _mapper = mapper;
         _logger = logger;
+        _localStorageService = localStorageService;
     }
 
     [Route("")]
@@ -40,7 +42,7 @@ public class AuthenticationController : Controller
 
         var loginResult = await _mediator.Send(query);
 
-        if (loginResult)
+        if (loginResult is true)
         {
             return RedirectToAction("Index", "Home");
         }
@@ -73,9 +75,17 @@ public class AuthenticationController : Controller
             Expires = DateTime.UtcNow.AddDays(1),
             //Domain = "yourdomain.com",
         };
-        HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
-        HttpContext.Response.Cookies.Append("name", loginResult.User.FullName);
-        HttpContext.Response.Cookies.Append("image", loginResult.User.Image);
+        // await _localStorageService.SetStorageItem("access_token", loginResult.Token);
+        // await _localStorageService.SetStorageItem("name", loginResult.User.FullName);
+        // await _localStorageService.SetStorageItem("image", loginResult.User.Image);
+        //store token into session
+        HttpContext.Session.SetString("access_token", loginResult.Token);
+        HttpContext.Session.SetString("name", loginResult.User.FullName);
+        HttpContext.Session.SetString("image", loginResult.User.Image);
+        
+        // HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
+        // HttpContext.Response.Cookies.Append("name", loginResult.User.FullName);
+        // HttpContext.Response.Cookies.Append("image", loginResult.User.Image);
 
         var returnUrl = TempData["ReturnUrl"] as string;
         if (returnUrl is null)

@@ -51,10 +51,7 @@ public class CustomerRegisterCommandHandler
             return new AuthenticationResult(null, "",false,"Register failed");
         }
         //Create jwt token
-        var token = _jwtTokenGenerator.GenerateToken(
-            user.Id,
-            command.FirstName,
-            command.LastName);
+        var token = _jwtTokenGenerator.GenerateToken(user);
 
         return new AuthenticationResult(_mapper.Map<UserLoginDto>(user), token,true,"Register successfully");
     }
