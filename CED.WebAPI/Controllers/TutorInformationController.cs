@@ -1,14 +1,10 @@
 ﻿
 using CED.Application.Services.Abstractions.QueryHandlers;
-using CED.Application.Services.ClassInformations.Commands;
-using CED.Application.Services.ClassInformations.Queries;
-using CED.Application.Services.ClassInformations.Queries.GetClassInformation;
+using CED.Application.Services.TutorReviews.Commands;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Tutor.Registers;
-using CED.Contracts.ClassInformations;
-using CED.Contracts.Users;
+using CED.Contracts.TutorReview;
 using CED.Contracts.Users.Tutors;
-using CED.Domain.Shared.ClassInformationConsts;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -70,22 +66,43 @@ public class TutorInformationController : ControllerBase
     [Route("TutorRegistration")]
     public async Task<IActionResult> TutorRegistration(TutorForRegistrationDto tutorForRegistrationDto)
     {
-        //TODO: need to change Subjects to SubjectIds, Verification
         var command = new TutorRegistrationCommand(tutorForRegistrationDto);
 
         var result = await _mediator.Send(command);
-
         
         if (result.IsSuccess)
         {
-            return NoContent(); 
+            return CreatedAtRoute("Profile", new { controller = "Profile", Iid = tutorForRegistrationDto.Id }, tutorForRegistrationDto);
         }
-
         return BadRequest(result.Errors);
     }
     
 
-   
+    [Authorize]
+    [HttpPost]
+    [Route("ReviewTutor")]
+    public async Task<IActionResult> ReviewTutor(TutorReviewRequestDto tutorDto)
+    {
+        var command = new CreateReviewCommand
+        {
+            ReviewDto = new TutorReviewDto()
+            {
+                Rate = tutorDto.Rate,
+                Description = tutorDto.Description,
+                Id = tutorDto.Id,
+                ClassInformationId = new Guid(tutorDto.ClassId)
+            },
+            LearnerEmail = HttpContext.Session.GetString("email") ?? "",
+            TutorEmail = tutorDto.TutorEmail,
+        };
+
+        var result = await _mediator.Send(command);
+        if (result.IsSuccess)
+        {
+            return NoContent(); //implement
+        }
+        return BadRequest(result.Errors);
+    }
 
    
 }

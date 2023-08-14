@@ -53,7 +53,7 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
             {
                 return Result.Fail(new NonExistUserError());
             }
-            //TODO: need to mapper from dto
+            
             var tutor = _mapper.Map<Domain.Users.Tutor>(command.TutorForRegistrationDto);
             tutor.Role = UserRole.Tutor;
             tutor.Description = command.TutorForRegistrationDto.Description;

@@ -49,7 +49,7 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
                 return Result.Fail<bool>(new NonExistTutorError());
             }
 
-            var classInfor = await _classInformationRepository.GetById(command.ClassGuid);
+            var classInfor = await _classInformationRepository.GetById(command.ClassId);
             if (classInfor is null)
             {
                 return Result.Fail<bool>(new NonExistClassError());
@@ -61,7 +61,7 @@ public class RequestGettingClassCommandHandler : CreateUpdateCommandHandler<Requ
             }
 
        
-            if (!(await _requestGettingClassRepository.IsRequested(command.ClassGuid, command.TutorId)))
+            if ((await _requestGettingClassRepository.IsRequested(command.ClassId, command.TutorId)))
             {
                 _logger.LogError("Tutor has already requested");
                 return Result.Fail<bool>(new RequestedClassError());

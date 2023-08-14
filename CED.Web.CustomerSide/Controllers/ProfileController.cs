@@ -152,7 +152,6 @@ public class ProfileController : Controller
                 {
                     filePath = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
                 }
-
                
                 var result = await _mediator.Send(new LearnerInfoChangingCommand(userDto,filePath));
 
@@ -243,7 +242,6 @@ public class ProfileController : Controller
         );
     }
     [HttpPost("ChangePassword")]
-    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
     {
         if (ModelState.IsValid)

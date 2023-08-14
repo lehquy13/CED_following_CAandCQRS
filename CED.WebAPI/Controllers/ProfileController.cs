@@ -1,6 +1,10 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
+using CED.Application.Services.ClassInformations.Tutor.Queries.GetTeachingClassDetailQuery;
 using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
+using CED.Contracts.Authentication;
+using CED.Contracts.ClassInformations.Dtos;
 using CED.Contracts.Users;
 using CED.Contracts.Users.Tutors;
 using MapsterMapper;
@@ -28,11 +32,13 @@ namespace CED.WebAPI.Controllers
 
 
         [HttpGet("")]
-        public async Task<IActionResult> Profile(Guid id)
+        public async Task<IActionResult> Profile()
         {
+            var identity = HttpContext.User.Identities.First();
+
             var query = new GetObjectQuery<UserDto>()
             {
-                ObjectId = id
+                ObjectId = new Guid( identity.Claims.First(c => c.Type == "ObjectId").Value)
             };
 
             var loginResult = await _mediator.Send(query);
@@ -90,7 +96,7 @@ namespace CED.WebAPI.Controllers
                         return Ok(result.Value);
                     }
 
-                    return Conflict(result);
+                    return BadRequest(result.Errors);
                 }
                 catch (Exception ex)
                 {
@@ -103,5 +109,70 @@ namespace CED.WebAPI.Controllers
 
             return BadRequest(userDto);
         }
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var query = _mapper.Map<ChangePasswordCommand>(changePasswordRequest);
+
+                    var loginResult = await _mediator.Send(query);
+
+                    if (loginResult.IsSuccess)
+                    {
+                        return Ok();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                                                 "Try again, and if the problem persists, " + ex.Message +
+                                                 "see your system administrator.");
+                }
+            }
+
+            return BadRequest(changePasswordRequest);
+        }
+        [Authorize(Policy = "RequireTutorRole")]
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> TeachingClassDetail(Guid requestId , Guid classId)
+        {
+            var query = new GetTeachingClassDetailQuery
+            {
+                ObjectId = requestId,
+                ClassInformationId = classId
+            };
+            var classInformation = await _mediator.Send(query);
+            if (classInformation.IsSuccess)
+            {
+                return Ok(classInformation.Value);
+            }
+
+            return NotFound(classInformation.Errors);
+        }
+        
+        [HttpGet]
+        [Route("GetLearningClass")]
+        public async Task<IActionResult> GetLearningClass(Guid id)
+        {
+            var query = new GetObjectQuery<ClassInformationForDetailDto>()
+            {
+                ObjectId = id
+            };
+            var classInformation = await _mediator.Send(query);
+            if (classInformation.IsSuccess)
+            {
+                return Ok(classInformation.Value);
+            }
+
+            return NotFound(classInformation.Errors);
+        }
+        
     }
+    
+   
 }

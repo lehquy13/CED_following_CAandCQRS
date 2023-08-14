@@ -1,4 +1,5 @@
-﻿using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using System.Security.Claims;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
@@ -161,9 +162,9 @@ public class ClassInformationController : Controller
     [Route("RequestGettingClass")]
     public async Task<IActionResult> RequestGettingClass(RequestGettingClassRequest requestGettingClassRequest)
     {
-        var email = HttpContext.Session.GetString("email");
+        var tutorId = User.FindFirst(ClaimTypes.Name)?.Value;
 
-        if (User.Identity is null || !User.Identity.IsAuthenticated || email is null)
+        if (User.Identity is null || !User.Identity.IsAuthenticated || tutorId is null )
         {
             string? returnUrl = Url.Action("RequestGettingClass");
             HttpContext.Session.SetString("Value", requestGettingClassRequest.ClassId.ToString());
@@ -171,7 +172,7 @@ public class ClassInformationController : Controller
         }
 
 
-        requestGettingClassRequest.Email = email;
+        requestGettingClassRequest.TutorId = new(tutorId);
         var command = _mapper.Map<RequestGettingClassCommand>(requestGettingClassRequest);
         var result = await _mediator.Send(command);
         if (result.IsFailed)

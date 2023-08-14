@@ -139,8 +139,7 @@ public class TutorInformationController : Controller
     [Authorize]
     [HttpPost]
     [Route("TutorRegistration")]
-    public async Task<IActionResult> TutorRegistration(TutorForRegistrationDto tutorForDetailDto, List<string>? subjectId,
-        List<string>? filePaths)
+    public async Task<IActionResult> TutorRegistration(TutorForRegistrationDto tutorForDetailDto, List<string>? subjectId, List<string>? filePaths)
     {
         //this line will be removed soon
         if (subjectId is not null)

@@ -36,7 +36,8 @@ public class GetTeachingClassDetailQueryHandler
             {
                 return Result.Fail(new NonExistRequestError());
             }
-            return _mapper.Map<RequestGettingClassExtendDto>(classInformation);
+            var resylt =_mapper.Map<RequestGettingClassExtendDto>(requestFromDb);
+            return resylt;
         }
         catch (Exception ex)
         {
