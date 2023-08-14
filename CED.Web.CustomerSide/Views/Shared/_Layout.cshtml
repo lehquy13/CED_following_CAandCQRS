@@ -1,5 +1,6 @@
 ﻿@using CED.Domain.Shared.ClassInformationConsts
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
 @{
     string? name = Context.Session.GetString("name");
     string? image = Context.Session.GetString("image");
@@ -142,7 +143,7 @@
                         <a asp-action="Index" asp-controller="TutorInformation">Tutors</a>
                     </li>
 
-                    @if (role != UserRole.Tutor.ToString())
+                    @if (User.FindFirst(ClaimTypes.Role)?.Value != UserRole.Tutor.ToString())
                     {
                         <li>
                             <a asp-action="TutorRegistration" asp-controller="TutorInformation">Tutor Registration </a>
@@ -197,7 +198,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incObjectIdunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
             </div>
             @*    <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

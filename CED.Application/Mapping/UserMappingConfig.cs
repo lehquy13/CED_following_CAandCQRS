@@ -43,7 +43,10 @@ public class UserMappingConfig : IRegister
             .Map(des => des.Majors, src => src.Subjects)
             .Map(des => des, src => src);
         config.NewConfig<Tutor, TutorForListDto>();
-           
+        config.NewConfig<TutorForRegistrationDto, Tutor>();
+        config.NewConfig<User, Tutor>();
+        
+        
 
         config.NewConfig<(User, ClassInformation), LearnerDto>()
             .Map(des => des.LearningClassInformations, src => src.Item2)

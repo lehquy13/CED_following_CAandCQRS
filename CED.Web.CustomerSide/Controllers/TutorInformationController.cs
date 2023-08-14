@@ -1,4 +1,6 @@
-﻿using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.TutorReviews.Commands;
 using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Application.Services.Users.Student.Queries;
@@ -7,6 +9,7 @@ using CED.Contracts;
 using CED.Contracts.Interfaces.Services;
 using CED.Contracts.Subjects;
 using CED.Contracts.TutorReview;
+using CED.Contracts.Users;
 using CED.Contracts.Users.Tutors;
 using CED.Domain.Shared.ClassInformationConsts;
 using CED.Web.CustomerSide.Utilities;
@@ -112,16 +115,21 @@ public class TutorInformationController : Controller
     [Route("TutorRegistration")]
     public async Task<IActionResult> TutorRegistration()
     {
-        var email = HttpContext.Session.GetString("email");
-        if (email is not null)
+        //Get userId through User.Identity
+        var id = User.FindFirst(ClaimTypes.Name)?.Value;
+        if (!string.IsNullOrWhiteSpace(id))
         {
-            var query = new GetLearnerByMailQuery()
+            var query = new GetObjectQuery<UserDto>()
             {
-                Email = email
+                ObjectId = new(id)
             };
             var result = await _mediator.Send(query);
-            if (result != null)
-                return View(_mapper.Map<TutorForDetailDto>(result));
+            if (result.IsSuccess)
+            {
+                var tutorForDetailDto = _mapper.Map<TutorForDetailDto>(result.Value);
+                return View(tutorForDetailDto);
+
+            }
         }
 
         return View(new TutorForDetailDto());
@@ -131,9 +139,13 @@ public class TutorInformationController : Controller
     [Authorize]
     [HttpPost]
     [Route("TutorRegistration")]
-    public async Task<IActionResult> TutorRegistration(TutorForDetailDto tutorForDetailDto, List<string>? SubjectId,
+    public async Task<IActionResult> TutorRegistration(TutorForRegistrationDto tutorForDetailDto, List<string>? subjectId,
         List<string>? filePaths)
     {
+        //this line will be removed soon
+        if (subjectId is not null)
+            tutorForDetailDto.Majors = subjectId;
+        
         if (filePaths != null)
         {
             for (var i = 0; i < filePaths.Count; i++)
@@ -141,8 +153,21 @@ public class TutorInformationController : Controller
                 filePaths[i] = _webHostEnvironment.WebRootPath + filePaths.ElementAt(i);
             }
         }
+        //Handle filepath !!! Upgrade
+        //alternative flows: get the verification by id then push into verification list of tutor
+        if (filePaths is { Count: > 0 })
+        {
+            foreach (var i in filePaths)
+            {
+                tutorForDetailDto.TutorVerificationInfoDtos.Add(new TutorVerificationInfoDto
+                {
+                    Image = i,
+                    TutorId = tutorForDetailDto.Id
+                });
+            }
+        }
 
-        var command = new TutorRegistrationCommand(tutorForDetailDto, SubjectId, filePaths);
+        var command = new TutorRegistrationCommand(tutorForDetailDto);
 
         var result = await _mediator.Send(command);
 
@@ -150,10 +175,10 @@ public class TutorInformationController : Controller
         if (result.IsSuccess)
         {
             HttpContext.Session.SetString("role", UserRole.Tutor.ToString());
-            return RedirectToAction("SuccessPage", "Home"); //implement
+            return RedirectToAction("SuccessPage", "Home"); 
         }
 
-        return RedirectToAction("FailPage", "Home"); //implement
+        return RedirectToAction("FailPage", "Home"); 
     }
 
     [Authorize]

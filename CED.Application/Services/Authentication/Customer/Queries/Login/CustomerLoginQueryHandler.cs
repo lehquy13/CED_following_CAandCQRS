@@ -37,8 +37,7 @@ public class CustomerLoginQueryHandler
 
         //2. Check if logining with right password
 
-        if (user.Password != _validator.HashPassword(query.Password)
-            || user.Role == UserRole.Admin)
+        if (user.Password != _validator.HashPassword(query.Password))
         {
             return new AuthenticationResult(null, "", false, "Wrong password");
         }

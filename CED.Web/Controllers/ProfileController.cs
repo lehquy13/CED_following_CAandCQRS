@@ -102,8 +102,8 @@ namespace CED.Web.Controllers
 
                     if (result.IsSuccess)
                     {
-                        HttpContext.Response.Cookies.Append("name", query.UserDto.FirstName + query.UserDto.LastName);
-                        HttpContext.Response.Cookies.Append("image", query.UserDto.Image);
+                        HttpContext.Session.SetString("name", query.UserDto.FirstName + query.UserDto.LastName);
+                        HttpContext.Session.SetString("image", query.UserDto.Image);
                     }
                     return Helper.RenderRazorViewToString(this, "Profile", new ProfileViewModel
                     {

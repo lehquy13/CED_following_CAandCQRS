@@ -1,6 +1,7 @@
 
 // Add services to the container.
 
+using System.Net;
 using CED.Application;
 using CED.Infrastructure;
 using CED.Web.CustomerSide;
@@ -26,6 +27,19 @@ var app = builder.Build();
 //     app.UseHsts();
 // }
 app.UseExceptionHandler("/Home/Error");
+app.UseStaticFiles();
+app.UseStatusCodePages(async context => {  
+    var request = context.HttpContext.Request;  
+    var response = context.HttpContext.Response;  
+  
+    // you may also check requests path to do this only for specific methods         
+    // && request.Path.Value.StartsWith("/specificPath")  
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)  
+    {  
+        response.Redirect("/Authentication");  //redirect to the Account Controller login page.  
+    }  
+});
+app.UseSession();
 
 app.UseHttpsRedirection();
 
@@ -33,7 +47,7 @@ app.UseAuthentication();
 
 //app.UseMiddleware<GlobalErrorHandlingMiddleWare>();
 
-app.UseStaticFiles();
+
 
 app.UseRouting();
 

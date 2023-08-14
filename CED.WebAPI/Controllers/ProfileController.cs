@@ -41,21 +41,18 @@ namespace CED.WebAPI.Controllers
             {
                 return Ok(loginResult.Value);
             }
-
-            return NotFound();
+            //return not found if login failed along with errors
+            return NotFound(loginResult.Errors);
         }
 
         [HttpPost("Edit")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(LearnerDto userDto, string filePath = "")
+        public async Task<IActionResult> Edit(LearnerDto userDto)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var query = new LearnerInfoChangingCommand(userDto,filePath);
-
-
+                    var query = new LearnerInfoChangingCommand(userDto, null);
                     var result = await _mediator.Send(query);
 
                     if (result.IsSuccess)
@@ -63,7 +60,7 @@ namespace CED.WebAPI.Controllers
                         return Ok(result.Value);
                     }
 
-                    return Conflict(result);
+                    return Conflict(result.Errors);
                 }
                 catch (Exception ex)
                 {
@@ -76,9 +73,9 @@ namespace CED.WebAPI.Controllers
 
             return BadRequest(userDto);
         }
-        [HttpPost("EditTutorInfor")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTutorInfor(TutorMainInfoDto userDto, List<Guid> subjectIds, List<string> filePaths)
+        
+        [HttpPost("EditTutorInformation")]
+        public async Task<IActionResult> EditTutorInformation(TutorMainInfoDto userDto, List<Guid> subjectIds, List<string> filePaths)
         {
             if (ModelState.IsValid)
             {

@@ -8,7 +8,7 @@ using MapsterMapper;
 namespace CED.WebAPI.Controllers;
 
 [ApiController]
-[Route("Auth")]
+[Route("api/Auth")]
 public class AuthenticationController : ControllerBase
 {
     private readonly ISender _mediator;

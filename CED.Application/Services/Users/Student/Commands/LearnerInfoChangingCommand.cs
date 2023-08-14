@@ -7,6 +7,6 @@ namespace CED.Application.Services.Users.Student.Commands;
 public record LearnerInfoChangingCommand
 (
     LearnerDto LearnerDto,
-    string FilePath
+    string? FilePath
     ) : IRequest<Result<bool>>;
 

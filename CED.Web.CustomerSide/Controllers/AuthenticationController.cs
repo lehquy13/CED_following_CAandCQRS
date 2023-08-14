@@ -34,8 +34,9 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Index(string? returnUrl)
     {
         TempData["ReturnUrl"] = returnUrl;
-        string validateToken = HttpContext.Request.Cookies["access_token"] ?? "";
-        if (validateToken is "")
+        string? validateToken = HttpContext.Session.GetString("access_token");
+        
+        if (string.IsNullOrWhiteSpace(validateToken))
         {
             return View("Login", new LoginRequest("", ""));
         }
@@ -112,27 +113,13 @@ public class AuthenticationController : Controller
     private async Task StoreCookie(AuthenticationResult loginResult)
     {
         // Store the JWT token in a cookie
-
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Strict,
-            //Secure = true,
-            IsEssential = true,
-            Expires = DateTime.UtcNow.AddHours(16),
-        };
+      
         if (loginResult.User != null)
         {
-             HttpContext.Response.Cookies.Append("access_token", loginResult.Token, cookieOptions);
-            // HttpContext.Response.Cookies.Append("name", loginResult.User.FullName, cookieOptions);
-            // HttpContext.Response.Cookies.Append("image", loginResult.User.Image, cookieOptions);
-            // HttpContext.Response.Cookies.Append("email", loginResult.User.Email, cookieOptions);
-            
-            //HttpContext.Session.SetString("access_token",loginResult.Token);
-            HttpContext.Session.SetString("name",loginResult.User.FullName);
-            HttpContext.Session.SetString("image",loginResult.User.Image);
-            HttpContext.Session.SetString("email",loginResult.User.Email);
-            HttpContext.Session.SetString("role",loginResult.User.Role.ToString());
+            //store token into session
+            HttpContext.Session.SetString("access_token", loginResult.Token);
+            HttpContext.Session.SetString("name", loginResult.User.FullName);
+            HttpContext.Session.SetString("image", loginResult.User.Image);
             await HttpContext.Session.CommitAsync();
 
         }
@@ -142,11 +129,8 @@ public class AuthenticationController : Controller
     [HttpGet("Logout")]
     public async Task<IActionResult> Logout()
     {
-        HttpContext.Response.Cookies.Delete("access_token");
-        HttpContext.Session.Remove("name");
-        HttpContext.Session.Remove("image");
-        HttpContext.Session.Remove("email");
-        await HttpContext.Session.CommitAsync();
+        await Task.CompletedTask;
+        HttpContext.Session.Clear();
 
         return RedirectToAction("Index", "Home");
     }

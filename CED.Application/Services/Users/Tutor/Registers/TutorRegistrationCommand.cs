@@ -6,9 +6,6 @@ namespace CED.Application.Services.Users.Tutor.Registers;
 
 public record TutorRegistrationCommand
 (
-    TutorForDetailDto TutorForDetailDto,
-    List<string>? SubjectIds,
-    List<string>? FilePaths
-
+    TutorForRegistrationDto TutorForRegistrationDto
     ) : IRequest<Result<bool>>;
 

@@ -49,8 +49,8 @@ public class ProfileController : Controller
         ViewData["Roles"] = EnumProvider.Roles;
         ViewData["Genders"] = EnumProvider.Genders;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
-        ViewData["Subjects"] = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
-
+        var subjects = await _mediator.Send(new GetObjectQuery<PaginatedList<SubjectDto>>());
+        ViewData["Subjects"] = subjects.Value;
     }
 
     [HttpGet("")]
@@ -70,9 +70,9 @@ public class ProfileController : Controller
             var loginResult = await _mediator.Send(query);
 
 
-            if (loginResult != null)
+            if (loginResult.IsSuccess)
             {
-                var changePasswordRequest = _mapper.Map<ChangePasswordRequest>(loginResult);
+                var changePasswordRequest = _mapper.Map<ChangePasswordRequest>(loginResult.Value);
 
                 var viewModelResult = new ProfileViewModel
                 {
@@ -166,8 +166,8 @@ public class ProfileController : Controller
                 };
                 if (result.IsSuccess)
                 {
-                    HttpContext.Response.Cookies.Append("name", userDto.FirstName + userDto.LastName);
-                    HttpContext.Response.Cookies.Append("image", userDto.Image);
+                    HttpContext.Session.SetString("name", userDto.FirstName + userDto.LastName);
+                    HttpContext.Session.SetString("image", userDto.Image);
                     var query1 = new GetAllRequestGettingClassOfTutorQuery()
                     {
                         ObjectId = userDto.Id

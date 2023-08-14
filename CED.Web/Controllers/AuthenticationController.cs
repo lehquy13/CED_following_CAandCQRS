@@ -55,7 +55,6 @@ public class AuthenticationController : Controller
 
         var loginResult = await _mediator.Send(query);
 
-
         if (loginResult.IsSuccess is false || loginResult.User is null)
         {
             ViewBag.isFail = true;
@@ -75,17 +74,13 @@ public class AuthenticationController : Controller
         return Redirect(returnUrl);
     }
 
-   
-
-
 
     [Authorize(Policy = "RequireAdministratorRole")]
     [HttpGet("Logout")]
     public IActionResult Logout()
     {
-        HttpContext.Response.Cookies.Delete("access_token");
-        HttpContext.Response.Cookies.Delete("name");
-        HttpContext.Response.Cookies.Delete("image");
+     
+        HttpContext.Session.Clear();
 
         return View("Login", new LoginRequest("", ""));
     }

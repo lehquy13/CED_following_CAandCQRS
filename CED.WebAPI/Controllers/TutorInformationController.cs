@@ -4,8 +4,11 @@ using CED.Application.Services.ClassInformations.Commands;
 using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Queries.GetClassInformation;
 using CED.Application.Services.Users.Queries.CustomerQueries;
+using CED.Application.Services.Users.Tutor.Registers;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.Users;
+using CED.Contracts.Users.Tutors;
+using CED.Domain.Shared.ClassInformationConsts;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,11 +33,10 @@ public class TutorInformationController : ControllerBase
     }
 
     // Query
-    // GET: api/<ClassInformationController>
+    // GET: api/<TutorInformationController>
     [HttpGet]
-    [Route("GetAllClassInformations")]
-
-    public async Task<IActionResult> GetAllTutor(int pageIndex, string subjectName )
+    [Route("GetAllTutors")]
+    public async Task<IActionResult> GetAllTutors(int pageIndex, string subjectName )
     {
         var query = new GetAllTutorInformationsAdvancedQuery()
         {
@@ -42,19 +44,46 @@ public class TutorInformationController : ControllerBase
             PageSize = _pageSize
         };
         var tutorDtos = await _mediator.Send(query);
-        return Ok(tutorDtos);
+        if(tutorDtos.IsSuccess)
+            return Ok(tutorDtos);
+        return BadRequest(tutorDtos.Errors);
     }
     
-    // GET api/<ClassInformationController>/5
+    // GET api/<TutorInformationController>/5
     [HttpGet]
-    [Route("GetClassInformation/{id}")]
-    public async Task<IActionResult> GetClassInformation(Guid id)
+    [Route("{id}")]
+    public async Task<IActionResult> Detail(Guid id)
     {
-        var query = _mapper.Map<GetClassInformationQuery>(id);
-        var classInformation = await _mediator.Send(query);
-        
-        return Ok(classInformation);
+        var query = new GetObjectQuery<TutorForDetailDto>()
+        {
+            ObjectId = id
+        };
+        var tutorDto = await _mediator.Send(query);
+        if(tutorDto.IsSuccess)
+            return Ok(tutorDto.Value);
+        return BadRequest(tutorDto.Errors);
     }
+    
+    // POST api/<TutorInformationController>/TutorRegistration
+    [Authorize]
+    [HttpPost]
+    [Route("TutorRegistration")]
+    public async Task<IActionResult> TutorRegistration(TutorForRegistrationDto tutorForRegistrationDto)
+    {
+        //TODO: need to change Subjects to SubjectIds, Verification
+        var command = new TutorRegistrationCommand(tutorForRegistrationDto);
+
+        var result = await _mediator.Send(command);
+
+        
+        if (result.IsSuccess)
+        {
+            return NoContent(); 
+        }
+
+        return BadRequest(result.Errors);
+    }
+    
 
    
 

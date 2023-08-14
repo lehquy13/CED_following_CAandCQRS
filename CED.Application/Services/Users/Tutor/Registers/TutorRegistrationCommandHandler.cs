@@ -30,7 +30,7 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
         ITutorRepository tutorRepository,
         IUnitOfWork unitOfWork,
         ILogger<TutorRegisterCommandHandler> logger,
-        IMapper mapper, IAppCache cache, IPublisher publisher) : base(logger, mapper,unitOfWork,cache,publisher)
+        IMapper mapper, IAppCache cache, IPublisher publisher) : base(logger, mapper, unitOfWork, cache, publisher)
     {
         _userRepository = userRepository;
         _tutorRepository = tutorRepository;
@@ -39,62 +39,65 @@ public class TutorRegisterCommandHandler : CreateUpdateCommandHandler<TutorRegis
         _tutorVerificationInfoRepository = tutorVerificationInfoRepository;
     }
 
-    public override async Task<Result<bool>> Handle(TutorRegistrationCommand command, CancellationToken cancellationToken)
+    public override async Task<Result<bool>> Handle(TutorRegistrationCommand command,
+        CancellationToken cancellationToken)
     {
         try
         {
             //Check if the user existed
             //TODO: Check if the logic goes well
-            
-            var user = await _userRepository.ExistenceCheck(command.TutorForDetailDto.Id);
-            
+
+            var user = await _userRepository.GetById(command.TutorForRegistrationDto.Id);
+
             if (user is null)
             {
                 return Result.Fail(new NonExistUserError());
             }
-            var tutor =  _mapper.Map<Domain.Users.Tutor>(command.TutorForDetailDto);
-
-            //user.UpdateUserInformationExceptImage(updateUser);
+            //TODO: need to mapper from dto
+            var tutor = _mapper.Map<Domain.Users.Tutor>(command.TutorForRegistrationDto);
             tutor.Role = UserRole.Tutor;
-            //user.CreationTime = DateTime.Now;
-
-            //Set to false bc tutor will need to be verified by user
+            tutor.Description = command.TutorForRegistrationDto.Description;
+            tutor.University = command.TutorForRegistrationDto.University;
+            tutor.AcademicLevel = command.TutorForRegistrationDto.AcademicLevel;
             tutor.IsVerified = false;
+
+             _userRepository.Delete(user);
+            var tutorToRegister = await _tutorRepository.Insert(tutor); 
+
             
-            //Handle filepath !!! Upgrade
-            //alternative flows: get the verification by id then push into verification list of tutor
-            if (command.FilePaths is { Count: > 0 })
+
+            if (await _unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {
-                foreach (var i in command.FilePaths)
-                {
-                    await _tutorVerificationInfoRepository.Insert(new TutorVerificationInfo
-                    {
-                        Image = _cloudinaryFile.UploadImage(i),
-                        TutorId = tutor.Id
-                    });
-                }
+                return Result.Fail("Fail to register new tutor");
+            }
+            
+            foreach (var i in command.TutorForRegistrationDto.TutorVerificationInfoDtos)
+            {
+                i.Image = _cloudinaryFile.UploadImage(i.Image);
+                var tutorVerificationInfo = _mapper.Map<TutorVerificationInfo>(i);
+                await _tutorVerificationInfoRepository.Insert(tutorVerificationInfo);
             }
 
             //Handle major
-            if (command.SubjectIds is { Count: > 0 })
+            if (command.TutorForRegistrationDto.Majors is { Count: > 0 })
             {
-                foreach (var i in command.SubjectIds)
+                foreach (var i in command.TutorForRegistrationDto.Majors)
                 {
                     await _tutorMajorInfoRepository.Insert(new TutorMajor()
                     {
                         SubjectId = new Guid(i),
-                        TutorId = tutor.Id
+                        TutorId = tutorToRegister.Id
                     });
                 }
             }
-            
-            await _tutorRepository.Insert(tutor); //TODO: this will be fail
 
-            if (await _unitOfWork.SaveChangesAsync() <= 0)
+
+            if (await _unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {
-                return Result.Fail("Fail to register new tutor");
+                return Result.Fail("Fail to save majors and verification info");
             }
-            _logger.LogDebug("Done.");
+
+            _logger.LogInformation("Done");
             return true;
         }
         catch (Exception e)

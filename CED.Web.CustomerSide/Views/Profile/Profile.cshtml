@@ -2,6 +2,8 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @using CED.Domain.Shared.ClassInformationConsts
+@using System.Security.Claims
+@using CloudinaryDotNet.Actions
 @model ProfileViewModel
 @{
     List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
@@ -30,10 +32,10 @@
                     <li>
                         <a asp-action="Index" asp-controller="TutorInformation">Tutors</a>
                     </li>
-                    @if (Model.UserDto.Role != UserRole.Tutor)
+                    @if (User.FindFirst(ClaimTypes.Role)?.Value != UserRole.Tutor.ToString())
                     {
                         <li>
-                            <a asp-action="Index" asp-controller="TutorInformation">Tutor Registration </a>
+                            <a asp-action="Index" asp-controller="TutorInformation">Tutor Registration</a>
                         </li>
                     }
                    

@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using CED.Contracts.Users.Tutors;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace CED.Web.Controllers;
 
@@ -38,6 +39,7 @@ public class HomeController : Controller
     [Route("")]
     public async Task<IActionResult> Index()
     {
+        var user = User.FindFirst(JwtRegisteredClaimNames.UniqueName)?.Value;
         _logger.LogDebug("Index's running! On getting classDtos, tutorDtos, studentDtos...");
         var classDtos = await _sender.Send(new GetAllClassInformationsQuery());
         var tutorDtos = await _sender.Send(new GetAllTutorInformationsAdvancedQuery());

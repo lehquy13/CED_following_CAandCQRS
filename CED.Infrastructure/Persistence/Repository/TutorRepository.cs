@@ -71,5 +71,23 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
             .ToListAsync();
         return result;
     }
+
+    public async Task<bool> Register(Tutor tutor)
+    {
+        try
+        {
+            await _appDbContext.Tutors.AddAsync(tutor);
+            //mark that this record is already create in User table and we are adding it to Tutor table
+            _appDbContext.Entry(tutor).State = EntityState.Modified;
+            //await _appDbContext.Users.AddAsync(tutor);    
+            return true;
+        }
+        catch(Exception ex) { 
+            throw new Exception(ex.Message);
+        }
+        return true;
+    }
+
+    
 }
 

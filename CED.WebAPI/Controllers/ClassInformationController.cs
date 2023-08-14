@@ -1,9 +1,7 @@
 ﻿using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.ClassInformations.Commands;
-using CED.Application.Services.ClassInformations.Queries;
 using CED.Application.Services.ClassInformations.Queries.GetAllClassInformationsQuery;
 using CED.Application.Services.ClassInformations.Tutor.Commands.ApplyClass;
-using CED.Application.Services.Users.Queries.CustomerQueries;
 using CED.Contracts.ClassInformations;
 using CED.Contracts.ClassInformations.Dtos;
 using MapsterMapper;
@@ -14,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CED.WebAPI.Controllers;
-[Authorize]
+
 [Route("api/[controller]")]
 [ApiController]
 public class ClassInformationController : ControllerBase
@@ -88,8 +86,7 @@ public class ClassInformationController : ControllerBase
     }
 
     // DELETE api/<ClassInformationController>/5
-    
-    
+    [Authorize(Policy = "RequireTutorRole")]
     [HttpPut]
     [Route("RequestGettingClass")]
     public async Task<IActionResult> RequestGettingClass(RequestGettingClassRequest requestGettingClassRequest)

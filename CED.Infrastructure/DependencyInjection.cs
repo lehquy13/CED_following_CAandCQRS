@@ -20,7 +20,6 @@ using CED.Infrastructure.Entity_Framework_Core;
 using CED.Infrastructure.Logging;
 using CED.Infrastructure.Persistence;
 using CED.Infrastructure.Services.EmailServices;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 
 namespace CED.Infrastructure
@@ -126,7 +125,11 @@ namespace CED.Infrastructure
                             try
                             {
                                 var token = context.HttpContext.Session.GetString("access_token");
-                                if(token != null) context.Token = token;
+                                if (token != null)
+                                {
+                                    context.Token = token;
+                                }
+                                
                             }
                             catch (Exception e)
                             {

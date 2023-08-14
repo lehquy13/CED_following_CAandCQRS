@@ -11,7 +11,8 @@ public class UserMappingConfig : IRegister
 
         config.NewConfig<LearnerDto, TutorForDetailDto>()
             .Map(dest => dest, src => src);
-       
+        config.NewConfig<UserDto, TutorForDetailDto>();
+
 
     }
 }
