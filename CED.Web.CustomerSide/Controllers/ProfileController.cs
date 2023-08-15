@@ -167,15 +167,21 @@ public class ProfileController : Controller
                 {
                     HttpContext.Session.SetString("name", userDto.FirstName + userDto.LastName);
                     HttpContext.Session.SetString("image", userDto.Image);
-                    var query1 = new GetAllRequestGettingClassOfTutorQuery()
+                    if (userDto.Role == UserRole.Tutor)
                     {
-                        ObjectId = userDto.Id
-                    };
-                    var loginResult1 = await _mediator.Send(query1);
 
-                    viewModelResult.RequestGettingClassDtos = loginResult1.Value;
+                        var query1 = new GetTutorProfileQuery()
+                        {
+                            ObjectId = userDto.Id
+                        };
+                        var loginResult1 = await _mediator.Send(query1);
+
+                        viewModelResult.RequestGettingClassDtos = loginResult1.Value.RequestGettingClassForListDtos;
+                        viewModelResult.TutorDto = loginResult1.Value.TutorMainInfoDto;
+                    }
+
                 }
-              
+               
                 
                 return Helper.RenderRazorViewToString(this, "Profile", viewModelResult);
             }

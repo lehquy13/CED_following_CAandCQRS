@@ -31,7 +31,7 @@ public class ClassInformationController : ControllerBase
     // GET: api/<ClassInformationController>
     [HttpGet]
     [Route("GetAllClassInformations")]
-    public async Task<IActionResult> GetAllClassInformations(int pageIndex, string subjectName)
+    public async Task<IActionResult> GetAllClassInformations(int pageIndex, string subjectName = "")
     {
         var query = new GetAllClassInformationsQuery()
         {
@@ -52,7 +52,10 @@ public class ClassInformationController : ControllerBase
     [Route("GetClassInformation/{id}")]
     public async Task<IActionResult> GetClassInformation(Guid id)
     {
-        var query = new GetObjectQuery<ClassInformationForDetailDto>();
+        var query = new GetObjectQuery<ClassInformationForDetailDto>
+        {
+            ObjectId = id
+        };
         var classInformation = await _mediator.Send(query);
         if(classInformation.IsFailed)
         {
@@ -66,7 +69,7 @@ public class ClassInformationController : ControllerBase
     [Route("CreateClassInformation")]
     public async Task<IActionResult> CreateClassInformation(CreateClassInformationByCustomer createUpdateClassInformationDto)
     {
-        var command = _mapper.Map<CreateClassInformationByCustomer>(createUpdateClassInformationDto);
+        var command = _mapper.Map<CreateUpdateClassInformationCommand>(createUpdateClassInformationDto);
 
         var result = await _mediator.Send(command);
 

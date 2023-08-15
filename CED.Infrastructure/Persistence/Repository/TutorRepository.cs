@@ -72,6 +72,12 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
         return result;
     }
 
+    /// <summary>
+    /// Deprecated
+    /// </summary>
+    /// <param name="tutor"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public async Task<bool> Register(Tutor tutor)
     {
         try

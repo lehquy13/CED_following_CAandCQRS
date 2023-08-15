@@ -36,7 +36,7 @@ public class LearnerInfoChangingCommandHandler : CreateUpdateCommandHandler<Lear
             }
             user.UpdateUserInformation(_mapper.Map<User>(command.LearnerDto));
             
-            if (await _unitOfWork.SaveChangesAsync() <= 0)
+            if (await _unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {
                 return Result.Fail($"Fail to update of user {user.Email}");
             }    
@@ -47,7 +47,7 @@ public class LearnerInfoChangingCommandHandler : CreateUpdateCommandHandler<Lear
         user = _mapper.Map<User>(command.LearnerDto);
 
         var entity = await _userRepository.Insert(user);
-        if (await _unitOfWork.SaveChangesAsync() <= 0)
+        if (await _unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
             return Result.Fail($"Fail to create of user {entity.Email}");
         } 

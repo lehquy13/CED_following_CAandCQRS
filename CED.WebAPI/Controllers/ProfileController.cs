@@ -1,5 +1,9 @@
-﻿using CED.Application.Services.Abstractions.QueryHandlers;
+﻿using System.Security.Claims;
+using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
+using CED.Application.Services.Authentication.Customer.Queries.Login;
+using CED.Application.Services.Authentication.RefreshToken;
+using CED.Application.Services.ClassInformations.Tutor.Queries.GetAllRequestGettingClassOfTutor;
 using CED.Application.Services.ClassInformations.Tutor.Queries.GetTeachingClassDetailQuery;
 using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
@@ -34,11 +38,11 @@ namespace CED.WebAPI.Controllers
         [HttpGet("")]
         public async Task<IActionResult> Profile()
         {
-            var identity = HttpContext.User.Identities.First();
+            var identity = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
 
             var query = new GetObjectQuery<UserDto>()
             {
-                ObjectId = new Guid( identity.Claims.First(c => c.Type == "ObjectId").Value)
+                ObjectId = new Guid(identity ?? "")
             };
 
             var loginResult = await _mediator.Send(query);
@@ -47,6 +51,7 @@ namespace CED.WebAPI.Controllers
             {
                 return Ok(loginResult.Value);
             }
+
             //return not found if login failed along with errors
             return NotFound(loginResult.Errors);
         }
@@ -54,40 +59,40 @@ namespace CED.WebAPI.Controllers
         [HttpPost("Edit")]
         public async Task<IActionResult> Edit(LearnerDto userDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var query = new LearnerInfoChangingCommand(userDto, null);
-                    var result = await _mediator.Send(query);
+                var result = await _mediator.Send(new LearnerInfoChangingCommand(userDto, null));
 
-                    if (result.IsSuccess)
-                    {
-                        return Ok(result.Value);
-                    }
-
-                    return Conflict(result.Errors);
-                }
-                catch (Exception ex)
+                if (result.IsSuccess)
                 {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                                                 "Try again, and if the problem persists, " + ex.Message +
-                                                 "see your system administrator.");
+                    var query = new RefreshTokenQuery(userDto.Email);
+                    var loginResult = await _mediator.Send(query);
+                    if (loginResult.IsSuccess)
+                        return Ok(loginResult.Value);
                 }
+
             }
+            catch (Exception ex)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                                             "Try again, and if the problem persists, " + ex.Message +
+                                             "see your system administrator.");
+            }
+
 
             return BadRequest(userDto);
         }
-        
+
         [HttpPost("EditTutorInformation")]
-        public async Task<IActionResult> EditTutorInformation(TutorMainInfoDto userDto, List<Guid> subjectIds, List<string> filePaths)
+        public async Task<IActionResult> EditTutorInformation(TutorMainInfoDto userDto, List<Guid> subjectIds,
+            List<string> filePaths)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var query = new TutorInfoChangingCommand(userDto,subjectIds,filePaths);
+                    var query = new TutorInfoChangingCommand(userDto, subjectIds, filePaths);
 
                     var result = await _mediator.Send(query);
 
@@ -109,6 +114,7 @@ namespace CED.WebAPI.Controllers
 
             return BadRequest(userDto);
         }
+
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
@@ -136,10 +142,11 @@ namespace CED.WebAPI.Controllers
 
             return BadRequest(changePasswordRequest);
         }
+
         [Authorize(Policy = "RequireTutorRole")]
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> TeachingClassDetail(Guid requestId , Guid classId)
+        public async Task<IActionResult> TeachingClassDetail(Guid requestId, Guid classId)
         {
             var query = new GetTeachingClassDetailQuery
             {
@@ -154,7 +161,7 @@ namespace CED.WebAPI.Controllers
 
             return NotFound(classInformation.Errors);
         }
-        
+
         [HttpGet]
         [Route("GetLearningClass")]
         public async Task<IActionResult> GetLearningClass(Guid id)
@@ -171,8 +178,5 @@ namespace CED.WebAPI.Controllers
 
             return NotFound(classInformation.Errors);
         }
-        
     }
-    
-   
 }

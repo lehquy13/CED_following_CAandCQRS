@@ -104,11 +104,11 @@ public class CreateUpdateClassInformationCommandHandler
             // Clear cache
             var defaultRequest = new GetAllClassInformationsQuery();
             _cache.Remove(defaultRequest.GetType() + JsonConvert.SerializeObject(defaultRequest));
-            return true;
+            return Result.Ok(true);
         }
         catch (Exception ex)
         {
-            throw new Exception("Error happens when class is adding or updating." + ex.Message);
+            return Result.Fail("Error happens when class is adding or updating." + ex.Message);
         }
     }
 }
