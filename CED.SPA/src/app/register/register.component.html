@@ -1,0 +1,181 @@
+<div class="container-fluid ps-md-0">
+  <div class="row g-0">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+    <div class="col-md-8 col-lg-6">
+      <div class="login d-flex align-items-center py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-9 col-lg-8 mx-auto">
+              <h3 class="login-heading mb-4">Welcome back!</h3>
+
+              <!-- Sign In Form -->
+              <form [formGroup]="registerForm" (ngSubmit)="register()">
+                <!-- Gender-->
+                <div class="form-group mb-3 ">
+                  <label class="control-label" style="margin-right:10px">I am a: </label>
+                  <label class="radio-inline " style="margin-right:10px">
+                    <input class="mr-3" type="radio" value="male" formControlName="gender" [checked]="true" >Male
+                  </label>
+                  <label class="radio-inline ml-3">
+                    <input class="mr-3" type="radio" value="female" formControlName="gender">Female
+                  </label>
+                </div>
+                <!-- FirstName-->
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" placeholder="John"
+                         formControlName="firstName"
+                         [ngClass]="{ 'is-invalid':  registerForm.get('firstName')?.errors && registerForm.get('firstName')?.touched}"
+                         id="input1">
+                  <div
+                    *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.hasError('required')"
+                    class="invalid-feedback">
+                    <div *ngIf=" registerForm.get('firstName')?.hasError('required')">First name is required</div>
+                  </div>
+                  <label for="input1">First Name</label>
+                </div>
+
+                <!-- LastName-->
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" placeholder="Blue"
+                         formControlName="lastName"
+                         [ngClass]="{ 'is-invalid':  registerForm.get('lastName')?.errors && registerForm.get('lastName')?.touched}"
+                         id="input2">
+                  <div
+                    *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.hasError('required')"
+                    class="invalid-feedback">
+                    <div *ngIf=" registerForm.get('lastName')?.hasError('required')">Last name is required</div>
+                  </div>
+                  <label for="input2">Last Name</label>
+                </div>
+
+                <!-- Email-->
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" placeholder="name@example.com"
+                         formControlName="email"
+                         [ngClass]="{ 'is-invalid':  registerForm.get('email')?.errors && registerForm.get('email')?.touched}"
+                         id="inputEmail4">
+                  <div
+                    *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required') || registerForm.get('email')?.hasError('email')"
+                    class="invalid-feedback">
+                    <div *ngIf=" registerForm.get('email')?.hasError('required')">Email is required</div>
+                    <div *ngIf="registerForm.get('email')?.hasError('email')">Email must be a valid email address</div>
+                  </div>
+                  <label for="inputEmail4">Email address</label>
+                </div>
+
+                <!-- PhoneNumber-->
+                <div class="form-floating mb-3">
+                  <input type="tel" class="form-control"
+                         formControlName="phoneNumber"
+                         [ngClass]="{ 'is-invalid':  registerForm.get('phoneNumber')?.errors && registerForm.get('phoneNumber')?.touched}"
+                         id="input8">
+                  <div
+                    *ngIf="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.hasError('required')"
+                    class="invalid-feedback">
+                    <div *ngIf=" registerForm.get('phoneNumber')?.hasError('required')">Phone number is required</div>
+                  </div>
+                  <label for="input8">Phone Number</label>
+                </div>
+
+                <!-- Address-->
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" placeholder="1234 Saint Street"
+                         formControlName="address"
+                         [ngClass]="{ 'is-invalid':  registerForm.get('address')?.errors && registerForm.get('address')?.touched}"
+                         id="input5">
+                  <div
+                    *ngIf="registerForm.get('address')?.touched && registerForm.get('address')?.hasError('required')"
+                    class="invalid-feedback">
+                    <div *ngIf=" registerForm.get('address')?.hasError('required')">Address is required</div>
+                  </div>
+                  <label for="input5">Address</label>
+                </div>
+
+                <!-- BirthYear-->
+                <div class="form-floating mb-3">
+                  <input type="number" class="form-control" placeholder="1990"
+                         formControlName="birthYear"
+                         [ngClass]="{ 'is-invalid':  registerForm.get('birthYear')?.errors && registerForm.get('birthYear')?.touched}"
+                         id="input6">
+                  <div
+                    *ngIf="registerForm.get('birthYear')?.touched && registerForm.get('birthYear')?.hasError('required')"
+                    class="invalid-feedback">
+                    <div *ngIf=" registerForm.get('birthYear')?.hasError('required')">BirthYear is required</div>
+                  </div>
+                  <div class="invalid-feedback"
+                       *ngIf="registerForm.get('birthYear')?.hasError('min') && registerForm.get('birthYear')?.touched">
+                    Birth year must be more than 1960
+                  </div>
+                  <div class="invalid-feedback"
+                       *ngIf="registerForm.get('birthYear')?.hasError('max') && registerForm.get('birthYear')?.touched">
+                    You must be at least 6 years old
+                  </div>
+                  <label for="input6">BirthYear</label>
+                </div>
+
+
+
+                <!-- Password-->
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" placeholder="Password"
+                         formControlName="password"
+                         [ngClass]="{ 'is-invalid': registerForm.get('password')?.errors && registerForm.get('password')?.touched}"
+                         id="inputPassword4">
+                  <div
+                    *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')"
+                    class="invalid-feedback">
+                    <div *ngIf="registerForm.get('password')?.hasError('required')">Password is required</div>
+                  </div>
+
+                  <div class="invalid-feedback"
+                       *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
+                    Password
+                    must be more than 4 character
+                  </div>
+                  <div class="invalid-feedback"
+                       *ngIf="registerForm.get('password')?.hasError('maxlength') && registerForm.get('password')?.touched">
+                    Password
+                    must be less than 8 character
+                  </div>
+                  <label for="inputPassword4">Password</label>
+                </div>
+
+                <!--ConformPassword-->
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" placeholder="Password"
+                         formControlName="confirmPassword"
+                         [ngClass]="{ 'is-invalid': registerForm.get('confirmPassword')?.errors && registerForm.get('confirmPassword')?.touched}"
+                         id="inputConfirmPassword4">
+                  <div
+                    *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('required')"
+                    class="invalid-feedback">
+                    <div *ngIf="registerForm.get('confirmPassword')?.hasError('required')">Confirm password is required
+                    </div>
+
+                  </div>
+                  <div
+                    *ngIf="registerForm.get('confirmPassword')?.hasError('passwordMismatch')&& registerForm.get('confirmPassword')?.touched"
+                    class="invalid-feedback">
+                    Confirm password is mismatch
+                  </div>
+                  <label for="inputConfirmPassword4">Confirm password</label>
+                </div>
+
+                <div class="d-grid">
+                  <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sign up
+                  </button>
+                  <div class="text-center">
+                    <p>Already have account?
+                      <a class="fw-bolder" [routerLink]="['/login']">Sign in here</a>
+                    </p>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

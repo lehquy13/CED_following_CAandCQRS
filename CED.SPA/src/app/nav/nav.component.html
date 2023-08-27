@@ -1,0 +1,61 @@
+<!-- Header Start -->
+<div class="header-wrap">
+  <header>
+    <div class="container">
+      <!-- Logo Start -->
+      <div class="logo">
+        <a href="#">
+          <img src="assets/images/logo.svg" alt="EduSmart"/>
+        </a>
+      </div>
+      <!-- Logo End -->
+      <button class="menu-toggle">
+        <i class="ri-menu-fill bar-icon"></i>
+        <i class="ri-close-fill close-icon"></i>
+      </button>
+      <div class="header-right">
+
+        <!-- Header Menu Start -->
+        <div class="menu">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">Tutors</a></li>
+            <li><a href="#">Contacts</a></li>
+
+          </ul>
+        </div>
+        <!-- Header Menu End -->
+
+        <!-- Header Cta Start -->
+        <div class="cta" >
+
+          <a *ngIf="!loggedIn()" [routerLink]="['/login']" class="btn btn-outline-primary">Log in</a>
+
+          <!--LoggedIn-->
+          <div class="dropdown" *ngIf="loggedIn()" dropdown>
+
+            <a class="dropdown-toggle" dropdownToggle>
+              Welcome {{authService.decodedToken?.sub | titlecase}}
+            </a>
+            <!--          <span>-->
+            <!--                  <img class="rounded-circle" width="40" height="40" [src]="'../../../assets/user.png'"-->
+            <!--                       alt="user photo">-->
+            <!--                </span>-->
+            <ul class="dropdown-menu" *dropdownMenu>
+              <li><a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user"></i>Edit
+                Profile</a></li>
+              <div class="dropdown divider"></div>
+              <li><a class="dropdown-item" (click)="logOut()"><i class="fa fa-sign-out"></i>Logout</a></li>
+            </ul>
+          </div>
+        </div>
+
+
+
+        <!-- Header Cta End -->
+      </div>
+    </div>
+  </header>
+</div>
+<!-- Header End -->
