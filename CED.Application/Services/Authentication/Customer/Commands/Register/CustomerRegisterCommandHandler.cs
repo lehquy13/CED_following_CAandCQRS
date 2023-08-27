@@ -1,6 +1,7 @@
 ﻿using CED.Contracts.Authentication;
 using CED.Domain.Interfaces.Authentication;
 using CED.Domain.Repository;
+using CED.Domain.Shared.ClassInformationConsts;
 using CED.Domain.Users;
 using MapsterMapper;
 using MediatR;
@@ -42,7 +43,12 @@ public class CustomerRegisterCommandHandler
             FirstName = command.FirstName,
             LastName = command.LastName,
             Email = command.Email,
-            Password =   _validator.HashPassword(command.Password)
+            Password =   _validator.HashPassword(command.Password),
+            Role = UserRole.Learner,
+            Address = command.Address,
+            PhoneNumber = command.PhoneNumber,
+            BirthYear = command.BirthYear,
+            Gender = command.Gender
         };
 
         await _userRepository.Insert(user);

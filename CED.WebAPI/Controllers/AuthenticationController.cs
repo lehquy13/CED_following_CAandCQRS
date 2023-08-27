@@ -35,9 +35,10 @@ public class AuthenticationController : ControllerBase
     {
         var query = _mapper.Map<CustomerLoginQuery>(request);
 
-        var loginResult = await _mediator.Send(query);
-
-        return Ok(loginResult);
+        AuthenticationResult loginResult = await _mediator.Send(query);
+        if(loginResult.IsSuccess)
+            return Ok(loginResult);
+        return Unauthorized();
 
     }
     

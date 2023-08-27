@@ -7,6 +7,7 @@ public static class DependencyInjection
     {
         services.AddMappings();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddCors();
         return services;
     }
 }
