@@ -1,0 +1,56 @@
+<div class="course-item">
+  <div class="course-content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4>{{ course.subjectName}}</h4>
+      <p class="price">${{ course.fee}}</p>
+    </div>
+
+    <h3><a [routerLink]="['/course/', course.id]">{{course.title}}</a></h3>
+    <div class="text-ex-large">
+      <p>{{course.description}}</p>
+    </div>
+    <div class=" d-flex justify-content-between align-items-center">
+      <ul class="row">
+        <li class="col-sm-4"><i class="far fa-clock text-danger mr-10"></i> <b>Created:</b> {{ course.creationTime | date}}</li>
+
+        <li class="col-sm-4">
+          <i class="fas fa-transgender text-danger mr-10"></i> <b>Gender Requirements:</b>
+          {{ course.genderRequirement}}
+        </li>
+
+        <li class="col-sm-4">
+          <i class="far fa-calendar-alt text-danger mr-10"></i><b>Academic requirements:</b> {{ course.academicLevel}}
+        </li>
+
+        <li class="col-sm-4">
+          <i class="far fa-calendar-alt text-danger mr-10"></i><b>Sessions/week:</b> {{ course.sessionPerWeek}}
+        </li>
+
+        <li class="col-sm-4">
+          <i class="far fa-calendar-alt text-danger mr-10"></i> <b>Learner's gender:</b> {{ course.learnerGender}}
+        </li>
+
+        <li class="col-sm-4">
+          <i class="far fa-user text-danger mr-10"></i>
+          <b>Total learner:</b> {{ course.numberOfLearner}} learner
+        </li>
+
+
+        <li class="col-sm-4">
+          <i class="far fa-calendar-alt text-danger mr-10"></i> <b>Minutes/week:</b> {{ course.minutePerSession}}
+          minutes
+        </li>
+        <li class="col-sm-12">
+          <i class="fas fa-map-marker-alt text-danger mr-10"></i>
+          <b>Address:</b> {{ course.address}}
+          <a href="https://www.google.com/maps?q={{course.address}}}" class="text-danger" target="_blank">
+            <small>
+              <em>(View map <i class="bi bi-map"></i>)</em>
+            </small>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>

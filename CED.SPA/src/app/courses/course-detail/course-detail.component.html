@@ -1,0 +1,133 @@
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs">
+  <div class="container">
+    <h2>Course Details</h2>
+    <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+  </div>
+</div><!-- End Breadcrumbs -->
+
+<!-- ======= Cource Details Section ======= -->
+<section id="course-details" class="course-details">
+  <div class="container" data-aos="fade-up">
+
+    <div class="row">
+      <div class="card mb-3 col-lg-12">
+        <h3>{{course.title}}</h3>
+        <div class="d-flex justify-content-between align-items-center ">
+
+          <h4 class="col-lg-6">
+            <b>Subject: </b> {{course.subjectName}}
+          </h4>
+          <form class="col-lg-3">
+
+            <button *ngIf="!authService.loggedIn()" class="btn btn-success" disabled type="submit">Request for this class (<b>Charge</b>: {{course.chargeFee}} $)</button>
+
+            <button *ngIf="authService.loggedIn()" class="btn btn-success" type="submit">Request for this class (<b>Charge</b>: {{course.chargeFee}} $)</button>
+
+
+            <input value="@Model.ClassInformationDto.Id" hidden="" name="ClassId"/>
+          </form>
+
+        </div>
+
+        <p>
+          {{course.description}}
+        </p>
+        <div class="row">
+          <p>Requirements</p>
+          <div class="course-info d-flex justify-content-between align-items-center">
+            <h5>Status</h5>
+            <p>{{course.status}}</p>
+          </div>
+          <div class="course-info d-flex justify-content-between align-items-center">
+            <h5>Gender requirement</h5>
+            <p>{{course.genderRequirement}}</p>
+          </div>
+          <div class="course-info d-flex justify-content-between align-items-center">
+            <h5>Academic requirements</h5>
+            <p>{{course.academicLevel}}</p>
+          </div>
+
+
+          <div class="course-info d-flex justify-content-between align-items-center">
+            <h5>Learning Mode</h5>
+            <p>{{course.learningMode}}</p>
+          </div>
+          <p> Informations </p>
+
+          <div class="col-lg-4 ">
+
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <h5>Class' Fee</h5>
+              <p>${{course.fee}}</p>
+            </div>
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <h5>Charge Fee</h5>
+              <p>${{course.chargeFee}}</p>
+            </div>
+
+
+          </div>
+          <div class="col-lg-4 ">
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <h5>Number of learner</h5>
+              <p>{{course.numberOfLearner}}</p>
+            </div>
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <h5>Student's Gender</h5>
+              <p>{{course.learnerGender}}</p>
+            </div>
+          </div>
+          <div class="col-lg-4 ">
+
+
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <h5>Minute/Session</h5>
+              <p>{{course.minutePerSession}}</p>
+            </div>
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <h5>Session/Week</h5>
+              <p>{{course.sessionPerWeek}}</p>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section><!-- End Cource Details Section -->
+
+<!-- ======= Cource Details Tabs Section ======= -->
+<section id="courses" class="courses">
+  <div class="container" data-aos="fade-up">
+    <h3>Related classes</h3>
+    <div class="row">
+      <div class="col-lg-12 mt-4 mt-lg-0">
+<!--        @foreach (var i in Model.RelatedClasses)-->
+<!--        {-->
+<!--        <div class="course-item">-->
+<!--            <div class="course-content">-->
+<!--                <div class="d-flex justify-content-between align-items-center mb-3">-->
+<!--                    <h4>@i.SubjectName</h4>-->
+<!--                    <p class="price">$@i.Fee</p>-->
+<!--                </div>-->
+
+<!--                <h3>-->
+<!--                    <a asp-controller="ClassInformation" asp-action="Detail" asp-route-id="@i.Id">@i.Title</a>-->
+<!--                </h3>-->
+<!--                <p>@i.Description</p>-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--        }-->
+
+      </div>
+    </div>
+
+  </div>
+</section><!-- End Cource Details Tabs Section -->
