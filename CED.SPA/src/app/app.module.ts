@@ -19,6 +19,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import { RegisterComponent } from './register/register.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { CourseCardComponent } from './courses/course-card/course-card.component';
+import { CourseListComponent } from './courses/course-list/course-list.component';
+import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
+import { CourseCreateComponent } from './courses/course-create/course-create.component';
+import { TutorlistComponent } from './tutors/tutorlist/tutorlist.component';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -28,7 +34,13 @@ export function tokenGetter() {
     NavComponent,
     LoginComponent,
     HomeComponent,
-    RegisterComponent
+    RegisterComponent,
+    ContactUsComponent,
+    CourseCardComponent,
+    CourseListComponent,
+    CourseDetailComponent,
+    CourseCreateComponent,
+    TutorlistComponent
   ],
   imports: [
     BrowserModule,

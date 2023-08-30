@@ -27,12 +27,19 @@ public class ClassInformationMappingConfig : IRegister
         config.NewConfig<ClassInformation, ClassInformationDto >()        
             .Map(dest => dest.TutorId, src => src.TutorId)
             .Map(dest => dest, src => src);
-        config.NewConfig<ClassInformation, ClassInformationForDetailDto>()
+        config.NewConfig<ClassInformation, ClassInformationForEditDto>()
             .Map(dest => dest.TutorId, src => src.TutorId)
             .Map(dest => dest.TutorName, src => src.Tutor!.GetFullNAme() ?? "", srcCond => srcCond.Tutor != null)
             .Map(dest => dest.LearnerName, src => src.Learner!.GetFullNAme() ?? "", srcCond => srcCond.Learner != null)
             .Map(dest => dest, src => src);
-
+        config.NewConfig<ClassInformation, ClassInformationForListDto >()        
+           
+            .Map(dest => dest.Status, src => src.Status.ToString())
+            .Map(dest => dest.LearningMode, src => src.LearningMode.ToString())
+            .Map(dest => dest.GenderRequirement, src => src.GenderRequirement.ToString())
+            .Map(dest => dest.AcademicLevel, src => src.AcademicLevelRequirement.ToString())
+            .Map(dest => dest.LearnerGender, src => src.LearnerGender.ToString())
+            .Map(dest => dest, src => src);
 
         //Config for TutorReview
         config.NewConfig<TutorReviewDto, TutorReview>();

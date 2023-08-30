@@ -88,14 +88,18 @@ public class ClassInformationController : Controller
         var result = await _mediator.Send(query);
         ViewBag.Action = "Edit";
 
-        if(result.IsSuccess)
-            return View(result.Value);
+        if (result.IsSuccess)
+        {
+            var classDtoViewModel = _mapper.Map<ClassInformationForEditDto>(result.Value);
+            return View(classDtoViewModel);
+            
+        }
         return RedirectToAction("Error", "Home");
     }
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid Id, ClassInformationForDetailDto classDto)
+    public async Task<IActionResult> Edit(Guid Id, ClassInformationForEditDto classDto)
     {
         if (Id != classDto.Id)
         {
@@ -131,12 +135,12 @@ public class ClassInformationController : Controller
         await PackStaticListToView();
         //await PackStudentAndTuTorList();
 
-        return View(new ClassInformationForDetailDto());
+        return View(new ClassInformationForEditDto());
     }
 
     [HttpPost("Create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ClassInformationForDetailDto classDto)
+    public async Task<IActionResult> Create(ClassInformationForEditDto classDto)
     {
         classDto.LastModificationTime = DateTime.UtcNow;
         var query = new CreateUpdateClassInformationCommand() { ClassInformationDto = classDto };

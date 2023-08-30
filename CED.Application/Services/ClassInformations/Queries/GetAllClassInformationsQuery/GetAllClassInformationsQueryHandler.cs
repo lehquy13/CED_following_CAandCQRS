@@ -86,13 +86,13 @@ public class GetAllClassInformationsQueryHandler : GetAllQueryHandler<GetAllClas
                 query.PageIndex, query.PageSize, totalPages);
             
             //Map subject name attrs and tutor information attrs to the class of the page
-            foreach (var classIn in resultPaginatedList)
-            {
-                if (await _subjectRepository.GetById(classIn.SubjectId) is { } subject)
-                {
-                    classIn.SubjectName = subject.Name;
-                }
-            }
+            // foreach (var classIn in resultPaginatedList)
+            // {
+            //     if (await _subjectRepository.GetById(classIn.SubjectId) is { } subject)
+            //     {
+            //         classIn.SubjectName = subject.Name;
+            //     }
+            // }
 
             return resultPaginatedList;
         }

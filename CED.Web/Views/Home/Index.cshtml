@@ -257,7 +257,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var classInfo in Model.ClassTotalValueModel.Models.Where(x => x.Status == Status.OnVerifying))
+                                    @foreach (var classInfo in Model.ClassTotalValueModel.Models.Where(x => x.Status == Status.OnVerifying.ToString()))
                                     {
                                         @if (i > 4)
                                         {
@@ -278,24 +278,24 @@
                                             </td>
                                             @switch (classInfo.Status)
                                             {
-                                                case Status.Waiting:
+                                                case  "Waiting":
                                                     <td>
                                                         <span class="badge bg-primary">@classInfo.Status</span>
                                                     </td>
                                                     break;
-                                                case Status.Canceled:
+                                                case "Canceled":
                                                     <td>
                                                         <span class="badge bg-danger">@classInfo.Status</span>
 
                                                     </td>
                                                     break;
-                                                case Status.Confirmed:
+                                                case "Confirmed":
                                                     <td>
                                                         <span class="badge bg-success">@classInfo.Status</span>
 
                                                     </td>
                                                     break;
-                                                case Status.OnConfirming:
+                                                case "OnConfirming":
                                                     <td>
                                                         <span class="badge bg-warning">@classInfo.Status</span>
 

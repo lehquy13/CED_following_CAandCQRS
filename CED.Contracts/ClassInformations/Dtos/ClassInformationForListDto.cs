@@ -7,18 +7,18 @@ public sealed class ClassInformationForListDto : FullAuditedAggregateRootDto<Gui
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public Status Status { get; set; } = Status.OnVerifying;
-    public LearningMode LearningMode { get; set; } = LearningMode.Offline;
+    public string Status { get; set; } =  CED.Domain.Shared.ClassInformationConsts.Status.OnVerifying.ToString();
+    public string LearningMode { get; set; } = CED.Domain.Shared.ClassInformationConsts.LearningMode.Offline.ToString();
 
     public float Fee { get; set; } = 0;
     public float ChargeFee { get; set; } = 0;
 
     //Tutor related information
-    public Gender GenderRequirement { get; set; } = Gender.None;
-    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Optional;
+    public string GenderRequirement { get; set; } =  CED.Domain.Shared.ClassInformationConsts.Gender.None.ToString();
+    public string AcademicLevel { get; set; } =  CED.Domain.Shared.ClassInformationConsts.AcademicLevel.Optional.ToString();
 
     //Student related information
-    public Gender LearnerGender { get; set; } = Gender.None;
+    public string LearnerGender { get; set; } =  CED.Domain.Shared.ClassInformationConsts.Gender.None.ToString();
     public int NumberOfLearner { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
     public Guid? LearnerId { get; set; }
@@ -31,7 +31,6 @@ public sealed class ClassInformationForListDto : FullAuditedAggregateRootDto<Gui
     public string Address { get; set; } = string.Empty;
 
     //Subject related information
-    public Guid SubjectId { get; set; }
     public string SubjectName { get; set; } = string.Empty;
   
 }

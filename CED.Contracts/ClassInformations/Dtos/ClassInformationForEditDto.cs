@@ -5,23 +5,23 @@ using CED.Domain.Shared.ClassInformationConsts;
 
 namespace CED.Contracts.ClassInformations.Dtos;
 
-public class ClassInformationForDetailDto : FullAuditedAggregateRootDto<Guid>
+public class ClassInformationForEditDto : FullAuditedAggregateRootDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Status { get; set; } = Domain.Shared.ClassInformationConsts.Status.OnVerifying.ToString();
-    public string LearningMode { get; set; } = Domain.Shared.ClassInformationConsts.LearningMode.Offline.ToString();
+    public Status Status { get; set; } = Status.OnVerifying;
+    public LearningMode LearningMode { get; set; } = LearningMode.Offline;
 
     public float Fee { get; set; } = 0;
     public float ChargeFee { get; set; } = 0;
 
     //Tutor related information
-    public string GenderRequirement { get; set; } = Domain.Shared.ClassInformationConsts.Gender.None.ToString();
-    public string AcademicLevel { get; set; } = Domain.Shared.ClassInformationConsts.AcademicLevel.Optional.ToString();
+    public Gender GenderRequirement { get; set; } = Gender.None;
+    public AcademicLevel AcademicLevel { get; set; } = AcademicLevel.Optional;
 
     //Student related information
     public string LearnerName { get; set; } = "";
-    public string LearnerGender { get; set; } = Domain.Shared.ClassInformationConsts.Gender.None.ToString();
+    public Gender LearnerGender { get; set; } = Gender.None;
     public int NumberOfLearner { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
     public Guid? LearnerId { get; set; }
