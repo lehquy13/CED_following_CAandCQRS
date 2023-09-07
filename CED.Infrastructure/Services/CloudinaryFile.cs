@@ -1,6 +1,7 @@
 using CED.Domain.Interfaces.Services;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -35,6 +36,7 @@ public class CloudinaryFile : ICloudinaryFile
                 UniqueFilename = false,
                 Overwrite = true
             };
+            
             var uploadResult = Cloudinary.Upload(uploadParams);
             _logger.LogInformation(uploadResult.JsonObj.ToString());
 
@@ -44,6 +46,24 @@ public class CloudinaryFile : ICloudinaryFile
         {
             _logger.LogError(ex.Message);
             return @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
+        }
+    }
+    public string UploadImage(string filePath, Stream stream )
+    {
+        try
+        {
+            var paramss = new ImageUploadParams()
+            {
+                File = new FileDescription(filePath, stream),
+                Transformation = new Transformation().Width(500).Height(500).Crop("fill").Gravity("face")
+            };
+            var result = Cloudinary.Upload(paramss);
+           return result.Url.ToString();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return default;
         }
     }
 

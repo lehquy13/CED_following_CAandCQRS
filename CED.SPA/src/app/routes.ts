@@ -6,6 +6,10 @@ import {ContactUsComponent} from "./contact-us/contact-us.component";
 import {CourseListComponent} from "./courses/course-list/course-list.component";
 import {CourseDetailComponent} from "./courses/course-detail/course-detail.component";
 import {CourseCreateComponent} from "./courses/course-create/course-create.component";
+import {TutorRegistrationComponent} from "./tutors/tutor-registration/tutor-registration.component";
+import {TutorDetailComponent} from "./tutors/tutor-detail/tutor-detail.component";
+import {TutorListComponent} from "./tutors/tutor-list/tutor-list.component";
+import {ProfileComponent} from "./profiles/profile/profile.component";
 
 export const appRoot: Routes
   = [
@@ -36,6 +40,22 @@ export const appRoot: Routes
   {
     path: 'course/create',
     component: CourseCreateComponent
+  },
+  {
+    path: 'tutor',
+    component: TutorListComponent
+  },
+  {
+    path: 'tutor/:id',
+    component: TutorDetailComponent
+  },
+  {
+    path: 'tutor/registration',
+    component: TutorRegistrationComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   },
 
   {

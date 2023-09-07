@@ -1,4 +1,4 @@
-﻿@model CED.Contracts.ClassInformations.Dtos.ClassInformationForEditDto
+﻿@model CED.Contracts.ClassInformations.Dtos.ClassInformationForDetailDto
 @using CED.Contracts.Subjects
 @using CED.Domain.Shared
 @{
@@ -130,13 +130,13 @@
 
             </div>
         </div>
-        @if (Model.TutorName != "")
+        @if (Model.TutorId != Guid.Empty)
         {
             <form class="col-lg-12" asp-action="ReviewTutor" asp-controller="TutorInformation">
             <h6>Write your review</h6>
-            @if (Model.TutorReviewDto.Description != "")
+            @if (Model.TutorReviewDto != "")
             {
-                <textarea class="form-control h-75" name="Description" placeholder="Let's us know your thought">@Model.TutorReviewDto.Description</textarea>
+                <textarea class="form-control h-75" name="Description" placeholder="Let's us know your thought">@Model.TutorReviewDto</textarea>
 
             }
             else
@@ -144,7 +144,7 @@
                 <textarea class="form-control h-75" name="Description" placeholder="Let's us know your thought"></textarea>
             }
               <input class="form-control" value="@Model.TutorEmail" hidden="" name="TutorEmail" />
-              <input class="form-control" value="@Model.TutorReviewDto.Id" hidden="" name="Id" />
+              <input class="form-control" value="@Model.TutorReviewDtoId" hidden="" name="Id" />
               <input class="form-control" value="@Model.Id" hidden="" name="ClassId" />
              
               <div class="form-check form-check-inline">

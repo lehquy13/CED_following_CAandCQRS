@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {BehaviorSubject, map} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, map, Observable} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../_models/User";
 import {JwtHelperService} from "@auth0/angular-jwt";
 
@@ -10,7 +10,9 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 })
 export class AuthService {
 
-  baseUrl = environment.apiUrl + 'auth/';
+  authBaseUrl = environment.apiUrl + 'auth/';
+  baseUrl = environment.apiUrl;
+
   jwtHelper = new JwtHelperService();
   decodedToken: any = {};
   currentUser!: User | null;
@@ -20,21 +22,21 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  changeMemberPhoto(photoUrl: string){
+  changeMemberPhoto(photoUrl: string) {
     this.photoUrl.next(photoUrl);
   }
 
-  login(model: any){
-    return this.http.post(this.baseUrl + 'login', model)
+  login(model: any) {
+    return this.http.post(this.authBaseUrl + 'login', model)
       .pipe(
-        map((respone: any) =>{
+        map((respone: any) => {
           this.decodedToken = this.jwtHelper.decodeToken(respone.token);
           console.log(this.decodedToken);
-          if(respone){
+          if (respone) {
             localStorage.setItem('token', respone.token);
             localStorage.setItem('user', JSON.stringify(respone.user));
             this.currentUser = respone.user;
-            this.changeMemberPhoto(this.currentUser!.photoUrl);
+            this.changeMemberPhoto(this.currentUser!.image);
           }
 
 
@@ -42,11 +44,11 @@ export class AuthService {
       );
   }
 
-  register(user: User){
-    return this.http.post(this.baseUrl + 'register', user);
+  register(user: User) {
+    return this.http.post(this.authBaseUrl + 'register', user);
   }
 
-  loggedIn(){
+  loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
   }
@@ -57,5 +59,29 @@ export class AuthService {
 
     this.decodedToken = null;
     this.currentUser = null;
+  }
+
+  //Profile component
+  getUser(id: any): Observable<User> {
+    return this.http.get<User>(this.baseUrl + 'Profile/' + id);
+  }
+
+  updateUser(id: any, userDto: User) {
+    this.http.put(this.baseUrl + 'Profile/Edit/' + id, userDto, {responseType: 'text'}).pipe().subscribe(res => {
+      localStorage.setItem('token', res);
+      localStorage.setItem('user', JSON.stringify(res));
+    });
+    return true;
+
+  }
+  changePassword(id: any, model: any) {
+    return this.http.put(this.baseUrl + 'Profile/ChangePassword/' + id, model, {responseType: 'text'});
+  }
+  setMainPhoto(userId: number, id: number) {
+    return this.http.post(this.baseUrl + userId + '/photos/' + id + '/SetMain', {});
+  }
+
+  deletePhoto(userId: number, id: number) {
+    return this.http.delete(this.baseUrl + userId + '/photos/' + id + '/DeletePhoto');
   }
 }

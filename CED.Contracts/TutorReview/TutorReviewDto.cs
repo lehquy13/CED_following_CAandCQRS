@@ -20,10 +20,8 @@ public class TutorReviewDto : FullAuditedAggregateRootDto<Guid>
 }
 public class TutorReviewRequestDto : FullAuditedAggregateRootDto<Guid>
 {
-    public string LearnerEmail { get; set; } = string.Empty;
     public string TutorEmail { get; set; }= string.Empty;
     public string ClassId { get; set; }= string.Empty;
-
     public short Rate { get; set; } = 5;
     public string Description { get; set; } = "";
 }

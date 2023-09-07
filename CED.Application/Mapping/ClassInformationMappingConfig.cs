@@ -32,6 +32,16 @@ public class ClassInformationMappingConfig : IRegister
             .Map(dest => dest.TutorName, src => src.Tutor!.GetFullNAme() ?? "", srcCond => srcCond.Tutor != null)
             .Map(dest => dest.LearnerName, src => src.Learner!.GetFullNAme() ?? "", srcCond => srcCond.Learner != null)
             .Map(dest => dest, src => src);
+         config.NewConfig<ClassInformation, ClassInformationForDetailDto>()
+            .Map(dest => dest.TutorId, src => src.TutorId)
+            .Map(dest => dest.TutorName, src => src.Tutor!.GetFullNAme() ?? "", srcCond => srcCond.Tutor != null)
+            .Map(dest => dest.LearnerName, src => src.Learner!.GetFullNAme() ?? "", srcCond => srcCond.Learner != null)
+            .Map(dest => dest.TutorReviewDto, src => src.TutorReviews.Description)
+            .Map(dest => dest.TutorReviewDtoId, src => src.TutorReviews.Id)
+            
+            .Map(dest => dest, src => src);
+        
+        
         config.NewConfig<ClassInformation, ClassInformationForListDto >()        
            
             .Map(dest => dest.Status, src => src.Status.ToString())

@@ -6,7 +6,7 @@ export interface User {
   birthYear: number;
   address: string;
   description: string;
-  photoUrl: string;
+  image: string;
   email: string;
   phoneNumber: string;
   role: string;

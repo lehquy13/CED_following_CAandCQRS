@@ -9,12 +9,21 @@
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
   -ms-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out; }
+  -o-transition: all 0.3s ease-in-out;
+}
+
 .header-wrap .dropdown a:hover, .header-wrap .dropdown a.active {
-  color: #1daeff; }
+  color: #1daeff;
+}
+
 @media (max-width: 1024px) {
-  .header-wrap .dropdown  a {
-    font-size: 14px; } }
+  .header-wrap .dropdown a {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 767px) {
-  .header-wrap .dropdown  a {
-    font-size: 16px; } }
+  .header-wrap .dropdown a {
+    font-size: 16px;
+  }
+}

@@ -183,19 +183,19 @@ public class TutorInformationController : Controller
     [Authorize]
     [HttpPost]
     [Route("ReviewTutor")]
-    public async Task<IActionResult> ReviewTutor(TutorReviewRequestDto tutorDto)
+    public async Task<IActionResult> ReviewTutor(TutorReviewRequestDto tutorReviewRequestDto)
     {
         var command = new CreateReviewCommand
         {
             ReviewDto = new TutorReviewDto()
             {
-                Rate = tutorDto.Rate,
-                Description = tutorDto.Description,
-                Id = tutorDto.Id,
-                ClassInformationId = new Guid(tutorDto.ClassId)
+                Rate = tutorReviewRequestDto.Rate,
+                Description = tutorReviewRequestDto.Description,
+                Id = tutorReviewRequestDto.Id,
+                ClassInformationId = new Guid(tutorReviewRequestDto.ClassId)
             },
-            LearnerEmail = HttpContext.Session.GetString("email") ?? "",
-            TutorEmail = tutorDto.TutorEmail,
+            LearnerEmail = User.FindFirstValue(ClaimTypes.Email)??"",
+            TutorEmail = tutorReviewRequestDto.TutorEmail,
         };
 
         var result = await _mediator.Send(command);

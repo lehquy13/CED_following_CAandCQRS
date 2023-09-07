@@ -3,16 +3,18 @@
   <div class="container">
     <h2>New Classes</h2>
     <p>
-      Level up your tutoring career and increase your earning potential with our new tutor classes. Gain valuable experience, expand your skill set, and open doors to more lucrative opportunities in the education industry.
+      Level up your tutoring career and increase your earning potential with our new tutor classes. Gain valuable
+      experience, expand your skill set, and open doors to more lucrative opportunities in the education industry.
     </p>
   </div>
 </div><!-- End Breadcrumbs -->
 <section id="courses" class="courses">
   <div class="container" data-aos="fade-up">
 
-    <form class="row pb-3" asp-action="Index" asp-controller="ClassInformation" method="get" >
+    <form class="row pb-3" #form="ngForm" (ngSubmit)="search()">
       <div class="col-lg-10 col-sm-10 p-0 pe-2 d-flex align-items-stretch">
-        <input  class="form-control"  placeholder="Type a subject"  type="text" name="subjectName">
+        <input class="form-control" placeholder="Type a subject" type="text" name="subjectName"
+               [(ngModel)]="courseParams.subjectName">
 
       </div>
       <div class="col-lg-2 col-sm-2 p-0 d-flex">
@@ -26,5 +28,5 @@
     </div>
 
   </div>
-<!--  <partial name="_Pagination" model="@Model" view-data="ViewData"/>-->
+  <!--  <partial name="_Pagination" model="@Model" view-data="ViewData"/>-->
 </section><!-- End Courses Section -->

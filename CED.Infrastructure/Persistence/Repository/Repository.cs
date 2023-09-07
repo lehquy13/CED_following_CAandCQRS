@@ -82,7 +82,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Domain.C
         }
     }
 
-    public IQueryable<TEntity> GetAll()
+    public virtual IQueryable<TEntity> GetAll()
     {
         try
         {

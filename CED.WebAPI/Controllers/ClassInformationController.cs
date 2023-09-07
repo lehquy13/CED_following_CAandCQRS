@@ -61,7 +61,7 @@ public class ClassInformationController : ControllerBase
         {
             return BadRequest("Get class's information with id: "+ id +" failed");
         }
-        return Ok(classInformation);
+        return Ok(classInformation.Value);
     }
 
     // POST api/<ClassInformationController>

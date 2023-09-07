@@ -1,10 +1,9 @@
 ﻿using System.Security.Claims;
 using CED.Application.Services.Abstractions.QueryHandlers;
 using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
-using CED.Application.Services.Authentication.Customer.Queries.Login;
 using CED.Application.Services.Authentication.RefreshToken;
-using CED.Application.Services.ClassInformations.Tutor.Queries.GetAllRequestGettingClassOfTutor;
 using CED.Application.Services.ClassInformations.Tutor.Queries.GetTeachingClassDetailQuery;
+using CED.Application.Services.Users.Commands;
 using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
 using CED.Contracts.Authentication;
@@ -35,14 +34,12 @@ namespace CED.WebAPI.Controllers
         }
 
 
-        [HttpGet("")]
-        public async Task<IActionResult> Profile()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Profile(string id)
         {
-            var identity = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
-
-            var query = new GetObjectQuery<UserDto>()
+            var query = new GetObjectQuery<UserForDetailDto>()
             {
-                ObjectId = new Guid(identity ?? "")
+                ObjectId = new Guid(id ?? "")
             };
 
             var loginResult = await _mediator.Send(query);
@@ -55,10 +52,34 @@ namespace CED.WebAPI.Controllers
             //return not found if login failed along with errors
             return NotFound(loginResult.Errors);
         }
-
-        [HttpPost("Edit")]
-        public async Task<IActionResult> Edit(LearnerDto userDto)
+        [HttpGet("GetLearningCourses/{id}")]
+        public async Task<IActionResult> GetLearningCourses(string id)
         {
+            var query = new GetObjectQuery<LearnerDto>()
+            {
+                ObjectId = new Guid(id ?? "")
+            };
+
+            var loginResult = await _mediator.Send(query);
+
+            if (loginResult.IsSuccess)
+            {
+                return Ok(loginResult.Value.LearningClassInformations);
+            }
+
+            //return not found if login failed along with errors
+            return NotFound(loginResult.Errors);
+        }
+
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> Edit(string id, [FromBody] LearnerForUpdateDto userDto)
+        {
+            //var tokenId = Int32.Parse(User.FindFirstValue(ClaimTypes.Name) ?? "-1");
+            if (id == null || new Guid(id) != userDto.Id)
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = await _mediator.Send(new LearnerInfoChangingCommand(userDto, null));
@@ -70,7 +91,6 @@ namespace CED.WebAPI.Controllers
                     if (loginResult.IsSuccess)
                         return Ok(loginResult.Value);
                 }
-
             }
             catch (Exception ex)
             {
@@ -115,18 +135,26 @@ namespace CED.WebAPI.Controllers
             return BadRequest(userDto);
         }
 
-        [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
+        [HttpPut("ChangePassword/{id}")]
+        public async Task<IActionResult> ChangePassword(string id,
+            [FromBody] ChangePasswordRequest changePasswordRequest)
         {
+            if (id == Guid.Empty.ToString())
+            {
+                return Unauthorized();
+            }
+
             if (ModelState.IsValid)
             {
+                //return BadRequest();
                 try
                 {
+                    changePasswordRequest.Id = new Guid(id);
+
                     var query = _mapper.Map<ChangePasswordCommand>(changePasswordRequest);
+                    var result = await _mediator.Send(query);
 
-                    var loginResult = await _mediator.Send(query);
-
-                    if (loginResult.IsSuccess)
+                    if (result.IsSuccess)
                     {
                         return Ok();
                     }
@@ -143,9 +171,10 @@ namespace CED.WebAPI.Controllers
             return BadRequest(changePasswordRequest);
         }
 
+
         [Authorize(Policy = "RequireTutorRole")]
         [HttpGet]
-        [Route("{id}")]
+        [Route("/{requestId}&&{classId}")]
         public async Task<IActionResult> TeachingClassDetail(Guid requestId, Guid classId)
         {
             var query = new GetTeachingClassDetailQuery
@@ -163,7 +192,7 @@ namespace CED.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetLearningClass")]
+        [Route("GetLearningClass/{id}")]
         public async Task<IActionResult> GetLearningClass(Guid id)
         {
             var query = new GetObjectQuery<ClassInformationForDetailDto>()
@@ -177,6 +206,20 @@ namespace CED.WebAPI.Controllers
             }
 
             return NotFound(classInformation.Errors);
+        }
+        
+        [HttpPost("ChangeAvatar/{id}")]
+        public async Task<IActionResult> ChoosePicture(string id, IFormFile? file)
+        {
+            if (file == null)
+            {
+                return BadRequest();
+            }
+
+            var result = await _mediator.Send(new ChangeAvatarCommand(id, file));
+            if(result.IsSuccess)
+                return Ok(result.Value);
+            return BadRequest(result.Errors);
         }
     }
 }

@@ -21,6 +21,8 @@
     "@auth0/angular-jwt": "^5.1.2",
     "alertifyjs": "^1.13.1",
     "animate.css": "^4.1.1",
+    "bootstrap": "^5.2.3",
+    "ng2-file-upload": "^5.0.0",
     "ngx-bootstrap": "^11.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

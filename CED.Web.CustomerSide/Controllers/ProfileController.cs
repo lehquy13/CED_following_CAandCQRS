@@ -137,13 +137,15 @@ public class ProfileController : Controller
 
     [HttpPost("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(LearnerDto userDto, IFormFile? formFile)
+    public async Task<IActionResult> Edit(LearnerForUpdateDto learnerForUpdateDto, IFormFile? formFile)
     {
         
         await PackStaticListToView();
+            var userDto = _mapper.Map<LearnerDto>(learnerForUpdateDto);
 
         if (ModelState.IsValid)
         {
+
             try
             {
                 
@@ -153,8 +155,7 @@ public class ProfileController : Controller
                     filePath = await Helper.SaveFiles(formFile, _webHostEnvironment.WebRootPath);
                 }
                
-                var result = await _mediator.Send(new LearnerInfoChangingCommand(userDto,filePath));
-
+                var result = await _mediator.Send(new LearnerInfoChangingCommand(learnerForUpdateDto,filePath));
                 ViewBag.Updated = result.IsSuccess;
                 Helper.ClearTempFile(_webHostEnvironment.WebRootPath);
                 var viewModelResult = new ProfileViewModel
@@ -307,7 +308,7 @@ public class ProfileController : Controller
         var classInformation = await _mediator.Send(query);
         if (classInformation.IsSuccess)
         {
-            return Helper.RenderRazorViewToString(this, "_LearningClassDetail", classInformation);
+            return Helper.RenderRazorViewToString(this, "_LearningClassDetail", classInformation.Value);
         }
 
         return View("Error", new ErrorViewModel()

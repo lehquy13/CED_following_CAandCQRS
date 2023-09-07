@@ -14,11 +14,11 @@ public sealed class ClassInformationForListDto : FullAuditedAggregateRootDto<Gui
     public float ChargeFee { get; set; } = 0;
 
     //Tutor related information
-    public string GenderRequirement { get; set; } =  CED.Domain.Shared.ClassInformationConsts.Gender.None.ToString();
-    public string AcademicLevel { get; set; } =  CED.Domain.Shared.ClassInformationConsts.AcademicLevel.Optional.ToString();
+    public string GenderRequirement { get; set; } =  Gender.None.ToString();
+    public string AcademicLevel { get; set; } = Domain.Shared.ClassInformationConsts.AcademicLevel.Optional.ToString();
 
     //Student related information
-    public string LearnerGender { get; set; } =  CED.Domain.Shared.ClassInformationConsts.Gender.None.ToString();
+    public string LearnerGender { get; set; } =  Gender.None.ToString();
     public int NumberOfLearner { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
     public Guid? LearnerId { get; set; }

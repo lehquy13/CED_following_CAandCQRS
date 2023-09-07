@@ -50,17 +50,23 @@ public class CreateReviewCommandHandler : CreateUpdateCommandHandler<CreateRevie
             //Check if the review existed
             if (review is not null)
             {
-                review = _mapper.Map<TutorReview>(command.ReviewDto);
+                review.Description = command.ReviewDto.Description;
+                review.Rate = command.ReviewDto.Rate;
                 review.LastModificationTime = DateTime.Now;
             }
             else
             {
                 command.ReviewDto.TutorId = tutor.Id;
                 review = _mapper.Map<TutorReview>(command.ReviewDto);
-                await _tutorReviewRepository.Insert(review);
+                var cls = await _classInformationRepository.GetById(review.ClassInformationId);
+                if (cls != null)
+                {
+                    cls.TutorReviews = review;
+                }
+                //await _tutorReviewRepository.Insert(review);
             }
 
-            if (await _unitOfWork.SaveChangesAsync() > 0)
+            if (await _unitOfWork.SaveChangesAsync(cancellationToken) > 0)
             {
                 var message = "New tutor review for " + command.TutorEmail + " at " + review.CreationTime.ToLongDateString();
                 await _publisher.Publish(new NewObjectCreatedEvent(review.Id, message, NotificationEnum.ReviewClass), cancellationToken);

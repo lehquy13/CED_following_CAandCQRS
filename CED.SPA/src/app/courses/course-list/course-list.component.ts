@@ -10,26 +10,38 @@ import {Pagination} from "../../_models/pagination";
   styleUrls: ['./course-list.component.css']
 })
 export class CourseListComponent implements OnInit {
-  courses : any = [];
+  courses: any = [];
+  courseParams: any = {};
   pagination: Pagination | any;
   pageNumber = 1;
   pageSize = 5;
-  constructor(private courseService: CourseService,private alertify : AlertifyService, private route : ActivatedRoute) {
-    this.loadCourses();
+
+  constructor(private courseService: CourseService, private alertify: AlertifyService, private route: ActivatedRoute) {
   }
 
 
   ngOnInit() {
-
+    this.loadCourses();
+    this.courseParams.subjectName = '';
   }
+
   loadCourses() {
     this.courseService.getCourses(this.pageNumber, this.pageSize).subscribe((res: any) => {
-      this.courses = res.result;
-      console.log(this.courses);
-      this.pagination = res.pagination;
-    }, (error) => {
-      this.alertify.error(error);
-    }
-      );
+        this.courses = res.result;
+        this.pagination = res.pagination;
+      }, (error) => {
+        this.alertify.error(error);
+      }
+    );
   }
+  search() {
+    this.courseService.getCourses(this.pageNumber, this.pageSize, this.courseParams).subscribe((res: any) => {
+        this.courses = res.result;
+        this.pagination = res.pagination;
+      }, (error) => {
+        this.alertify.error(error);
+      }
+    );
+  }
+
 }

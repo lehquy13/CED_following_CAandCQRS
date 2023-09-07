@@ -12,22 +12,39 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
     {
     }
 
-    public override Task<Tutor?> GetById(Guid id)
+    public override async Task<Tutor?> GetById(Guid id)
     {
         try
         {
-            return _appDbContext.Tutors
-                .Where( o => o.Id == id && o.IsDeleted == false)
+            return await _appDbContext.Tutors
+                .Where(o => o.Id == id && o.IsDeleted == false)
                 .Include(x => x.Subjects)
                 .Include(x => x.TutorVerificationInfos)
                 .Include(x => x.RequestGettingClasses)
                 .FirstOrDefaultAsync();
         }
-        catch(Exception ex) { 
+        catch (Exception ex)
+        {
             throw new Exception(ex.Message);
         }
     }
 
+    public override async Task<List<Tutor>> GetAllList()
+    {
+        try
+        {
+            return await _appDbContext.Tutors
+                .Where( x => x.IsDeleted == false)
+                .Include(x => x.Subjects)
+                .Include(x => x.TutorVerificationInfos)
+                .Include(x => x.RequestGettingClasses)
+                .ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
     public async Task<Tutor?> GetUserByEmail(string email)
     {
@@ -35,7 +52,8 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
         {
             return await _appDbContext.Set<Tutor>().FirstOrDefaultAsync(o => o.Email == email);
         }
-        catch(Exception ex) { 
+        catch (Exception ex)
+        {
             throw new Exception(ex.Message);
         }
     }
@@ -50,17 +68,18 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
                     _appDbContext.Set<Tutor>(),
                     u => u.Id,
                     tu => tu.Id,
-                    (u,tu) => 
-                    new TutorFull(u,tu)
+                    (u, tu) =>
+                        new TutorFull(u, tu)
                 ).ToListAsync();
             return user;
         }
-        catch(Exception ex) { 
+        catch (Exception ex)
+        {
             throw new Exception(ex.Message);
         }
     }
 
-   
+
     public async Task<List<TutorReview>> GetReviewsOfTutor(Guid tutorId)
     {
         var result = await _appDbContext.ClassInformations
@@ -88,11 +107,9 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
             //await _appDbContext.Users.AddAsync(tutor);    
             return true;
         }
-        catch(Exception ex) { 
+        catch (Exception ex)
+        {
             throw new Exception(ex.Message);
         }
     }
-
-    
 }
-

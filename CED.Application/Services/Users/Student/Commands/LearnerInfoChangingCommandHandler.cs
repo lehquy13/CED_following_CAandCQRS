@@ -34,7 +34,9 @@ public class LearnerInfoChangingCommandHandler : CreateUpdateCommandHandler<Lear
             {
                 command.LearnerDto.Image = _cloudinaryFile.UploadImage(command.FilePath);
             }
-            user.UpdateUserInformation(_mapper.Map<User>(command.LearnerDto));
+
+            var userFromDb = _mapper.Map<User>(command.LearnerDto);
+            user.UpdateUserInformation(userFromDb);
             
             if (await _unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {
