@@ -1,0 +1,141 @@
+<!-- Profile Edit Form -->
+
+<form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser()">
+  <div class="row mb-3">
+    <label class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+    <div class="col-md-3 col-lg-3">
+      <img src="{{user.image}}" style="max-width: 200px; max-height: 200px;" alt="Profile" id="avatar">
+    </div>
+    <div class="col-md-6 col-lg-6 ">
+      <div class="row">
+        <div class="col-md-3" style="max-width: 200px; max-height: 200px;">
+          <div ng2FileDrop
+               [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+               (fileOver)="fileOverBase($event)"
+               [uploader]="uploader"
+               class="card p-3 text-center mb-3 my-drop-zone">
+            <i class="fa fa-upload fa-3x"></i>
+            Drop here
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="card p-3 text-center mb-3 my-drop-zone">
+            <input type="file" ng2FileSelect [uploader]="uploader"/>
+<!--            <button type="button" class="btn btn-success btn-s"-->
+<!--                    (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">-->
+<!--              <span class="glyphicon glyphicon-upload"></span> Upload all-->
+<!--            </button>-->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-4 col-lg-3 col-form-label">First Name</label>
+    <div class="col-md-8 col-lg-9">
+      <input [(ngModel)]="user.firstName" type="text" class="form-control" id="firstname" name="firstname">
+      <span class="text-danger"></span>
+
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-4 col-lg-3 col-form-label">LastName</label>
+    <div class="col-md-8 col-lg-9">
+      <input [(ngModel)]="user.lastName" type="text" class="form-control" id="lastname" name="lastname">
+      <span asp-validation-for="LastName" class="text-danger"></span>
+
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label class="col-md-4 col-lg-3 col-form-label">Birth</label>
+    <div class="col-md-8 col-lg-9">
+      <input type="number" class="form-control" [(ngModel)]="user.birthYear" id="birthYear" name="birthYear"/>
+      <span asp-validation-for="BirthYear" class="text-danger"></span>
+
+    </div>
+
+
+  </div>
+  <div class="row mb-3">
+    <label class="col-md-4 col-lg-3 col-form-label">Gender</label>
+    <div class="col-md-8 col-lg-9">
+      <select id="gender" name="gender" [(ngModel)]="user.gender" class="form-select">
+        <option *ngFor="let g of genderList" [value]="g.value">{{g.displayName}} </option>
+      </select>
+      <span asp-validation-for="Gender" class="text-danger"></span>
+
+    </div>
+  </div>
+
+
+  <div class="row mb-3">
+    <label class="col-md-4 col-lg-3 col-form-label">About</label>
+    <div class="col-md-8 col-lg-9">
+      <textarea [(ngModel)]="user.description" id="description" name="description" class="form-control"
+                style="height: 100px"></textarea>
+      <span asp-validation-for="Description" class="text-danger"></span>
+
+    </div>
+
+  </div>
+
+
+  <div class="row mb-3">
+    <label asp-for="Role" class="col-md-4 col-lg-3 col-form-label">Role</label>
+    <div class="col-md-8 col-lg-9">
+      <input readonly [(ngModel)]="user.role" type="text" class="form-control" id="role" name="role">
+      <span asp-validation-for="Role" class="text-danger"></span>
+
+    </div>
+
+  </div>
+
+  <div class="row mb-3">
+    <label asp-for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+    <div class="col-md-8 col-lg-9">
+      <input [(ngModel)]="user.address" type="text" class="form-control" name="address" id="address">
+      <span asp-validation-for="Address" class="text-danger"></span>
+
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label asp-for="PhoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+    <div class="col-md-8 col-lg-9">
+      <input [(ngModel)]="user.phoneNumber" type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+      <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+    </div>
+
+  </div>
+
+  <div class="row mb-3">
+    <label asp-for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+    <div class="col-md-8 col-lg-9">
+      <input [(ngModel)]="user.email" readonly type="email" class="form-control" id="email" name="email">
+      <span asp-validation-for="Email" class="text-danger"></span>
+
+    </div>
+  </div>
+
+
+  <input hidden="hidden" [(ngModel)]="user.deleterUserId" class="form-control" id="deleterUserId" name="deleterUserId"/>
+  <input hidden="hidden" [(ngModel)]="user.deletionTime" class="form-control" id="deletionTime" name="deletionTime"/>
+  <input hidden="hidden" [(ngModel)]="user.lastModificationTime" class="form-control" id="lastModificationTime"
+         name="lastModificationTime"/>
+  <input hidden="hidden" [(ngModel)]="user.lastModifierUserId" class="form-control" id="lastModifierUserId"
+         name="lastModifierUserId"/>
+  <input hidden="hidden" [(ngModel)]="user.creationTime" class="form-control" id="creationTime" name="creationTime"/>
+  <input hidden="hidden" [(ngModel)]="user.creatorUserId" class="form-control" id="creatorUserId" name="creatorUserId"/>
+  <input hidden="hidden" [(ngModel)]="user.id" id="id" name="id"/>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </div>
+</form>
+
+<!-- End Profile Edit Form -->

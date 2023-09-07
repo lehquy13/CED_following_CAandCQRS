@@ -1,0 +1,172 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Current learning classes</h5>
+
+    <!-- Table with stripped rows -->
+    <table id="example" class="table datatable">
+      <thead>
+      <tr>
+        <!-- a avatar comlumn will be added -->
+        <th scope="col">Title</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Status</th>
+        <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+
+
+      <tr *ngFor="let course of courses">
+
+
+        <td>{{course.title}}</td>
+        <td>{{course.subjectName}}</td>
+        <td>{{course.status}}</td>
+
+        <td>
+          <button type="button" class="btn btn-primary" (click)="openModal(template,course.id)">Detail</button>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+    <!-- End Table with stripped rows -->
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left h4">{{detailCourse.title}}</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12 row">
+        <h3 class="h3">Requirement Description</h3>
+
+        <div class="col-lg-6 mb-4">
+          <h6 class="h5">Contact</h6>
+          <p class="form-control">{{detailCourse.contactNumber}}</p>
+
+        </div>
+
+        <div class="col-lg-6 mb-4 ">
+          <h6 class="h5">Subjects</h6>
+
+          <select class="form-select">
+            <option [value]="detailCourse.subject.name">{{detailCourse.subject.name}} </option>
+          </select>
+        </div>
+
+        <div class="col-lg-12 mb-4">
+          <h6 class="h5">Title</h6>
+          <p class="form-control">{{detailCourse.title}}</p>
+        </div>
+
+
+        <div class="col-lg-3 mb-4">
+          <h6 class="h5">Total students</h6>
+          <p class="form-control">{{detailCourse.numberOfLearner}}</p>
+        </div>
+
+        <div class="col-lg-3 mb-4">
+          <h6 class="h5">Session/Week</h6>
+          <p class="form-control">{{detailCourse.sessionPerWeek}}</p>
+
+        </div>
+
+        <div class="col-lg-3 mb-4">
+          <h6 class="h5">Minutes/Session</h6>
+          <p class="form-control">{{detailCourse.minutePerSession}}</p>
+
+        </div>
+
+        <div class="col-lg-3 col-md-4 mb-4">
+          <h6 class="h5">Gender</h6>
+
+          <select name="gender" asp-for="LearnerGender" class="form-select">
+            <option class="form-control">{{detailCourse.learnerGender}}</option>
+
+          </select>
+
+        </div>
+
+        <div class="col-lg-12 mb-4">
+          <h6 class="h5">Address</h6>
+          <p class="form-control">{{detailCourse.address}}</p>
+
+
+        </div>
+        <div class="col-lg-12 mb-4">
+          <h6 class="h5">Description / Notes</h6>
+          <p class="form-control">{{detailCourse.description}}</p>
+
+        </div>
+        <h3 class="h3">Tutor Requirement</h3>
+
+        <div class="col-lg-4 mb-4">
+
+          <h6 class="h5">Fee ($)</h6>
+          <p class="form-control">{{detailCourse.fee}}</p>
+
+
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+          <h6 class="h5">Tutor's gender</h6>
+
+          <select name="genderRequirement" asp-for="GenderRequirement" class="form-select">
+            <option class="form-control">{{detailCourse.genderRequirement}}</option>
+
+          </select>
+
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+          <h6 class="h5">Academic Level</h6>
+
+          <select name="academicLevel" asp-for="AcademicLevel" class="form-select">
+            <option class="form-control">{{detailCourse.academicLevel}}</option>
+
+
+          </select>
+          <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+
+        </div>
+
+        <h3 class="h3"
+            *ngIf="detailCourse.tutorId != null &&detailCourse.tutorEmail != null &&detailCourse.tutorPhoneNumber != null ">
+          Tutor's Information</h3>
+
+        <div class="col-lg-12 mb-4"
+             *ngIf="detailCourse.tutorId != null &&detailCourse.tutorEmail != null &&detailCourse.tutorPhoneNumber != null ">
+          <h6 class="h5">Tutor information</h6>
+          <p class="form-control">Name: {{detailCourse.tutorName}}</p>
+          <p class="form-control">Email: {{detailCourse.tutorEmail}}</p>
+          <p class="form-control">Phone:{{detailCourse.tutorPhoneNumber}}</p>
+
+        </div>
+      </div>
+
+      <form class="col-lg-12 container-fluid" *ngIf="detailCourse.tutorId != null" (ngSubmit)="reviewTutor()">
+        <h6 class="h5">Write your review</h6>
+
+        <textarea class="form-control h-75" placeholder="Let's us know your thought"
+                  *ngIf="detailCourse.tutorReviewDto != null" [(ngModel)]="detailCourse.tutorReviewDto" id="tutorReviewDto" name="tutorReviewDto"> {{detailCourse.tutorReviewDto}}</textarea>
+
+
+        <textarea class="form-control h-75" id="tutorReviewDto1" name="tutorReviewDto1" placeholder="Let's us know your thought"
+                  *ngIf="detailCourse.tutorReviewDto == null" [(ngModel)]="detailCourse.tutorReviewDto"></textarea>
+
+        <div class="form-check form-check-inline" *ngFor="let rate of rateList">
+          <input class="form-check-input" type="radio"  [(ngModel)]="detailCourse.rate" id="rate" name="rate"  [value]="rate.value">
+          <label class="form-check-label">{{rate.display}}</label>
+        </div>
+
+        <button class="btn btn-success" type="submit">Submit</button>
+      </form>
+
+
+    </div>
+  </div>
+</ng-template>

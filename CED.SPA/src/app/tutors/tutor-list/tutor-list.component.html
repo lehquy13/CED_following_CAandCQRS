@@ -1,0 +1,52 @@
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs">
+  <div class="container">
+    <h2>Tutors</h2>
+    <p>
+      Find your perfect tutor at <b>EduSmart</b>. Our highly qualified tutors provide personalized support and expert
+      guidance to help you excel academically and reach your goals.
+    </p>
+  </div>
+</div><!-- End Breadcrumbs -->
+
+<!-- ======= Trainers Section ======= -->
+<section id="trainers" class="trainers banner-wrap">
+  <div class="container">
+    <form class="row pb-3" #form="ngForm" (ngSubmit)="search()" >
+      <div class="col-lg-3 col-sm-3 p-0 pe-2 d-flex align-items-stretch" id="subjectName">
+        <input name="subjectName" class="form-control" placeholder="Type a subject" value="" type="text" [(ngModel)]="tutorParams.subjectName">
+      </div>
+
+      <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+        <!-- TODO-->
+        <select name="gender" class="form-select" [(ngModel)]="tutorParams.gender" id="gender">
+          <option class="form-control" selected="selected" *ngFor="let g of genderList" [value]="g.value">{{g.displayName}}</option>
+        </select>
+      </div>
+      <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+        <input class="form-control" placeholder="Birth Year" value="" id="birthYear"
+               type="number" min="1960" max="2010" name="birthYear" [(ngModel)]="tutorParams.birthYear">
+      </div>
+      <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+        <select name="academicLevel" class="form-select" [(ngModel)]="tutorParams.academicLevel" id="academicLevel">
+          <option class="form-control" selected="selected" *ngFor="let a of academicList" [value]="a.value">{{a.displayName}}</option>
+        </select>
+      </div>
+
+      <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+        <input class="form-control" placeholder="Address" [(ngModel)]="tutorParams.address" type="text" name="address" id="address">
+      </div>
+
+      <div class="col-lg-1 col-sm-1 p-0 d-flex">
+        <button class=" btn btn-primary"  type="submit">Search</button>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-lg-4 col-md-6 " *ngFor="let tutor of tutors">
+        <app-tutor-card [tutor]="tutor"></app-tutor-card>
+      </div>
+    </div>
+    <!-- TODO   <partial name="_Pagination" model=@Model view-data="ViewData"/>-->
+  </div>
+</section><!-- End Trainers Section -->

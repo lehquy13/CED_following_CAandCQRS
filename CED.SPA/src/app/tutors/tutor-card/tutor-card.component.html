@@ -1,0 +1,27 @@
+  <div class="member">
+    <img src="{{tutor.image}}" class="img-fluid" alt="" style="height:450px;">
+
+    <div class="member-content">
+      <h4><a [routerLink]="['/tutor', tutor.id]">{{tutor.firstName + " "+ tutor.lastName}}</a></h4>
+      <span>{{tutor.academicLevel}}</span>
+      <span>{{tutor.university}}</span>
+      <p>
+        {{tutor.description}}
+      </p>
+      <div class="social">
+        <a href="">
+          <i class="bi bi-twitter"></i>
+        </a>
+        <a href="">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="">
+          <i class="bi bi-linkedin"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+

@@ -1,0 +1,55 @@
+/*--------------------------------------------------------------
+# Trainers
+--------------------------------------------------------------*/
+.member {
+  text-align: center;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 1px solid #eef0ef;
+  height: 97%;
+}
+
+.member img {
+  margin: -1px -1px 30px -1px;
+}
+
+.member .member-content {
+  padding: 0 20px 30px 20px;
+}
+
+.member h4 {
+  font-weight: 700;
+  margin-bottom: 2px;
+  font-size: 18px;
+}
+
+.member span {
+  font-style: italic;
+  display: block;
+  font-size: 13px;
+}
+
+.member p {
+  padding-top: 10px;
+  font-size: 14px;
+  font-style: italic;
+  color: #aaaaaa;
+}
+
+.member .social {
+  margin-top: 15px;
+}
+
+.member .social a {
+  color: #7e9486;
+  transition: 0.3s;
+}
+
+.member .social a:hover {
+  color: #5fcf80;
+}
+
+.member .social i {
+  font-size: 18px;
+  margin: 0 2px;
+}

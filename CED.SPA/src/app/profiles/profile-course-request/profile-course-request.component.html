@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Current teaching classes</h5>
+
+    <!-- Table with stripped rows -->
+    <table id="example" class="table datatable">
+      <thead>
+      <tr>
+        <!-- a avatar comlumn will be added -->
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Status</th>
+        <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+
+
+
+      <tr *ngFor="let req of courseRequests">
+<!--        <th scope="row">-->
+<!--          <input hidden name="Id" value="@requestGettingClassDto.Id"/>-->
+<!--          @i-->
+<!--        </th>-->
+        <td>{{req.title}}</td>
+        <td>{{req.subjectName}}</td>
+        <td>{{req.status}}</td>
+
+        <td>
+          <button type="button" class="btn btn-primary">   Detail
+<!--                  onclick="OpenGetDialog('@Url.Action(" TeachingClassDetail","Profile",new{requestId = requestGettingClassDto.Id, classId = requestGettingClassDto.ClassInformationId}          )','Detail');"-->
+
+          </button>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+    <!-- End Table with stripped rows -->
+  </div>
+</div>

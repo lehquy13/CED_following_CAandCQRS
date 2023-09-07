@@ -1,0 +1,85 @@
+<!--&lt;!&ndash; Profile Edit Form &ndash;&gt;-->
+
+<!--<form  onsubmit="return callPostActionWithForm(this);">-->
+
+<!--  &lt;!&ndash; -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; &ndash;&gt;-->
+<!--  <div class="row mb-3">-->
+<!--    <label class="col-md-4 col-lg-3 col-form-label">Profile Image</label>-->
+<!--    <div class="col-md-8 col-lg-9">-->
+<!--      <div id="filesInputValues" *ngFor="let i of tutor.tutorVerificationInfoDtos">-->
+<!--        <img src="{{i.image}}" style="max-width: 120px;" alt="Profile" id="avatar">-->
+<!--        <input id="{{i.id}}" name="imageId" hidden type="text"/>-->
+<!--      </div>-->
+
+<!--      <div class="pt-2">-->
+<!--        <input type="file" id="file" name="files" multiple="multiple"/>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--  </div>-->
+
+<!--  <h5 class="col-md-12">Tutor information</h5>-->
+
+<!--  <div class="col-md-4">-->
+<!--    <label class="form-label">Academic Level</label>-->
+<!--    <select [ngModel]="tutor.academicLevel" id="academicLevel" name="academicLevel" class="form-select">-->
+<!--      <option *ngFor="let a of academicList" [value]="a">{{a}}</option>-->
+<!--    </select>-->
+<!--    <span asp-validation-for="AcademicLevel" class="text-danger"></span>-->
+<!--  </div>-->
+<!--  <div class="col-md-8">-->
+<!--    <label asp-for="University" class="form-label">University</label>-->
+<!--    <input type="text" class="form-control" [(ngModel)]="tutor.university" id="university" name="university">-->
+<!--    <span asp-validation-for="University" class="text-danger"></span>-->
+<!--  </div>-->
+<!--  &lt;!&ndash; -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; &ndash;&gt;-->
+
+<!--  <div class="col-md-12">-->
+<!--    <div class="form-check">-->
+<!--      <input class="form-check-input" disabled type="checkbox" asp-for="IsVerified">-->
+
+<!--      <label class="form-check-label" [ngModel]="!tutor.isVerified">-->
+<!--          You are not verified. Contact center for more informations.-->
+<!--      </label>-->
+
+<!--      <label class="form-check-label" [ngModel]="tutor.isVerified">-->
+<!--          You are verified.-->
+<!--      </label>-->
+
+
+<!--    </div>-->
+
+<!--  </div>-->
+
+<!--  <div class="card mt-5" id="tutorMajorCard">-->
+<!--    <div class="card-body">-->
+<!--      <div class="card-title row">-->
+<!--        <h5 class="col-11">Tutor Majors</h5>-->
+<!--        <button type="button" class="btn btn-primary col-1" >-->
+<!--        <span class="bi bi-plus-circle"> </span>-->
+<!--        Add-->
+<!--        </button>-->
+
+<!--      </div>-->
+
+<!--      &lt;!&ndash; List group with Advanced Contents &ndash;&gt;-->
+<!--      <div class="list-group" *ngFor="let s of tutor.majors">-->
+
+<!--        <input name="SubjectId" value="@s.Id" hidden="hidden"/>-->
+<!--        <a [href]="" class="list-group-item list-group-item-action">-->
+<!--            <div class="d-flex w-100 justify-content-between">-->
+<!--                <h5 class="mb-1">{{s.name}}</h5>-->
+<!--            </div>-->
+<!--            <p class="mb-1">{{s.description}}</p>-->
+<!--        </a>-->
+
+
+
+<!--      </div>&lt;!&ndash; End List group Advanced Content &ndash;&gt;-->
+
+<!--    </div>-->
+<!--  </div>-->
+<!--  <button class="btn btn-primary" type="submit">Submit</button>-->
+<!--</form>-->
+
+<!--&lt;!&ndash; End Profile Edit Form &ndash;&gt;-->
