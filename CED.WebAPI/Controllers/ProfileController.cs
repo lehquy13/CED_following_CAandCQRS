@@ -4,6 +4,7 @@ using CED.Application.Services.Authentication.Admin.Commands.ChangePassword;
 using CED.Application.Services.Authentication.RefreshToken;
 using CED.Application.Services.ClassInformations.Tutor.Queries.GetTeachingClassDetailQuery;
 using CED.Application.Services.Users.Commands;
+using CED.Application.Services.Users.Queries.GetTutorProfile;
 using CED.Application.Services.Users.Student.Commands;
 using CED.Application.Services.Users.Tutor.ChangeInfo;
 using CED.Contracts.Authentication;
@@ -69,6 +70,27 @@ namespace CED.WebAPI.Controllers
 
             //return not found if login failed along with errors
             return NotFound(loginResult.Errors);
+        }
+        
+        [Authorize(Policy = "RequireTutorRole")]
+        [HttpGet("GetCourseRequests/{id}")]
+        public async Task<IActionResult> GetCourseRequests(string id)
+        {
+            var query1 = new GetTutorProfileQuery()
+            {
+                ObjectId = new Guid(id)
+            };
+            var result = await _mediator.Send(query1);
+
+            //viewModelResult.TutorDto = result.Value.TutorMainInfoDto;
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value.RequestGettingClassForListDtos);
+            }
+
+            //return not found if login failed along with errors
+            return BadRequest(result.Errors);
         }
 
         [HttpPut("Edit/{id}")]

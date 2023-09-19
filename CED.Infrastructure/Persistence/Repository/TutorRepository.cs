@@ -21,6 +21,7 @@ public class TutorRepository : Repository<Tutor>, ITutorRepository
                 .Include(x => x.Subjects)
                 .Include(x => x.TutorVerificationInfos)
                 .Include(x => x.RequestGettingClasses)
+                .ThenInclude(x => x.ClassInformation)
                 .FirstOrDefaultAsync();
         }
         catch (Exception ex)

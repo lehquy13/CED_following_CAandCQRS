@@ -38,8 +38,6 @@ export class AuthService {
             this.currentUser = respone.user;
             this.changeMemberPhoto(this.currentUser!.image);
           }
-
-
         })
       );
   }

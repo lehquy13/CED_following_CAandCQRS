@@ -66,6 +66,10 @@ export class CourseService {
     return this.http.get<any>(this.baseUrl + 'Profile/GetLearningClass/' + id);
 
   }
+  getCourseRequests(id: any): any {
+    return this.http.get<any>(this.baseUrl + 'Profile/GetCourseRequests/' + id);
+
+  }
 
   reviewTutor(id: any, model: any): any {
     console.log(model);
