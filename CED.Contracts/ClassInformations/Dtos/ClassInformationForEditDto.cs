@@ -51,6 +51,6 @@ public class ClassInformationForEditDto : FullAuditedAggregateRootDto<Guid>
     //List of Request
 
     public List<RequestGettingClassMinimalDto> RequestGettingClassDtos = new List<RequestGettingClassMinimalDto>();
-    public TutorReviewDto TutorReviewDto = new();
+    public string TutorReviewDto = string.Empty;
 }
 

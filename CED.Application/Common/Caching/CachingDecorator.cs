@@ -10,8 +10,8 @@ public class CachingBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>, new()
 {
     private readonly IAppCache _cache;
-    private readonly ILogger<TResponse> _logger;
-    public CachingBehavior(IAppCache cache, ILogger<TResponse> logger)
+    private readonly ILogger<CachingBehavior<TRequest, TResponse>> _logger;
+    public CachingBehavior(IAppCache cache, ILogger<CachingBehavior<TRequest, TResponse>> logger)
     {
         _cache = cache;
         _logger = logger;
@@ -34,6 +34,7 @@ public class CachingBehavior<TRequest, TResponse>
         }
         return next();
     }
+    
     private string GenerateCacheKey(TRequest request)
     {
         // Implement your logic to generate a unique cache key based on the request

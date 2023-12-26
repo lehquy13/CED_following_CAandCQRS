@@ -130,7 +130,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
             "Server=(localdb)\\MSSQLLocalDB; Database=ced_ddd; Trusted_Connection=True;MultipleActiveResultSets=true"
             );
         // optionsBuilder.UseSqlServer(
-        //"workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;TrustServerCertificate=True;initial catalog=edusmart"
+        //"workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_1;pwd=av5rgw92zs;data source=edusmart.mssql.somee.com;persist security info=False;eTrustServrCertificate=True;initial catalog=edusmart"
         //);
 
         return new AppDbContext(optionsBuilder.Options);

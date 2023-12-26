@@ -1,5 +1,7 @@
-﻿using CED.Application.Services.Subjects.Commands;
+﻿using CED.Application.Services.Abstractions.QueryHandlers;
+using CED.Application.Services.Subjects.Commands;
 using CED.Application.Services.Subjects.Queries;
+using CED.Contracts;
 using CED.Contracts.Subjects;
 using MapsterMapper;
 using MediatR;
@@ -13,7 +15,6 @@ namespace CED.WebAPI.Controllers;
 [Authorize]
 public class SubjectController : ControllerBase
 {
-
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
 
@@ -28,10 +29,11 @@ public class SubjectController : ControllerBase
     [HttpGet]
     [Route("GetAllSubjects")]
 
-    public async Task<IActionResult> GetAllSubjects(/*should be a hót isd*/)
+    public async Task<IActionResult> GetAllSubjects()
     {
-        var query = new GetAllSubjectsQuery();
-        List<SubjectDto> subjects = await _mediator.Send(query);
+        var query = new GetObjectQuery<PaginatedList<SubjectDto>>();
+
+        List<SubjectDto> subjects = (await _mediator.Send(query)).Value;
         
         return Ok(subjects);
     }
@@ -40,7 +42,7 @@ public class SubjectController : ControllerBase
     [Route("GetSubject/{id}")]
     public async Task<IActionResult> GetSubject(Guid id)
     {
-        var query = _mapper.Map<GetSubjectQuery>(id);
+        var query = _mapper.Map<GetObjectQuery<SubjectDto>>(id);
         var subject = await _mediator.Send(query);
 
         return Ok(subject.Value);
