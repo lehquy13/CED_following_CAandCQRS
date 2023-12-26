@@ -1,8 +1,6 @@
-﻿using CED.Application.Services.Abstractions.CommandHandlers;
-using CED.Domain.Interfaces.Services;
+﻿using CED.Domain.Interfaces.Services;
 using CED.Domain.Repository;
 using CED.Domain.Users;
-using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using FluentResults;
 using LazyCache;
